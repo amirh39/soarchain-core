@@ -9,6 +9,10 @@
  * ---------------------------------------------------------------
  */
 
+export type PoaMsgGenChallengerResponse = object;
+
+export type PoaMsgGenClientResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

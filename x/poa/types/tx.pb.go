@@ -9,7 +9,11 @@ import (
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
+	io "io"
 	math "math"
+	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -23,17 +27,218 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type MsgGenClient struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	Fee     string `protobuf:"bytes,3,opt,name=fee,proto3" json:"fee,omitempty"`
+}
+
+func (m *MsgGenClient) Reset()         { *m = MsgGenClient{} }
+func (m *MsgGenClient) String() string { return proto.CompactTextString(m) }
+func (*MsgGenClient) ProtoMessage()    {}
+func (*MsgGenClient) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{0}
+}
+func (m *MsgGenClient) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgGenClient) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgGenClient.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgGenClient) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgGenClient.Merge(m, src)
+}
+func (m *MsgGenClient) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgGenClient) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgGenClient.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgGenClient proto.InternalMessageInfo
+
+func (m *MsgGenClient) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgGenClient) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *MsgGenClient) GetFee() string {
+	if m != nil {
+		return m.Fee
+	}
+	return ""
+}
+
+type MsgGenClientResponse struct {
+}
+
+func (m *MsgGenClientResponse) Reset()         { *m = MsgGenClientResponse{} }
+func (m *MsgGenClientResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgGenClientResponse) ProtoMessage()    {}
+func (*MsgGenClientResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{1}
+}
+func (m *MsgGenClientResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgGenClientResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgGenClientResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgGenClientResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgGenClientResponse.Merge(m, src)
+}
+func (m *MsgGenClientResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgGenClientResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgGenClientResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgGenClientResponse proto.InternalMessageInfo
+
+type MsgGenChallenger struct {
+	Creator     string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	StakeAmount string `protobuf:"bytes,2,opt,name=stakeAmount,proto3" json:"stakeAmount,omitempty"`
+}
+
+func (m *MsgGenChallenger) Reset()         { *m = MsgGenChallenger{} }
+func (m *MsgGenChallenger) String() string { return proto.CompactTextString(m) }
+func (*MsgGenChallenger) ProtoMessage()    {}
+func (*MsgGenChallenger) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{2}
+}
+func (m *MsgGenChallenger) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgGenChallenger) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgGenChallenger.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgGenChallenger) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgGenChallenger.Merge(m, src)
+}
+func (m *MsgGenChallenger) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgGenChallenger) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgGenChallenger.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgGenChallenger proto.InternalMessageInfo
+
+func (m *MsgGenChallenger) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgGenChallenger) GetStakeAmount() string {
+	if m != nil {
+		return m.StakeAmount
+	}
+	return ""
+}
+
+type MsgGenChallengerResponse struct {
+}
+
+func (m *MsgGenChallengerResponse) Reset()         { *m = MsgGenChallengerResponse{} }
+func (m *MsgGenChallengerResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgGenChallengerResponse) ProtoMessage()    {}
+func (*MsgGenChallengerResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{3}
+}
+func (m *MsgGenChallengerResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgGenChallengerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgGenChallengerResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgGenChallengerResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgGenChallengerResponse.Merge(m, src)
+}
+func (m *MsgGenChallengerResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgGenChallengerResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgGenChallengerResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgGenChallengerResponse proto.InternalMessageInfo
+
+func init() {
+	proto.RegisterType((*MsgGenClient)(nil), "soarchain.poa.MsgGenClient")
+	proto.RegisterType((*MsgGenClientResponse)(nil), "soarchain.poa.MsgGenClientResponse")
+	proto.RegisterType((*MsgGenChallenger)(nil), "soarchain.poa.MsgGenChallenger")
+	proto.RegisterType((*MsgGenChallengerResponse)(nil), "soarchain.poa.MsgGenChallengerResponse")
+}
+
 func init() { proto.RegisterFile("poa/tx.proto", fileDescriptor_8ac16a0aed23c2e2) }
 
 var fileDescriptor_8ac16a0aed23c2e2 = []byte{
-	// 106 bytes of a gzipped FileDescriptorProto
+	// 267 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x29, 0xc8, 0x4f, 0xd4,
 	0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x2d, 0xce, 0x4f, 0x2c, 0x4a, 0xce,
-	0x48, 0xcc, 0xcc, 0xd3, 0x2b, 0xc8, 0x4f, 0x34, 0x62, 0xe5, 0x62, 0xf6, 0x2d, 0x4e, 0x77, 0xd2,
-	0x3f, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27, 0x3c, 0x96,
-	0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0x51, 0xb8, 0x7a, 0xfd, 0x0a,
-	0x7d, 0xb0, 0x49, 0x95, 0x05, 0xa9, 0xc5, 0x49, 0x6c, 0x60, 0xd3, 0x8c, 0x01, 0x01, 0x00, 0x00,
-	0xff, 0xff, 0xd8, 0x95, 0x83, 0x5f, 0x5d, 0x00, 0x00, 0x00,
+	0x48, 0xcc, 0xcc, 0xd3, 0x2b, 0xc8, 0x4f, 0x54, 0x0a, 0xe1, 0xe2, 0xf1, 0x2d, 0x4e, 0x77, 0x4f,
+	0xcd, 0x73, 0xce, 0xc9, 0x4c, 0xcd, 0x2b, 0x11, 0x92, 0xe0, 0x62, 0x4f, 0x2e, 0x4a, 0x4d, 0x2c,
+	0xc9, 0x2f, 0x92, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0x71, 0x41, 0x32, 0x89, 0x29, 0x29,
+	0x45, 0xa9, 0xc5, 0xc5, 0x12, 0x4c, 0x10, 0x19, 0x28, 0x57, 0x48, 0x80, 0x8b, 0x39, 0x2d, 0x35,
+	0x55, 0x82, 0x19, 0x2c, 0x0a, 0x62, 0x2a, 0x89, 0x71, 0x89, 0x20, 0x9b, 0x1a, 0x94, 0x5a, 0x5c,
+	0x90, 0x9f, 0x57, 0x9c, 0xaa, 0xe4, 0xc7, 0x25, 0x00, 0x15, 0xcf, 0x48, 0xcc, 0xc9, 0x49, 0xcd,
+	0x4b, 0x4f, 0x2d, 0xc2, 0x63, 0xa3, 0x02, 0x17, 0x77, 0x71, 0x49, 0x62, 0x76, 0xaa, 0x63, 0x6e,
+	0x7e, 0x69, 0x5e, 0x09, 0xd4, 0x56, 0x64, 0x21, 0x25, 0x29, 0x2e, 0x09, 0x74, 0xf3, 0x60, 0x76,
+	0x19, 0xad, 0x67, 0xe4, 0x62, 0xf6, 0x2d, 0x4e, 0x17, 0xf2, 0xe5, 0xe2, 0x44, 0x78, 0x4f, 0x5a,
+	0x0f, 0xc5, 0xfb, 0x7a, 0xc8, 0xae, 0x94, 0x52, 0xc6, 0x23, 0x09, 0x33, 0x56, 0x28, 0x92, 0x8b,
+	0x17, 0xd5, 0xfd, 0xf2, 0xd8, 0x75, 0xc1, 0x15, 0x48, 0xa9, 0x13, 0x50, 0x00, 0x33, 0xda, 0x49,
+	0xff, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf0, 0x58,
+	0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0xa2, 0x44, 0xe1, 0x26, 0xe8, 0x57,
+	0xe8, 0x83, 0xa3, 0xb3, 0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d, 0x1c, 0xa5, 0xc6, 0x80, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0xd6, 0x8f, 0x08, 0x49, 0xe2, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -48,6 +253,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
+	GenClient(ctx context.Context, in *MsgGenClient, opts ...grpc.CallOption) (*MsgGenClientResponse, error)
+	GenChallenger(ctx context.Context, in *MsgGenChallenger, opts ...grpc.CallOption) (*MsgGenChallengerResponse, error)
 }
 
 type msgClient struct {
@@ -58,22 +265,739 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
+func (c *msgClient) GenClient(ctx context.Context, in *MsgGenClient, opts ...grpc.CallOption) (*MsgGenClientResponse, error) {
+	out := new(MsgGenClientResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.poa.Msg/GenClient", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) GenChallenger(ctx context.Context, in *MsgGenChallenger, opts ...grpc.CallOption) (*MsgGenChallengerResponse, error) {
+	out := new(MsgGenChallengerResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.poa.Msg/GenChallenger", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
+	GenClient(context.Context, *MsgGenClient) (*MsgGenClientResponse, error)
+	GenChallenger(context.Context, *MsgGenChallenger) (*MsgGenChallengerResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
+func (*UnimplementedMsgServer) GenClient(ctx context.Context, req *MsgGenClient) (*MsgGenClientResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenClient not implemented")
+}
+func (*UnimplementedMsgServer) GenChallenger(ctx context.Context, req *MsgGenChallenger) (*MsgGenChallengerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenChallenger not implemented")
+}
+
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
+}
+
+func _Msg_GenClient_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgGenClient)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).GenClient(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.poa.Msg/GenClient",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).GenClient(ctx, req.(*MsgGenClient))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_GenChallenger_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgGenChallenger)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).GenChallenger(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.poa.Msg/GenChallenger",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).GenChallenger(ctx, req.(*MsgGenChallenger))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "soarchain.poa.Msg",
 	HandlerType: (*MsgServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "poa/tx.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GenClient",
+			Handler:    _Msg_GenClient_Handler,
+		},
+		{
+			MethodName: "GenChallenger",
+			Handler:    _Msg_GenChallenger_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "poa/tx.proto",
 }
+
+func (m *MsgGenClient) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgGenClient) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgGenClient) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Fee) > 0 {
+		i -= len(m.Fee)
+		copy(dAtA[i:], m.Fee)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Fee)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgGenClientResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgGenClientResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgGenClientResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgGenChallenger) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgGenChallenger) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgGenChallenger) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.StakeAmount) > 0 {
+		i -= len(m.StakeAmount)
+		copy(dAtA[i:], m.StakeAmount)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.StakeAmount)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgGenChallengerResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgGenChallengerResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgGenChallengerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
+	offset -= sovTx(v)
+	base := offset
+	for v >= 1<<7 {
+		dAtA[offset] = uint8(v&0x7f | 0x80)
+		v >>= 7
+		offset++
+	}
+	dAtA[offset] = uint8(v)
+	return base
+}
+func (m *MsgGenClient) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Fee)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgGenClientResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgGenChallenger) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.StakeAmount)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgGenChallengerResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func sovTx(x uint64) (n int) {
+	return (math_bits.Len64(x|1) + 6) / 7
+}
+func sozTx(x uint64) (n int) {
+	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *MsgGenClient) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgGenClient: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgGenClient: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Fee", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Fee = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgGenClientResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgGenClientResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgGenClientResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgGenChallenger) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgGenChallenger: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgGenChallenger: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StakeAmount", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StakeAmount = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgGenChallengerResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgGenChallengerResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgGenChallengerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func skipTx(dAtA []byte) (n int, err error) {
+	l := len(dAtA)
+	iNdEx := 0
+	depth := 0
+	for iNdEx < l {
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return 0, ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return 0, io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		wireType := int(wire & 0x7)
+		switch wireType {
+		case 0:
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return 0, ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return 0, io.ErrUnexpectedEOF
+				}
+				iNdEx++
+				if dAtA[iNdEx-1] < 0x80 {
+					break
+				}
+			}
+		case 1:
+			iNdEx += 8
+		case 2:
+			var length int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return 0, ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return 0, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				length |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if length < 0 {
+				return 0, ErrInvalidLengthTx
+			}
+			iNdEx += length
+		case 3:
+			depth++
+		case 4:
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupTx
+			}
+			depth--
+		case 5:
+			iNdEx += 4
+		default:
+			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
+		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthTx
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
+	}
+	return 0, io.ErrUnexpectedEOF
+}
+
+var (
+	ErrInvalidLengthTx        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowTx          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupTx = fmt.Errorf("proto: unexpected end of group")
+)

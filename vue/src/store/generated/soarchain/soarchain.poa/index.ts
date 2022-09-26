@@ -135,7 +135,63 @@ export default {
 		},
 		
 		
+		async sendMsgGenClient({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgGenClient(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGenClient:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgGenClient:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgGenChallenger({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgGenChallenger(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGenChallenger:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgGenChallenger:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
+		async MsgGenClient({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgGenClient(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGenClient:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgGenClient:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgGenChallenger({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgGenChallenger(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGenChallenger:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgGenChallenger:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		
 	}
 }

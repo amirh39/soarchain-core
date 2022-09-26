@@ -7,7 +7,26 @@ option go_package = "soarchain/x/poa/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc GenClient(MsgGenClient) returns (MsgGenClientResponse);
+  rpc GenChallenger(MsgGenChallenger) returns (MsgGenChallengerResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgGenClient {
+  string creator = 1;
+  string address = 2;
+  string fee = 3;
+}
+
+message MsgGenClientResponse {
+}
+
+message MsgGenChallenger {
+  string creator = 1;
+  string stakeAmount = 2;
+}
+
+message MsgGenChallengerResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
