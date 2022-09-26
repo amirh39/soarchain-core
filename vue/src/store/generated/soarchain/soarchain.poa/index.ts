@@ -1,9 +1,11 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { Challenger } from "./module/types/poa/challenger"
+import { Client } from "./module/types/poa/client"
 import { Params } from "./module/types/poa/params"
 
 
-export { Params };
+export { Challenger, Client, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -42,8 +44,14 @@ function getStructure(template) {
 const getDefaultState = () => {
 	return {
 				Params: {},
+				Client: {},
+				ClientAll: {},
+				Challenger: {},
+				ChallengerAll: {},
 				
 				_Structure: {
+						Challenger: getStructure(Challenger.fromPartial({})),
+						Client: getStructure(Client.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},
@@ -78,6 +86,30 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Params[JSON.stringify(params)] ?? {}
+		},
+				getClient: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Client[JSON.stringify(params)] ?? {}
+		},
+				getClientAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ClientAll[JSON.stringify(params)] ?? {}
+		},
+				getChallenger: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Challenger[JSON.stringify(params)] ?? {}
+		},
+				getChallengerAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ChallengerAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -135,21 +167,102 @@ export default {
 		},
 		
 		
-		async sendMsgChallengeService({ rootGetters }, { value, fee = [], memo = '' }) {
+		
+		
+		 		
+		
+		
+		async QueryClient({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgChallengeService(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryClient( key.index)).data
+				
+					
+				commit('QUERY', { query: 'Client', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryClient', payload: { options: { all }, params: {...key},query }})
+				return getters['getClient']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChallengeService:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChallengeService:Send Could not broadcast Tx: '+ e.message)
-				}
+				throw new Error('QueryClient:QueryClient API Node Unavailable. Could not perform query: ' + e.message)
+				
 			}
 		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryClientAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryClientAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryClientAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'ClientAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryClientAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getClientAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryClientAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryChallenger({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryChallenger( key.index)).data
+				
+					
+				commit('QUERY', { query: 'Challenger', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryChallenger', payload: { options: { all }, params: {...key},query }})
+				return getters['getChallenger']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryChallenger API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryChallengerAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryChallengerAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryChallengerAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'ChallengerAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryChallengerAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getChallengerAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryChallengerAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
 		async sendMsgGenChallenger({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -180,20 +293,22 @@ export default {
 				}
 			}
 		},
-		
-		async MsgChallengeService({ rootGetters }, { value }) {
+		async sendMsgChallengeService({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgChallengeService(value)
-				return msg
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgChallengeService:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChallengeService:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgChallengeService:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgGenChallenger({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -217,6 +332,19 @@ export default {
 					throw new Error('TxClient:MsgGenClient:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgGenClient:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChallengeService({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgChallengeService(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChallengeService:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChallengeService:Create Could not create message: ' + e.message)
 				}
 			}
 		},

@@ -5,6 +5,8 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
+import "poa/client.proto";
+import "poa/challenger.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "soarchain/x/poa/types";
@@ -15,7 +17,27 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/soarchain/poa/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a Client by index.
+	rpc Client(QueryGetClientRequest) returns (QueryGetClientResponse) {
+		option (google.api.http).get = "/soarchain/poa/client/{index}";
+	}
+
+	// Queries a list of Client items.
+	rpc ClientAll(QueryAllClientRequest) returns (QueryAllClientResponse) {
+		option (google.api.http).get = "/soarchain/poa/client";
+	}
+
+// Queries a Challenger by index.
+	rpc Challenger(QueryGetChallengerRequest) returns (QueryGetChallengerResponse) {
+		option (google.api.http).get = "/soarchain/poa/challenger/{index}";
+	}
+
+	// Queries a list of Challenger items.
+	rpc ChallengerAll(QueryAllChallengerRequest) returns (QueryAllChallengerResponse) {
+		option (google.api.http).get = "/soarchain/poa/challenger";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +47,42 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetClientRequest {
+	  string index = 1;
+
+}
+
+message QueryGetClientResponse {
+	Client client = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllClientRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllClientResponse {
+	repeated Client client = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetChallengerRequest {
+	  string index = 1;
+
+}
+
+message QueryGetChallengerResponse {
+	Challenger challenger = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllChallengerRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllChallengerResponse {
+	repeated Challenger challenger = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

@@ -9,6 +9,24 @@
  * ---------------------------------------------------------------
  */
 
+export interface PoaChallenger {
+  index?: string;
+  address?: string;
+  challengerId?: string;
+  score?: string;
+  stakedAmount?: string;
+  netEarnings?: string;
+}
+
+export interface PoaClient {
+  index?: string;
+  address?: string;
+  uniqueId?: string;
+  score?: string;
+  balance?: string;
+  netEarnings?: string;
+}
+
 export type PoaMsgChallengeServiceResponse = object;
 
 export type PoaMsgGenChallengerResponse = object;
@@ -19,6 +37,44 @@ export type PoaMsgGenClientResponse = object;
  * Params defines the parameters for the module.
  */
 export type PoaParams = object;
+
+export interface PoaQueryAllChallengerResponse {
+  challenger?: PoaChallenger[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface PoaQueryAllClientResponse {
+  client?: PoaClient[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface PoaQueryGetChallengerResponse {
+  challenger?: PoaChallenger;
+}
+
+export interface PoaQueryGetClientResponse {
+  client?: PoaClient;
+}
 
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
@@ -37,6 +93,69 @@ export interface RpcStatus {
   code?: number;
   message?: string;
   details?: ProtobufAny[];
+}
+
+/**
+* message SomeRequest {
+         Foo some_parameter = 1;
+         PageRequest pagination = 2;
+ }
+*/
+export interface V1Beta1PageRequest {
+  /**
+   * key is a value returned in PageResponse.next_key to begin
+   * querying the next page most efficiently. Only one of offset or key
+   * should be set.
+   * @format byte
+   */
+  key?: string;
+
+  /**
+   * offset is a numeric offset that can be used when key is unavailable.
+   * It is less efficient than using key. Only one of offset or key should
+   * be set.
+   * @format uint64
+   */
+  offset?: string;
+
+  /**
+   * limit is the total number of results to be returned in the result page.
+   * If left empty it will default to a value to be set by each app.
+   * @format uint64
+   */
+  limit?: string;
+
+  /**
+   * count_total is set to true  to indicate that the result set should include
+   * a count of the total number of items available for pagination in UIs.
+   * count_total is only respected when offset is used. It is ignored when key
+   * is set.
+   */
+  count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
+}
+
+/**
+* PageResponse is to be embedded in gRPC response messages where the
+corresponding request message has used PageRequest.
+
+ message SomeResponse {
+         repeated Bar results = 1;
+         PageResponse page = 2;
+ }
+*/
+export interface V1Beta1PageResponse {
+  /** @format byte */
+  next_key?: string;
+
+  /** @format uint64 */
+  total?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -231,10 +350,94 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title poa/genesis.proto
+ * @title poa/challenger.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryChallengerAll
+   * @summary Queries a list of Challenger items.
+   * @request GET:/soarchain/poa/challenger
+   */
+  queryChallengerAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PoaQueryAllChallengerResponse, RpcStatus>({
+      path: `/soarchain/poa/challenger`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryChallenger
+   * @summary Queries a Challenger by index.
+   * @request GET:/soarchain/poa/challenger/{index}
+   */
+  queryChallenger = (index: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetChallengerResponse, RpcStatus>({
+      path: `/soarchain/poa/challenger/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryClientAll
+   * @summary Queries a list of Client items.
+   * @request GET:/soarchain/poa/client
+   */
+  queryClientAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PoaQueryAllClientResponse, RpcStatus>({
+      path: `/soarchain/poa/client`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryClient
+   * @summary Queries a Client by index.
+   * @request GET:/soarchain/poa/client/{index}
+   */
+  queryClient = (index: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetClientResponse, RpcStatus>({
+      path: `/soarchain/poa/client/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
