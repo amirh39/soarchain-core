@@ -9,6 +9,7 @@ option go_package = "soarchain/x/poa/types";
 service Msg {
       rpc GenClient(MsgGenClient) returns (MsgGenClientResponse);
   rpc GenChallenger(MsgGenChallenger) returns (MsgGenChallengerResponse);
+  rpc ChallengeService(MsgChallengeService) returns (MsgChallengeServiceResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -27,6 +28,15 @@ message MsgGenChallenger {
 }
 
 message MsgGenChallengerResponse {
+}
+
+message MsgChallengeService {
+  string creator = 1;
+  string challengeeAddress = 2;
+  string challengeResult = 3;
+}
+
+message MsgChallengeServiceResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

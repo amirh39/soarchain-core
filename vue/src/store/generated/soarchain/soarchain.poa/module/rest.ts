@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+export type PoaMsgChallengeServiceResponse = object;
+
 export type PoaMsgGenChallengerResponse = object;
 
 export type PoaMsgGenClientResponse = object;

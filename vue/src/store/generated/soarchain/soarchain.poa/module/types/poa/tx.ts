@@ -18,6 +18,14 @@ export interface MsgGenChallenger {
 
 export interface MsgGenChallengerResponse {}
 
+export interface MsgChallengeService {
+  creator: string;
+  challengeeAddress: string;
+  challengeResult: string;
+}
+
+export interface MsgChallengeServiceResponse {}
+
 const baseMsgGenClient: object = { creator: "", address: "", fee: "" };
 
 export const MsgGenClient = {
@@ -270,11 +278,176 @@ export const MsgGenChallengerResponse = {
   },
 };
 
+const baseMsgChallengeService: object = {
+  creator: "",
+  challengeeAddress: "",
+  challengeResult: "",
+};
+
+export const MsgChallengeService = {
+  encode(
+    message: MsgChallengeService,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.challengeeAddress !== "") {
+      writer.uint32(18).string(message.challengeeAddress);
+    }
+    if (message.challengeResult !== "") {
+      writer.uint32(26).string(message.challengeResult);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgChallengeService {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgChallengeService } as MsgChallengeService;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.challengeeAddress = reader.string();
+          break;
+        case 3:
+          message.challengeResult = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgChallengeService {
+    const message = { ...baseMsgChallengeService } as MsgChallengeService;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (
+      object.challengeeAddress !== undefined &&
+      object.challengeeAddress !== null
+    ) {
+      message.challengeeAddress = String(object.challengeeAddress);
+    } else {
+      message.challengeeAddress = "";
+    }
+    if (
+      object.challengeResult !== undefined &&
+      object.challengeResult !== null
+    ) {
+      message.challengeResult = String(object.challengeResult);
+    } else {
+      message.challengeResult = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgChallengeService): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.challengeeAddress !== undefined &&
+      (obj.challengeeAddress = message.challengeeAddress);
+    message.challengeResult !== undefined &&
+      (obj.challengeResult = message.challengeResult);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgChallengeService>): MsgChallengeService {
+    const message = { ...baseMsgChallengeService } as MsgChallengeService;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (
+      object.challengeeAddress !== undefined &&
+      object.challengeeAddress !== null
+    ) {
+      message.challengeeAddress = object.challengeeAddress;
+    } else {
+      message.challengeeAddress = "";
+    }
+    if (
+      object.challengeResult !== undefined &&
+      object.challengeResult !== null
+    ) {
+      message.challengeResult = object.challengeResult;
+    } else {
+      message.challengeResult = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgChallengeServiceResponse: object = {};
+
+export const MsgChallengeServiceResponse = {
+  encode(
+    _: MsgChallengeServiceResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgChallengeServiceResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgChallengeServiceResponse,
+    } as MsgChallengeServiceResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgChallengeServiceResponse {
+    const message = {
+      ...baseMsgChallengeServiceResponse,
+    } as MsgChallengeServiceResponse;
+    return message;
+  },
+
+  toJSON(_: MsgChallengeServiceResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgChallengeServiceResponse>
+  ): MsgChallengeServiceResponse {
+    const message = {
+      ...baseMsgChallengeServiceResponse,
+    } as MsgChallengeServiceResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   GenChallenger(request: MsgGenChallenger): Promise<MsgGenChallengerResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  ChallengeService(
+    request: MsgChallengeService
+  ): Promise<MsgChallengeServiceResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -299,6 +472,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgGenChallengerResponse.decode(new Reader(data))
+    );
+  }
+
+  ChallengeService(
+    request: MsgChallengeService
+  ): Promise<MsgChallengeServiceResponse> {
+    const data = MsgChallengeService.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Msg",
+      "ChallengeService",
+      data
+    );
+    return promise.then((data) =>
+      MsgChallengeServiceResponse.decode(new Reader(data))
     );
   }
 }

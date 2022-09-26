@@ -51594,6 +51594,8 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  soarchain.poa.MsgChallengeServiceResponse:
+    type: object
   soarchain.poa.MsgGenChallengerResponse:
     type: object
   soarchain.poa.MsgGenClientResponse:
