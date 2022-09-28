@@ -23,7 +23,6 @@ export interface PoaClient {
   address?: string;
   uniqueId?: string;
   score?: string;
-  balance?: string;
   netEarnings?: string;
 }
 

@@ -32,13 +32,12 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	k.bankKeeper.SendCoinsFromAccountToModule(ctx, clientAddr, types.ModuleName, registrationFee)
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, registrationFee)
 
-	// 4. Save client into storage
+	// Save client into storage
 	newClient := types.Client{
 		Index:       clientAddr.String(),
 		Address:     clientAddr.String(),
 		UniqueId:    "",
 		Score:       sdk.NewInt(100).String(), // Base Score
-		Balance:     "",
 		NetEarnings: sdk.ZeroInt().String(),
 	}
 

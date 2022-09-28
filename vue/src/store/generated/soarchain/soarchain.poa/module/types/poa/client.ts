@@ -8,7 +8,6 @@ export interface Client {
   address: string;
   uniqueId: string;
   score: string;
-  balance: string;
   netEarnings: string;
 }
 
@@ -17,7 +16,6 @@ const baseClient: object = {
   address: "",
   uniqueId: "",
   score: "",
-  balance: "",
   netEarnings: "",
 };
 
@@ -34,9 +32,6 @@ export const Client = {
     }
     if (message.score !== "") {
       writer.uint32(34).string(message.score);
-    }
-    if (message.balance !== "") {
-      writer.uint32(42).string(message.balance);
     }
     if (message.netEarnings !== "") {
       writer.uint32(50).string(message.netEarnings);
@@ -62,9 +57,6 @@ export const Client = {
           break;
         case 4:
           message.score = reader.string();
-          break;
-        case 5:
-          message.balance = reader.string();
           break;
         case 6:
           message.netEarnings = reader.string();
@@ -99,11 +91,6 @@ export const Client = {
     } else {
       message.score = "";
     }
-    if (object.balance !== undefined && object.balance !== null) {
-      message.balance = String(object.balance);
-    } else {
-      message.balance = "";
-    }
     if (object.netEarnings !== undefined && object.netEarnings !== null) {
       message.netEarnings = String(object.netEarnings);
     } else {
@@ -118,7 +105,6 @@ export const Client = {
     message.address !== undefined && (obj.address = message.address);
     message.uniqueId !== undefined && (obj.uniqueId = message.uniqueId);
     message.score !== undefined && (obj.score = message.score);
-    message.balance !== undefined && (obj.balance = message.balance);
     message.netEarnings !== undefined &&
       (obj.netEarnings = message.netEarnings);
     return obj;
@@ -145,11 +131,6 @@ export const Client = {
       message.score = object.score;
     } else {
       message.score = "";
-    }
-    if (object.balance !== undefined && object.balance !== null) {
-      message.balance = object.balance;
-    } else {
-      message.balance = "";
     }
     if (object.netEarnings !== undefined && object.netEarnings !== null) {
       message.netEarnings = object.netEarnings;

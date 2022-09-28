@@ -30380,8 +30380,6 @@ paths:
                       type: string
                     score:
                       type: string
-                    balance:
-                      type: string
                     netEarnings:
                       type: string
               pagination:
@@ -30508,8 +30506,6 @@ paths:
                   uniqueId:
                     type: string
                   score:
-                    type: string
-                  balance:
                     type: string
                   netEarnings:
                     type: string
@@ -51982,8 +51978,6 @@ definitions:
         type: string
       score:
         type: string
-      balance:
-        type: string
       netEarnings:
         type: string
   soarchain.poa.MsgChallengeServiceResponse:
@@ -52056,8 +52050,6 @@ definitions:
               type: string
             score:
               type: string
-            balance:
-              type: string
             netEarnings:
               type: string
       pagination:
@@ -52116,8 +52108,6 @@ definitions:
           uniqueId:
             type: string
           score:
-            type: string
-          balance:
             type: string
           netEarnings:
             type: string

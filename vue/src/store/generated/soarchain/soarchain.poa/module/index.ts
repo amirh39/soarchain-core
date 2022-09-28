@@ -5,14 +5,14 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgGenChallenger } from "./types/poa/tx";
-import { MsgGenClient } from "./types/poa/tx";
 import { MsgChallengeService } from "./types/poa/tx";
+import { MsgGenClient } from "./types/poa/tx";
 
 
 const types = [
   ["/soarchain.poa.MsgGenChallenger", MsgGenChallenger],
-  ["/soarchain.poa.MsgGenClient", MsgGenClient],
   ["/soarchain.poa.MsgChallengeService", MsgChallengeService],
+  ["/soarchain.poa.MsgGenClient", MsgGenClient],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -46,8 +46,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgGenChallenger: (data: MsgGenChallenger): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenChallenger", value: MsgGenChallenger.fromPartial( data ) }),
-    msgGenClient: (data: MsgGenClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenClient", value: MsgGenClient.fromPartial( data ) }),
     msgChallengeService: (data: MsgChallengeService): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgChallengeService", value: MsgChallengeService.fromPartial( data ) }),
+    msgGenClient: (data: MsgGenClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenClient", value: MsgGenClient.fromPartial( data ) }),
     
   };
 };
