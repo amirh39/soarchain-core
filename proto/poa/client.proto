@@ -8,6 +8,6 @@ message Client {
   string address = 2; 
   string uniqueId = 3; 
   string score = 4; 
-  string netEarnings = 6; 
+  string netEarnings = 6;
 }
 
