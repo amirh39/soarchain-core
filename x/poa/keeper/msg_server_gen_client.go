@@ -32,8 +32,6 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	k.bankKeeper.SendCoinsFromAccountToModule(ctx, clientAddr, types.ModuleName, registrationFee)
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, registrationFee)
 
-	// 4. Return exceeding amount back to sender
-
 	// Save client into storage
 	newClient := types.Client{
 		Index:       clientAddr.String(),

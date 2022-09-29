@@ -21,7 +21,7 @@ import (
 func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallengeService) (*types.MsgChallengeServiceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	_, isChallenger := k.GetChallenger(ctx, msg.Creator)
+	challenger, isChallenger := k.GetChallenger(ctx, msg.Creator)
 	if !isChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Only registered challengers can initiate this transaction.")
 	}
@@ -86,6 +86,21 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	} else {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenge result")
 	}
+
+	// update challenger info after the successfull reward session
+	scoreIntChallenger, _ := strconv.Atoi(challenger.Score)
+	scoreIntChallenger++ // defines number of successfully completed reward sessions
+
+	updatedChallenger := types.Challenger{
+		Index:        challenger.Index,
+		Address:      challenger.Address,
+		ChallengerId: challenger.ChallengerId,
+		Score:        strconv.Itoa(scoreIntChallenger),
+		StakedAmount: challenger.StakedAmount,
+		NetEarnings:  challenger.NetEarnings, // TBD
+	}
+
+	k.SetChallenger(ctx, updatedChallenger)
 
 	return &types.MsgChallengeServiceResponse{}, nil
 }
