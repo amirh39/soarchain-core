@@ -6,12 +6,14 @@ import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "
 import { Api } from "./rest";
 import { MsgGenClient } from "./types/poa/tx";
 import { MsgGenChallenger } from "./types/poa/tx";
+import { MsgUnregisterClient } from "./types/poa/tx";
 import { MsgChallengeService } from "./types/poa/tx";
 
 
 const types = [
   ["/soarchain.poa.MsgGenClient", MsgGenClient],
   ["/soarchain.poa.MsgGenChallenger", MsgGenChallenger],
+  ["/soarchain.poa.MsgUnregisterClient", MsgUnregisterClient],
   ["/soarchain.poa.MsgChallengeService", MsgChallengeService],
   
 ];
@@ -47,6 +49,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgGenClient: (data: MsgGenClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenClient", value: MsgGenClient.fromPartial( data ) }),
     msgGenChallenger: (data: MsgGenChallenger): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenChallenger", value: MsgGenChallenger.fromPartial( data ) }),
+    msgUnregisterClient: (data: MsgUnregisterClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterClient", value: MsgUnregisterClient.fromPartial( data ) }),
     msgChallengeService: (data: MsgChallengeService): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgChallengeService", value: MsgChallengeService.fromPartial( data ) }),
     
   };

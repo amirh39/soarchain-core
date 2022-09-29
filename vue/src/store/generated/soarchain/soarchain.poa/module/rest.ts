@@ -32,6 +32,8 @@ export type PoaMsgGenChallengerResponse = object;
 
 export type PoaMsgGenClientResponse = object;
 
+export type PoaMsgUnregisterClientResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

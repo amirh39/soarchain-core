@@ -28,9 +28,12 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	}
 
 	// 3. Transfer fee to the protocol, then burn it
-	clientAddr, _ := sdk.AccAddressFromBech32(msg.Address)
-	k.bankKeeper.SendCoinsFromAccountToModule(ctx, clientAddr, types.ModuleName, registrationFee)
+	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
+	k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, registrationFee)
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, registrationFee)
+
+	//
+	clientAddr, _ := sdk.AccAddressFromBech32(msg.Address)
 
 	// Save client into storage
 	newClient := types.Client{

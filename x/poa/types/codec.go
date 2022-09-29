@@ -11,6 +11,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgGenClient{}, "poa/GenClient", nil)
 	cdc.RegisterConcrete(&MsgGenChallenger{}, "poa/GenChallenger", nil)
 	cdc.RegisterConcrete(&MsgChallengeService{}, "poa/ChallengeService", nil)
+	cdc.RegisterConcrete(&MsgUnregisterClient{}, "poa/UnregisterClient", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -23,6 +24,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgChallengeService{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUnregisterClient{},
 	)
 	// this line is used by starport scaffolding # 3
 
