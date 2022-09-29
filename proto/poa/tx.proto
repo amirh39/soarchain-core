@@ -11,6 +11,7 @@ service Msg {
   rpc GenChallenger(MsgGenChallenger) returns (MsgGenChallengerResponse);
   rpc ChallengeService(MsgChallengeService) returns (MsgChallengeServiceResponse);
   rpc UnregisterClient(MsgUnregisterClient) returns (MsgUnregisterClientResponse);
+  rpc UnregisterChallenger(MsgUnregisterChallenger) returns (MsgUnregisterChallengerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -47,6 +48,14 @@ message MsgUnregisterClient {
 }
 
 message MsgUnregisterClientResponse {
+}
+
+message MsgUnregisterChallenger {
+  string creator = 1;
+  string fee = 2;
+}
+
+message MsgUnregisterChallengerResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
