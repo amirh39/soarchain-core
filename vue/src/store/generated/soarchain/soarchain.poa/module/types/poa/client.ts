@@ -9,6 +9,7 @@ export interface Client {
   uniqueId: string;
   score: string;
   netEarnings: string;
+  lastTimeChallenged: string;
 }
 
 const baseClient: object = {
@@ -17,6 +18,7 @@ const baseClient: object = {
   uniqueId: "",
   score: "",
   netEarnings: "",
+  lastTimeChallenged: "",
 };
 
 export const Client = {
@@ -35,6 +37,9 @@ export const Client = {
     }
     if (message.netEarnings !== "") {
       writer.uint32(50).string(message.netEarnings);
+    }
+    if (message.lastTimeChallenged !== "") {
+      writer.uint32(58).string(message.lastTimeChallenged);
     }
     return writer;
   },
@@ -60,6 +65,9 @@ export const Client = {
           break;
         case 6:
           message.netEarnings = reader.string();
+          break;
+        case 7:
+          message.lastTimeChallenged = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -96,6 +104,14 @@ export const Client = {
     } else {
       message.netEarnings = "";
     }
+    if (
+      object.lastTimeChallenged !== undefined &&
+      object.lastTimeChallenged !== null
+    ) {
+      message.lastTimeChallenged = String(object.lastTimeChallenged);
+    } else {
+      message.lastTimeChallenged = "";
+    }
     return message;
   },
 
@@ -107,6 +123,8 @@ export const Client = {
     message.score !== undefined && (obj.score = message.score);
     message.netEarnings !== undefined &&
       (obj.netEarnings = message.netEarnings);
+    message.lastTimeChallenged !== undefined &&
+      (obj.lastTimeChallenged = message.lastTimeChallenged);
     return obj;
   },
 
@@ -136,6 +154,14 @@ export const Client = {
       message.netEarnings = object.netEarnings;
     } else {
       message.netEarnings = "";
+    }
+    if (
+      object.lastTimeChallenged !== undefined &&
+      object.lastTimeChallenged !== null
+    ) {
+      message.lastTimeChallenged = object.lastTimeChallenged;
+    } else {
+      message.lastTimeChallenged = "";
     }
     return message;
   },

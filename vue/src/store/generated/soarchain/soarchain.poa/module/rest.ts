@@ -24,6 +24,7 @@ export interface PoaClient {
   uniqueId?: string;
   score?: string;
   netEarnings?: string;
+  lastTimeChallenged?: string;
 }
 
 export type PoaMsgChallengeServiceResponse = object;
