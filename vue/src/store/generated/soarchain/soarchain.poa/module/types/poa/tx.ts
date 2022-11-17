@@ -41,6 +41,19 @@ export interface MsgUnregisterChallenger {
 
 export interface MsgUnregisterChallengerResponse {}
 
+export interface MsgGenGuard {
+  creator: string;
+  guardPubKey: string;
+  v2XAddr: string;
+  v2XStake: string;
+  v2NAddr: string;
+  v2NStake: string;
+  runnerAddr: string;
+  runnerStake: string;
+}
+
+export interface MsgGenGuardResponse {}
+
 const baseMsgGenClient: object = { creator: "", address: "", fee: "" };
 
 export const MsgGenClient = {
@@ -734,6 +747,229 @@ export const MsgUnregisterChallengerResponse = {
   },
 };
 
+const baseMsgGenGuard: object = {
+  creator: "",
+  guardPubKey: "",
+  v2XAddr: "",
+  v2XStake: "",
+  v2NAddr: "",
+  v2NStake: "",
+  runnerAddr: "",
+  runnerStake: "",
+};
+
+export const MsgGenGuard = {
+  encode(message: MsgGenGuard, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.guardPubKey !== "") {
+      writer.uint32(18).string(message.guardPubKey);
+    }
+    if (message.v2XAddr !== "") {
+      writer.uint32(26).string(message.v2XAddr);
+    }
+    if (message.v2XStake !== "") {
+      writer.uint32(34).string(message.v2XStake);
+    }
+    if (message.v2NAddr !== "") {
+      writer.uint32(42).string(message.v2NAddr);
+    }
+    if (message.v2NStake !== "") {
+      writer.uint32(50).string(message.v2NStake);
+    }
+    if (message.runnerAddr !== "") {
+      writer.uint32(58).string(message.runnerAddr);
+    }
+    if (message.runnerStake !== "") {
+      writer.uint32(66).string(message.runnerStake);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgGenGuard {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgGenGuard } as MsgGenGuard;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.guardPubKey = reader.string();
+          break;
+        case 3:
+          message.v2XAddr = reader.string();
+          break;
+        case 4:
+          message.v2XStake = reader.string();
+          break;
+        case 5:
+          message.v2NAddr = reader.string();
+          break;
+        case 6:
+          message.v2NStake = reader.string();
+          break;
+        case 7:
+          message.runnerAddr = reader.string();
+          break;
+        case 8:
+          message.runnerStake = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgGenGuard {
+    const message = { ...baseMsgGenGuard } as MsgGenGuard;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.guardPubKey !== undefined && object.guardPubKey !== null) {
+      message.guardPubKey = String(object.guardPubKey);
+    } else {
+      message.guardPubKey = "";
+    }
+    if (object.v2XAddr !== undefined && object.v2XAddr !== null) {
+      message.v2XAddr = String(object.v2XAddr);
+    } else {
+      message.v2XAddr = "";
+    }
+    if (object.v2XStake !== undefined && object.v2XStake !== null) {
+      message.v2XStake = String(object.v2XStake);
+    } else {
+      message.v2XStake = "";
+    }
+    if (object.v2NAddr !== undefined && object.v2NAddr !== null) {
+      message.v2NAddr = String(object.v2NAddr);
+    } else {
+      message.v2NAddr = "";
+    }
+    if (object.v2NStake !== undefined && object.v2NStake !== null) {
+      message.v2NStake = String(object.v2NStake);
+    } else {
+      message.v2NStake = "";
+    }
+    if (object.runnerAddr !== undefined && object.runnerAddr !== null) {
+      message.runnerAddr = String(object.runnerAddr);
+    } else {
+      message.runnerAddr = "";
+    }
+    if (object.runnerStake !== undefined && object.runnerStake !== null) {
+      message.runnerStake = String(object.runnerStake);
+    } else {
+      message.runnerStake = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgGenGuard): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.guardPubKey !== undefined &&
+      (obj.guardPubKey = message.guardPubKey);
+    message.v2XAddr !== undefined && (obj.v2XAddr = message.v2XAddr);
+    message.v2XStake !== undefined && (obj.v2XStake = message.v2XStake);
+    message.v2NAddr !== undefined && (obj.v2NAddr = message.v2NAddr);
+    message.v2NStake !== undefined && (obj.v2NStake = message.v2NStake);
+    message.runnerAddr !== undefined && (obj.runnerAddr = message.runnerAddr);
+    message.runnerStake !== undefined &&
+      (obj.runnerStake = message.runnerStake);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgGenGuard>): MsgGenGuard {
+    const message = { ...baseMsgGenGuard } as MsgGenGuard;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.guardPubKey !== undefined && object.guardPubKey !== null) {
+      message.guardPubKey = object.guardPubKey;
+    } else {
+      message.guardPubKey = "";
+    }
+    if (object.v2XAddr !== undefined && object.v2XAddr !== null) {
+      message.v2XAddr = object.v2XAddr;
+    } else {
+      message.v2XAddr = "";
+    }
+    if (object.v2XStake !== undefined && object.v2XStake !== null) {
+      message.v2XStake = object.v2XStake;
+    } else {
+      message.v2XStake = "";
+    }
+    if (object.v2NAddr !== undefined && object.v2NAddr !== null) {
+      message.v2NAddr = object.v2NAddr;
+    } else {
+      message.v2NAddr = "";
+    }
+    if (object.v2NStake !== undefined && object.v2NStake !== null) {
+      message.v2NStake = object.v2NStake;
+    } else {
+      message.v2NStake = "";
+    }
+    if (object.runnerAddr !== undefined && object.runnerAddr !== null) {
+      message.runnerAddr = object.runnerAddr;
+    } else {
+      message.runnerAddr = "";
+    }
+    if (object.runnerStake !== undefined && object.runnerStake !== null) {
+      message.runnerStake = object.runnerStake;
+    } else {
+      message.runnerStake = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgGenGuardResponse: object = {};
+
+export const MsgGenGuardResponse = {
+  encode(_: MsgGenGuardResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgGenGuardResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgGenGuardResponse } as MsgGenGuardResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgGenGuardResponse {
+    const message = { ...baseMsgGenGuardResponse } as MsgGenGuardResponse;
+    return message;
+  },
+
+  toJSON(_: MsgGenGuardResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgGenGuardResponse>): MsgGenGuardResponse {
+    const message = { ...baseMsgGenGuardResponse } as MsgGenGuardResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -744,10 +980,11 @@ export interface Msg {
   UnregisterClient(
     request: MsgUnregisterClient
   ): Promise<MsgUnregisterClientResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   UnregisterChallenger(
     request: MsgUnregisterChallenger
   ): Promise<MsgUnregisterChallengerResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  GenGuard(request: MsgGenGuard): Promise<MsgGenGuardResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -815,6 +1052,12 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) =>
       MsgUnregisterChallengerResponse.decode(new Reader(data))
     );
+  }
+
+  GenGuard(request: MsgGenGuard): Promise<MsgGenGuardResponse> {
+    const data = MsgGenGuard.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Msg", "GenGuard", data);
+    return promise.then((data) => MsgGenGuardResponse.decode(new Reader(data)));
   }
 }
 

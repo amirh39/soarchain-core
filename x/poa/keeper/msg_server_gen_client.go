@@ -14,9 +14,10 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// 1. Check if the client exists
 	_, isFound := k.GetClient(ctx, msg.Address)
+	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Address)
 
-	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client is already registered in challenge service.")
+	if isFound || isFoundAsChallenger {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
 	}
 
 	// 2. Check registration fee

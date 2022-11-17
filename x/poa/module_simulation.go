@@ -44,6 +44,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUnregisterChallenger int = 100
 
+	opWeightMsgGenGuard = "op_weight_msg_gen_guard"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgGenGuard int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -131,6 +135,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgUnregisterChallenger,
 		poasimulation.SimulateMsgUnregisterChallenger(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgGenGuard int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgGenGuard, &weightMsgGenGuard, nil,
+		func(_ *rand.Rand) {
+			weightMsgGenGuard = defaultWeightMsgGenGuard
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgGenGuard,
+		poasimulation.SimulateMsgGenGuard(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

@@ -1,0 +1,158 @@
+package keeper
+
+import (
+	"context"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"soarchain/x/poa/types"
+)
+
+func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*types.MsgGenGuardResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check if guard already exists
+	_, isFound := k.GetGuard(ctx, msg.GuardPubKey)
+	if isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "Guard with given pubKey is already registered in storage.")
+	}
+
+	// Check v2x Challenger field
+	var newV2XChallenger types.Challenger
+
+	if msg.V2XAddr != "nil" { // means v2x addr is provided
+		// Check if challenger already exists
+		_, isFound := k.GetChallenger(ctx, msg.V2XAddr)
+		if isFound {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "V2X challenger is already registered in storage.")
+		}
+
+		v2xChallengerAddr, err := sdk.AccAddressFromBech32(msg.V2XAddr)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid v2x address!")
+		}
+
+		// Check v2x stake amount
+		v2XStake, _ := sdk.ParseCoinsNormalized(msg.V2XStake)
+		requiredStake, _ := sdk.ParseCoinsNormalized("2000soar")
+		if v2XStake.IsAllLT(requiredStake) {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount is:"+v2XStake.String()+"less than required stake amount"+requiredStake.String())
+		}
+
+		newV2XChallenger = types.Challenger{
+			Index:        v2xChallengerAddr.String(),
+			Address:      v2xChallengerAddr.String(),
+			Score:        sdk.ZeroInt().String(),
+			StakedAmount: v2XStake.String(),
+			NetEarnings:  "",
+			Type:         "v2x",
+		}
+
+		k.SetChallenger(ctx, newV2XChallenger)
+
+	} else { // v2x address is not provided
+		newV2XChallenger = types.Challenger{
+			Index:        "",
+			Address:      "",
+			Score:        sdk.ZeroInt().String(),
+			StakedAmount: "",
+			NetEarnings:  "",
+			Type:         "nil",
+		}
+	}
+
+	// Check v2n Challenger field
+	var newV2NChallenger types.Challenger
+
+	if msg.V2NAddr != "nil" { // means v2n addr is provided
+		// Check if challenger already exists
+		_, isFound := k.GetChallenger(ctx, msg.V2NAddr)
+		if isFound {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "V2N challenger is already registered in storage.")
+		}
+
+		v2nChallengerAddr, err := sdk.AccAddressFromBech32(msg.V2NAddr)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid v2n address!")
+		}
+
+		// Check v2n stake amount
+		v2NStake, _ := sdk.ParseCoinsNormalized(msg.V2NStake)
+		requiredStake, _ := sdk.ParseCoinsNormalized("2000soar")
+		if v2NStake.IsAllLT(requiredStake) {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount is:"+v2NStake.String()+"less than required stake amount"+requiredStake.String())
+		}
+		newV2NChallenger = types.Challenger{
+			Index:        v2nChallengerAddr.String(),
+			Address:      v2nChallengerAddr.String(),
+			Score:        sdk.ZeroInt().String(),
+			StakedAmount: v2NStake.String(),
+			NetEarnings:  "",
+			Type:         "v2n",
+		}
+
+		k.SetChallenger(ctx, newV2NChallenger)
+
+	} else { // v2n address is not provided
+		newV2NChallenger = types.Challenger{
+			Index:        "",
+			Address:      "",
+			Score:        sdk.ZeroInt().String(),
+			StakedAmount: "",
+			NetEarnings:  "",
+			Type:         "nil",
+		}
+	}
+
+	// Check runner
+	var newRunner types.Runner
+	if msg.RunnerAddr != "nil" { // means runner addr is provided
+
+		// Check if runner already exists
+		_, isFound := k.GetRunner(ctx, msg.RunnerAddr)
+		if isFound {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Runner is already registered in storage.")
+		}
+
+		runnerAddr, err := sdk.AccAddressFromBech32(msg.RunnerAddr)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid runner address!")
+		}
+
+		// Check runner stake amount
+		runnerStake, _ := sdk.ParseCoinsNormalized(msg.RunnerStake)
+		requiredStake, _ := sdk.ParseCoinsNormalized("1000soar")
+		if runnerStake.IsAllLT(requiredStake) {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount is:"+runnerStake.String()+"less than required stake amount"+requiredStake.String())
+		}
+		newRunner = types.Runner{
+			Address:      runnerAddr.String(),
+			Score:        "",
+			StakedAmount: runnerStake.String(),
+			NetEarnings:  "",
+		}
+
+		k.SetRunner(ctx, newRunner)
+
+	} else { // runner address is not provided
+		newRunner = types.Runner{
+			Address:      "",
+			Score:        "",
+			StakedAmount: "",
+			NetEarnings:  "",
+		}
+	}
+
+	newGuard := types.Guard{
+		Index:         msg.GuardPubKey,
+		GuardId:       "",
+		V2XChallenger: &newV2XChallenger,
+		V2NChallenger: &newV2NChallenger,
+		Runner:        &newRunner,
+	}
+
+	k.SetGuard(ctx, newGuard)
+
+	return &types.MsgGenGuardResponse{}, nil
+}
