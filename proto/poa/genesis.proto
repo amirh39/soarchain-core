@@ -5,6 +5,8 @@ import "gogoproto/gogo.proto";
 import "poa/params.proto";
 import "poa/client.proto";
 import "poa/challenger.proto";
+import "poa/runner.proto";
+import "poa/guard.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "soarchain/x/poa/types";
@@ -14,5 +16,7 @@ message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated Client clientList = 2 [(gogoproto.nullable) = false];
   repeated Challenger challengerList = 3 [(gogoproto.nullable) = false];
+  repeated Runner runnerList = 4 [(gogoproto.nullable) = false];
+  repeated Guard guardList = 5 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

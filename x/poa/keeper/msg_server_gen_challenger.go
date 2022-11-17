@@ -32,10 +32,10 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 	newChallenger := types.Challenger{
 		Index:        msg.Creator,
 		Address:      msg.Creator,
-		ChallengerId: "",
 		Score:        sdk.ZeroInt().String(),
 		StakedAmount: stakedAmount.String(),
 		NetEarnings:  "",
+		Type:         "",
 	}
 
 	k.SetChallenger(ctx, newChallenger)

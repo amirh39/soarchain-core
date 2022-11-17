@@ -12,6 +12,8 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		ClientList:     []Client{},
 		ChallengerList: []Challenger{},
+		RunnerList:     []Runner{},
+		GuardList:      []Guard{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -39,6 +41,26 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for challenger")
 		}
 		challengerIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in runner
+	runnerIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.RunnerList {
+		index := string(RunnerKey(elem.Index))
+		if _, ok := runnerIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for runner")
+		}
+		runnerIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in guard
+	guardIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.GuardList {
+		index := string(GuardKey(elem.Index))
+		if _, ok := guardIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for guard")
+		}
+		guardIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

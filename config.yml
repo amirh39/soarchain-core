@@ -7,6 +7,18 @@ accounts:
     coins: ["10000000soar"]
   - name: amir
     coins: ["20000000soar"]
+  - name: v2xDevice1
+    coins: ["10soar"]
+  - name: v2nDevice1
+    coins: ["10soar"]
+  - name: runnerDevice1
+    coins: ["10soar"]
+  - name: v2xDevice2
+    coins: ["10soar"]
+  - name: v2nDevice2
+    coins: ["10soar"]
+  - name: runnerDevice2
+    coins: ["10soar"]
 validator:
   name: alice
   staked: "10000000soar"

@@ -2,6 +2,8 @@
 import { Params } from "../poa/params";
 import { Client } from "../poa/client";
 import { Challenger } from "../poa/challenger";
+import { Runner } from "../poa/runner";
+import { Guard } from "../poa/guard";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "soarchain.poa";
@@ -10,8 +12,10 @@ export const protobufPackage = "soarchain.poa";
 export interface GenesisState {
   params: Params | undefined;
   clientList: Client[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   challengerList: Challenger[];
+  runnerList: Runner[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  guardList: Guard[];
 }
 
 const baseGenesisState: object = {};
@@ -27,6 +31,12 @@ export const GenesisState = {
     for (const v of message.challengerList) {
       Challenger.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    for (const v of message.runnerList) {
+      Runner.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.guardList) {
+      Guard.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -36,6 +46,8 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.clientList = [];
     message.challengerList = [];
+    message.runnerList = [];
+    message.guardList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -50,6 +62,12 @@ export const GenesisState = {
             Challenger.decode(reader, reader.uint32())
           );
           break;
+        case 4:
+          message.runnerList.push(Runner.decode(reader, reader.uint32()));
+          break;
+        case 5:
+          message.guardList.push(Guard.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -62,6 +80,8 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.clientList = [];
     message.challengerList = [];
+    message.runnerList = [];
+    message.guardList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -75,6 +95,16 @@ export const GenesisState = {
     if (object.challengerList !== undefined && object.challengerList !== null) {
       for (const e of object.challengerList) {
         message.challengerList.push(Challenger.fromJSON(e));
+      }
+    }
+    if (object.runnerList !== undefined && object.runnerList !== null) {
+      for (const e of object.runnerList) {
+        message.runnerList.push(Runner.fromJSON(e));
+      }
+    }
+    if (object.guardList !== undefined && object.guardList !== null) {
+      for (const e of object.guardList) {
+        message.guardList.push(Guard.fromJSON(e));
       }
     }
     return message;
@@ -98,6 +128,20 @@ export const GenesisState = {
     } else {
       obj.challengerList = [];
     }
+    if (message.runnerList) {
+      obj.runnerList = message.runnerList.map((e) =>
+        e ? Runner.toJSON(e) : undefined
+      );
+    } else {
+      obj.runnerList = [];
+    }
+    if (message.guardList) {
+      obj.guardList = message.guardList.map((e) =>
+        e ? Guard.toJSON(e) : undefined
+      );
+    } else {
+      obj.guardList = [];
+    }
     return obj;
   },
 
@@ -105,6 +149,8 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.clientList = [];
     message.challengerList = [];
+    message.runnerList = [];
+    message.guardList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -118,6 +164,16 @@ export const GenesisState = {
     if (object.challengerList !== undefined && object.challengerList !== null) {
       for (const e of object.challengerList) {
         message.challengerList.push(Challenger.fromPartial(e));
+      }
+    }
+    if (object.runnerList !== undefined && object.runnerList !== null) {
+      for (const e of object.runnerList) {
+        message.runnerList.push(Runner.fromPartial(e));
+      }
+    }
+    if (object.guardList !== undefined && object.guardList !== null) {
+      for (const e of object.guardList) {
+        message.guardList.push(Guard.fromPartial(e));
       }
     }
     return message;

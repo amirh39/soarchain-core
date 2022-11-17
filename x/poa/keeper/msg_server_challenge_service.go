@@ -94,10 +94,10 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	updatedChallenger := types.Challenger{
 		Index:        challenger.Index,
 		Address:      challenger.Address,
-		ChallengerId: challenger.ChallengerId,
 		Score:        strconv.Itoa(scoreIntChallenger),
 		StakedAmount: challenger.StakedAmount,
 		NetEarnings:  challenger.NetEarnings, // TBD
+		Type:         "",
 	}
 
 	k.SetChallenger(ctx, updatedChallenger)

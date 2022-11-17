@@ -3,26 +3,24 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "soarchain.poa";
 
-export interface Challenger {
+export interface Runner {
   index: string;
   address: string;
   score: string;
   stakedAmount: string;
   netEarnings: string;
-  type: string;
 }
 
-const baseChallenger: object = {
+const baseRunner: object = {
   index: "",
   address: "",
   score: "",
   stakedAmount: "",
   netEarnings: "",
-  type: "",
 };
 
-export const Challenger = {
-  encode(message: Challenger, writer: Writer = Writer.create()): Writer {
+export const Runner = {
+  encode(message: Runner, writer: Writer = Writer.create()): Writer {
     if (message.index !== "") {
       writer.uint32(10).string(message.index);
     }
@@ -38,16 +36,13 @@ export const Challenger = {
     if (message.netEarnings !== "") {
       writer.uint32(42).string(message.netEarnings);
     }
-    if (message.type !== "") {
-      writer.uint32(50).string(message.type);
-    }
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): Challenger {
+  decode(input: Reader | Uint8Array, length?: number): Runner {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseChallenger } as Challenger;
+    const message = { ...baseRunner } as Runner;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -66,9 +61,6 @@ export const Challenger = {
         case 5:
           message.netEarnings = reader.string();
           break;
-        case 6:
-          message.type = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -77,8 +69,8 @@ export const Challenger = {
     return message;
   },
 
-  fromJSON(object: any): Challenger {
-    const message = { ...baseChallenger } as Challenger;
+  fromJSON(object: any): Runner {
+    const message = { ...baseRunner } as Runner;
     if (object.index !== undefined && object.index !== null) {
       message.index = String(object.index);
     } else {
@@ -104,15 +96,10 @@ export const Challenger = {
     } else {
       message.netEarnings = "";
     }
-    if (object.type !== undefined && object.type !== null) {
-      message.type = String(object.type);
-    } else {
-      message.type = "";
-    }
     return message;
   },
 
-  toJSON(message: Challenger): unknown {
+  toJSON(message: Runner): unknown {
     const obj: any = {};
     message.index !== undefined && (obj.index = message.index);
     message.address !== undefined && (obj.address = message.address);
@@ -121,12 +108,11 @@ export const Challenger = {
       (obj.stakedAmount = message.stakedAmount);
     message.netEarnings !== undefined &&
       (obj.netEarnings = message.netEarnings);
-    message.type !== undefined && (obj.type = message.type);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<Challenger>): Challenger {
-    const message = { ...baseChallenger } as Challenger;
+  fromPartial(object: DeepPartial<Runner>): Runner {
+    const message = { ...baseRunner } as Runner;
     if (object.index !== undefined && object.index !== null) {
       message.index = object.index;
     } else {
@@ -151,11 +137,6 @@ export const Challenger = {
       message.netEarnings = object.netEarnings;
     } else {
       message.netEarnings = "";
-    }
-    if (object.type !== undefined && object.type !== null) {
-      message.type = object.type;
-    } else {
-      message.type = "";
     }
     return message;
   },

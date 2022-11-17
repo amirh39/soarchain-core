@@ -17,6 +17,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.ChallengerList {
 		k.SetChallenger(ctx, elem)
 	}
+	// Set all the runner
+	for _, elem := range genState.RunnerList {
+		k.SetRunner(ctx, elem)
+	}
+	// Set all the guard
+	for _, elem := range genState.GuardList {
+		k.SetGuard(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -28,6 +36,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.ClientList = k.GetAllClient(ctx)
 	genesis.ChallengerList = k.GetAllChallenger(ctx)
+	genesis.RunnerList = k.GetAllRunner(ctx)
+	genesis.GuardList = k.GetAllGuard(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

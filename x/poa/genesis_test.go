@@ -30,6 +30,22 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		RunnerList: []types.Runner{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
+		GuardList: []types.Guard{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -43,5 +59,7 @@ func TestGenesis(t *testing.T) {
 
 	require.ElementsMatch(t, genesisState.ClientList, got.ClientList)
 	require.ElementsMatch(t, genesisState.ChallengerList, got.ChallengerList)
+	require.ElementsMatch(t, genesisState.RunnerList, got.RunnerList)
+	require.ElementsMatch(t, genesisState.GuardList, got.GuardList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

@@ -12,10 +12,10 @@
 export interface PoaChallenger {
   index?: string;
   address?: string;
-  challengerId?: string;
   score?: string;
   stakedAmount?: string;
   netEarnings?: string;
+  type?: string;
 }
 
 export interface PoaClient {
@@ -25,6 +25,14 @@ export interface PoaClient {
   score?: string;
   netEarnings?: string;
   lastTimeChallenged?: string;
+}
+
+export interface PoaGuard {
+  index?: string;
+  guardId?: string;
+  runner?: PoaRunner;
+  v2XChallenger?: PoaChallenger;
+  v2NChallenger?: PoaChallenger;
 }
 
 export type PoaMsgChallengeServiceResponse = object;
@@ -72,6 +80,36 @@ export interface PoaQueryAllClientResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface PoaQueryAllGuardResponse {
+  guard?: PoaGuard[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface PoaQueryAllRunnerResponse {
+  runner?: PoaRunner[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface PoaQueryGetChallengerResponse {
   challenger?: PoaChallenger;
 }
@@ -80,12 +118,28 @@ export interface PoaQueryGetClientResponse {
   client?: PoaClient;
 }
 
+export interface PoaQueryGetGuardResponse {
+  guard?: PoaGuard;
+}
+
+export interface PoaQueryGetRunnerResponse {
+  runner?: PoaRunner;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface PoaQueryParamsResponse {
-  /** Params defines the parameters for the module. */
+  /** params holds all the parameters of this module. */
   params?: PoaParams;
+}
+
+export interface PoaRunner {
+  index?: string;
+  address?: string;
+  score?: string;
+  stakedAmount?: string;
+  netEarnings?: string;
 }
 
 export interface ProtobufAny {
@@ -446,6 +500,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryGuardAll
+   * @summary Queries a list of Guard items.
+   * @request GET:/soarchain/poa/guard
+   */
+  queryGuardAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PoaQueryAllGuardResponse, RpcStatus>({
+      path: `/soarchain/poa/guard`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGuard
+   * @summary Queries a Guard by index.
+   * @request GET:/soarchain/poa/guard/{index}
+   */
+  queryGuard = (index: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetGuardResponse, RpcStatus>({
+      path: `/soarchain/poa/guard/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryParams
    * @summary Parameters queries the parameters of the module.
    * @request GET:/soarchain/poa/params
@@ -453,6 +549,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<PoaQueryParamsResponse, RpcStatus>({
       path: `/soarchain/poa/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryRunnerAll
+   * @summary Queries a list of Runner items.
+   * @request GET:/soarchain/poa/runner
+   */
+  queryRunnerAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PoaQueryAllRunnerResponse, RpcStatus>({
+      path: `/soarchain/poa/runner`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryRunner
+   * @summary Queries a Runner by index.
+   * @request GET:/soarchain/poa/runner/{index}
+   */
+  queryRunner = (index: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetRunnerResponse, RpcStatus>({
+      path: `/soarchain/poa/runner/${index}`,
       method: "GET",
       format: "json",
       ...params,

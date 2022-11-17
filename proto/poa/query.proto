@@ -6,8 +6,10 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
 import "poa/client.proto";
-import "poa/challenger.proto";
+import "poa/guard.proto";
 // this line is used by starport scaffolding # 1
+import "poa/challenger.proto";
+import "poa/runner.proto";
 
 option go_package = "soarchain/x/poa/types";
 
@@ -35,6 +37,26 @@ service Query {
 	// Queries a list of Challenger items.
 	rpc ChallengerAll(QueryAllChallengerRequest) returns (QueryAllChallengerResponse) {
 		option (google.api.http).get = "/soarchain/poa/challenger";
+	}
+
+// Queries a Runner by index.
+	rpc Runner(QueryGetRunnerRequest) returns (QueryGetRunnerResponse) {
+		option (google.api.http).get = "/soarchain/poa/runner/{index}";
+	}
+
+	// Queries a list of Runner items.
+	rpc RunnerAll(QueryAllRunnerRequest) returns (QueryAllRunnerResponse) {
+		option (google.api.http).get = "/soarchain/poa/runner";
+	}
+
+// Queries a Guard by index.
+	rpc Guard(QueryGetGuardRequest) returns (QueryGetGuardResponse) {
+		option (google.api.http).get = "/soarchain/poa/guard/{index}";
+	}
+
+	// Queries a list of Guard items.
+	rpc GuardAll(QueryAllGuardRequest) returns (QueryAllGuardResponse) {
+		option (google.api.http).get = "/soarchain/poa/guard";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -82,6 +104,42 @@ message QueryAllChallengerRequest {
 
 message QueryAllChallengerResponse {
 	repeated Challenger challenger = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetRunnerRequest {
+	  string index = 1;
+
+}
+
+message QueryGetRunnerResponse {
+	Runner runner = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllRunnerRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllRunnerResponse {
+	repeated Runner runner = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetGuardRequest {
+	  string index = 1;
+
+}
+
+message QueryGetGuardResponse {
+	Guard guard = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllGuardRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllGuardResponse {
+	repeated Guard guard = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
