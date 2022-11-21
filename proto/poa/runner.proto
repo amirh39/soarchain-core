@@ -9,6 +9,6 @@ message Runner {
   string score = 3; 
   string stakedAmount = 4; 
   string netEarnings = 5; 
-  
+  string ipAddr = 6;
 }
 

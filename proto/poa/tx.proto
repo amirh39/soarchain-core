@@ -59,15 +59,28 @@ message MsgUnregisterChallenger {
 message MsgUnregisterChallengerResponse {
 }
 
+// message MsgGenGuard {
+//   string creator = 1;
+//   string guardPubKey = 2;
+//   string v2XAddr = 3;
+//   string v2XStake = 4;
+//   string v2NAddr = 5;
+//   string v2NStake = 6;
+//   string runnerAddr = 7;
+//   string runnerStake = 8;
+// }
 message MsgGenGuard {
   string creator = 1;
   string guardPubKey = 2;
   string v2XAddr = 3;
   string v2XStake = 4;
-  string v2NAddr = 5;
-  string v2NStake = 6;
-  string runnerAddr = 7;
-  string runnerStake = 8;
+  string v2XIp = 5;
+  string v2NAddr = 6;
+  string v2NStake = 7;
+  string v2NIp = 8;
+  string runnerAddr = 9;
+  string runnerStake = 10;
+  string runnerIp = 11;
 }
 
 message MsgGenGuardResponse {

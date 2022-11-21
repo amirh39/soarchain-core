@@ -41,15 +41,30 @@ export interface MsgUnregisterChallenger {
 
 export interface MsgUnregisterChallengerResponse {}
 
+/**
+ * message MsgGenGuard {
+ *   string creator = 1;
+ *   string guardPubKey = 2;
+ *   string v2XAddr = 3;
+ *   string v2XStake = 4;
+ *   string v2NAddr = 5;
+ *   string v2NStake = 6;
+ *   string runnerAddr = 7;
+ *   string runnerStake = 8;
+ * }
+ */
 export interface MsgGenGuard {
   creator: string;
   guardPubKey: string;
   v2XAddr: string;
   v2XStake: string;
+  v2XIp: string;
   v2NAddr: string;
   v2NStake: string;
+  v2NIp: string;
   runnerAddr: string;
   runnerStake: string;
+  runnerIp: string;
 }
 
 export interface MsgGenGuardResponse {}
@@ -752,10 +767,13 @@ const baseMsgGenGuard: object = {
   guardPubKey: "",
   v2XAddr: "",
   v2XStake: "",
+  v2XIp: "",
   v2NAddr: "",
   v2NStake: "",
+  v2NIp: "",
   runnerAddr: "",
   runnerStake: "",
+  runnerIp: "",
 };
 
 export const MsgGenGuard = {
@@ -772,17 +790,26 @@ export const MsgGenGuard = {
     if (message.v2XStake !== "") {
       writer.uint32(34).string(message.v2XStake);
     }
+    if (message.v2XIp !== "") {
+      writer.uint32(42).string(message.v2XIp);
+    }
     if (message.v2NAddr !== "") {
-      writer.uint32(42).string(message.v2NAddr);
+      writer.uint32(50).string(message.v2NAddr);
     }
     if (message.v2NStake !== "") {
-      writer.uint32(50).string(message.v2NStake);
+      writer.uint32(58).string(message.v2NStake);
+    }
+    if (message.v2NIp !== "") {
+      writer.uint32(66).string(message.v2NIp);
     }
     if (message.runnerAddr !== "") {
-      writer.uint32(58).string(message.runnerAddr);
+      writer.uint32(74).string(message.runnerAddr);
     }
     if (message.runnerStake !== "") {
-      writer.uint32(66).string(message.runnerStake);
+      writer.uint32(82).string(message.runnerStake);
+    }
+    if (message.runnerIp !== "") {
+      writer.uint32(90).string(message.runnerIp);
     }
     return writer;
   },
@@ -807,16 +834,25 @@ export const MsgGenGuard = {
           message.v2XStake = reader.string();
           break;
         case 5:
-          message.v2NAddr = reader.string();
+          message.v2XIp = reader.string();
           break;
         case 6:
-          message.v2NStake = reader.string();
+          message.v2NAddr = reader.string();
           break;
         case 7:
-          message.runnerAddr = reader.string();
+          message.v2NStake = reader.string();
           break;
         case 8:
+          message.v2NIp = reader.string();
+          break;
+        case 9:
+          message.runnerAddr = reader.string();
+          break;
+        case 10:
           message.runnerStake = reader.string();
+          break;
+        case 11:
+          message.runnerIp = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -848,6 +884,11 @@ export const MsgGenGuard = {
     } else {
       message.v2XStake = "";
     }
+    if (object.v2XIp !== undefined && object.v2XIp !== null) {
+      message.v2XIp = String(object.v2XIp);
+    } else {
+      message.v2XIp = "";
+    }
     if (object.v2NAddr !== undefined && object.v2NAddr !== null) {
       message.v2NAddr = String(object.v2NAddr);
     } else {
@@ -857,6 +898,11 @@ export const MsgGenGuard = {
       message.v2NStake = String(object.v2NStake);
     } else {
       message.v2NStake = "";
+    }
+    if (object.v2NIp !== undefined && object.v2NIp !== null) {
+      message.v2NIp = String(object.v2NIp);
+    } else {
+      message.v2NIp = "";
     }
     if (object.runnerAddr !== undefined && object.runnerAddr !== null) {
       message.runnerAddr = String(object.runnerAddr);
@@ -868,6 +914,11 @@ export const MsgGenGuard = {
     } else {
       message.runnerStake = "";
     }
+    if (object.runnerIp !== undefined && object.runnerIp !== null) {
+      message.runnerIp = String(object.runnerIp);
+    } else {
+      message.runnerIp = "";
+    }
     return message;
   },
 
@@ -878,11 +929,14 @@ export const MsgGenGuard = {
       (obj.guardPubKey = message.guardPubKey);
     message.v2XAddr !== undefined && (obj.v2XAddr = message.v2XAddr);
     message.v2XStake !== undefined && (obj.v2XStake = message.v2XStake);
+    message.v2XIp !== undefined && (obj.v2XIp = message.v2XIp);
     message.v2NAddr !== undefined && (obj.v2NAddr = message.v2NAddr);
     message.v2NStake !== undefined && (obj.v2NStake = message.v2NStake);
+    message.v2NIp !== undefined && (obj.v2NIp = message.v2NIp);
     message.runnerAddr !== undefined && (obj.runnerAddr = message.runnerAddr);
     message.runnerStake !== undefined &&
       (obj.runnerStake = message.runnerStake);
+    message.runnerIp !== undefined && (obj.runnerIp = message.runnerIp);
     return obj;
   },
 
@@ -908,6 +962,11 @@ export const MsgGenGuard = {
     } else {
       message.v2XStake = "";
     }
+    if (object.v2XIp !== undefined && object.v2XIp !== null) {
+      message.v2XIp = object.v2XIp;
+    } else {
+      message.v2XIp = "";
+    }
     if (object.v2NAddr !== undefined && object.v2NAddr !== null) {
       message.v2NAddr = object.v2NAddr;
     } else {
@@ -918,6 +977,11 @@ export const MsgGenGuard = {
     } else {
       message.v2NStake = "";
     }
+    if (object.v2NIp !== undefined && object.v2NIp !== null) {
+      message.v2NIp = object.v2NIp;
+    } else {
+      message.v2NIp = "";
+    }
     if (object.runnerAddr !== undefined && object.runnerAddr !== null) {
       message.runnerAddr = object.runnerAddr;
     } else {
@@ -927,6 +991,11 @@ export const MsgGenGuard = {
       message.runnerStake = object.runnerStake;
     } else {
       message.runnerStake = "";
+    }
+    if (object.runnerIp !== undefined && object.runnerIp !== null) {
+      message.runnerIp = object.runnerIp;
+    } else {
+      message.runnerIp = "";
     }
     return message;
   },

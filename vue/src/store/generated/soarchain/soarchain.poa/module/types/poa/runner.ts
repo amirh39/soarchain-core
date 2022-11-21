@@ -9,6 +9,7 @@ export interface Runner {
   score: string;
   stakedAmount: string;
   netEarnings: string;
+  ipAddr: string;
 }
 
 const baseRunner: object = {
@@ -17,6 +18,7 @@ const baseRunner: object = {
   score: "",
   stakedAmount: "",
   netEarnings: "",
+  ipAddr: "",
 };
 
 export const Runner = {
@@ -35,6 +37,9 @@ export const Runner = {
     }
     if (message.netEarnings !== "") {
       writer.uint32(42).string(message.netEarnings);
+    }
+    if (message.ipAddr !== "") {
+      writer.uint32(50).string(message.ipAddr);
     }
     return writer;
   },
@@ -60,6 +65,9 @@ export const Runner = {
           break;
         case 5:
           message.netEarnings = reader.string();
+          break;
+        case 6:
+          message.ipAddr = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -96,6 +104,11 @@ export const Runner = {
     } else {
       message.netEarnings = "";
     }
+    if (object.ipAddr !== undefined && object.ipAddr !== null) {
+      message.ipAddr = String(object.ipAddr);
+    } else {
+      message.ipAddr = "";
+    }
     return message;
   },
 
@@ -108,6 +121,7 @@ export const Runner = {
       (obj.stakedAmount = message.stakedAmount);
     message.netEarnings !== undefined &&
       (obj.netEarnings = message.netEarnings);
+    message.ipAddr !== undefined && (obj.ipAddr = message.ipAddr);
     return obj;
   },
 
@@ -137,6 +151,11 @@ export const Runner = {
       message.netEarnings = object.netEarnings;
     } else {
       message.netEarnings = "";
+    }
+    if (object.ipAddr !== undefined && object.ipAddr !== null) {
+      message.ipAddr = object.ipAddr;
+    } else {
+      message.ipAddr = "";
     }
     return message;
   },

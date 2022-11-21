@@ -10,5 +10,6 @@ message Challenger {
   string stakedAmount = 4; 
   string netEarnings = 5; 
   string type = 6;
+  string ipAddr = 7;
 }
 

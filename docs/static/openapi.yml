@@ -30203,6 +30203,8 @@ paths:
                       type: string
                     type:
                       type: string
+                    ipAddr:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -30295,16 +30297,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/challenger/{index}':
@@ -30331,6 +30323,8 @@ paths:
                   netEarnings:
                     type: string
                   type:
+                    type: string
+                  ipAddr:
                     type: string
         default:
           description: An unexpected error response.
@@ -30476,16 +30470,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/client/{index}':
@@ -30570,6 +30554,8 @@ paths:
                           type: string
                         netEarnings:
                           type: string
+                        ipAddr:
+                          type: string
                     v2XChallenger:
                       type: object
                       properties:
@@ -30585,6 +30571,8 @@ paths:
                           type: string
                         type:
                           type: string
+                        ipAddr:
+                          type: string
                     v2NChallenger:
                       type: object
                       properties:
@@ -30599,6 +30587,8 @@ paths:
                         netEarnings:
                           type: string
                         type:
+                          type: string
+                        ipAddr:
                           type: string
               pagination:
                 type: object
@@ -30692,16 +30682,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/guard/{index}':
@@ -30734,6 +30714,8 @@ paths:
                         type: string
                       netEarnings:
                         type: string
+                      ipAddr:
+                        type: string
                   v2XChallenger:
                     type: object
                     properties:
@@ -30749,6 +30731,8 @@ paths:
                         type: string
                       type:
                         type: string
+                      ipAddr:
+                        type: string
                   v2NChallenger:
                     type: object
                     properties:
@@ -30763,6 +30747,8 @@ paths:
                       netEarnings:
                         type: string
                       type:
+                        type: string
+                      ipAddr:
                         type: string
         default:
           description: An unexpected error response.
@@ -30850,6 +30836,8 @@ paths:
                       type: string
                     netEarnings:
                       type: string
+                    ipAddr:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -30942,16 +30930,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/runner/{index}':
@@ -30976,6 +30954,8 @@ paths:
                   stakedAmount:
                     type: string
                   netEarnings:
+                    type: string
+                  ipAddr:
                     type: string
         default:
           description: An unexpected error response.
@@ -52399,6 +52379,8 @@ definitions:
         type: string
       type:
         type: string
+      ipAddr:
+        type: string
   soarchain.poa.Client:
     type: object
     properties:
@@ -52434,6 +52416,8 @@ definitions:
             type: string
           netEarnings:
             type: string
+          ipAddr:
+            type: string
       v2XChallenger:
         type: object
         properties:
@@ -52449,6 +52433,8 @@ definitions:
             type: string
           type:
             type: string
+          ipAddr:
+            type: string
       v2NChallenger:
         type: object
         properties:
@@ -52463,6 +52449,8 @@ definitions:
           netEarnings:
             type: string
           type:
+            type: string
+          ipAddr:
             type: string
   soarchain.poa.MsgChallengeServiceResponse:
     type: object
@@ -52498,6 +52486,8 @@ definitions:
             netEarnings:
               type: string
             type:
+              type: string
+            ipAddr:
               type: string
       pagination:
         type: object
@@ -52594,6 +52584,8 @@ definitions:
                   type: string
                 netEarnings:
                   type: string
+                ipAddr:
+                  type: string
             v2XChallenger:
               type: object
               properties:
@@ -52609,6 +52601,8 @@ definitions:
                   type: string
                 type:
                   type: string
+                ipAddr:
+                  type: string
             v2NChallenger:
               type: object
               properties:
@@ -52623,6 +52617,8 @@ definitions:
                 netEarnings:
                   type: string
                 type:
+                  type: string
+                ipAddr:
                   type: string
       pagination:
         type: object
@@ -52667,6 +52663,8 @@ definitions:
               type: string
             netEarnings:
               type: string
+            ipAddr:
+              type: string
       pagination:
         type: object
         properties:
@@ -52710,6 +52708,8 @@ definitions:
             type: string
           type:
             type: string
+          ipAddr:
+            type: string
   soarchain.poa.QueryGetClientResponse:
     type: object
     properties:
@@ -52751,6 +52751,8 @@ definitions:
                 type: string
               netEarnings:
                 type: string
+              ipAddr:
+                type: string
           v2XChallenger:
             type: object
             properties:
@@ -52765,6 +52767,8 @@ definitions:
               netEarnings:
                 type: string
               type:
+                type: string
+              ipAddr:
                 type: string
           v2NChallenger:
             type: object
@@ -52781,6 +52785,8 @@ definitions:
                 type: string
               type:
                 type: string
+              ipAddr:
+                type: string
   soarchain.poa.QueryGetRunnerResponse:
     type: object
     properties:
@@ -52796,6 +52802,8 @@ definitions:
           stakedAmount:
             type: string
           netEarnings:
+            type: string
+          ipAddr:
             type: string
   soarchain.poa.QueryParamsResponse:
     type: object
@@ -52816,6 +52824,8 @@ definitions:
       stakedAmount:
         type: string
       netEarnings:
+        type: string
+      ipAddr:
         type: string
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object

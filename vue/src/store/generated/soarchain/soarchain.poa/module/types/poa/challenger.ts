@@ -10,6 +10,7 @@ export interface Challenger {
   stakedAmount: string;
   netEarnings: string;
   type: string;
+  ipAddr: string;
 }
 
 const baseChallenger: object = {
@@ -19,6 +20,7 @@ const baseChallenger: object = {
   stakedAmount: "",
   netEarnings: "",
   type: "",
+  ipAddr: "",
 };
 
 export const Challenger = {
@@ -40,6 +42,9 @@ export const Challenger = {
     }
     if (message.type !== "") {
       writer.uint32(50).string(message.type);
+    }
+    if (message.ipAddr !== "") {
+      writer.uint32(58).string(message.ipAddr);
     }
     return writer;
   },
@@ -68,6 +73,9 @@ export const Challenger = {
           break;
         case 6:
           message.type = reader.string();
+          break;
+        case 7:
+          message.ipAddr = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -109,6 +117,11 @@ export const Challenger = {
     } else {
       message.type = "";
     }
+    if (object.ipAddr !== undefined && object.ipAddr !== null) {
+      message.ipAddr = String(object.ipAddr);
+    } else {
+      message.ipAddr = "";
+    }
     return message;
   },
 
@@ -122,6 +135,7 @@ export const Challenger = {
     message.netEarnings !== undefined &&
       (obj.netEarnings = message.netEarnings);
     message.type !== undefined && (obj.type = message.type);
+    message.ipAddr !== undefined && (obj.ipAddr = message.ipAddr);
     return obj;
   },
 
@@ -156,6 +170,11 @@ export const Challenger = {
       message.type = object.type;
     } else {
       message.type = "";
+    }
+    if (object.ipAddr !== undefined && object.ipAddr !== null) {
+      message.ipAddr = object.ipAddr;
+    } else {
+      message.ipAddr = "";
     }
     return message;
   },

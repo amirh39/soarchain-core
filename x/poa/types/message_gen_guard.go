@@ -9,16 +9,19 @@ const TypeMsgGenGuard = "gen_guard"
 
 var _ sdk.Msg = &MsgGenGuard{}
 
-func NewMsgGenGuard(creator string, guardPubKey string, v2XAddr string, v2XStake string, v2NAddr string, v2NStake string, runnerAddr string, runnerStake string) *MsgGenGuard {
+func NewMsgGenGuard(creator string, guardPubKey string, v2XAddr string, v2XStake string, v2XIp string, v2NAddr string, v2NStake string, v2NIp string, runnerAddr string, runnerStake string, runnerIp string) *MsgGenGuard {
 	return &MsgGenGuard{
 		Creator:     creator,
 		GuardPubKey: guardPubKey,
 		V2XAddr:     v2XAddr,
 		V2XStake:    v2XStake,
+		V2XIp:       v2XIp,
 		V2NAddr:     v2NAddr,
 		V2NStake:    v2NStake,
+		V2NIp:       v2NIp,
 		RunnerAddr:  runnerAddr,
 		RunnerStake: runnerStake,
+		RunnerIp:    runnerIp,
 	}
 }
 

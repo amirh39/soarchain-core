@@ -52,6 +52,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			StakedAmount: v2XStake.String(),
 			NetEarnings:  "",
 			Type:         "v2x",
+			IpAddr:       msg.V2XIp,
 		}
 
 		k.SetChallenger(ctx, newV2XChallenger)
@@ -64,6 +65,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			StakedAmount: "",
 			NetEarnings:  "",
 			Type:         "nil",
+			IpAddr:       "",
 		}
 	}
 
@@ -100,6 +102,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			StakedAmount: v2NStake.String(),
 			NetEarnings:  "",
 			Type:         "v2n",
+			IpAddr:       msg.V2NIp,
 		}
 
 		k.SetChallenger(ctx, newV2NChallenger)
@@ -112,6 +115,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			StakedAmount: "",
 			NetEarnings:  "",
 			Type:         "nil",
+			IpAddr:       "",
 		}
 	}
 
@@ -146,6 +150,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			Score:        "",
 			StakedAmount: runnerStake.String(),
 			NetEarnings:  "",
+			IpAddr:       msg.RunnerIp,
 		}
 
 		k.SetRunner(ctx, newRunner)
@@ -157,6 +162,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			Score:        "",
 			StakedAmount: "",
 			NetEarnings:  "",
+			IpAddr:       "",
 		}
 	}
 
