@@ -10,14 +10,14 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) GetClientByAddress(goCtx context.Context, req *types.QueryGetClientByAddressRequest) (*types.QueryGetClientByAddressResponse, error) {
+func (k Keeper) GetChallengerByAddress(goCtx context.Context, req *types.QueryGetChallengerByAddressRequest) (*types.QueryGetChallengerByAddressResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	client, _ := k.GetClient(ctx, req.Address)
+	challenger, _ := k.GetChallenger(ctx, req.Address)
 
-	return &types.QueryGetClientByAddressResponse{Client: &client}, nil
+	return &types.QueryGetChallengerByAddressResponse{Challenger: &challenger}, nil
 }

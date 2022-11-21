@@ -113,6 +113,10 @@ export interface PoaQueryAllRunnerResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface PoaQueryGetChallengerByAddressResponse {
+  challenger?: PoaChallenger;
+}
+
 export interface PoaQueryGetChallengerResponse {
   challenger?: PoaChallenger;
 }
@@ -499,6 +503,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryClient = (index: string, params: RequestParams = {}) =>
     this.request<PoaQueryGetClientResponse, RpcStatus>({
       path: `/soarchain/poa/client/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGetChallengerByAddress
+   * @summary Queries a list of GetChallengerByAddress items.
+   * @request GET:/soarchain/poa/get_challenger_by_address/{address}
+   */
+  queryGetChallengerByAddress = (address: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetChallengerByAddressResponse, RpcStatus>({
+      path: `/soarchain/poa/get_challenger_by_address/${address}`,
       method: "GET",
       format: "json",
       ...params,

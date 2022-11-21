@@ -97,6 +97,14 @@ export interface QueryGetClientByAddressResponse {
   client: Client | undefined;
 }
 
+export interface QueryGetChallengerByAddressRequest {
+  address: string;
+}
+
+export interface QueryGetChallengerByAddressResponse {
+  challenger: Challenger | undefined;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -1469,6 +1477,147 @@ export const QueryGetClientByAddressResponse = {
   },
 };
 
+const baseQueryGetChallengerByAddressRequest: object = { address: "" };
+
+export const QueryGetChallengerByAddressRequest = {
+  encode(
+    message: QueryGetChallengerByAddressRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetChallengerByAddressRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetChallengerByAddressRequest,
+    } as QueryGetChallengerByAddressRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetChallengerByAddressRequest {
+    const message = {
+      ...baseQueryGetChallengerByAddressRequest,
+    } as QueryGetChallengerByAddressRequest;
+    if (object.address !== undefined && object.address !== null) {
+      message.address = String(object.address);
+    } else {
+      message.address = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetChallengerByAddressRequest): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetChallengerByAddressRequest>
+  ): QueryGetChallengerByAddressRequest {
+    const message = {
+      ...baseQueryGetChallengerByAddressRequest,
+    } as QueryGetChallengerByAddressRequest;
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    } else {
+      message.address = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetChallengerByAddressResponse: object = {};
+
+export const QueryGetChallengerByAddressResponse = {
+  encode(
+    message: QueryGetChallengerByAddressResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.challenger !== undefined) {
+      Challenger.encode(message.challenger, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetChallengerByAddressResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetChallengerByAddressResponse,
+    } as QueryGetChallengerByAddressResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.challenger = Challenger.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetChallengerByAddressResponse {
+    const message = {
+      ...baseQueryGetChallengerByAddressResponse,
+    } as QueryGetChallengerByAddressResponse;
+    if (object.challenger !== undefined && object.challenger !== null) {
+      message.challenger = Challenger.fromJSON(object.challenger);
+    } else {
+      message.challenger = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetChallengerByAddressResponse): unknown {
+    const obj: any = {};
+    message.challenger !== undefined &&
+      (obj.challenger = message.challenger
+        ? Challenger.toJSON(message.challenger)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetChallengerByAddressResponse>
+  ): QueryGetChallengerByAddressResponse {
+    const message = {
+      ...baseQueryGetChallengerByAddressResponse,
+    } as QueryGetChallengerByAddressResponse;
+    if (object.challenger !== undefined && object.challenger !== null) {
+      message.challenger = Challenger.fromPartial(object.challenger);
+    } else {
+      message.challenger = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1497,6 +1646,10 @@ export interface Query {
   GetClientByAddress(
     request: QueryGetClientByAddressRequest
   ): Promise<QueryGetClientByAddressResponse>;
+  /** Queries a list of GetChallengerByAddress items. */
+  GetChallengerByAddress(
+    request: QueryGetChallengerByAddressRequest
+  ): Promise<QueryGetChallengerByAddressResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1593,6 +1746,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetClientByAddressResponse.decode(new Reader(data))
+    );
+  }
+
+  GetChallengerByAddress(
+    request: QueryGetChallengerByAddressRequest
+  ): Promise<QueryGetChallengerByAddressResponse> {
+    const data = QueryGetChallengerByAddressRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Query",
+      "GetChallengerByAddress",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetChallengerByAddressResponse.decode(new Reader(data))
     );
   }
 }

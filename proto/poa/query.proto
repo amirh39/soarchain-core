@@ -7,8 +7,8 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
 import "poa/guard.proto";
 // this line is used by starport scaffolding # 1
-import "poa/client.proto";
 import "poa/challenger.proto";
+import "poa/client.proto";
 import "poa/runner.proto";
 
 option go_package = "soarchain/x/poa/types";
@@ -62,6 +62,11 @@ service Query {
 // Queries a list of GetClientByAddress items.
 	rpc GetClientByAddress(QueryGetClientByAddressRequest) returns (QueryGetClientByAddressResponse) {
 		option (google.api.http).get = "/soarchain/poa/get_client_by_address/{address}";
+	}
+
+// Queries a list of GetChallengerByAddress items.
+	rpc GetChallengerByAddress(QueryGetChallengerByAddressRequest) returns (QueryGetChallengerByAddressResponse) {
+		option (google.api.http).get = "/soarchain/poa/get_challenger_by_address/{address}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -154,6 +159,14 @@ message QueryGetClientByAddressRequest {
 
 message QueryGetClientByAddressResponse {
   Client client = 1;
+}
+
+message QueryGetChallengerByAddressRequest {
+  string address = 1;
+}
+
+message QueryGetChallengerByAddressResponse {
+  Challenger challenger = 1;
 }
 
 // this line is used by starport scaffolding # 3
