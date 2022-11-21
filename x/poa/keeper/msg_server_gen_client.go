@@ -15,8 +15,9 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	// 1. Check if the client exists
 	_, isFound := k.GetClient(ctx, msg.Address)
 	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Address)
+	_, isFoundAsRunner := k.GetRunner(ctx, msg.Address)
 
-	if isFound || isFoundAsChallenger {
+	if isFound || isFoundAsChallenger || isFoundAsRunner {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
 	}
 

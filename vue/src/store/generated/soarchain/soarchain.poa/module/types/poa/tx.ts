@@ -41,18 +41,6 @@ export interface MsgUnregisterChallenger {
 
 export interface MsgUnregisterChallengerResponse {}
 
-/**
- * message MsgGenGuard {
- *   string creator = 1;
- *   string guardPubKey = 2;
- *   string v2XAddr = 3;
- *   string v2XStake = 4;
- *   string v2NAddr = 5;
- *   string v2NStake = 6;
- *   string runnerAddr = 7;
- *   string runnerStake = 8;
- * }
- */
 export interface MsgGenGuard {
   creator: string;
   guardPubKey: string;

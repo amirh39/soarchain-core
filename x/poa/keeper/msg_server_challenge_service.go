@@ -56,11 +56,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		netEarnings = netEarnings.Add(rewardAmountCoin)
 
 		updatedClient := types.Client{
-			Index:       client.Index,
-			Address:     client.Address,
-			UniqueId:    client.UniqueId,
-			Score:       strconv.Itoa(scoreInt),
-			NetEarnings: netEarnings.String(),
+			Index:              client.Index,
+			Address:            client.Address,
+			UniqueId:           client.UniqueId,
+			Score:              strconv.Itoa(scoreInt),
+			NetEarnings:        netEarnings.String(),
+			LastTimeChallenged: ctx.BlockTime().String(),
 		}
 
 		k.SetClient(ctx, updatedClient)
@@ -74,11 +75,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// ToDo: implement financial punishment
 
 		updatedClient := types.Client{
-			Index:       client.Index,
-			Address:     client.Address,
-			UniqueId:    client.UniqueId,
-			Score:       strconv.Itoa(scoreInt),
-			NetEarnings: client.NetEarnings,
+			Index:              client.Index,
+			Address:            client.Address,
+			UniqueId:           client.UniqueId,
+			Score:              strconv.Itoa(scoreInt),
+			NetEarnings:        client.NetEarnings,
+			LastTimeChallenged: ctx.BlockTime().String(),
 		}
 
 		k.SetClient(ctx, updatedClient)
@@ -97,7 +99,8 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		Score:        strconv.Itoa(scoreIntChallenger),
 		StakedAmount: challenger.StakedAmount,
 		NetEarnings:  challenger.NetEarnings, // TBD
-		Type:         "",
+		Type:         challenger.Type,
+		IpAddr:       challenger.IpAddr,
 	}
 
 	k.SetChallenger(ctx, updatedChallenger)

@@ -491,16 +491,6 @@ func (m *MsgUnregisterChallengerResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUnregisterChallengerResponse proto.InternalMessageInfo
 
-//	message MsgGenGuard {
-//	  string creator = 1;
-//	  string guardPubKey = 2;
-//	  string v2XAddr = 3;
-//	  string v2XStake = 4;
-//	  string v2NAddr = 5;
-//	  string v2NStake = 6;
-//	  string runnerAddr = 7;
-//	  string runnerStake = 8;
-//	}
 type MsgGenGuard struct {
 	Creator     string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	GuardPubKey string `protobuf:"bytes,2,opt,name=guardPubKey,proto3" json:"guardPubKey,omitempty"`
