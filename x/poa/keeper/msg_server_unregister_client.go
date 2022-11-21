@@ -28,6 +28,9 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	// Check removal fee
 	removalFee, _ := sdk.ParseCoinsNormalized("25soar")
 	msgFee, _ := sdk.ParseCoinsNormalized(msg.Fee)
+	if removalFee.GetDenomByIndex(0) != "soar" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+	}
 	if msgFee.IsAllLT(removalFee) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for removal.")
 	}

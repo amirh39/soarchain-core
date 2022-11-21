@@ -21,6 +21,9 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 	// 2. Check stake amount
 	requiredStake, _ := sdk.ParseCoinsNormalized("2000soar")
 	stakedAmount, _ := sdk.ParseCoinsNormalized(msg.StakeAmount)
+	if stakedAmount.GetDenomByIndex(0) != "soar" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+	}
 	if stakedAmount.IsAllLT(requiredStake) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount is:"+stakedAmount.String()+"less than required stake amount"+requiredStake.String())
 	}

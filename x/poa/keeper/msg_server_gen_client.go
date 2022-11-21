@@ -24,6 +24,9 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	registrationFee, _ := sdk.ParseCoinsNormalized("25soar")
 	msgFee, _ := sdk.ParseCoinsNormalized(msg.Fee)
 
+	if msgFee.GetDenomByIndex(0) != "soar" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+	}
 	if msgFee.IsAllLT(registrationFee) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for registration.")
 	}
