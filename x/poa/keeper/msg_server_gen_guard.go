@@ -22,9 +22,11 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	var newV2XChallenger types.Challenger
 
 	if msg.V2XAddr != "nil" { // means v2x addr is provided
-		// Check if challenger already exists
+		// Check if challenger address already exists
 		_, isFound := k.GetChallenger(ctx, msg.V2XAddr)
-		if isFound {
+		_, isFoundAsClient := k.GetClient(ctx, msg.V2XAddr)
+		_, isFoundAsRunner := k.GetRunner(ctx, msg.V2XAddr)
+		if isFound || isFoundAsClient || isFoundAsRunner {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "V2X challenger is already registered in storage.")
 		}
 
@@ -36,6 +38,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		// Check v2x stake amount
 		v2XStake, _ := sdk.ParseCoinsNormalized(msg.V2XStake)
 		requiredStake, _ := sdk.ParseCoinsNormalized("2000soar")
+		if v2XStake.GetDenomByIndex(0) != "soar" {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+		}
 		if v2XStake.IsAllLT(requiredStake) {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
 		}
@@ -68,7 +73,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	if msg.V2NAddr != "nil" { // means v2n addr is provided
 		// Check if challenger already exists
 		_, isFound := k.GetChallenger(ctx, msg.V2NAddr)
-		if isFound {
+		_, isFoundAsClient := k.GetClient(ctx, msg.V2NAddr)
+		_, isFoundAsRunner := k.GetRunner(ctx, msg.V2NAddr)
+		if isFound || isFoundAsClient || isFoundAsRunner {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "V2N challenger is already registered in storage.")
 		}
 
@@ -80,6 +87,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		// Check v2n stake amount
 		v2NStake, _ := sdk.ParseCoinsNormalized(msg.V2NStake)
 		requiredStake, _ := sdk.ParseCoinsNormalized("2000soar")
+		if v2NStake.GetDenomByIndex(0) != "soar" {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+		}
 		if v2NStake.IsAllLT(requiredStake) {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount: "+v2NStake.String()+" is below the required stake amount "+requiredStake.String())
 		}
@@ -109,8 +119,10 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	var newRunner types.Runner
 	if msg.RunnerAddr != "nil" { // means runner addr is provided
 		// Check if runner already exists
-		_, isFoundRunner := k.GetRunner(ctx, msg.RunnerAddr)
-		if isFoundRunner {
+		_, isFound := k.GetRunner(ctx, msg.RunnerAddr)
+		_, isFoundAsChallenger := k.GetChallenger(ctx, msg.RunnerAddr)
+		_, isFoundAsClient := k.GetClient(ctx, msg.RunnerAddr)
+		if isFound || isFoundAsChallenger || isFoundAsClient {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "Runner is already registered in storage.")
 		}
 
@@ -122,6 +134,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		// Check runner stake amount
 		runnerStake, _ := sdk.ParseCoinsNormalized(msg.RunnerStake)
 		requiredStake, _ := sdk.ParseCoinsNormalized("1000soar")
+		if runnerStake.GetDenomByIndex(0) != "soar" {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+		}
 		if runnerStake.IsAllLT(requiredStake) {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount: "+runnerStake.String()+" is below the required stake amount "+requiredStake.String())
 		}
