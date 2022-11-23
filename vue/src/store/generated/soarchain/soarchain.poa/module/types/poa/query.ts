@@ -10,6 +10,8 @@ import { Challenger } from "../poa/challenger";
 import { Runner } from "../poa/runner";
 import { Guard } from "../poa/guard";
 import { TotalClients } from "../poa/total_clients";
+import { TotalChallengers } from "../poa/total_challengers";
+import { TotalRunners } from "../poa/total_runners";
 
 export const protobufPackage = "soarchain.poa";
 
@@ -110,6 +112,18 @@ export interface QueryGetTotalClientsRequest {}
 
 export interface QueryGetTotalClientsResponse {
   TotalClients: TotalClients | undefined;
+}
+
+export interface QueryGetTotalChallengersRequest {}
+
+export interface QueryGetTotalChallengersResponse {
+  TotalChallengers: TotalChallengers | undefined;
+}
+
+export interface QueryGetTotalRunnersRequest {}
+
+export interface QueryGetTotalRunnersResponse {
+  TotalRunners: TotalRunners | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -1752,6 +1766,273 @@ export const QueryGetTotalClientsResponse = {
   },
 };
 
+const baseQueryGetTotalChallengersRequest: object = {};
+
+export const QueryGetTotalChallengersRequest = {
+  encode(
+    _: QueryGetTotalChallengersRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetTotalChallengersRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTotalChallengersRequest,
+    } as QueryGetTotalChallengersRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetTotalChallengersRequest {
+    const message = {
+      ...baseQueryGetTotalChallengersRequest,
+    } as QueryGetTotalChallengersRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetTotalChallengersRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<QueryGetTotalChallengersRequest>
+  ): QueryGetTotalChallengersRequest {
+    const message = {
+      ...baseQueryGetTotalChallengersRequest,
+    } as QueryGetTotalChallengersRequest;
+    return message;
+  },
+};
+
+const baseQueryGetTotalChallengersResponse: object = {};
+
+export const QueryGetTotalChallengersResponse = {
+  encode(
+    message: QueryGetTotalChallengersResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.TotalChallengers !== undefined) {
+      TotalChallengers.encode(
+        message.TotalChallengers,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetTotalChallengersResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTotalChallengersResponse,
+    } as QueryGetTotalChallengersResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.TotalChallengers = TotalChallengers.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetTotalChallengersResponse {
+    const message = {
+      ...baseQueryGetTotalChallengersResponse,
+    } as QueryGetTotalChallengersResponse;
+    if (
+      object.TotalChallengers !== undefined &&
+      object.TotalChallengers !== null
+    ) {
+      message.TotalChallengers = TotalChallengers.fromJSON(
+        object.TotalChallengers
+      );
+    } else {
+      message.TotalChallengers = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetTotalChallengersResponse): unknown {
+    const obj: any = {};
+    message.TotalChallengers !== undefined &&
+      (obj.TotalChallengers = message.TotalChallengers
+        ? TotalChallengers.toJSON(message.TotalChallengers)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetTotalChallengersResponse>
+  ): QueryGetTotalChallengersResponse {
+    const message = {
+      ...baseQueryGetTotalChallengersResponse,
+    } as QueryGetTotalChallengersResponse;
+    if (
+      object.TotalChallengers !== undefined &&
+      object.TotalChallengers !== null
+    ) {
+      message.TotalChallengers = TotalChallengers.fromPartial(
+        object.TotalChallengers
+      );
+    } else {
+      message.TotalChallengers = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetTotalRunnersRequest: object = {};
+
+export const QueryGetTotalRunnersRequest = {
+  encode(
+    _: QueryGetTotalRunnersRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetTotalRunnersRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTotalRunnersRequest,
+    } as QueryGetTotalRunnersRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetTotalRunnersRequest {
+    const message = {
+      ...baseQueryGetTotalRunnersRequest,
+    } as QueryGetTotalRunnersRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetTotalRunnersRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<QueryGetTotalRunnersRequest>
+  ): QueryGetTotalRunnersRequest {
+    const message = {
+      ...baseQueryGetTotalRunnersRequest,
+    } as QueryGetTotalRunnersRequest;
+    return message;
+  },
+};
+
+const baseQueryGetTotalRunnersResponse: object = {};
+
+export const QueryGetTotalRunnersResponse = {
+  encode(
+    message: QueryGetTotalRunnersResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.TotalRunners !== undefined) {
+      TotalRunners.encode(
+        message.TotalRunners,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetTotalRunnersResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTotalRunnersResponse,
+    } as QueryGetTotalRunnersResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.TotalRunners = TotalRunners.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetTotalRunnersResponse {
+    const message = {
+      ...baseQueryGetTotalRunnersResponse,
+    } as QueryGetTotalRunnersResponse;
+    if (object.TotalRunners !== undefined && object.TotalRunners !== null) {
+      message.TotalRunners = TotalRunners.fromJSON(object.TotalRunners);
+    } else {
+      message.TotalRunners = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetTotalRunnersResponse): unknown {
+    const obj: any = {};
+    message.TotalRunners !== undefined &&
+      (obj.TotalRunners = message.TotalRunners
+        ? TotalRunners.toJSON(message.TotalRunners)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetTotalRunnersResponse>
+  ): QueryGetTotalRunnersResponse {
+    const message = {
+      ...baseQueryGetTotalRunnersResponse,
+    } as QueryGetTotalRunnersResponse;
+    if (object.TotalRunners !== undefined && object.TotalRunners !== null) {
+      message.TotalRunners = TotalRunners.fromPartial(object.TotalRunners);
+    } else {
+      message.TotalRunners = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1788,6 +2069,14 @@ export interface Query {
   TotalClients(
     request: QueryGetTotalClientsRequest
   ): Promise<QueryGetTotalClientsResponse>;
+  /** Queries a TotalChallengers by index. */
+  TotalChallengers(
+    request: QueryGetTotalChallengersRequest
+  ): Promise<QueryGetTotalChallengersResponse>;
+  /** Queries a TotalRunners by index. */
+  TotalRunners(
+    request: QueryGetTotalRunnersRequest
+  ): Promise<QueryGetTotalRunnersResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1912,6 +2201,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetTotalClientsResponse.decode(new Reader(data))
+    );
+  }
+
+  TotalChallengers(
+    request: QueryGetTotalChallengersRequest
+  ): Promise<QueryGetTotalChallengersResponse> {
+    const data = QueryGetTotalChallengersRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Query",
+      "TotalChallengers",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetTotalChallengersResponse.decode(new Reader(data))
+    );
+  }
+
+  TotalRunners(
+    request: QueryGetTotalRunnersRequest
+  ): Promise<QueryGetTotalRunnersResponse> {
+    const data = QueryGetTotalRunnersRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Query",
+      "TotalRunners",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetTotalRunnersResponse.decode(new Reader(data))
     );
   }
 }

@@ -7,6 +7,8 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
 import "poa/guard.proto";
 import "poa/total_clients.proto";
+import "poa/total_challengers.proto";
+import "poa/total_runners.proto";
 // this line is used by starport scaffolding # 1
 import "poa/challenger.proto";
 import "poa/client.proto";
@@ -73,6 +75,14 @@ service Query {
 // Queries a TotalClients by index.
 	rpc TotalClients(QueryGetTotalClientsRequest) returns (QueryGetTotalClientsResponse) {
 		option (google.api.http).get = "/soarchain/poa/total_clients";
+	}
+// Queries a TotalChallengers by index.
+	rpc TotalChallengers(QueryGetTotalChallengersRequest) returns (QueryGetTotalChallengersResponse) {
+		option (google.api.http).get = "/soarchain/poa/total_challengers";
+	}
+// Queries a TotalRunners by index.
+	rpc TotalRunners(QueryGetTotalRunnersRequest) returns (QueryGetTotalRunnersResponse) {
+		option (google.api.http).get = "/soarchain/poa/total_runners";
 	}
 // this line is used by starport scaffolding # 2
 }
@@ -178,5 +188,15 @@ message QueryGetTotalClientsRequest {}
 
 message QueryGetTotalClientsResponse {
 	TotalClients TotalClients = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetTotalChallengersRequest {}
+
+message QueryGetTotalChallengersResponse {
+	TotalChallengers TotalChallengers = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetTotalRunnersRequest {}
+
+message QueryGetTotalRunnersResponse {
+	TotalRunners TotalRunners = 1 [(gogoproto.nullable) = false];
 }
 // this line is used by starport scaffolding # 3

@@ -30297,16 +30297,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/challenger/{index}':
@@ -30477,16 +30467,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -30804,16 +30784,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/guard/{index}':
@@ -31062,16 +31032,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/runner/{index}':
@@ -31124,6 +31084,42 @@ paths:
           type: string
       tags:
         - Query
+  /soarchain/poa/total_challengers:
+    get:
+      summary: Queries a TotalChallengers by index.
+      operationId: SoarchainPoaTotalChallengers
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              TotalChallengers:
+                type: object
+                properties:
+                  count:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /soarchain/poa/total_clients:
     get:
       summary: Queries a TotalClients by index.
@@ -31142,6 +31138,42 @@ paths:
                     format: uint64
                   creator:
                     type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/poa/total_runners:
+    get:
+      summary: Queries a TotalRunners by index.
+      operationId: SoarchainPoaTotalRunners
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              TotalRunners:
+                type: object
+                properties:
+                  count:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -53029,6 +53061,15 @@ definitions:
             type: string
           ipAddr:
             type: string
+  soarchain.poa.QueryGetTotalChallengersResponse:
+    type: object
+    properties:
+      TotalChallengers:
+        type: object
+        properties:
+          count:
+            type: string
+            format: uint64
   soarchain.poa.QueryGetTotalClientsResponse:
     type: object
     properties:
@@ -53040,6 +53081,15 @@ definitions:
             format: uint64
           creator:
             type: string
+  soarchain.poa.QueryGetTotalRunnersResponse:
+    type: object
+    properties:
+      TotalRunners:
+        type: object
+        properties:
+          count:
+            type: string
+            format: uint64
   soarchain.poa.QueryParamsResponse:
     type: object
     properties:
@@ -53062,6 +53112,12 @@ definitions:
         type: string
       ipAddr:
         type: string
+  soarchain.poa.TotalChallengers:
+    type: object
+    properties:
+      count:
+        type: string
+        format: uint64
   soarchain.poa.TotalClients:
     type: object
     properties:
@@ -53070,6 +53126,12 @@ definitions:
         format: uint64
       creator:
         type: string
+  soarchain.poa.TotalRunners:
+    type: object
+    properties:
+      count:
+        type: string
+        format: uint64
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object
     properties:

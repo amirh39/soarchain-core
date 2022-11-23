@@ -24,3 +24,11 @@ func KeyPrefix(p string) []byte {
 const (
 	TotalClientsKey = "TotalClients-value-"
 )
+
+const (
+	TotalChallengersKey = "TotalChallengers-value-"
+)
+
+const (
+	TotalRunnersKey = "TotalRunners-value-"
+)

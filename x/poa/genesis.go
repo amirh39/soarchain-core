@@ -28,6 +28,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	}
 	// Set if defined
 	k.SetTotalClients(ctx, genState.TotalClients)
+	// Set if defined
+	k.SetTotalChallengers(ctx, genState.TotalChallengers)
+	// Set if defined
+	k.SetTotalRunners(ctx, genState.TotalRunners)
+
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -45,6 +50,16 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	totalClients, found := k.GetTotalClients(ctx)
 	if found {
 		genesis.TotalClients = totalClients
+	}
+	// Get all totalChallengers
+	totalChallengers, found := k.GetTotalChallengers(ctx)
+	if found {
+		genesis.TotalChallengers = totalChallengers
+	}
+	// Get all totalRunners
+	totalRunners, found := k.GetTotalRunners(ctx)
+	if found {
+		genesis.TotalRunners = totalRunners
 	}
 	// this line is used by starport scaffolding # genesis/module/export
 

@@ -58,6 +58,12 @@ func TestGenesisState_Validate(t *testing.T) {
 				TotalClients: types.TotalClients{
 					Count: 6,
 				},
+				TotalChallengers: types.TotalChallengers{
+					Count: 72,
+				},
+				TotalRunners: types.TotalRunners{
+					Count: 31,
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,

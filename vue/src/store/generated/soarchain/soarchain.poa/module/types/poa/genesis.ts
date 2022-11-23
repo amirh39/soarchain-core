@@ -5,6 +5,8 @@ import { Challenger } from "../poa/challenger";
 import { Runner } from "../poa/runner";
 import { Guard } from "../poa/guard";
 import { TotalClients } from "../poa/total_clients";
+import { TotalChallengers } from "../poa/total_challengers";
+import { TotalRunners } from "../poa/total_runners";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "soarchain.poa";
@@ -16,8 +18,10 @@ export interface GenesisState {
   challengerList: Challenger[];
   runnerList: Runner[];
   guardList: Guard[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   totalClients: TotalClients | undefined;
+  totalChallengers: TotalChallengers | undefined;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  totalRunners: TotalRunners | undefined;
 }
 
 const baseGenesisState: object = {};
@@ -43,6 +47,18 @@ export const GenesisState = {
       TotalClients.encode(
         message.totalClients,
         writer.uint32(50).fork()
+      ).ldelim();
+    }
+    if (message.totalChallengers !== undefined) {
+      TotalChallengers.encode(
+        message.totalChallengers,
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
+    if (message.totalRunners !== undefined) {
+      TotalRunners.encode(
+        message.totalRunners,
+        writer.uint32(66).fork()
       ).ldelim();
     }
     return writer;
@@ -78,6 +94,15 @@ export const GenesisState = {
           break;
         case 6:
           message.totalClients = TotalClients.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.totalChallengers = TotalChallengers.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 8:
+          message.totalRunners = TotalRunners.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -123,6 +148,21 @@ export const GenesisState = {
     } else {
       message.totalClients = undefined;
     }
+    if (
+      object.totalChallengers !== undefined &&
+      object.totalChallengers !== null
+    ) {
+      message.totalChallengers = TotalChallengers.fromJSON(
+        object.totalChallengers
+      );
+    } else {
+      message.totalChallengers = undefined;
+    }
+    if (object.totalRunners !== undefined && object.totalRunners !== null) {
+      message.totalRunners = TotalRunners.fromJSON(object.totalRunners);
+    } else {
+      message.totalRunners = undefined;
+    }
     return message;
   },
 
@@ -162,6 +202,14 @@ export const GenesisState = {
       (obj.totalClients = message.totalClients
         ? TotalClients.toJSON(message.totalClients)
         : undefined);
+    message.totalChallengers !== undefined &&
+      (obj.totalChallengers = message.totalChallengers
+        ? TotalChallengers.toJSON(message.totalChallengers)
+        : undefined);
+    message.totalRunners !== undefined &&
+      (obj.totalRunners = message.totalRunners
+        ? TotalRunners.toJSON(message.totalRunners)
+        : undefined);
     return obj;
   },
 
@@ -200,6 +248,21 @@ export const GenesisState = {
       message.totalClients = TotalClients.fromPartial(object.totalClients);
     } else {
       message.totalClients = undefined;
+    }
+    if (
+      object.totalChallengers !== undefined &&
+      object.totalChallengers !== null
+    ) {
+      message.totalChallengers = TotalChallengers.fromPartial(
+        object.totalChallengers
+      );
+    } else {
+      message.totalChallengers = undefined;
+    }
+    if (object.totalRunners !== undefined && object.totalRunners !== null) {
+      message.totalRunners = TotalRunners.fromPartial(object.totalRunners);
+    } else {
+      message.totalRunners = undefined;
     }
     return message;
   },

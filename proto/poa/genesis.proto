@@ -8,6 +8,8 @@ import "poa/challenger.proto";
 import "poa/runner.proto";
 import "poa/guard.proto";
 import "poa/total_clients.proto";
+import "poa/total_challengers.proto";
+import "poa/total_runners.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "soarchain/x/poa/types";
@@ -20,5 +22,7 @@ message GenesisState {
   repeated Runner runnerList = 4 [(gogoproto.nullable) = false];
   repeated Guard guardList = 5 [(gogoproto.nullable) = false];
   TotalClients totalClients = 6 [(gogoproto.nullable) = false];
+  TotalChallengers totalChallengers = 7 [(gogoproto.nullable) = false];
+  TotalRunners totalRunners = 8 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

@@ -21,7 +21,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	// Check v2x Challenger field
 	var newV2XChallenger types.Challenger
 
-	if msg.V2XAddr != "nil" { // means v2x addr is provided
+	if msg.V2XAddr != "" { // means v2x addr is provided
 		// Check if challenger address already exists
 		_, isFound := k.GetChallenger(ctx, msg.V2XAddr)
 		_, isFoundAsClient := k.GetClient(ctx, msg.V2XAddr)
@@ -57,6 +57,14 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		k.SetChallenger(ctx, newV2XChallenger)
 
+		// Update Challenger Count
+		challengerCount, isFound := k.Keeper.GetTotalChallengers(ctx)
+		if !isFound {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Challenger count couldn't be fetched!")
+		}
+		challengerCount.Count++
+		k.SetTotalChallengers(ctx, challengerCount)
+
 	} else { // v2x address is not provided
 		newV2XChallenger = types.Challenger{
 			Index:        "",
@@ -72,7 +80,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	// Check v2n Challenger field
 	var newV2NChallenger types.Challenger
 
-	if msg.V2NAddr != "nil" { // means v2n addr is provided
+	if msg.V2NAddr != "" { // means v2n addr is provided
 		// Check if challenger already exists
 		_, isFound := k.GetChallenger(ctx, msg.V2NAddr)
 		_, isFoundAsClient := k.GetClient(ctx, msg.V2NAddr)
@@ -107,6 +115,14 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		k.SetChallenger(ctx, newV2NChallenger)
 
+		// Update Challenger Count
+		challengerCount, isFound := k.Keeper.GetTotalChallengers(ctx)
+		if !isFound {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Challenger count couldn't be fetched!")
+		}
+		challengerCount.Count++
+		k.SetTotalChallengers(ctx, challengerCount)
+
 	} else { // v2n address is not provided
 		newV2NChallenger = types.Challenger{
 			Index:        "",
@@ -121,7 +137,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 	// Check runner
 	var newRunner types.Runner
-	if msg.RunnerAddr != "nil" { // means runner addr is provided
+	if msg.RunnerAddr != "" { // means runner addr is provided
 		// Check if runner already exists
 		_, isFound := k.GetRunner(ctx, msg.RunnerAddr)
 		_, isFoundAsChallenger := k.GetChallenger(ctx, msg.RunnerAddr)
@@ -154,6 +170,14 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		k.SetRunner(ctx, newRunner)
+
+		// Update Runner Count
+		runnerCount, isFound := k.Keeper.GetTotalRunners(ctx)
+		if !isFound {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Runner count couldn't be fetched!")
+		}
+		runnerCount.Count++
+		k.SetTotalRunners(ctx, runnerCount)
 
 	} else { // runner address is not provided
 		newRunner = types.Runner{

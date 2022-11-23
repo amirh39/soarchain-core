@@ -143,8 +143,16 @@ export interface PoaQueryGetRunnerResponse {
   runner?: PoaRunner;
 }
 
+export interface PoaQueryGetTotalChallengersResponse {
+  TotalChallengers?: PoaTotalChallengers;
+}
+
 export interface PoaQueryGetTotalClientsResponse {
   TotalClients?: PoaTotalClients;
+}
+
+export interface PoaQueryGetTotalRunnersResponse {
+  TotalRunners?: PoaTotalRunners;
 }
 
 /**
@@ -164,10 +172,20 @@ export interface PoaRunner {
   ipAddr?: string;
 }
 
+export interface PoaTotalChallengers {
+  /** @format uint64 */
+  count?: string;
+}
+
 export interface PoaTotalClients {
   /** @format uint64 */
   count?: string;
   creator?: string;
+}
+
+export interface PoaTotalRunners {
+  /** @format uint64 */
+  count?: string;
 }
 
 export interface ProtobufAny {
@@ -660,6 +678,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryTotalChallengers
+   * @summary Queries a TotalChallengers by index.
+   * @request GET:/soarchain/poa/total_challengers
+   */
+  queryTotalChallengers = (params: RequestParams = {}) =>
+    this.request<PoaQueryGetTotalChallengersResponse, RpcStatus>({
+      path: `/soarchain/poa/total_challengers`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryTotalClients
    * @summary Queries a TotalClients by index.
    * @request GET:/soarchain/poa/total_clients
@@ -667,6 +701,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryTotalClients = (params: RequestParams = {}) =>
     this.request<PoaQueryGetTotalClientsResponse, RpcStatus>({
       path: `/soarchain/poa/total_clients`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTotalRunners
+   * @summary Queries a TotalRunners by index.
+   * @request GET:/soarchain/poa/total_runners
+   */
+  queryTotalRunners = (params: RequestParams = {}) =>
+    this.request<PoaQueryGetTotalRunnersResponse, RpcStatus>({
+      path: `/soarchain/poa/total_runners`,
       method: "GET",
       format: "json",
       ...params,

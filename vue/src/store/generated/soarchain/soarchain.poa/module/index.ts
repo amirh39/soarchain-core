@@ -4,27 +4,27 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgChallengeService } from "./types/poa/tx";
-import { MsgUnregisterChallenger } from "./types/poa/tx";
-import { MsgUnregisterClient } from "./types/poa/tx";
-import { MsgUpdateTotalClients } from "./types/poa/tx";
-import { MsgGenGuard } from "./types/poa/tx";
-import { MsgDeleteTotalClients } from "./types/poa/tx";
-import { MsgCreateTotalClients } from "./types/poa/tx";
 import { MsgGenClient } from "./types/poa/tx";
+import { MsgCreateTotalClients } from "./types/poa/tx";
+import { MsgUpdateTotalClients } from "./types/poa/tx";
+import { MsgDeleteTotalClients } from "./types/poa/tx";
+import { MsgUnregisterChallenger } from "./types/poa/tx";
+import { MsgChallengeService } from "./types/poa/tx";
 import { MsgGenChallenger } from "./types/poa/tx";
+import { MsgGenGuard } from "./types/poa/tx";
+import { MsgUnregisterClient } from "./types/poa/tx";
 
 
 const types = [
-  ["/soarchain.poa.MsgChallengeService", MsgChallengeService],
-  ["/soarchain.poa.MsgUnregisterChallenger", MsgUnregisterChallenger],
-  ["/soarchain.poa.MsgUnregisterClient", MsgUnregisterClient],
-  ["/soarchain.poa.MsgUpdateTotalClients", MsgUpdateTotalClients],
-  ["/soarchain.poa.MsgGenGuard", MsgGenGuard],
-  ["/soarchain.poa.MsgDeleteTotalClients", MsgDeleteTotalClients],
-  ["/soarchain.poa.MsgCreateTotalClients", MsgCreateTotalClients],
   ["/soarchain.poa.MsgGenClient", MsgGenClient],
+  ["/soarchain.poa.MsgCreateTotalClients", MsgCreateTotalClients],
+  ["/soarchain.poa.MsgUpdateTotalClients", MsgUpdateTotalClients],
+  ["/soarchain.poa.MsgDeleteTotalClients", MsgDeleteTotalClients],
+  ["/soarchain.poa.MsgUnregisterChallenger", MsgUnregisterChallenger],
+  ["/soarchain.poa.MsgChallengeService", MsgChallengeService],
   ["/soarchain.poa.MsgGenChallenger", MsgGenChallenger],
+  ["/soarchain.poa.MsgGenGuard", MsgGenGuard],
+  ["/soarchain.poa.MsgUnregisterClient", MsgUnregisterClient],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -57,15 +57,15 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgChallengeService: (data: MsgChallengeService): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgChallengeService", value: MsgChallengeService.fromPartial( data ) }),
-    msgUnregisterChallenger: (data: MsgUnregisterChallenger): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterChallenger", value: MsgUnregisterChallenger.fromPartial( data ) }),
-    msgUnregisterClient: (data: MsgUnregisterClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterClient", value: MsgUnregisterClient.fromPartial( data ) }),
-    msgUpdateTotalClients: (data: MsgUpdateTotalClients): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUpdateTotalClients", value: MsgUpdateTotalClients.fromPartial( data ) }),
-    msgGenGuard: (data: MsgGenGuard): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenGuard", value: MsgGenGuard.fromPartial( data ) }),
-    msgDeleteTotalClients: (data: MsgDeleteTotalClients): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgDeleteTotalClients", value: MsgDeleteTotalClients.fromPartial( data ) }),
-    msgCreateTotalClients: (data: MsgCreateTotalClients): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgCreateTotalClients", value: MsgCreateTotalClients.fromPartial( data ) }),
     msgGenClient: (data: MsgGenClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenClient", value: MsgGenClient.fromPartial( data ) }),
+    msgCreateTotalClients: (data: MsgCreateTotalClients): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgCreateTotalClients", value: MsgCreateTotalClients.fromPartial( data ) }),
+    msgUpdateTotalClients: (data: MsgUpdateTotalClients): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUpdateTotalClients", value: MsgUpdateTotalClients.fromPartial( data ) }),
+    msgDeleteTotalClients: (data: MsgDeleteTotalClients): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgDeleteTotalClients", value: MsgDeleteTotalClients.fromPartial( data ) }),
+    msgUnregisterChallenger: (data: MsgUnregisterChallenger): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterChallenger", value: MsgUnregisterChallenger.fromPartial( data ) }),
+    msgChallengeService: (data: MsgChallengeService): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgChallengeService", value: MsgChallengeService.fromPartial( data ) }),
     msgGenChallenger: (data: MsgGenChallenger): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenChallenger", value: MsgGenChallenger.fromPartial( data ) }),
+    msgGenGuard: (data: MsgGenGuard): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenGuard", value: MsgGenGuard.fromPartial( data ) }),
+    msgUnregisterClient: (data: MsgUnregisterClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterClient", value: MsgUnregisterClient.fromPartial( data ) }),
     
   };
 };
