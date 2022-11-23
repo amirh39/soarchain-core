@@ -56,6 +56,14 @@ func TestGenesis(t *testing.T) {
 		TotalRunners: types.TotalRunners{
 			Count: 78,
 		},
+		ChallengerByIndexList: []types.ChallengerByIndex{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -74,5 +82,6 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.TotalClients, got.TotalClients)
 	require.Equal(t, genesisState.TotalChallengers, got.TotalChallengers)
 	require.Equal(t, genesisState.TotalRunners, got.TotalRunners)
+	require.ElementsMatch(t, genesisState.ChallengerByIndexList, got.ChallengerByIndexList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

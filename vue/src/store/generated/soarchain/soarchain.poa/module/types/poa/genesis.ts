@@ -7,6 +7,7 @@ import { Guard } from "../poa/guard";
 import { TotalClients } from "../poa/total_clients";
 import { TotalChallengers } from "../poa/total_challengers";
 import { TotalRunners } from "../poa/total_runners";
+import { ChallengerByIndex } from "../poa/challenger_by_index";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "soarchain.poa";
@@ -20,8 +21,9 @@ export interface GenesisState {
   guardList: Guard[];
   totalClients: TotalClients | undefined;
   totalChallengers: TotalChallengers | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   totalRunners: TotalRunners | undefined;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  challengerByIndexList: ChallengerByIndex[];
 }
 
 const baseGenesisState: object = {};
@@ -61,6 +63,9 @@ export const GenesisState = {
         writer.uint32(66).fork()
       ).ldelim();
     }
+    for (const v of message.challengerByIndexList) {
+      ChallengerByIndex.encode(v!, writer.uint32(74).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -72,6 +77,7 @@ export const GenesisState = {
     message.challengerList = [];
     message.runnerList = [];
     message.guardList = [];
+    message.challengerByIndexList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -104,6 +110,11 @@ export const GenesisState = {
         case 8:
           message.totalRunners = TotalRunners.decode(reader, reader.uint32());
           break;
+        case 9:
+          message.challengerByIndexList.push(
+            ChallengerByIndex.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -118,6 +129,7 @@ export const GenesisState = {
     message.challengerList = [];
     message.runnerList = [];
     message.guardList = [];
+    message.challengerByIndexList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -162,6 +174,14 @@ export const GenesisState = {
       message.totalRunners = TotalRunners.fromJSON(object.totalRunners);
     } else {
       message.totalRunners = undefined;
+    }
+    if (
+      object.challengerByIndexList !== undefined &&
+      object.challengerByIndexList !== null
+    ) {
+      for (const e of object.challengerByIndexList) {
+        message.challengerByIndexList.push(ChallengerByIndex.fromJSON(e));
+      }
     }
     return message;
   },
@@ -210,6 +230,13 @@ export const GenesisState = {
       (obj.totalRunners = message.totalRunners
         ? TotalRunners.toJSON(message.totalRunners)
         : undefined);
+    if (message.challengerByIndexList) {
+      obj.challengerByIndexList = message.challengerByIndexList.map((e) =>
+        e ? ChallengerByIndex.toJSON(e) : undefined
+      );
+    } else {
+      obj.challengerByIndexList = [];
+    }
     return obj;
   },
 
@@ -219,6 +246,7 @@ export const GenesisState = {
     message.challengerList = [];
     message.runnerList = [];
     message.guardList = [];
+    message.challengerByIndexList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -263,6 +291,14 @@ export const GenesisState = {
       message.totalRunners = TotalRunners.fromPartial(object.totalRunners);
     } else {
       message.totalRunners = undefined;
+    }
+    if (
+      object.challengerByIndexList !== undefined &&
+      object.challengerByIndexList !== null
+    ) {
+      for (const e of object.challengerByIndexList) {
+        message.challengerByIndexList.push(ChallengerByIndex.fromPartial(e));
+      }
     }
     return message;
   },

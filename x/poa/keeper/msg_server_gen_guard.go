@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -65,6 +66,14 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		challengerCount.Count++
 		k.SetTotalChallengers(ctx, challengerCount)
 
+		// Update ChallengerByIndex
+		theCountStr := strconv.FormatUint(challengerCount.Count, 10)
+		newIndex := types.ChallengerByIndex{
+			Index:      theCountStr,
+			Challenger: &newV2XChallenger,
+		}
+		k.SetChallengerByIndex(ctx, newIndex)
+
 	} else { // v2x address is not provided
 		newV2XChallenger = types.Challenger{
 			Index:        "",
@@ -122,6 +131,14 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 		challengerCount.Count++
 		k.SetTotalChallengers(ctx, challengerCount)
+
+		// Update ChallengerByIndex
+		theCountStr := strconv.FormatUint(challengerCount.Count, 10)
+		newIndex := types.ChallengerByIndex{
+			Index:      theCountStr,
+			Challenger: &newV2NChallenger,
+		}
+		k.SetChallengerByIndex(ctx, newIndex)
 
 	} else { // v2n address is not provided
 		newV2NChallenger = types.Challenger{

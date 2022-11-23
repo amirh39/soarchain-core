@@ -12,6 +12,7 @@ import { Guard } from "../poa/guard";
 import { TotalClients } from "../poa/total_clients";
 import { TotalChallengers } from "../poa/total_challengers";
 import { TotalRunners } from "../poa/total_runners";
+import { ChallengerByIndex } from "../poa/challenger_by_index";
 
 export const protobufPackage = "soarchain.poa";
 
@@ -124,6 +125,29 @@ export interface QueryGetTotalRunnersRequest {}
 
 export interface QueryGetTotalRunnersResponse {
   TotalRunners: TotalRunners | undefined;
+}
+
+export interface QueryGetChallengerByIndexRequest {
+  index: string;
+}
+
+export interface QueryGetChallengerByIndexResponse {
+  challengerByIndex: ChallengerByIndex | undefined;
+}
+
+export interface QueryAllChallengerByIndexRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllChallengerByIndexResponse {
+  challengerByIndex: ChallengerByIndex[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetRandomChallengerRequest {}
+
+export interface QueryGetRandomChallengerResponse {
+  challenger: Challenger | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -2033,6 +2057,468 @@ export const QueryGetTotalRunnersResponse = {
   },
 };
 
+const baseQueryGetChallengerByIndexRequest: object = { index: "" };
+
+export const QueryGetChallengerByIndexRequest = {
+  encode(
+    message: QueryGetChallengerByIndexRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetChallengerByIndexRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetChallengerByIndexRequest,
+    } as QueryGetChallengerByIndexRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetChallengerByIndexRequest {
+    const message = {
+      ...baseQueryGetChallengerByIndexRequest,
+    } as QueryGetChallengerByIndexRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetChallengerByIndexRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetChallengerByIndexRequest>
+  ): QueryGetChallengerByIndexRequest {
+    const message = {
+      ...baseQueryGetChallengerByIndexRequest,
+    } as QueryGetChallengerByIndexRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetChallengerByIndexResponse: object = {};
+
+export const QueryGetChallengerByIndexResponse = {
+  encode(
+    message: QueryGetChallengerByIndexResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.challengerByIndex !== undefined) {
+      ChallengerByIndex.encode(
+        message.challengerByIndex,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetChallengerByIndexResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetChallengerByIndexResponse,
+    } as QueryGetChallengerByIndexResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.challengerByIndex = ChallengerByIndex.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetChallengerByIndexResponse {
+    const message = {
+      ...baseQueryGetChallengerByIndexResponse,
+    } as QueryGetChallengerByIndexResponse;
+    if (
+      object.challengerByIndex !== undefined &&
+      object.challengerByIndex !== null
+    ) {
+      message.challengerByIndex = ChallengerByIndex.fromJSON(
+        object.challengerByIndex
+      );
+    } else {
+      message.challengerByIndex = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetChallengerByIndexResponse): unknown {
+    const obj: any = {};
+    message.challengerByIndex !== undefined &&
+      (obj.challengerByIndex = message.challengerByIndex
+        ? ChallengerByIndex.toJSON(message.challengerByIndex)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetChallengerByIndexResponse>
+  ): QueryGetChallengerByIndexResponse {
+    const message = {
+      ...baseQueryGetChallengerByIndexResponse,
+    } as QueryGetChallengerByIndexResponse;
+    if (
+      object.challengerByIndex !== undefined &&
+      object.challengerByIndex !== null
+    ) {
+      message.challengerByIndex = ChallengerByIndex.fromPartial(
+        object.challengerByIndex
+      );
+    } else {
+      message.challengerByIndex = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllChallengerByIndexRequest: object = {};
+
+export const QueryAllChallengerByIndexRequest = {
+  encode(
+    message: QueryAllChallengerByIndexRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllChallengerByIndexRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllChallengerByIndexRequest,
+    } as QueryAllChallengerByIndexRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllChallengerByIndexRequest {
+    const message = {
+      ...baseQueryAllChallengerByIndexRequest,
+    } as QueryAllChallengerByIndexRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllChallengerByIndexRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllChallengerByIndexRequest>
+  ): QueryAllChallengerByIndexRequest {
+    const message = {
+      ...baseQueryAllChallengerByIndexRequest,
+    } as QueryAllChallengerByIndexRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllChallengerByIndexResponse: object = {};
+
+export const QueryAllChallengerByIndexResponse = {
+  encode(
+    message: QueryAllChallengerByIndexResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.challengerByIndex) {
+      ChallengerByIndex.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllChallengerByIndexResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllChallengerByIndexResponse,
+    } as QueryAllChallengerByIndexResponse;
+    message.challengerByIndex = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.challengerByIndex.push(
+            ChallengerByIndex.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllChallengerByIndexResponse {
+    const message = {
+      ...baseQueryAllChallengerByIndexResponse,
+    } as QueryAllChallengerByIndexResponse;
+    message.challengerByIndex = [];
+    if (
+      object.challengerByIndex !== undefined &&
+      object.challengerByIndex !== null
+    ) {
+      for (const e of object.challengerByIndex) {
+        message.challengerByIndex.push(ChallengerByIndex.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllChallengerByIndexResponse): unknown {
+    const obj: any = {};
+    if (message.challengerByIndex) {
+      obj.challengerByIndex = message.challengerByIndex.map((e) =>
+        e ? ChallengerByIndex.toJSON(e) : undefined
+      );
+    } else {
+      obj.challengerByIndex = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllChallengerByIndexResponse>
+  ): QueryAllChallengerByIndexResponse {
+    const message = {
+      ...baseQueryAllChallengerByIndexResponse,
+    } as QueryAllChallengerByIndexResponse;
+    message.challengerByIndex = [];
+    if (
+      object.challengerByIndex !== undefined &&
+      object.challengerByIndex !== null
+    ) {
+      for (const e of object.challengerByIndex) {
+        message.challengerByIndex.push(ChallengerByIndex.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetRandomChallengerRequest: object = {};
+
+export const QueryGetRandomChallengerRequest = {
+  encode(
+    _: QueryGetRandomChallengerRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetRandomChallengerRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetRandomChallengerRequest,
+    } as QueryGetRandomChallengerRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetRandomChallengerRequest {
+    const message = {
+      ...baseQueryGetRandomChallengerRequest,
+    } as QueryGetRandomChallengerRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetRandomChallengerRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<QueryGetRandomChallengerRequest>
+  ): QueryGetRandomChallengerRequest {
+    const message = {
+      ...baseQueryGetRandomChallengerRequest,
+    } as QueryGetRandomChallengerRequest;
+    return message;
+  },
+};
+
+const baseQueryGetRandomChallengerResponse: object = {};
+
+export const QueryGetRandomChallengerResponse = {
+  encode(
+    message: QueryGetRandomChallengerResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.challenger !== undefined) {
+      Challenger.encode(message.challenger, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetRandomChallengerResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetRandomChallengerResponse,
+    } as QueryGetRandomChallengerResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.challenger = Challenger.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetRandomChallengerResponse {
+    const message = {
+      ...baseQueryGetRandomChallengerResponse,
+    } as QueryGetRandomChallengerResponse;
+    if (object.challenger !== undefined && object.challenger !== null) {
+      message.challenger = Challenger.fromJSON(object.challenger);
+    } else {
+      message.challenger = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetRandomChallengerResponse): unknown {
+    const obj: any = {};
+    message.challenger !== undefined &&
+      (obj.challenger = message.challenger
+        ? Challenger.toJSON(message.challenger)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetRandomChallengerResponse>
+  ): QueryGetRandomChallengerResponse {
+    const message = {
+      ...baseQueryGetRandomChallengerResponse,
+    } as QueryGetRandomChallengerResponse;
+    if (object.challenger !== undefined && object.challenger !== null) {
+      message.challenger = Challenger.fromPartial(object.challenger);
+    } else {
+      message.challenger = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -2077,6 +2563,18 @@ export interface Query {
   TotalRunners(
     request: QueryGetTotalRunnersRequest
   ): Promise<QueryGetTotalRunnersResponse>;
+  /** Queries a ChallengerByIndex by index. */
+  ChallengerByIndex(
+    request: QueryGetChallengerByIndexRequest
+  ): Promise<QueryGetChallengerByIndexResponse>;
+  /** Queries a list of ChallengerByIndex items. */
+  ChallengerByIndexAll(
+    request: QueryAllChallengerByIndexRequest
+  ): Promise<QueryAllChallengerByIndexResponse>;
+  /** Queries a list of GetRandomChallenger items. */
+  GetRandomChallenger(
+    request: QueryGetRandomChallengerRequest
+  ): Promise<QueryGetRandomChallengerResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -2229,6 +2727,48 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetTotalRunnersResponse.decode(new Reader(data))
+    );
+  }
+
+  ChallengerByIndex(
+    request: QueryGetChallengerByIndexRequest
+  ): Promise<QueryGetChallengerByIndexResponse> {
+    const data = QueryGetChallengerByIndexRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Query",
+      "ChallengerByIndex",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetChallengerByIndexResponse.decode(new Reader(data))
+    );
+  }
+
+  ChallengerByIndexAll(
+    request: QueryAllChallengerByIndexRequest
+  ): Promise<QueryAllChallengerByIndexResponse> {
+    const data = QueryAllChallengerByIndexRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Query",
+      "ChallengerByIndexAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllChallengerByIndexResponse.decode(new Reader(data))
+    );
+  }
+
+  GetRandomChallenger(
+    request: QueryGetRandomChallengerRequest
+  ): Promise<QueryGetRandomChallengerResponse> {
+    const data = QueryGetRandomChallengerRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Query",
+      "GetRandomChallenger",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetRandomChallengerResponse.decode(new Reader(data))
     );
   }
 }

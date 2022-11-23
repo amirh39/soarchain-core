@@ -64,6 +64,14 @@ func TestGenesisState_Validate(t *testing.T) {
 				TotalRunners: types.TotalRunners{
 					Count: 31,
 				},
+				ChallengerByIndexList: []types.ChallengerByIndex{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -114,6 +122,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated guard",
 			genState: &types.GenesisState{
 				GuardList: []types.Guard{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated challengerByIndex",
+			genState: &types.GenesisState{
+				ChallengerByIndexList: []types.ChallengerByIndex{
 					{
 						Index: "0",
 					},

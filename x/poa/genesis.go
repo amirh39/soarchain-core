@@ -33,6 +33,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// Set if defined
 	k.SetTotalRunners(ctx, genState.TotalRunners)
 
+	// Set all the challengerByIndex
+	for _, elem := range genState.ChallengerByIndexList {
+		k.SetChallengerByIndex(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -61,6 +65,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.TotalRunners = totalRunners
 	}
+	genesis.ChallengerByIndexList = k.GetAllChallengerByIndex(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

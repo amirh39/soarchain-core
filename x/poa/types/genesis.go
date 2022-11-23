@@ -10,13 +10,14 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		ClientList:       []Client{},
-		ChallengerList:   []Challenger{},
-		RunnerList:       []Runner{},
-		GuardList:        []Guard{},
-		TotalClients:     TotalClients{Count: uint64(0)},
-		TotalChallengers: TotalChallengers{Count: uint64(0)},
-		TotalRunners:     TotalRunners{Count: uint64(0)},
+		ClientList:            []Client{},
+		ChallengerList:        []Challenger{},
+		RunnerList:            []Runner{},
+		GuardList:             []Guard{},
+		TotalClients:          TotalClients{Count: uint64(0)},
+		TotalChallengers:      TotalChallengers{Count: uint64(0)},
+		TotalRunners:          TotalRunners{Count: uint64(0)},
+		ChallengerByIndexList: []ChallengerByIndex{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -64,6 +65,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for guard")
 		}
 		guardIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in challengerByIndex
+	challengerByIndexIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.ChallengerByIndexList {
+		index := string(ChallengerByIndexKey(elem.Index))
+		if _, ok := challengerByIndexIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for challengerByIndex")
+		}
+		challengerByIndexIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

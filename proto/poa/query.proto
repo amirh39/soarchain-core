@@ -9,6 +9,7 @@ import "poa/guard.proto";
 import "poa/total_clients.proto";
 import "poa/total_challengers.proto";
 import "poa/total_runners.proto";
+import "poa/challenger_by_index.proto";
 // this line is used by starport scaffolding # 1
 import "poa/challenger.proto";
 import "poa/client.proto";
@@ -84,6 +85,21 @@ service Query {
 	rpc TotalRunners(QueryGetTotalRunnersRequest) returns (QueryGetTotalRunnersResponse) {
 		option (google.api.http).get = "/soarchain/poa/total_runners";
 	}
+// Queries a ChallengerByIndex by index.
+	rpc ChallengerByIndex(QueryGetChallengerByIndexRequest) returns (QueryGetChallengerByIndexResponse) {
+		option (google.api.http).get = "/soarchain/poa/challenger_by_index/{index}";
+	}
+
+	// Queries a list of ChallengerByIndex items.
+	rpc ChallengerByIndexAll(QueryAllChallengerByIndexRequest) returns (QueryAllChallengerByIndexResponse) {
+		option (google.api.http).get = "/soarchain/poa/challenger_by_index";
+	}
+
+// Queries a list of GetRandomChallenger items.
+	rpc GetRandomChallenger(QueryGetRandomChallengerRequest) returns (QueryGetRandomChallengerResponse) {
+		option (google.api.http).get = "/soarchain/poa/get_random_challenger";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -199,4 +215,29 @@ message QueryGetTotalRunnersRequest {}
 message QueryGetTotalRunnersResponse {
 	TotalRunners TotalRunners = 1 [(gogoproto.nullable) = false];
 }
+message QueryGetChallengerByIndexRequest {
+	  string index = 1;
+
+}
+
+message QueryGetChallengerByIndexResponse {
+	ChallengerByIndex challengerByIndex = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllChallengerByIndexRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllChallengerByIndexResponse {
+	repeated ChallengerByIndex challengerByIndex = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetRandomChallengerRequest {
+}
+
+message QueryGetRandomChallengerResponse {
+  Challenger challenger = 1;
+}
+
 // this line is used by starport scaffolding # 3

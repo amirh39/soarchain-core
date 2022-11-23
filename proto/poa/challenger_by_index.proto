@@ -1,0 +1,12 @@
+syntax = "proto3";
+package soarchain.poa;
+
+option go_package = "soarchain/x/poa/types";
+import "poa/challenger.proto"; 
+
+message ChallengerByIndex {
+  string index = 1; 
+  Challenger challenger = 2; 
+  
+}
+
