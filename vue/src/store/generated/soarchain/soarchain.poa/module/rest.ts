@@ -38,6 +38,10 @@ export interface PoaGuard {
 
 export type PoaMsgChallengeServiceResponse = object;
 
+export type PoaMsgCreateTotalClientsResponse = object;
+
+export type PoaMsgDeleteTotalClientsResponse = object;
+
 export type PoaMsgGenChallengerResponse = object;
 
 export type PoaMsgGenClientResponse = object;
@@ -47,6 +51,8 @@ export type PoaMsgGenGuardResponse = object;
 export type PoaMsgUnregisterChallengerResponse = object;
 
 export type PoaMsgUnregisterClientResponse = object;
+
+export type PoaMsgUpdateTotalClientsResponse = object;
 
 /**
  * Params defines the parameters for the module.
@@ -137,6 +143,10 @@ export interface PoaQueryGetRunnerResponse {
   runner?: PoaRunner;
 }
 
+export interface PoaQueryGetTotalClientsResponse {
+  TotalClients?: PoaTotalClients;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
@@ -152,6 +162,12 @@ export interface PoaRunner {
   stakedAmount?: string;
   netEarnings?: string;
   ipAddr?: string;
+}
+
+export interface PoaTotalClients {
+  /** @format uint64 */
+  count?: string;
+  creator?: string;
 }
 
 export interface ProtobufAny {
@@ -635,6 +651,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryRunner = (index: string, params: RequestParams = {}) =>
     this.request<PoaQueryGetRunnerResponse, RpcStatus>({
       path: `/soarchain/poa/runner/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTotalClients
+   * @summary Queries a TotalClients by index.
+   * @request GET:/soarchain/poa/total_clients
+   */
+  queryTotalClients = (params: RequestParams = {}) =>
+    this.request<PoaQueryGetTotalClientsResponse, RpcStatus>({
+      path: `/soarchain/poa/total_clients`,
       method: "GET",
       format: "json",
       ...params,

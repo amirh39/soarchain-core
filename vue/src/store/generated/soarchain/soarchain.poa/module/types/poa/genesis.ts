@@ -4,6 +4,7 @@ import { Client } from "../poa/client";
 import { Challenger } from "../poa/challenger";
 import { Runner } from "../poa/runner";
 import { Guard } from "../poa/guard";
+import { TotalClients } from "../poa/total_clients";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "soarchain.poa";
@@ -14,8 +15,9 @@ export interface GenesisState {
   clientList: Client[];
   challengerList: Challenger[];
   runnerList: Runner[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   guardList: Guard[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  totalClients: TotalClients | undefined;
 }
 
 const baseGenesisState: object = {};
@@ -36,6 +38,12 @@ export const GenesisState = {
     }
     for (const v of message.guardList) {
       Guard.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.totalClients !== undefined) {
+      TotalClients.encode(
+        message.totalClients,
+        writer.uint32(50).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -67,6 +75,9 @@ export const GenesisState = {
           break;
         case 5:
           message.guardList.push(Guard.decode(reader, reader.uint32()));
+          break;
+        case 6:
+          message.totalClients = TotalClients.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -107,6 +118,11 @@ export const GenesisState = {
         message.guardList.push(Guard.fromJSON(e));
       }
     }
+    if (object.totalClients !== undefined && object.totalClients !== null) {
+      message.totalClients = TotalClients.fromJSON(object.totalClients);
+    } else {
+      message.totalClients = undefined;
+    }
     return message;
   },
 
@@ -142,6 +158,10 @@ export const GenesisState = {
     } else {
       obj.guardList = [];
     }
+    message.totalClients !== undefined &&
+      (obj.totalClients = message.totalClients
+        ? TotalClients.toJSON(message.totalClients)
+        : undefined);
     return obj;
   },
 
@@ -175,6 +195,11 @@ export const GenesisState = {
       for (const e of object.guardList) {
         message.guardList.push(Guard.fromPartial(e));
       }
+    }
+    if (object.totalClients !== undefined && object.totalClients !== null) {
+      message.totalClients = TotalClients.fromPartial(object.totalClients);
+    } else {
+      message.totalClients = undefined;
     }
     return message;
   },

@@ -30542,6 +30542,108 @@ paths:
           type: string
       tags:
         - Query
+  '/soarchain/poa/get_challenger_by_address/{address}':
+    get:
+      summary: Queries a list of GetChallengerByAddress items.
+      operationId: SoarchainPoaGetChallengerByAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              challenger:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  address:
+                    type: string
+                  score:
+                    type: string
+                  stakedAmount:
+                    type: string
+                  netEarnings:
+                    type: string
+                  type:
+                    type: string
+                  ipAddr:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/poa/get_client_by_address/{address}':
+    get:
+      summary: Queries a list of GetClientByAddress items.
+      operationId: SoarchainPoaGetClientByAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              client:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  address:
+                    type: string
+                  uniqueId:
+                    type: string
+                  score:
+                    type: string
+                  netEarnings:
+                    type: string
+                  lastTimeChallenged:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /soarchain/poa/guard:
     get:
       summary: Queries a list of Guard items.
@@ -31020,6 +31122,44 @@ paths:
           in: path
           required: true
           type: string
+      tags:
+        - Query
+  /soarchain/poa/total_clients:
+    get:
+      summary: Queries a TotalClients by index.
+      operationId: SoarchainPoaTotalClients
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              TotalClients:
+                type: object
+                properties:
+                  count:
+                    type: string
+                    format: uint64
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
       tags:
         - Query
   /tendermint/spn/monitoringp/connection_channel_id:
@@ -52494,6 +52634,10 @@ definitions:
             type: string
   soarchain.poa.MsgChallengeServiceResponse:
     type: object
+  soarchain.poa.MsgCreateTotalClientsResponse:
+    type: object
+  soarchain.poa.MsgDeleteTotalClientsResponse:
+    type: object
   soarchain.poa.MsgGenChallengerResponse:
     type: object
   soarchain.poa.MsgGenClientResponse:
@@ -52503,6 +52647,8 @@ definitions:
   soarchain.poa.MsgUnregisterChallengerResponse:
     type: object
   soarchain.poa.MsgUnregisterClientResponse:
+    type: object
+  soarchain.poa.MsgUpdateTotalClientsResponse:
     type: object
   soarchain.poa.Params:
     type: object
@@ -52730,6 +52876,26 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  soarchain.poa.QueryGetChallengerByAddressResponse:
+    type: object
+    properties:
+      challenger:
+        type: object
+        properties:
+          index:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          type:
+            type: string
+          ipAddr:
+            type: string
   soarchain.poa.QueryGetChallengerResponse:
     type: object
     properties:
@@ -52749,6 +52915,24 @@ definitions:
           type:
             type: string
           ipAddr:
+            type: string
+  soarchain.poa.QueryGetClientByAddressResponse:
+    type: object
+    properties:
+      client:
+        type: object
+        properties:
+          index:
+            type: string
+          address:
+            type: string
+          uniqueId:
+            type: string
+          score:
+            type: string
+          netEarnings:
+            type: string
+          lastTimeChallenged:
             type: string
   soarchain.poa.QueryGetClientResponse:
     type: object
@@ -52845,6 +53029,17 @@ definitions:
             type: string
           ipAddr:
             type: string
+  soarchain.poa.QueryGetTotalClientsResponse:
+    type: object
+    properties:
+      TotalClients:
+        type: object
+        properties:
+          count:
+            type: string
+            format: uint64
+          creator:
+            type: string
   soarchain.poa.QueryParamsResponse:
     type: object
     properties:
@@ -52866,6 +53061,14 @@ definitions:
       netEarnings:
         type: string
       ipAddr:
+        type: string
+  soarchain.poa.TotalClients:
+    type: object
+    properties:
+      count:
+        type: string
+        format: uint64
+      creator:
         type: string
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object

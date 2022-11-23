@@ -651,6 +651,262 @@ func (m *MsgGenGuardResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgGenGuardResponse proto.InternalMessageInfo
 
+type MsgCreateTotalClients struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Count   uint64 `protobuf:"varint,3,opt,name=count,proto3" json:"count,omitempty"`
+}
+
+func (m *MsgCreateTotalClients) Reset()         { *m = MsgCreateTotalClients{} }
+func (m *MsgCreateTotalClients) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateTotalClients) ProtoMessage()    {}
+func (*MsgCreateTotalClients) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{12}
+}
+func (m *MsgCreateTotalClients) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateTotalClients) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateTotalClients.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateTotalClients) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateTotalClients.Merge(m, src)
+}
+func (m *MsgCreateTotalClients) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateTotalClients) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateTotalClients.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateTotalClients proto.InternalMessageInfo
+
+func (m *MsgCreateTotalClients) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgCreateTotalClients) GetCount() uint64 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+type MsgCreateTotalClientsResponse struct {
+}
+
+func (m *MsgCreateTotalClientsResponse) Reset()         { *m = MsgCreateTotalClientsResponse{} }
+func (m *MsgCreateTotalClientsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateTotalClientsResponse) ProtoMessage()    {}
+func (*MsgCreateTotalClientsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{13}
+}
+func (m *MsgCreateTotalClientsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateTotalClientsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateTotalClientsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateTotalClientsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateTotalClientsResponse.Merge(m, src)
+}
+func (m *MsgCreateTotalClientsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateTotalClientsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateTotalClientsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateTotalClientsResponse proto.InternalMessageInfo
+
+type MsgUpdateTotalClients struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Count   uint64 `protobuf:"varint,3,opt,name=count,proto3" json:"count,omitempty"`
+}
+
+func (m *MsgUpdateTotalClients) Reset()         { *m = MsgUpdateTotalClients{} }
+func (m *MsgUpdateTotalClients) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateTotalClients) ProtoMessage()    {}
+func (*MsgUpdateTotalClients) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{14}
+}
+func (m *MsgUpdateTotalClients) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateTotalClients) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateTotalClients.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateTotalClients) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateTotalClients.Merge(m, src)
+}
+func (m *MsgUpdateTotalClients) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateTotalClients) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateTotalClients.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateTotalClients proto.InternalMessageInfo
+
+func (m *MsgUpdateTotalClients) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgUpdateTotalClients) GetCount() uint64 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+type MsgUpdateTotalClientsResponse struct {
+}
+
+func (m *MsgUpdateTotalClientsResponse) Reset()         { *m = MsgUpdateTotalClientsResponse{} }
+func (m *MsgUpdateTotalClientsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateTotalClientsResponse) ProtoMessage()    {}
+func (*MsgUpdateTotalClientsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{15}
+}
+func (m *MsgUpdateTotalClientsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateTotalClientsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateTotalClientsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateTotalClientsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateTotalClientsResponse.Merge(m, src)
+}
+func (m *MsgUpdateTotalClientsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateTotalClientsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateTotalClientsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateTotalClientsResponse proto.InternalMessageInfo
+
+type MsgDeleteTotalClients struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+}
+
+func (m *MsgDeleteTotalClients) Reset()         { *m = MsgDeleteTotalClients{} }
+func (m *MsgDeleteTotalClients) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteTotalClients) ProtoMessage()    {}
+func (*MsgDeleteTotalClients) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{16}
+}
+func (m *MsgDeleteTotalClients) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteTotalClients) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteTotalClients.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteTotalClients) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteTotalClients.Merge(m, src)
+}
+func (m *MsgDeleteTotalClients) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteTotalClients) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteTotalClients.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteTotalClients proto.InternalMessageInfo
+
+func (m *MsgDeleteTotalClients) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+type MsgDeleteTotalClientsResponse struct {
+}
+
+func (m *MsgDeleteTotalClientsResponse) Reset()         { *m = MsgDeleteTotalClientsResponse{} }
+func (m *MsgDeleteTotalClientsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteTotalClientsResponse) ProtoMessage()    {}
+func (*MsgDeleteTotalClientsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8ac16a0aed23c2e2, []int{17}
+}
+func (m *MsgDeleteTotalClientsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteTotalClientsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteTotalClientsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteTotalClientsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteTotalClientsResponse.Merge(m, src)
+}
+func (m *MsgDeleteTotalClientsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteTotalClientsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteTotalClientsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteTotalClientsResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgGenClient)(nil), "soarchain.poa.MsgGenClient")
 	proto.RegisterType((*MsgGenClientResponse)(nil), "soarchain.poa.MsgGenClientResponse")
@@ -664,47 +920,60 @@ func init() {
 	proto.RegisterType((*MsgUnregisterChallengerResponse)(nil), "soarchain.poa.MsgUnregisterChallengerResponse")
 	proto.RegisterType((*MsgGenGuard)(nil), "soarchain.poa.MsgGenGuard")
 	proto.RegisterType((*MsgGenGuardResponse)(nil), "soarchain.poa.MsgGenGuardResponse")
+	proto.RegisterType((*MsgCreateTotalClients)(nil), "soarchain.poa.MsgCreateTotalClients")
+	proto.RegisterType((*MsgCreateTotalClientsResponse)(nil), "soarchain.poa.MsgCreateTotalClientsResponse")
+	proto.RegisterType((*MsgUpdateTotalClients)(nil), "soarchain.poa.MsgUpdateTotalClients")
+	proto.RegisterType((*MsgUpdateTotalClientsResponse)(nil), "soarchain.poa.MsgUpdateTotalClientsResponse")
+	proto.RegisterType((*MsgDeleteTotalClients)(nil), "soarchain.poa.MsgDeleteTotalClients")
+	proto.RegisterType((*MsgDeleteTotalClientsResponse)(nil), "soarchain.poa.MsgDeleteTotalClientsResponse")
 }
 
 func init() { proto.RegisterFile("poa/tx.proto", fileDescriptor_8ac16a0aed23c2e2) }
 
 var fileDescriptor_8ac16a0aed23c2e2 = []byte{
-	// 559 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x95, 0xcf, 0x6e, 0xd3, 0x40,
-	0x10, 0xc6, 0xe3, 0xa4, 0x7f, 0x92, 0x49, 0x2b, 0xc2, 0x92, 0x82, 0xe5, 0x0a, 0xb7, 0x18, 0x09,
-	0x2a, 0x84, 0x12, 0x29, 0x3c, 0x41, 0x41, 0xa8, 0x0a, 0x28, 0x16, 0x4a, 0x41, 0x0a, 0x70, 0x72,
-	0x92, 0xc1, 0x8d, 0x08, 0x6b, 0x6b, 0xd7, 0x89, 0xda, 0x27, 0xe0, 0xca, 0xbb, 0xf0, 0x00, 0x5c,
-	0x39, 0xf6, 0xc8, 0x11, 0x25, 0x2f, 0x82, 0xbc, 0xeb, 0xdd, 0x38, 0x89, 0xe3, 0xf6, 0xc0, 0x2d,
-	0x33, 0xdf, 0xec, 0xef, 0xdb, 0x9d, 0xc9, 0xc8, 0xb0, 0x17, 0x06, 0x5e, 0x33, 0xba, 0x6c, 0x84,
-	0x2c, 0x88, 0x02, 0xb2, 0xcf, 0x03, 0x8f, 0x0d, 0x2e, 0xbc, 0x11, 0x6d, 0x84, 0x81, 0xe7, 0xbc,
-	0x87, 0xbd, 0x0e, 0xf7, 0xcf, 0x90, 0xbe, 0x1a, 0x8f, 0x90, 0x46, 0xc4, 0x84, 0xdd, 0x01, 0x43,
-	0x2f, 0x0a, 0x98, 0x69, 0x1c, 0x1b, 0x27, 0x95, 0xae, 0x0a, 0x63, 0xc5, 0x1b, 0x0e, 0x19, 0x72,
-	0x6e, 0x16, 0xa5, 0x92, 0x84, 0xa4, 0x06, 0xa5, 0x2f, 0x88, 0x66, 0x49, 0x64, 0xe3, 0x9f, 0xce,
-	0x7d, 0xa8, 0xa7, 0xa9, 0x5d, 0xe4, 0x61, 0x40, 0x39, 0x3a, 0x2e, 0xd4, 0x92, 0xfc, 0x85, 0x37,
-	0x1e, 0x23, 0xf5, 0x91, 0xe5, 0x38, 0x1e, 0x43, 0x95, 0x47, 0xde, 0x57, 0x3c, 0xfd, 0x16, 0x4c,
-	0x68, 0x94, 0xb8, 0xa6, 0x53, 0x8e, 0x05, 0xe6, 0x2a, 0x4f, 0x7b, 0x7d, 0x37, 0xe0, 0x5e, 0x87,
-	0xfb, 0x5a, 0x39, 0x47, 0x36, 0x1d, 0x0d, 0x30, 0xc7, 0xef, 0x39, 0xdc, 0x1d, 0xa8, 0x6a, 0x3c,
-	0x5d, 0x7a, 0xeb, 0xba, 0x40, 0x4e, 0xe0, 0x8e, 0x4e, 0x76, 0x91, 0x4f, 0xc6, 0x51, 0xd2, 0x81,
-	0xd5, 0xb4, 0xf3, 0x10, 0x0e, 0x33, 0x2e, 0xa2, 0x2f, 0xfa, 0x59, 0xdc, 0xf3, 0x03, 0x65, 0xe8,
-	0x8f, 0x78, 0x84, 0xec, 0xbf, 0x4e, 0x42, 0x7a, 0xaf, 0xc2, 0xb5, 0xf7, 0x6b, 0x78, 0xb0, 0x2c,
-	0xdf, 0x66, 0x2e, 0x89, 0x4b, 0x71, 0xe1, 0xf2, 0x08, 0x8e, 0x36, 0x60, 0xb4, 0xd3, 0xaf, 0x22,
-	0x54, 0xe5, 0xac, 0xce, 0x26, 0x1e, 0x1b, 0xe6, 0x8f, 0xdd, 0x8f, 0x4b, 0xde, 0x4d, 0xfa, 0x6f,
-	0xf1, 0x4a, 0x8d, 0x3d, 0x95, 0x8a, 0xcf, 0x4e, 0x5b, 0xbd, 0x78, 0x10, 0xc9, 0x53, 0x55, 0x48,
-	0x2c, 0x28, 0x4f, 0x5b, 0xbd, 0xf3, 0xf8, 0x2f, 0x62, 0x6e, 0x09, 0x49, 0xc7, 0xa4, 0x0e, 0xdb,
-	0xd3, 0x56, 0xaf, 0x1d, 0x9a, 0xdb, 0x42, 0x90, 0x81, 0x64, 0xb9, 0x82, 0xb5, 0xa3, 0x58, 0xee,
-	0x82, 0xe5, 0x4a, 0xd6, 0xae, 0x62, 0xb9, 0x29, 0x96, 0xdb, 0x0e, 0xcd, 0xb2, 0x62, 0xb9, 0xed,
-	0x90, 0xd8, 0x00, 0x6c, 0x42, 0x29, 0x32, 0x81, 0xab, 0x08, 0x29, 0x95, 0x89, 0x5f, 0x26, 0x23,
-	0x09, 0x05, 0xf9, 0xb2, 0x54, 0x2a, 0xf6, 0x94, 0x61, 0x3b, 0x34, 0xab, 0xd2, 0x53, 0xc5, 0xce,
-	0x81, 0xf8, 0x9f, 0xa8, 0x06, 0xaa, 0xc6, 0xb6, 0x7e, 0x6e, 0x41, 0xa9, 0xc3, 0x7d, 0xd2, 0x81,
-	0xca, 0x62, 0x8d, 0x0f, 0x1b, 0x4b, 0x6b, 0xde, 0x48, 0x6f, 0xa3, 0xf5, 0x38, 0x47, 0x54, 0x58,
-	0xf2, 0x11, 0xf6, 0x97, 0xf7, 0xf4, 0x28, 0xfb, 0x94, 0x2e, 0xb0, 0x9e, 0xde, 0x50, 0xa0, 0xd1,
-	0x7d, 0xa8, 0xad, 0x6d, 0xa5, 0xb3, 0x7e, 0x78, 0xb5, 0xc6, 0x7a, 0x76, 0x73, 0x4d, 0xda, 0x63,
-	0x6d, 0xa3, 0x32, 0x3c, 0x56, 0x6b, 0xb2, 0x3c, 0x36, 0x2d, 0x0f, 0xa1, 0x50, 0xcf, 0xdc, 0x9c,
-	0x27, 0xb9, 0x8c, 0x45, 0xc3, 0x1a, 0xb7, 0xab, 0xd3, 0x7e, 0x6f, 0xa0, 0xac, 0xd7, 0xc7, 0xca,
-	0x6c, 0xb6, 0xd0, 0x2c, 0x67, 0xb3, 0xa6, 0x58, 0x2f, 0x9b, 0xbf, 0x67, 0xb6, 0x71, 0x3d, 0xb3,
-	0x8d, 0xbf, 0x33, 0xdb, 0xf8, 0x31, 0xb7, 0x0b, 0xd7, 0x73, 0xbb, 0xf0, 0x67, 0x6e, 0x17, 0x3e,
-	0x1d, 0xe8, 0xc3, 0xcd, 0xcb, 0xa6, 0xf8, 0x74, 0x5c, 0x85, 0xc8, 0xfb, 0x3b, 0xe2, 0xf3, 0xf1,
-	0xe2, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x56, 0x43, 0x61, 0x17, 0x4e, 0x06, 0x00, 0x00,
+	// 668 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x96, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0xc7, 0xeb, 0x7e, 0x77, 0xda, 0x8a, 0x60, 0x12, 0x6a, 0xb9, 0xaa, 0x53, 0x0c, 0x82, 0x0a,
+	0x55, 0x89, 0x08, 0x4f, 0x50, 0x3e, 0x14, 0x05, 0x14, 0x0b, 0xa5, 0xad, 0x14, 0xe0, 0x80, 0x1c,
+	0x67, 0x71, 0x22, 0x8c, 0x6d, 0xed, 0x3a, 0x51, 0xfb, 0x04, 0x5c, 0x79, 0x23, 0xae, 0x1c, 0x7b,
+	0xe4, 0x88, 0x92, 0x27, 0xe0, 0x0d, 0xd0, 0xee, 0xda, 0x1b, 0xc7, 0xde, 0xb8, 0x39, 0xf4, 0x96,
+	0xf9, 0xd8, 0xff, 0xcf, 0x3b, 0xb3, 0x33, 0x0a, 0xec, 0x85, 0x81, 0x5d, 0x8f, 0xae, 0x6a, 0x21,
+	0x0e, 0xa2, 0x40, 0xdd, 0x27, 0x81, 0x8d, 0x9d, 0x81, 0x3d, 0xf4, 0x6b, 0x61, 0x60, 0xeb, 0x07,
+	0x2c, 0x18, 0x44, 0xb6, 0xf7, 0xc5, 0xf1, 0x86, 0xc8, 0x8f, 0x08, 0xcf, 0x33, 0x2f, 0x60, 0xaf,
+	0x4d, 0xdc, 0x26, 0xf2, 0x5f, 0x33, 0xb7, 0xaa, 0xc1, 0x96, 0x83, 0x91, 0x1d, 0x05, 0x58, 0x53,
+	0x8e, 0x95, 0x93, 0x9d, 0x4e, 0x62, 0xd2, 0x88, 0xdd, 0xef, 0x63, 0x44, 0x88, 0xb6, 0xca, 0x23,
+	0xb1, 0xa9, 0x96, 0x60, 0xed, 0x2b, 0x42, 0xda, 0x1a, 0xf3, 0xd2, 0x9f, 0xe6, 0x43, 0x28, 0xa7,
+	0x55, 0x3b, 0x88, 0x84, 0x81, 0x4f, 0x90, 0x69, 0x41, 0x29, 0xf6, 0x0f, 0x6c, 0xcf, 0x43, 0xbe,
+	0x8b, 0x70, 0x01, 0xf1, 0x18, 0x76, 0x49, 0x64, 0x7f, 0x43, 0x67, 0xdf, 0x83, 0x91, 0x1f, 0xc5,
+	0xd4, 0xb4, 0xcb, 0xd4, 0x41, 0xcb, 0xea, 0x09, 0xd6, 0x0f, 0x05, 0x1e, 0xb4, 0x89, 0x2b, 0x22,
+	0xe7, 0x08, 0x8f, 0x87, 0x0e, 0x2a, 0xe0, 0x9d, 0xc2, 0x7d, 0x27, 0xc9, 0x46, 0x67, 0x73, 0x77,
+	0xcd, 0x07, 0xd4, 0x13, 0xb8, 0x27, 0x9c, 0x1d, 0x44, 0x46, 0x5e, 0x14, 0x57, 0x20, 0xeb, 0x36,
+	0x8f, 0xe0, 0x50, 0xf2, 0x21, 0xe2, 0x43, 0x3f, 0xb3, 0xef, 0xbc, 0xf4, 0x31, 0x72, 0x87, 0x24,
+	0x42, 0xf8, 0x4e, 0x3b, 0xc1, 0xd9, 0x59, 0x71, 0xc1, 0x7e, 0x0b, 0x07, 0xf3, 0xe1, 0x65, 0xfa,
+	0x12, 0x53, 0x56, 0x67, 0x94, 0x47, 0x50, 0x5d, 0x20, 0x23, 0x48, 0xbf, 0x56, 0x61, 0x97, 0xf7,
+	0xaa, 0x39, 0xb2, 0x71, 0xbf, 0xb8, 0xed, 0x2e, 0x4d, 0xf9, 0x30, 0xea, 0xbd, 0x47, 0xd7, 0x49,
+	0xdb, 0x53, 0x2e, 0x7a, 0x76, 0xdc, 0xe8, 0xd2, 0x46, 0xc4, 0x57, 0x4d, 0x4c, 0x55, 0x87, 0xed,
+	0x71, 0xa3, 0x7b, 0x4e, 0x9f, 0x88, 0xb6, 0xce, 0x42, 0xc2, 0x56, 0xcb, 0xb0, 0x31, 0x6e, 0x74,
+	0x5b, 0xa1, 0xb6, 0xc1, 0x02, 0xdc, 0xe0, 0x5a, 0x16, 0xd3, 0xda, 0x4c, 0xb4, 0xac, 0x99, 0x96,
+	0xc5, 0xb5, 0xb6, 0x12, 0x2d, 0x2b, 0xa5, 0x65, 0xb5, 0x42, 0x6d, 0x3b, 0xd1, 0xb2, 0x5a, 0xa1,
+	0x6a, 0x00, 0xe0, 0x91, 0xef, 0x23, 0xcc, 0xe4, 0x76, 0x58, 0x28, 0xe5, 0xa1, 0x37, 0xe3, 0x16,
+	0x17, 0x05, 0x7e, 0xb3, 0x94, 0x8b, 0x32, 0xb9, 0xd9, 0x0a, 0xb5, 0x5d, 0xce, 0x4c, 0x6c, 0xb3,
+	0xc2, 0xde, 0x49, 0x52, 0x40, 0x51, 0xd8, 0x26, 0x54, 0xe8, 0xeb, 0xa2, 0xc5, 0x43, 0x17, 0x74,
+	0xc2, 0x79, 0x8b, 0x49, 0x41, 0x85, 0xcb, 0xb0, 0xe1, 0xb0, 0x91, 0xa2, 0xd5, 0x5b, 0xef, 0x70,
+	0xc3, 0xac, 0xc2, 0x91, 0x54, 0x28, 0x43, 0xba, 0x0c, 0xfb, 0x77, 0x43, 0xca, 0x0b, 0x09, 0xd2,
+	0x0b, 0x46, 0x7a, 0x83, 0x3c, 0xb4, 0x2c, 0x29, 0xd6, 0xcc, 0x1f, 0x49, 0x34, 0x1b, 0xff, 0x36,
+	0x61, 0xad, 0x4d, 0x5c, 0xb5, 0x0d, 0x3b, 0xb3, 0x75, 0x77, 0x58, 0x9b, 0xdb, 0x93, 0xb5, 0xf4,
+	0xd6, 0xd2, 0x1f, 0x17, 0x04, 0x13, 0x59, 0xf5, 0x23, 0xec, 0xcf, 0xef, 0xb3, 0xaa, 0xfc, 0x94,
+	0x48, 0xd0, 0x9f, 0xdd, 0x92, 0x20, 0xa4, 0x7b, 0x50, 0xca, 0x6d, 0x2f, 0x33, 0x7f, 0x38, 0x9b,
+	0xa3, 0x3f, 0xbf, 0x3d, 0x27, 0xcd, 0xc8, 0x6d, 0x1e, 0x09, 0x23, 0x9b, 0x23, 0x63, 0x2c, 0x5a,
+	0x32, 0xaa, 0x0f, 0x65, 0xe9, 0x86, 0x79, 0x5a, 0xa8, 0x31, 0x2b, 0x58, 0x6d, 0xb9, 0x3c, 0xc1,
+	0x7b, 0x07, 0xdb, 0x62, 0xcd, 0xe8, 0xd2, 0x62, 0xb3, 0x98, 0x6e, 0x2e, 0x8e, 0x09, 0xad, 0x01,
+	0xa8, 0x92, 0xd1, 0x7a, 0x22, 0xa9, 0x70, 0x2e, 0x4b, 0x3f, 0x5d, 0x26, 0x2b, 0x4d, 0x92, 0x8c,
+	0x96, 0x84, 0x94, 0xcf, 0x92, 0x91, 0x16, 0x4f, 0x17, 0x25, 0x49, 0x46, 0x4b, 0x42, 0xca, 0x67,
+	0xc9, 0x48, 0x8b, 0x67, 0xee, 0x55, 0xfd, 0xf7, 0xc4, 0x50, 0x6e, 0x26, 0x86, 0xf2, 0x77, 0x62,
+	0x28, 0x3f, 0xa7, 0xc6, 0xca, 0xcd, 0xd4, 0x58, 0xf9, 0x33, 0x35, 0x56, 0x3e, 0x55, 0x84, 0x4c,
+	0xfd, 0xaa, 0xce, 0xfe, 0x9c, 0x5c, 0x87, 0x88, 0xf4, 0x36, 0xd9, 0xbf, 0x92, 0x97, 0xff, 0x03,
+	0x00, 0x00, 0xff, 0xff, 0x77, 0xd3, 0xff, 0x22, 0xcd, 0x08, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -725,6 +994,9 @@ type MsgClient interface {
 	UnregisterClient(ctx context.Context, in *MsgUnregisterClient, opts ...grpc.CallOption) (*MsgUnregisterClientResponse, error)
 	UnregisterChallenger(ctx context.Context, in *MsgUnregisterChallenger, opts ...grpc.CallOption) (*MsgUnregisterChallengerResponse, error)
 	GenGuard(ctx context.Context, in *MsgGenGuard, opts ...grpc.CallOption) (*MsgGenGuardResponse, error)
+	CreateTotalClients(ctx context.Context, in *MsgCreateTotalClients, opts ...grpc.CallOption) (*MsgCreateTotalClientsResponse, error)
+	UpdateTotalClients(ctx context.Context, in *MsgUpdateTotalClients, opts ...grpc.CallOption) (*MsgUpdateTotalClientsResponse, error)
+	DeleteTotalClients(ctx context.Context, in *MsgDeleteTotalClients, opts ...grpc.CallOption) (*MsgDeleteTotalClientsResponse, error)
 }
 
 type msgClient struct {
@@ -789,6 +1061,33 @@ func (c *msgClient) GenGuard(ctx context.Context, in *MsgGenGuard, opts ...grpc.
 	return out, nil
 }
 
+func (c *msgClient) CreateTotalClients(ctx context.Context, in *MsgCreateTotalClients, opts ...grpc.CallOption) (*MsgCreateTotalClientsResponse, error) {
+	out := new(MsgCreateTotalClientsResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.poa.Msg/CreateTotalClients", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateTotalClients(ctx context.Context, in *MsgUpdateTotalClients, opts ...grpc.CallOption) (*MsgUpdateTotalClientsResponse, error) {
+	out := new(MsgUpdateTotalClientsResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.poa.Msg/UpdateTotalClients", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteTotalClients(ctx context.Context, in *MsgDeleteTotalClients, opts ...grpc.CallOption) (*MsgDeleteTotalClientsResponse, error) {
+	out := new(MsgDeleteTotalClientsResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.poa.Msg/DeleteTotalClients", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	GenClient(context.Context, *MsgGenClient) (*MsgGenClientResponse, error)
@@ -797,6 +1096,9 @@ type MsgServer interface {
 	UnregisterClient(context.Context, *MsgUnregisterClient) (*MsgUnregisterClientResponse, error)
 	UnregisterChallenger(context.Context, *MsgUnregisterChallenger) (*MsgUnregisterChallengerResponse, error)
 	GenGuard(context.Context, *MsgGenGuard) (*MsgGenGuardResponse, error)
+	CreateTotalClients(context.Context, *MsgCreateTotalClients) (*MsgCreateTotalClientsResponse, error)
+	UpdateTotalClients(context.Context, *MsgUpdateTotalClients) (*MsgUpdateTotalClientsResponse, error)
+	DeleteTotalClients(context.Context, *MsgDeleteTotalClients) (*MsgDeleteTotalClientsResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -820,6 +1122,15 @@ func (*UnimplementedMsgServer) UnregisterChallenger(ctx context.Context, req *Ms
 }
 func (*UnimplementedMsgServer) GenGuard(ctx context.Context, req *MsgGenGuard) (*MsgGenGuardResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenGuard not implemented")
+}
+func (*UnimplementedMsgServer) CreateTotalClients(ctx context.Context, req *MsgCreateTotalClients) (*MsgCreateTotalClientsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTotalClients not implemented")
+}
+func (*UnimplementedMsgServer) UpdateTotalClients(ctx context.Context, req *MsgUpdateTotalClients) (*MsgUpdateTotalClientsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTotalClients not implemented")
+}
+func (*UnimplementedMsgServer) DeleteTotalClients(ctx context.Context, req *MsgDeleteTotalClients) (*MsgDeleteTotalClientsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteTotalClients not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -934,6 +1245,60 @@ func _Msg_GenGuard_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_CreateTotalClients_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateTotalClients)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateTotalClients(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.poa.Msg/CreateTotalClients",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateTotalClients(ctx, req.(*MsgCreateTotalClients))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateTotalClients_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateTotalClients)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateTotalClients(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.poa.Msg/UpdateTotalClients",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateTotalClients(ctx, req.(*MsgUpdateTotalClients))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteTotalClients_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteTotalClients)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteTotalClients(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.poa.Msg/DeleteTotalClients",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteTotalClients(ctx, req.(*MsgDeleteTotalClients))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "soarchain.poa.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -961,6 +1326,18 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GenGuard",
 			Handler:    _Msg_GenGuard_Handler,
+		},
+		{
+			MethodName: "CreateTotalClients",
+			Handler:    _Msg_CreateTotalClients_Handler,
+		},
+		{
+			MethodName: "UpdateTotalClients",
+			Handler:    _Msg_UpdateTotalClients_Handler,
+		},
+		{
+			MethodName: "DeleteTotalClients",
+			Handler:    _Msg_DeleteTotalClients_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1411,6 +1788,175 @@ func (m *MsgGenGuardResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgCreateTotalClients) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateTotalClients) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateTotalClients) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Count != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Count))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateTotalClientsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateTotalClientsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateTotalClientsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateTotalClients) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateTotalClients) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateTotalClients) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Count != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Count))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateTotalClientsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateTotalClientsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateTotalClientsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteTotalClients) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteTotalClients) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteTotalClients) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteTotalClientsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteTotalClientsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteTotalClientsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -1618,6 +2164,78 @@ func (m *MsgGenGuard) Size() (n int) {
 }
 
 func (m *MsgGenGuardResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgCreateTotalClients) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Count != 0 {
+		n += 1 + sovTx(uint64(m.Count))
+	}
+	return n
+}
+
+func (m *MsgCreateTotalClientsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgUpdateTotalClients) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Count != 0 {
+		n += 1 + sovTx(uint64(m.Count))
+	}
+	return n
+}
+
+func (m *MsgUpdateTotalClientsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgDeleteTotalClients) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgDeleteTotalClientsResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2977,6 +3595,440 @@ func (m *MsgGenGuardResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgGenGuardResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateTotalClients) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateTotalClients: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateTotalClients: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Count", wireType)
+			}
+			m.Count = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Count |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateTotalClientsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateTotalClientsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateTotalClientsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateTotalClients) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateTotalClients: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateTotalClients: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Count", wireType)
+			}
+			m.Count = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Count |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateTotalClientsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateTotalClientsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateTotalClientsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteTotalClients) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteTotalClients: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteTotalClients: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteTotalClientsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteTotalClientsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteTotalClientsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

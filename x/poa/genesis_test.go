@@ -3,11 +3,12 @@ package poa_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
 	"soarchain/x/poa"
 	"soarchain/x/poa/types"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestGenesis(t *testing.T) {
@@ -46,6 +47,9 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		TotalClients: types.TotalClients{
+			Count: 47,
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -61,5 +65,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.ChallengerList, got.ChallengerList)
 	require.ElementsMatch(t, genesisState.RunnerList, got.RunnerList)
 	require.ElementsMatch(t, genesisState.GuardList, got.GuardList)
+	require.Equal(t, genesisState.TotalClients, got.TotalClients)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

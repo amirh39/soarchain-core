@@ -9,6 +9,7 @@ import {
 import { Challenger } from "../poa/challenger";
 import { Runner } from "../poa/runner";
 import { Guard } from "../poa/guard";
+import { TotalClients } from "../poa/total_clients";
 
 export const protobufPackage = "soarchain.poa";
 
@@ -103,6 +104,12 @@ export interface QueryGetChallengerByAddressRequest {
 
 export interface QueryGetChallengerByAddressResponse {
   challenger: Challenger | undefined;
+}
+
+export interface QueryGetTotalClientsRequest {}
+
+export interface QueryGetTotalClientsResponse {
+  TotalClients: TotalClients | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -1618,6 +1625,133 @@ export const QueryGetChallengerByAddressResponse = {
   },
 };
 
+const baseQueryGetTotalClientsRequest: object = {};
+
+export const QueryGetTotalClientsRequest = {
+  encode(
+    _: QueryGetTotalClientsRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetTotalClientsRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTotalClientsRequest,
+    } as QueryGetTotalClientsRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetTotalClientsRequest {
+    const message = {
+      ...baseQueryGetTotalClientsRequest,
+    } as QueryGetTotalClientsRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetTotalClientsRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<QueryGetTotalClientsRequest>
+  ): QueryGetTotalClientsRequest {
+    const message = {
+      ...baseQueryGetTotalClientsRequest,
+    } as QueryGetTotalClientsRequest;
+    return message;
+  },
+};
+
+const baseQueryGetTotalClientsResponse: object = {};
+
+export const QueryGetTotalClientsResponse = {
+  encode(
+    message: QueryGetTotalClientsResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.TotalClients !== undefined) {
+      TotalClients.encode(
+        message.TotalClients,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetTotalClientsResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTotalClientsResponse,
+    } as QueryGetTotalClientsResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.TotalClients = TotalClients.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetTotalClientsResponse {
+    const message = {
+      ...baseQueryGetTotalClientsResponse,
+    } as QueryGetTotalClientsResponse;
+    if (object.TotalClients !== undefined && object.TotalClients !== null) {
+      message.TotalClients = TotalClients.fromJSON(object.TotalClients);
+    } else {
+      message.TotalClients = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetTotalClientsResponse): unknown {
+    const obj: any = {};
+    message.TotalClients !== undefined &&
+      (obj.TotalClients = message.TotalClients
+        ? TotalClients.toJSON(message.TotalClients)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetTotalClientsResponse>
+  ): QueryGetTotalClientsResponse {
+    const message = {
+      ...baseQueryGetTotalClientsResponse,
+    } as QueryGetTotalClientsResponse;
+    if (object.TotalClients !== undefined && object.TotalClients !== null) {
+      message.TotalClients = TotalClients.fromPartial(object.TotalClients);
+    } else {
+      message.TotalClients = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1650,6 +1784,10 @@ export interface Query {
   GetChallengerByAddress(
     request: QueryGetChallengerByAddressRequest
   ): Promise<QueryGetChallengerByAddressResponse>;
+  /** Queries a TotalClients by index. */
+  TotalClients(
+    request: QueryGetTotalClientsRequest
+  ): Promise<QueryGetTotalClientsResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1760,6 +1898,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetChallengerByAddressResponse.decode(new Reader(data))
+    );
+  }
+
+  TotalClients(
+    request: QueryGetTotalClientsRequest
+  ): Promise<QueryGetTotalClientsResponse> {
+    const data = QueryGetTotalClientsRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Query",
+      "TotalClients",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetTotalClientsResponse.decode(new Reader(data))
     );
   }
 }

@@ -1,5 +1,6 @@
 /* eslint-disable */
-import { Reader, Writer } from "protobufjs/minimal";
+import { Reader, util, configure, Writer } from "protobufjs/minimal";
+import * as Long from "long";
 
 export const protobufPackage = "soarchain.poa";
 
@@ -56,6 +57,26 @@ export interface MsgGenGuard {
 }
 
 export interface MsgGenGuardResponse {}
+
+export interface MsgCreateTotalClients {
+  creator: string;
+  count: number;
+}
+
+export interface MsgCreateTotalClientsResponse {}
+
+export interface MsgUpdateTotalClients {
+  creator: string;
+  count: number;
+}
+
+export interface MsgUpdateTotalClientsResponse {}
+
+export interface MsgDeleteTotalClients {
+  creator: string;
+}
+
+export interface MsgDeleteTotalClientsResponse {}
 
 const baseMsgGenClient: object = { creator: "", address: "", fee: "" };
 
@@ -1027,6 +1048,376 @@ export const MsgGenGuardResponse = {
   },
 };
 
+const baseMsgCreateTotalClients: object = { creator: "", count: 0 };
+
+export const MsgCreateTotalClients = {
+  encode(
+    message: MsgCreateTotalClients,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.count !== 0) {
+      writer.uint32(24).uint64(message.count);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateTotalClients {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreateTotalClients } as MsgCreateTotalClients;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 3:
+          message.count = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateTotalClients {
+    const message = { ...baseMsgCreateTotalClients } as MsgCreateTotalClients;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.count !== undefined && object.count !== null) {
+      message.count = Number(object.count);
+    } else {
+      message.count = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateTotalClients): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.count !== undefined && (obj.count = message.count);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateTotalClients>
+  ): MsgCreateTotalClients {
+    const message = { ...baseMsgCreateTotalClients } as MsgCreateTotalClients;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.count !== undefined && object.count !== null) {
+      message.count = object.count;
+    } else {
+      message.count = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateTotalClientsResponse: object = {};
+
+export const MsgCreateTotalClientsResponse = {
+  encode(
+    _: MsgCreateTotalClientsResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateTotalClientsResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateTotalClientsResponse,
+    } as MsgCreateTotalClientsResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateTotalClientsResponse {
+    const message = {
+      ...baseMsgCreateTotalClientsResponse,
+    } as MsgCreateTotalClientsResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCreateTotalClientsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCreateTotalClientsResponse>
+  ): MsgCreateTotalClientsResponse {
+    const message = {
+      ...baseMsgCreateTotalClientsResponse,
+    } as MsgCreateTotalClientsResponse;
+    return message;
+  },
+};
+
+const baseMsgUpdateTotalClients: object = { creator: "", count: 0 };
+
+export const MsgUpdateTotalClients = {
+  encode(
+    message: MsgUpdateTotalClients,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.count !== 0) {
+      writer.uint32(24).uint64(message.count);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgUpdateTotalClients {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgUpdateTotalClients } as MsgUpdateTotalClients;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 3:
+          message.count = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateTotalClients {
+    const message = { ...baseMsgUpdateTotalClients } as MsgUpdateTotalClients;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.count !== undefined && object.count !== null) {
+      message.count = Number(object.count);
+    } else {
+      message.count = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgUpdateTotalClients): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.count !== undefined && (obj.count = message.count);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgUpdateTotalClients>
+  ): MsgUpdateTotalClients {
+    const message = { ...baseMsgUpdateTotalClients } as MsgUpdateTotalClients;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.count !== undefined && object.count !== null) {
+      message.count = object.count;
+    } else {
+      message.count = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgUpdateTotalClientsResponse: object = {};
+
+export const MsgUpdateTotalClientsResponse = {
+  encode(
+    _: MsgUpdateTotalClientsResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUpdateTotalClientsResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUpdateTotalClientsResponse,
+    } as MsgUpdateTotalClientsResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateTotalClientsResponse {
+    const message = {
+      ...baseMsgUpdateTotalClientsResponse,
+    } as MsgUpdateTotalClientsResponse;
+    return message;
+  },
+
+  toJSON(_: MsgUpdateTotalClientsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgUpdateTotalClientsResponse>
+  ): MsgUpdateTotalClientsResponse {
+    const message = {
+      ...baseMsgUpdateTotalClientsResponse,
+    } as MsgUpdateTotalClientsResponse;
+    return message;
+  },
+};
+
+const baseMsgDeleteTotalClients: object = { creator: "" };
+
+export const MsgDeleteTotalClients = {
+  encode(
+    message: MsgDeleteTotalClients,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgDeleteTotalClients {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgDeleteTotalClients } as MsgDeleteTotalClients;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeleteTotalClients {
+    const message = { ...baseMsgDeleteTotalClients } as MsgDeleteTotalClients;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgDeleteTotalClients): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgDeleteTotalClients>
+  ): MsgDeleteTotalClients {
+    const message = { ...baseMsgDeleteTotalClients } as MsgDeleteTotalClients;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgDeleteTotalClientsResponse: object = {};
+
+export const MsgDeleteTotalClientsResponse = {
+  encode(
+    _: MsgDeleteTotalClientsResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgDeleteTotalClientsResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgDeleteTotalClientsResponse,
+    } as MsgDeleteTotalClientsResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeleteTotalClientsResponse {
+    const message = {
+      ...baseMsgDeleteTotalClientsResponse,
+    } as MsgDeleteTotalClientsResponse;
+    return message;
+  },
+
+  toJSON(_: MsgDeleteTotalClientsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgDeleteTotalClientsResponse>
+  ): MsgDeleteTotalClientsResponse {
+    const message = {
+      ...baseMsgDeleteTotalClientsResponse,
+    } as MsgDeleteTotalClientsResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -1040,8 +1431,17 @@ export interface Msg {
   UnregisterChallenger(
     request: MsgUnregisterChallenger
   ): Promise<MsgUnregisterChallengerResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   GenGuard(request: MsgGenGuard): Promise<MsgGenGuardResponse>;
+  CreateTotalClients(
+    request: MsgCreateTotalClients
+  ): Promise<MsgCreateTotalClientsResponse>;
+  UpdateTotalClients(
+    request: MsgUpdateTotalClients
+  ): Promise<MsgUpdateTotalClientsResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  DeleteTotalClients(
+    request: MsgDeleteTotalClients
+  ): Promise<MsgDeleteTotalClientsResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1116,6 +1516,48 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("soarchain.poa.Msg", "GenGuard", data);
     return promise.then((data) => MsgGenGuardResponse.decode(new Reader(data)));
   }
+
+  CreateTotalClients(
+    request: MsgCreateTotalClients
+  ): Promise<MsgCreateTotalClientsResponse> {
+    const data = MsgCreateTotalClients.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Msg",
+      "CreateTotalClients",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateTotalClientsResponse.decode(new Reader(data))
+    );
+  }
+
+  UpdateTotalClients(
+    request: MsgUpdateTotalClients
+  ): Promise<MsgUpdateTotalClientsResponse> {
+    const data = MsgUpdateTotalClients.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Msg",
+      "UpdateTotalClients",
+      data
+    );
+    return promise.then((data) =>
+      MsgUpdateTotalClientsResponse.decode(new Reader(data))
+    );
+  }
+
+  DeleteTotalClients(
+    request: MsgDeleteTotalClients
+  ): Promise<MsgDeleteTotalClientsResponse> {
+    const data = MsgDeleteTotalClients.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Msg",
+      "DeleteTotalClients",
+      data
+    );
+    return promise.then((data) =>
+      MsgDeleteTotalClientsResponse.decode(new Reader(data))
+    );
+  }
 }
 
 interface Rpc {
@@ -1125,6 +1567,16 @@ interface Rpc {
     data: Uint8Array
   ): Promise<Uint8Array>;
 }
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
@@ -1136,3 +1588,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}

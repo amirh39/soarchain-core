@@ -48,6 +48,18 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgGenGuard int = 100
 
+	opWeightMsgCreateTotalClients = "op_weight_msg_total_clients"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateTotalClients int = 100
+
+	opWeightMsgUpdateTotalClients = "op_weight_msg_total_clients"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateTotalClients int = 100
+
+	opWeightMsgDeleteTotalClients = "op_weight_msg_total_clients"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteTotalClients int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -146,6 +158,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgGenGuard,
 		poasimulation.SimulateMsgGenGuard(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateTotalClients int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateTotalClients, &weightMsgCreateTotalClients, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateTotalClients = defaultWeightMsgCreateTotalClients
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateTotalClients,
+		poasimulation.SimulateMsgCreateTotalClients(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateTotalClients int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateTotalClients, &weightMsgUpdateTotalClients, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateTotalClients = defaultWeightMsgUpdateTotalClients
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateTotalClients,
+		poasimulation.SimulateMsgUpdateTotalClients(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteTotalClients int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteTotalClients, &weightMsgDeleteTotalClients, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteTotalClients = defaultWeightMsgDeleteTotalClients
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteTotalClients,
+		poasimulation.SimulateMsgDeleteTotalClients(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

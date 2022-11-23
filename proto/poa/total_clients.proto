@@ -1,0 +1,9 @@
+syntax = "proto3";
+package soarchain.poa;
+
+option go_package = "soarchain/x/poa/types";
+
+message TotalClients {
+  uint64 count = 1; 
+  string creator = 2;
+}

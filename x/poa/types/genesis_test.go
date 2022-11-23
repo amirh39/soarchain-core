@@ -3,8 +3,9 @@ package types_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"soarchain/x/poa/types"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestGenesisState_Validate(t *testing.T) {
@@ -53,6 +54,9 @@ func TestGenesisState_Validate(t *testing.T) {
 					{
 						Index: "1",
 					},
+				},
+				TotalClients: types.TotalClients{
+					Count: 6,
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},

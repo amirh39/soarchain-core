@@ -56,5 +56,14 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	}
 
 	k.SetClient(ctx, newClient)
+
+	// Update Client Count
+	clientCount, isFound := k.Keeper.GetTotalClients(ctx)
+	if !isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Client count couldn't be fetched!")
+	}
+	clientCount.Count++
+	k.SetTotalClients(ctx, clientCount)
+
 	return &types.MsgGenClientResponse{}, nil
 }

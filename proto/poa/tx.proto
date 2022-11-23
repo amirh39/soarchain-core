@@ -1,6 +1,7 @@
 syntax = "proto3";
 package soarchain.poa;
 
+import "poa/total_clients.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "soarchain/x/poa/types";
@@ -13,6 +14,9 @@ service Msg {
   rpc UnregisterClient(MsgUnregisterClient) returns (MsgUnregisterClientResponse);
   rpc UnregisterChallenger(MsgUnregisterChallenger) returns (MsgUnregisterChallengerResponse);
   rpc GenGuard(MsgGenGuard) returns (MsgGenGuardResponse);
+  rpc CreateTotalClients(MsgCreateTotalClients) returns (MsgCreateTotalClientsResponse);
+  rpc UpdateTotalClients(MsgUpdateTotalClients) returns (MsgUpdateTotalClientsResponse);
+  rpc DeleteTotalClients(MsgDeleteTotalClients) returns (MsgDeleteTotalClientsResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -76,4 +80,20 @@ message MsgGenGuard {
 message MsgGenGuardResponse {
 }
 
+message MsgCreateTotalClients {
+  string creator = 1;
+  uint64 count = 3;
+}
+message MsgCreateTotalClientsResponse {}
+
+message MsgUpdateTotalClients {
+  string creator = 1;
+  uint64 count = 3;
+}
+message MsgUpdateTotalClientsResponse {}
+
+message MsgDeleteTotalClients {
+  string creator = 1;
+}
+message MsgDeleteTotalClientsResponse {}
 // this line is used by starport scaffolding # proto/tx/message

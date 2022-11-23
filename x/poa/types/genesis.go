@@ -14,6 +14,7 @@ func DefaultGenesis() *GenesisState {
 		ChallengerList: []Challenger{},
 		RunnerList:     []Runner{},
 		GuardList:      []Guard{},
+		TotalClients:   TotalClients{Count: uint64(0)},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

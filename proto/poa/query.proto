@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
 import "poa/guard.proto";
+import "poa/total_clients.proto";
 // this line is used by starport scaffolding # 1
 import "poa/challenger.proto";
 import "poa/client.proto";
@@ -69,6 +70,10 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/get_challenger_by_address/{address}";
 	}
 
+// Queries a TotalClients by index.
+	rpc TotalClients(QueryGetTotalClientsRequest) returns (QueryGetTotalClientsResponse) {
+		option (google.api.http).get = "/soarchain/poa/total_clients";
+	}
 // this line is used by starport scaffolding # 2
 }
 
@@ -169,4 +174,9 @@ message QueryGetChallengerByAddressResponse {
   Challenger challenger = 1;
 }
 
+message QueryGetTotalClientsRequest {}
+
+message QueryGetTotalClientsResponse {
+	TotalClients TotalClients = 1 [(gogoproto.nullable) = false];
+}
 // this line is used by starport scaffolding # 3
