@@ -39,6 +39,7 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		StakedAmount: stakedAmount.String(),
 		NetEarnings:  "",
 		Type:         "",
+		IpAddr:       "",
 	}
 
 	k.SetChallenger(ctx, newChallenger)
