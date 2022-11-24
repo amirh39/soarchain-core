@@ -11,6 +11,7 @@ import "poa/total_clients.proto";
 import "poa/total_challengers.proto";
 import "poa/total_runners.proto";
 import "poa/challenger_by_index.proto";
+import "poa/runner_by_index.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "soarchain/x/poa/types";
@@ -26,5 +27,6 @@ message GenesisState {
   TotalChallengers totalChallengers = 7 [(gogoproto.nullable) = false];
   TotalRunners totalRunners = 8 [(gogoproto.nullable) = false];
   repeated ChallengerByIndex challengerByIndexList = 9 [(gogoproto.nullable) = false];
+  repeated RunnerByIndex runnerByIndexList = 10 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

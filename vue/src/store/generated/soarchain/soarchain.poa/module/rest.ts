@@ -124,6 +124,21 @@ export interface PoaQueryAllGuardResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface PoaQueryAllRunnerByIndexResponse {
+  runnerByIndex?: PoaRunnerByIndex[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface PoaQueryAllRunnerResponse {
   runner?: PoaRunner[];
 
@@ -167,6 +182,14 @@ export interface PoaQueryGetRandomChallengerResponse {
   challenger?: PoaChallenger;
 }
 
+export interface PoaQueryGetRandomRunnerResponse {
+  runner?: PoaRunner;
+}
+
+export interface PoaQueryGetRunnerByIndexResponse {
+  runnerByIndex?: PoaRunnerByIndex;
+}
+
 export interface PoaQueryGetRunnerResponse {
   runner?: PoaRunner;
 }
@@ -198,6 +221,11 @@ export interface PoaRunner {
   stakedAmount?: string;
   netEarnings?: string;
   ipAddr?: string;
+}
+
+export interface PoaRunnerByIndex {
+  index?: string;
+  runner?: PoaRunner;
 }
 
 export interface PoaTotalChallengers {
@@ -264,6 +292,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -493,6 +528,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -534,6 +570,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -575,6 +612,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -654,6 +692,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryGetRandomRunner
+   * @summary Queries a list of GetRandomRunner items.
+   * @request GET:/soarchain/poa/get_random_runner
+   */
+  queryGetRandomRunner = (params: RequestParams = {}) =>
+    this.request<PoaQueryGetRandomRunnerResponse, RpcStatus>({
+      path: `/soarchain/poa/get_random_runner`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryGuardAll
    * @summary Queries a list of Guard items.
    * @request GET:/soarchain/poa/guard
@@ -664,6 +718,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -721,6 +776,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -743,6 +799,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryRunner = (index: string, params: RequestParams = {}) =>
     this.request<PoaQueryGetRunnerResponse, RpcStatus>({
       path: `/soarchain/poa/runner/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryRunnerByIndexAll
+   * @summary Queries a list of RunnerByIndex items.
+   * @request GET:/soarchain/poa/runner_by_index
+   */
+  queryRunnerByIndexAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PoaQueryAllRunnerByIndexResponse, RpcStatus>({
+      path: `/soarchain/poa/runner_by_index`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryRunnerByIndex
+   * @summary Queries a RunnerByIndex by index.
+   * @request GET:/soarchain/poa/runner_by_index/{index}
+   */
+  queryRunnerByIndex = (index: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetRunnerByIndexResponse, RpcStatus>({
+      path: `/soarchain/poa/runner_by_index/${index}`,
       method: "GET",
       format: "json",
       ...params,

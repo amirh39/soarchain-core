@@ -18,6 +18,7 @@ func DefaultGenesis() *GenesisState {
 		TotalChallengers:      TotalChallengers{Count: uint64(0)},
 		TotalRunners:          TotalRunners{Count: uint64(0)},
 		ChallengerByIndexList: []ChallengerByIndex{},
+		RunnerByIndexList:     []RunnerByIndex{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -75,6 +76,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for challengerByIndex")
 		}
 		challengerByIndexIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in runnerByIndex
+	runnerByIndexIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.RunnerByIndexList {
+		index := string(RunnerByIndexKey(elem.Index))
+		if _, ok := runnerByIndexIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for runnerByIndex")
+		}
+		runnerByIndexIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

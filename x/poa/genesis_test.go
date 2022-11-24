@@ -64,6 +64,14 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		RunnerByIndexList: []types.RunnerByIndex{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -83,5 +91,6 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.TotalChallengers, got.TotalChallengers)
 	require.Equal(t, genesisState.TotalRunners, got.TotalRunners)
 	require.ElementsMatch(t, genesisState.ChallengerByIndexList, got.ChallengerByIndexList)
+	require.ElementsMatch(t, genesisState.RunnerByIndexList, got.RunnerByIndexList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

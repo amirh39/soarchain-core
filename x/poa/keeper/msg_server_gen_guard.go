@@ -196,6 +196,14 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		runnerCount.Count++
 		k.SetTotalRunners(ctx, runnerCount)
 
+		// Update ChallengerByIndex
+		theCountStr := strconv.FormatUint(runnerCount.Count, 10)
+		newIndex := types.RunnerByIndex{
+			Index:  theCountStr,
+			Runner: &newRunner,
+		}
+		k.SetRunnerByIndex(ctx, newIndex)
+
 	} else { // runner address is not provided
 		newRunner = types.Runner{
 			Index:        "",
