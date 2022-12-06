@@ -17,6 +17,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUpdateTotalClients{}, "poa/UpdateTotalClients", nil)
 	cdc.RegisterConcrete(&MsgDeleteTotalClients{}, "poa/DeleteTotalClients", nil)
 	cdc.RegisterConcrete(&MsgUnregisterRunner{}, "poa/UnregisterRunner", nil)
+	cdc.RegisterConcrete(&MsgRunnerChallenge{}, "poa/RunnerChallenge", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -43,6 +44,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUnregisterRunner{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRunnerChallenge{},
 	)
 	// this line is used by starport scaffolding # 3
 

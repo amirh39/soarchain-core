@@ -78,6 +78,14 @@ export interface MsgUnregisterRunner {
 
 export interface MsgUnregisterRunnerResponse {}
 
+export interface MsgRunnerChallenge {
+  creator: string;
+  runnerAddress: string;
+  challengeResult: string;
+}
+
+export interface MsgRunnerChallengeResponse {}
+
 const baseMsgGenClient: object = { creator: "", address: "", fee: "" };
 
 export const MsgGenClient = {
@@ -1420,6 +1428,162 @@ export const MsgUnregisterRunnerResponse = {
   },
 };
 
+const baseMsgRunnerChallenge: object = {
+  creator: "",
+  runnerAddress: "",
+  challengeResult: "",
+};
+
+export const MsgRunnerChallenge = {
+  encode(
+    message: MsgRunnerChallenge,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.runnerAddress !== "") {
+      writer.uint32(18).string(message.runnerAddress);
+    }
+    if (message.challengeResult !== "") {
+      writer.uint32(26).string(message.challengeResult);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRunnerChallenge {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRunnerChallenge } as MsgRunnerChallenge;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.runnerAddress = reader.string();
+          break;
+        case 3:
+          message.challengeResult = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRunnerChallenge {
+    const message = { ...baseMsgRunnerChallenge } as MsgRunnerChallenge;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.runnerAddress !== undefined && object.runnerAddress !== null) {
+      message.runnerAddress = String(object.runnerAddress);
+    } else {
+      message.runnerAddress = "";
+    }
+    if (
+      object.challengeResult !== undefined &&
+      object.challengeResult !== null
+    ) {
+      message.challengeResult = String(object.challengeResult);
+    } else {
+      message.challengeResult = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRunnerChallenge): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.runnerAddress !== undefined &&
+      (obj.runnerAddress = message.runnerAddress);
+    message.challengeResult !== undefined &&
+      (obj.challengeResult = message.challengeResult);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgRunnerChallenge>): MsgRunnerChallenge {
+    const message = { ...baseMsgRunnerChallenge } as MsgRunnerChallenge;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.runnerAddress !== undefined && object.runnerAddress !== null) {
+      message.runnerAddress = object.runnerAddress;
+    } else {
+      message.runnerAddress = "";
+    }
+    if (
+      object.challengeResult !== undefined &&
+      object.challengeResult !== null
+    ) {
+      message.challengeResult = object.challengeResult;
+    } else {
+      message.challengeResult = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgRunnerChallengeResponse: object = {};
+
+export const MsgRunnerChallengeResponse = {
+  encode(
+    _: MsgRunnerChallengeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgRunnerChallengeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgRunnerChallengeResponse,
+    } as MsgRunnerChallengeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgRunnerChallengeResponse {
+    const message = {
+      ...baseMsgRunnerChallengeResponse,
+    } as MsgRunnerChallengeResponse;
+    return message;
+  },
+
+  toJSON(_: MsgRunnerChallengeResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgRunnerChallengeResponse>
+  ): MsgRunnerChallengeResponse {
+    const message = {
+      ...baseMsgRunnerChallengeResponse,
+    } as MsgRunnerChallengeResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -1442,10 +1606,13 @@ export interface Msg {
   DeleteTotalClients(
     request: MsgDeleteTotalClients
   ): Promise<MsgDeleteTotalClientsResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   UnregisterRunner(
     request: MsgUnregisterRunner
   ): Promise<MsgUnregisterRunnerResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  RunnerChallenge(
+    request: MsgRunnerChallenge
+  ): Promise<MsgRunnerChallengeResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1562,6 +1729,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgUnregisterRunnerResponse.decode(new Reader(data))
+    );
+  }
+
+  RunnerChallenge(
+    request: MsgRunnerChallenge
+  ): Promise<MsgRunnerChallengeResponse> {
+    const data = MsgRunnerChallenge.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Msg",
+      "RunnerChallenge",
+      data
+    );
+    return promise.then((data) =>
+      MsgRunnerChallengeResponse.decode(new Reader(data))
     );
   }
 }

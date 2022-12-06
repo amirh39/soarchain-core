@@ -53499,6 +53499,8 @@ definitions:
     type: object
   soarchain.poa.MsgGenGuardResponse:
     type: object
+  soarchain.poa.MsgRunnerChallengeResponse:
+    type: object
   soarchain.poa.MsgUnregisterChallengerResponse:
     type: object
   soarchain.poa.MsgUnregisterClientResponse:

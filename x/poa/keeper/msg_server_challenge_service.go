@@ -10,23 +10,28 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-// Tasks:
-// 1. Check if sender is a registered validator
-// 2. Check the result, reward or punish
+//
+// Check if sender is a registered validator
+// Check the result, reward or punish
 // 		 . If reward: mint & send the rewarded coin and increase score
 //		 . If punish: decrease score
-// 3. updating the challengee info
-// 4. uptadating challenger info
+// Updating the challengee info
+// Uptadating challenger info
 
 func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallengeService) (*types.MsgChallengeServiceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	challenger, isChallenger := k.GetChallenger(ctx, msg.Creator)
-	if !isChallenger {
+	challenger, isFound := k.GetChallenger(ctx, msg.Creator)
+	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Only registered challengers can initiate this transaction.")
 	}
 
-	// Try to fetch client from the store
+	// Challenger type must be v2x for this operation
+	if challenger.Type != "v2x" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Only v2x type challengers can initiate this transaction.")
+	}
+
+	// Fetch client from the store
 	client, isFound := k.GetClient(ctx, msg.ChallengeeAddress)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target client is not registered in the store!")
@@ -50,7 +55,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		scoreInt, _ := strconv.Atoi(client.Score)
 		scoreInt += scoreUpdateAmount
 
-		// update challengee total rewards
+		// Update challengee total rewards
 		netEarnings, _ := sdk.ParseCoinsNormalized(client.NetEarnings)
 		rewardAmountCoin, _ := sdk.ParseCoinNormalized("10000000soar")
 		netEarnings = netEarnings.Add(rewardAmountCoin)
@@ -67,12 +72,10 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		k.SetClient(ctx, updatedClient)
 
 	} else if result == "punish" {
-		// decrease challengee score
+		// Decrease challengee score
 		scoreUpdateAmount := 1
 		scoreInt, _ := strconv.Atoi(client.Score)
 		scoreInt -= scoreUpdateAmount
-
-		// ToDo: implement financial punishment
 
 		updatedClient := types.Client{
 			Index:              client.Index,
@@ -89,9 +92,9 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenge result")
 	}
 
-	// update challenger info after the successfull reward session
+	// Update challenger info after the successfull reward session
 	scoreIntChallenger, _ := strconv.Atoi(challenger.Score)
-	scoreIntChallenger++ // defines number of successfully completed reward sessions
+	scoreIntChallenger++
 
 	updatedChallenger := types.Challenger{
 		Index:        challenger.Index,
