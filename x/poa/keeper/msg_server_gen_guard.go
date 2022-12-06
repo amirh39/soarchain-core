@@ -46,6 +46,10 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
 		}
 
+		// Transfer stakedAmount to contract:
+		k.bankKeeper.SendCoinsFromAccountToModule(ctx, v2xChallengerAddr, types.ModuleName, requiredStake)
+
+		//
 		newV2XChallenger = types.Challenger{
 			Index:        v2xChallengerAddr.String(),
 			Address:      v2xChallengerAddr.String(),
@@ -112,6 +116,11 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		if v2NStake.IsAllLT(requiredStake) {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount: "+v2NStake.String()+" is below the required stake amount "+requiredStake.String())
 		}
+
+		// Transfer stakedAmount to contract:
+		k.bankKeeper.SendCoinsFromAccountToModule(ctx, v2nChallengerAddr, types.ModuleName, requiredStake)
+
+		//
 		newV2NChallenger = types.Challenger{
 			Index:        v2nChallengerAddr.String(),
 			Address:      v2nChallengerAddr.String(),
@@ -177,6 +186,11 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		if runnerStake.IsAllLT(requiredStake) {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount: "+runnerStake.String()+" is below the required stake amount "+requiredStake.String())
 		}
+
+		// Transfer stakedAmount to contract:
+		k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
+
+		//
 		newRunner = types.Runner{
 			Index:        runnerAddr.String(),
 			Address:      runnerAddr.String(),

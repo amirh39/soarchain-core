@@ -71,6 +71,13 @@ export interface MsgDeleteTotalClients {
 
 export interface MsgDeleteTotalClientsResponse {}
 
+export interface MsgUnregisterRunner {
+  creator: string;
+  fee: string;
+}
+
+export interface MsgUnregisterRunnerResponse {}
+
 const baseMsgGenClient: object = { creator: "", address: "", fee: "" };
 
 export const MsgGenClient = {
@@ -1286,6 +1293,133 @@ export const MsgDeleteTotalClientsResponse = {
   },
 };
 
+const baseMsgUnregisterRunner: object = { creator: "", fee: "" };
+
+export const MsgUnregisterRunner = {
+  encode(
+    message: MsgUnregisterRunner,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.fee !== "") {
+      writer.uint32(18).string(message.fee);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgUnregisterRunner {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgUnregisterRunner } as MsgUnregisterRunner;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.fee = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUnregisterRunner {
+    const message = { ...baseMsgUnregisterRunner } as MsgUnregisterRunner;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.fee !== undefined && object.fee !== null) {
+      message.fee = String(object.fee);
+    } else {
+      message.fee = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgUnregisterRunner): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.fee !== undefined && (obj.fee = message.fee);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgUnregisterRunner>): MsgUnregisterRunner {
+    const message = { ...baseMsgUnregisterRunner } as MsgUnregisterRunner;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.fee !== undefined && object.fee !== null) {
+      message.fee = object.fee;
+    } else {
+      message.fee = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgUnregisterRunnerResponse: object = {};
+
+export const MsgUnregisterRunnerResponse = {
+  encode(
+    _: MsgUnregisterRunnerResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUnregisterRunnerResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUnregisterRunnerResponse,
+    } as MsgUnregisterRunnerResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUnregisterRunnerResponse {
+    const message = {
+      ...baseMsgUnregisterRunnerResponse,
+    } as MsgUnregisterRunnerResponse;
+    return message;
+  },
+
+  toJSON(_: MsgUnregisterRunnerResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgUnregisterRunnerResponse>
+  ): MsgUnregisterRunnerResponse {
+    const message = {
+      ...baseMsgUnregisterRunnerResponse,
+    } as MsgUnregisterRunnerResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -1305,10 +1439,13 @@ export interface Msg {
   UpdateTotalClients(
     request: MsgUpdateTotalClients
   ): Promise<MsgUpdateTotalClientsResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DeleteTotalClients(
     request: MsgDeleteTotalClients
   ): Promise<MsgDeleteTotalClientsResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  UnregisterRunner(
+    request: MsgUnregisterRunner
+  ): Promise<MsgUnregisterRunnerResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1411,6 +1548,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgDeleteTotalClientsResponse.decode(new Reader(data))
+    );
+  }
+
+  UnregisterRunner(
+    request: MsgUnregisterRunner
+  ): Promise<MsgUnregisterRunnerResponse> {
+    const data = MsgUnregisterRunner.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Msg",
+      "UnregisterRunner",
+      data
+    );
+    return promise.then((data) =>
+      MsgUnregisterRunnerResponse.decode(new Reader(data))
     );
   }
 }

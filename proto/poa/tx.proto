@@ -16,6 +16,7 @@ service Msg {
   rpc CreateTotalClients(MsgCreateTotalClients) returns (MsgCreateTotalClientsResponse);
   rpc UpdateTotalClients(MsgUpdateTotalClients) returns (MsgUpdateTotalClientsResponse);
   rpc DeleteTotalClients(MsgDeleteTotalClients) returns (MsgDeleteTotalClientsResponse);
+  rpc UnregisterRunner(MsgUnregisterRunner) returns (MsgUnregisterRunnerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -87,4 +88,12 @@ message MsgDeleteTotalClients {
   string creator = 1;
 }
 message MsgDeleteTotalClientsResponse {}
+message MsgUnregisterRunner {
+  string creator = 1;
+  string fee = 2;
+}
+
+message MsgUnregisterRunnerResponse {
+}
+
 // this line is used by starport scaffolding # proto/tx/message

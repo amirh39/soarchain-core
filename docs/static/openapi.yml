@@ -53503,6 +53503,8 @@ definitions:
     type: object
   soarchain.poa.MsgUnregisterClientResponse:
     type: object
+  soarchain.poa.MsgUnregisterRunnerResponse:
+    type: object
   soarchain.poa.MsgUpdateTotalClientsResponse:
     type: object
   soarchain.poa.Params:
