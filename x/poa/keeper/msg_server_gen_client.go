@@ -23,7 +23,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	}
 
 	// Registration fee
-	registrationFee, _ := sdk.ParseCoinsNormalized("25soar")
+	registrationFee, _ := sdk.ParseCoinsNormalized("25000000soar")
 	msgFee, _ := sdk.ParseCoinsNormalized(msg.Fee)
 
 	if msgFee.GetDenomByIndex(0) != "soar" {

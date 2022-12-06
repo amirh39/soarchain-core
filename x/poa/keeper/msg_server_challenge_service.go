@@ -37,7 +37,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 	result := msg.ChallengeResult
 	if result == "reward" { // reward condition
-		rewardAmount, _ := sdk.ParseCoinsNormalized("10soar")
+		rewardAmount, _ := sdk.ParseCoinsNormalized("10000000soar")
 		//Rewards are issued from the module - soarchain protocol
 		k.bankKeeper.MintCoins(ctx, types.ModuleName, rewardAmount)
 		err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, rewardAmount)
@@ -52,7 +52,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 		// update challengee total rewards
 		netEarnings, _ := sdk.ParseCoinsNormalized(client.NetEarnings)
-		rewardAmountCoin, _ := sdk.ParseCoinNormalized("10soar")
+		rewardAmountCoin, _ := sdk.ParseCoinNormalized("10000000soar")
 		netEarnings = netEarnings.Add(rewardAmountCoin)
 
 		updatedClient := types.Client{

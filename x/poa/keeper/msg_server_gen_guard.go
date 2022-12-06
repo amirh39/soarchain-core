@@ -38,7 +38,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		// Check v2x stake amount
 		v2XStake, _ := sdk.ParseCoinsNormalized(msg.V2XStake)
-		requiredStake, _ := sdk.ParseCoinsNormalized("2000soar")
+		requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
 		if v2XStake.GetDenomByIndex(0) != "soar" {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
 		}
@@ -105,7 +105,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		// Check v2n stake amount
 		v2NStake, _ := sdk.ParseCoinsNormalized(msg.V2NStake)
-		requiredStake, _ := sdk.ParseCoinsNormalized("2000soar")
+		requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
 		if v2NStake.GetDenomByIndex(0) != "soar" {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
 		}
@@ -170,7 +170,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		// Check runner stake amount
 		runnerStake, _ := sdk.ParseCoinsNormalized(msg.RunnerStake)
-		requiredStake, _ := sdk.ParseCoinsNormalized("1000soar")
+		requiredStake, _ := sdk.ParseCoinsNormalized("1000000000soar")
 		if runnerStake.GetDenomByIndex(0) != "soar" {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
 		}

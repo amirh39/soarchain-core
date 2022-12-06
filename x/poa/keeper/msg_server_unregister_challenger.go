@@ -19,7 +19,7 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 	}
 
 	// Check removal fee
-	removalFee, _ := sdk.ParseCoinsNormalized("25soar")
+	removalFee, _ := sdk.ParseCoinsNormalized("25000000soar")
 	msgFee, _ := sdk.ParseCoinsNormalized(msg.Fee)
 	if msgFee.GetDenomByIndex(0) != "soar" {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
