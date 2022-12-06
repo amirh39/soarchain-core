@@ -31,7 +31,6 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdGenClient())
-	cmd.AddCommand(CmdGenChallenger())
 	cmd.AddCommand(CmdChallengeService())
 	cmd.AddCommand(CmdUnregisterClient())
 	cmd.AddCommand(CmdUnregisterChallenger())

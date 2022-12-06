@@ -35,3 +35,12 @@ genesis:
     staking:
       params:
         bond_denom: "soar"
+    mint:
+      params:
+        mint_denom: "soar"
+        goal_bonded: "0.670000000000000000"
+        inflation_max: "0.200000000000000000"
+        inflation_min: "0.120000000000000000"
+        inflation_rate_change: "0.080000000000000000"
+      minter:
+        inflation: "0.080000000000000000"

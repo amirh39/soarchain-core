@@ -47,8 +47,6 @@ export type PoaMsgCreateTotalClientsResponse = object;
 
 export type PoaMsgDeleteTotalClientsResponse = object;
 
-export type PoaMsgGenChallengerResponse = object;
-
 export type PoaMsgGenClientResponse = object;
 
 export type PoaMsgGenGuardResponse = object;

@@ -8,8 +8,7 @@ option go_package = "soarchain/x/poa/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc GenClient(MsgGenClient) returns (MsgGenClientResponse);
-  rpc GenChallenger(MsgGenChallenger) returns (MsgGenChallengerResponse);
+  rpc GenClient(MsgGenClient) returns (MsgGenClientResponse);
   rpc ChallengeService(MsgChallengeService) returns (MsgChallengeServiceResponse);
   rpc UnregisterClient(MsgUnregisterClient) returns (MsgUnregisterClientResponse);
   rpc UnregisterChallenger(MsgUnregisterChallenger) returns (MsgUnregisterChallengerResponse);
@@ -27,14 +26,6 @@ message MsgGenClient {
 }
 
 message MsgGenClientResponse {
-}
-
-message MsgGenChallenger {
-  string creator = 1;
-  string stakeAmount = 2;
-}
-
-message MsgGenChallengerResponse {
 }
 
 message MsgChallengeService {

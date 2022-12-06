@@ -3,15 +3,16 @@ package poa
 import (
 	"math/rand"
 
+	"soarchain/testutil/sample"
+	poasimulation "soarchain/x/poa/simulation"
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"soarchain/testutil/sample"
-	poasimulation "soarchain/x/poa/simulation"
-	"soarchain/x/poa/types"
 )
 
 // avoid unused import issue
@@ -103,17 +104,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgGenClient,
 		poasimulation.SimulateMsgGenClient(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgGenChallenger int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgGenChallenger, &weightMsgGenChallenger, nil,
-		func(_ *rand.Rand) {
-			weightMsgGenChallenger = defaultWeightMsgGenChallenger
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgGenChallenger,
-		poasimulation.SimulateMsgGenChallenger(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgChallengeService int

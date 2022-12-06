@@ -9,7 +9,6 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgGenClient{}, "poa/GenClient", nil)
-	cdc.RegisterConcrete(&MsgGenChallenger{}, "poa/GenChallenger", nil)
 	cdc.RegisterConcrete(&MsgChallengeService{}, "poa/ChallengeService", nil)
 	cdc.RegisterConcrete(&MsgUnregisterClient{}, "poa/UnregisterClient", nil)
 	cdc.RegisterConcrete(&MsgUnregisterChallenger{}, "poa/UnregisterChallenger", nil)
@@ -23,9 +22,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgGenClient{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgGenChallenger{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgChallengeService{},

@@ -12,13 +12,6 @@ export interface MsgGenClient {
 
 export interface MsgGenClientResponse {}
 
-export interface MsgGenChallenger {
-  creator: string;
-  stakeAmount: string;
-}
-
-export interface MsgGenChallengerResponse {}
-
 export interface MsgChallengeService {
   creator: string;
   challengeeAddress: string;
@@ -201,131 +194,6 @@ export const MsgGenClientResponse = {
 
   fromPartial(_: DeepPartial<MsgGenClientResponse>): MsgGenClientResponse {
     const message = { ...baseMsgGenClientResponse } as MsgGenClientResponse;
-    return message;
-  },
-};
-
-const baseMsgGenChallenger: object = { creator: "", stakeAmount: "" };
-
-export const MsgGenChallenger = {
-  encode(message: MsgGenChallenger, writer: Writer = Writer.create()): Writer {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.stakeAmount !== "") {
-      writer.uint32(18).string(message.stakeAmount);
-    }
-    return writer;
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): MsgGenChallenger {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgGenChallenger } as MsgGenChallenger;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.stakeAmount = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgGenChallenger {
-    const message = { ...baseMsgGenChallenger } as MsgGenChallenger;
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = String(object.creator);
-    } else {
-      message.creator = "";
-    }
-    if (object.stakeAmount !== undefined && object.stakeAmount !== null) {
-      message.stakeAmount = String(object.stakeAmount);
-    } else {
-      message.stakeAmount = "";
-    }
-    return message;
-  },
-
-  toJSON(message: MsgGenChallenger): unknown {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.stakeAmount !== undefined &&
-      (obj.stakeAmount = message.stakeAmount);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<MsgGenChallenger>): MsgGenChallenger {
-    const message = { ...baseMsgGenChallenger } as MsgGenChallenger;
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = object.creator;
-    } else {
-      message.creator = "";
-    }
-    if (object.stakeAmount !== undefined && object.stakeAmount !== null) {
-      message.stakeAmount = object.stakeAmount;
-    } else {
-      message.stakeAmount = "";
-    }
-    return message;
-  },
-};
-
-const baseMsgGenChallengerResponse: object = {};
-
-export const MsgGenChallengerResponse = {
-  encode(
-    _: MsgGenChallengerResponse,
-    writer: Writer = Writer.create()
-  ): Writer {
-    return writer;
-  },
-
-  decode(
-    input: Reader | Uint8Array,
-    length?: number
-  ): MsgGenChallengerResponse {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseMsgGenChallengerResponse,
-    } as MsgGenChallengerResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): MsgGenChallengerResponse {
-    const message = {
-      ...baseMsgGenChallengerResponse,
-    } as MsgGenChallengerResponse;
-    return message;
-  },
-
-  toJSON(_: MsgGenChallengerResponse): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial(
-    _: DeepPartial<MsgGenChallengerResponse>
-  ): MsgGenChallengerResponse {
-    const message = {
-      ...baseMsgGenChallengerResponse,
-    } as MsgGenChallengerResponse;
     return message;
   },
 };
@@ -1421,7 +1289,6 @@ export const MsgDeleteTotalClientsResponse = {
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
-  GenChallenger(request: MsgGenChallenger): Promise<MsgGenChallengerResponse>;
   ChallengeService(
     request: MsgChallengeService
   ): Promise<MsgChallengeServiceResponse>;
@@ -1454,18 +1321,6 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("soarchain.poa.Msg", "GenClient", data);
     return promise.then((data) =>
       MsgGenClientResponse.decode(new Reader(data))
-    );
-  }
-
-  GenChallenger(request: MsgGenChallenger): Promise<MsgGenChallengerResponse> {
-    const data = MsgGenChallenger.encode(request).finish();
-    const promise = this.rpc.request(
-      "soarchain.poa.Msg",
-      "GenChallenger",
-      data
-    );
-    return promise.then((data) =>
-      MsgGenChallengerResponse.decode(new Reader(data))
     );
   }
 
