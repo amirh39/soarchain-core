@@ -14,7 +14,6 @@ import (
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// 1. Check if the client exists
 	_, isFound := k.GetClient(ctx, msg.Address)
 	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Address)
 	_, isFoundAsRunner := k.GetRunner(ctx, msg.Address)
@@ -23,7 +22,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
 	}
 
-	// 2. Check registration fee
+	// Registration fee
 	registrationFee, _ := sdk.ParseCoinsNormalized("25soar")
 	msgFee, _ := sdk.ParseCoinsNormalized(msg.Fee)
 
@@ -34,7 +33,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for registration.")
 	}
 
-	// 3. Transfer fee to the protocol, then burn it
+	// Transfer fee to the protocol, then burn it
 	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
 	k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, registrationFee)
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, registrationFee)
@@ -50,7 +49,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		Index:              clientAddr.String(),
 		Address:            clientAddr.String(),
 		UniqueId:           newUUID,
-		Score:              sdk.NewInt(100).String(), // Base Score
+		Score:              sdk.NewInt(50).String(), // Base Score
 		NetEarnings:        sdk.ZeroInt().String(),
 		LastTimeChallenged: sdk.ZeroInt().String(),
 	}

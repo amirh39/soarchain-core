@@ -46,7 +46,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 
 		// increase challengee score
-		scoreUpdateAmount := 5
+		scoreUpdateAmount := 1
 		scoreInt, _ := strconv.Atoi(client.Score)
 		scoreInt += scoreUpdateAmount
 
@@ -68,7 +68,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 	} else if result == "punish" {
 		// decrease challengee score
-		scoreUpdateAmount := 5
+		scoreUpdateAmount := 1
 		scoreInt, _ := strconv.Atoi(client.Score)
 		scoreInt -= scoreUpdateAmount
 

@@ -49,7 +49,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		newV2XChallenger = types.Challenger{
 			Index:        v2xChallengerAddr.String(),
 			Address:      v2xChallengerAddr.String(),
-			Score:        sdk.ZeroInt().String(),
+			Score:        sdk.NewInt(50).String(), // Base Score
 			StakedAmount: v2XStake.String(),
 			NetEarnings:  "",
 			Type:         "v2x",
@@ -115,7 +115,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		newV2NChallenger = types.Challenger{
 			Index:        v2nChallengerAddr.String(),
 			Address:      v2nChallengerAddr.String(),
-			Score:        sdk.ZeroInt().String(),
+			Score:        sdk.NewInt(50).String(), // Base Score
 			StakedAmount: v2NStake.String(),
 			NetEarnings:  "",
 			Type:         "v2n",
@@ -180,7 +180,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		newRunner = types.Runner{
 			Index:        runnerAddr.String(),
 			Address:      runnerAddr.String(),
-			Score:        "",
+			Score:        sdk.NewInt(50).String(), // Base Score
 			StakedAmount: runnerStake.String(),
 			NetEarnings:  "",
 			IpAddr:       msg.RunnerIp,

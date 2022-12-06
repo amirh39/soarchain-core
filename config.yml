@@ -1,26 +1,30 @@
 accounts:
-  - name: alice
-    coins: ["50000000soar"]
-  - name: bob
-    coins: ["5000000soar"]
-  - name: can
+  - name: investorWallet
+    coins: ["77425000000000soar"]
+  - name: airdropWallet
+    coins: ["47500000000000soar"]
+  - name: strategicWallet
+    coins: ["180500000000000soar"]
+  - name: communityWallet
+    coins: ["100700000000000soar"]
+  - name: soarValidator
     coins: ["10000000soar"]
-  - name: amir
-    coins: ["20000000soar"]
+  - name: soarFacuet
+    coins: ["10000000soar"]
   - name: v2xDevice1
-    coins: ["10soar"]
+    coins: ["0soar"]
   - name: v2nDevice1
-    coins: ["10soar"]
+    coins: ["0soar"]
   - name: runnerDevice1
-    coins: ["10soar"]
+    coins: ["0soar"]
   - name: v2xDevice2
-    coins: ["10soar"]
+    coins: ["0soar"]
   - name: v2nDevice2
-    coins: ["10soar"]
+    coins: ["0soar"]
   - name: runnerDevice2
-    coins: ["10soar"]
+    coins: ["0soar"]
 validator:
-  name: alice
+  name: soarValidator
   staked: "10000000soar"
 client:
   openapi:
@@ -28,8 +32,8 @@ client:
   vuex:
     path: "vue/src/store"
 faucet:
-  name: bob
-  coins: ["20000soar"]
+  name: soarFacuet
+  coins: ["10000000000soar"]
 genesis:
   app_state:
     staking:
