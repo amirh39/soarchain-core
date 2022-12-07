@@ -34,7 +34,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 
 	result := msg.ChallengeResult
 	if result == "reward" {
-		rewardAmount, _ := sdk.ParseCoinsNormalized("10000000soar")
+		rewardAmount, _ := sdk.ParseCoinsNormalized("1000000soar")
 		//Rewards are issued from the module - soarchain protocol
 		k.bankKeeper.MintCoins(ctx, types.ModuleName, rewardAmount)
 		err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, runnerAccount, rewardAmount)
@@ -49,7 +49,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 
 		// Update runner total rewards
 		netEarnings, _ := sdk.ParseCoinsNormalized(runner.NetEarnings)
-		rewardAmountCoin, _ := sdk.ParseCoinNormalized("10000000soar")
+		rewardAmountCoin, _ := sdk.ParseCoinNormalized("1000000soar")
 		netEarnings = netEarnings.Add(rewardAmountCoin)
 
 		updatedRunner := types.Runner{
@@ -65,7 +65,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 
 	} else if result == "punish" {
 		// decrease runner score
-		scoreUpdateAmount := 1
+		scoreUpdateAmount := 2
 		scoreInt, _ := strconv.Atoi(runner.Score)
 		scoreInt -= scoreUpdateAmount
 

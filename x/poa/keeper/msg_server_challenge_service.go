@@ -73,7 +73,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 	} else if result == "punish" {
 		// Decrease challengee score
-		scoreUpdateAmount := 1
+		scoreUpdateAmount := 2
 		scoreInt, _ := strconv.Atoi(client.Score)
 		scoreInt -= scoreUpdateAmount
 
