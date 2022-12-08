@@ -10,6 +10,7 @@ export interface Runner {
   stakedAmount: string;
   netEarnings: string;
   ipAddr: string;
+  lastTimeChallenged: string;
 }
 
 const baseRunner: object = {
@@ -19,6 +20,7 @@ const baseRunner: object = {
   stakedAmount: "",
   netEarnings: "",
   ipAddr: "",
+  lastTimeChallenged: "",
 };
 
 export const Runner = {
@@ -40,6 +42,9 @@ export const Runner = {
     }
     if (message.ipAddr !== "") {
       writer.uint32(50).string(message.ipAddr);
+    }
+    if (message.lastTimeChallenged !== "") {
+      writer.uint32(58).string(message.lastTimeChallenged);
     }
     return writer;
   },
@@ -68,6 +73,9 @@ export const Runner = {
           break;
         case 6:
           message.ipAddr = reader.string();
+          break;
+        case 7:
+          message.lastTimeChallenged = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -109,6 +117,14 @@ export const Runner = {
     } else {
       message.ipAddr = "";
     }
+    if (
+      object.lastTimeChallenged !== undefined &&
+      object.lastTimeChallenged !== null
+    ) {
+      message.lastTimeChallenged = String(object.lastTimeChallenged);
+    } else {
+      message.lastTimeChallenged = "";
+    }
     return message;
   },
 
@@ -122,6 +138,8 @@ export const Runner = {
     message.netEarnings !== undefined &&
       (obj.netEarnings = message.netEarnings);
     message.ipAddr !== undefined && (obj.ipAddr = message.ipAddr);
+    message.lastTimeChallenged !== undefined &&
+      (obj.lastTimeChallenged = message.lastTimeChallenged);
     return obj;
   },
 
@@ -156,6 +174,14 @@ export const Runner = {
       message.ipAddr = object.ipAddr;
     } else {
       message.ipAddr = "";
+    }
+    if (
+      object.lastTimeChallenged !== undefined &&
+      object.lastTimeChallenged !== null
+    ) {
+      message.lastTimeChallenged = object.lastTimeChallenged;
+    } else {
+      message.lastTimeChallenged = "";
     }
     return message;
   },

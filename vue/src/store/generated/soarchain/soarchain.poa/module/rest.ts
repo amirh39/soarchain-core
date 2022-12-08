@@ -223,6 +223,7 @@ export interface PoaRunner {
   stakedAmount?: string;
   netEarnings?: string;
   ipAddr?: string;
+  lastTimeChallenged?: string;
 }
 
 export interface PoaRunnerByIndex {

@@ -53,12 +53,13 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		netEarnings = netEarnings.Add(rewardAmountCoin)
 
 		updatedRunner := types.Runner{
-			Index:        runner.Index,
-			Address:      runner.Address,
-			Score:        strconv.Itoa(scoreInt),
-			StakedAmount: runner.StakedAmount,
-			NetEarnings:  netEarnings.String(),
-			IpAddr:       runner.IpAddr,
+			Index:              runner.Index,
+			Address:            runner.Address,
+			Score:              strconv.Itoa(scoreInt),
+			StakedAmount:       runner.StakedAmount,
+			NetEarnings:        netEarnings.String(),
+			IpAddr:             runner.IpAddr,
+			LastTimeChallenged: ctx.BlockTime().String(),
 		}
 
 		k.SetRunner(ctx, updatedRunner)
@@ -70,12 +71,13 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		scoreInt -= scoreUpdateAmount
 
 		updatedRunner := types.Runner{
-			Index:        runner.Index,
-			Address:      runner.Address,
-			Score:        strconv.Itoa(scoreInt),
-			StakedAmount: runner.StakedAmount,
-			NetEarnings:  runner.NetEarnings,
-			IpAddr:       runner.IpAddr,
+			Index:              runner.Index,
+			Address:            runner.Address,
+			Score:              strconv.Itoa(scoreInt),
+			StakedAmount:       runner.StakedAmount,
+			NetEarnings:        runner.NetEarnings,
+			IpAddr:             runner.IpAddr,
+			LastTimeChallenged: ctx.BlockTime().String(),
 		}
 
 		k.SetRunner(ctx, updatedRunner)

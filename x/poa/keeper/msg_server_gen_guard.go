@@ -192,12 +192,13 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		//
 		newRunner = types.Runner{
-			Index:        runnerAddr.String(),
-			Address:      runnerAddr.String(),
-			Score:        sdk.NewInt(50).String(), // Base Score
-			StakedAmount: runnerStake.String(),
-			NetEarnings:  "",
-			IpAddr:       msg.RunnerIp,
+			Index:              runnerAddr.String(),
+			Address:            runnerAddr.String(),
+			Score:              sdk.NewInt(50).String(), // Base Score
+			StakedAmount:       runnerStake.String(),
+			NetEarnings:        "",
+			IpAddr:             msg.RunnerIp,
+			LastTimeChallenged: sdk.ZeroInt().String(),
 		}
 
 		k.SetRunner(ctx, newRunner)
@@ -220,12 +221,13 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 	} else { // runner address is not provided
 		newRunner = types.Runner{
-			Index:        "",
-			Address:      "",
-			Score:        "",
-			StakedAmount: "",
-			NetEarnings:  "",
-			IpAddr:       "",
+			Index:              "",
+			Address:            "",
+			Score:              "",
+			StakedAmount:       "",
+			NetEarnings:        "",
+			IpAddr:             "",
+			LastTimeChallenged: sdk.ZeroInt().String(),
 		}
 	}
 
