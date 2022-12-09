@@ -1,0 +1,18 @@
+version: '3'
+services:
+  validator:
+    image: soarchain-core:0.1.0
+    build:
+      dockerfile: ./Dockerfile
+    ports:
+      - 26656:26656
+      - 26657:26657
+      - 9090:9090
+      - 6060:6060
+      - 1317:1317
+    entrypoint: ['soarchaind', 'start']
+    volumes:
+      - validator-data:/data/validator
+volumes:
+  validator-data:
+    driver: local
