@@ -3,10 +3,6 @@ package keeper
 import (
 	"context"
 
-	"math/rand"
-
-	// "crypto/rand"
-	// "math/big"
 	"strconv"
 
 	"soarchain/x/poa/types"
@@ -23,14 +19,8 @@ func (k Keeper) GetRandomChallenger(goCtx context.Context, req *types.QueryGetRa
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Process the query
-	totalChallengers, _ := k.GetTotalChallengers(ctx)
-
-	rand.Seed(ctx.BlockTime().UnixNano())
-	min := 1
-	max := int(totalChallengers.Count)
-	n := rand.Intn(max-min+1) + min
-	indexStr := strconv.Itoa(int(n))
+	randomNumber := k.GenerateRandomNumber(goCtx)
+	indexStr := strconv.Itoa(int(randomNumber))
 	randChallenger, _ := k.GetChallengerByIndex(ctx, indexStr)
 
 	return &types.QueryGetRandomChallengerResponse{Challenger: (randChallenger.Challenger)}, nil
