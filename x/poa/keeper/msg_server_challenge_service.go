@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"soarchain/x/poa/types"
+	"soarchain/x/poa/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -50,10 +51,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
 		}
 
-		// increase challengee score
-		scoreUpdateAmount := 1
-		scoreInt, _ := strconv.Atoi(client.Score)
-		scoreInt += scoreUpdateAmount
+		// Update challengee score
+		scoreFloat64, err := strconv.ParseFloat(client.Score, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
+		}
+		newScore := utility.CalculateScore(scoreFloat64, true)
 
 		// Update challengee total rewards
 		netEarnings, _ := sdk.ParseCoinsNormalized(client.NetEarnings)
@@ -64,7 +67,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			Index:              client.Index,
 			Address:            client.Address,
 			UniqueId:           client.UniqueId,
-			Score:              strconv.Itoa(scoreInt),
+			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			NetEarnings:        netEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
 		}
@@ -72,16 +75,18 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		k.SetClient(ctx, updatedClient)
 
 	} else if result == "punish" {
-		// Decrease challengee score
-		scoreUpdateAmount := 2
-		scoreInt, _ := strconv.Atoi(client.Score)
-		scoreInt -= scoreUpdateAmount
+		// Update challengee score
+		scoreFloat64, err := strconv.ParseFloat(client.Score, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
+		}
+		newScore := utility.CalculateScore(scoreFloat64, false)
 
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
 			UniqueId:           client.UniqueId,
-			Score:              strconv.Itoa(scoreInt),
+			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			NetEarnings:        client.NetEarnings,
 			LastTimeChallenged: ctx.BlockTime().String(),
 		}
