@@ -8,6 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"soarchain/x/poa/types"
+	"soarchain/x/poa/utility"
 )
 
 func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerChallenge) (*types.MsgRunnerChallengeResponse, error) {
@@ -42,10 +43,12 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
 		}
 
-		// increase runner score
-		scoreUpdateAmount := 1
-		scoreInt, _ := strconv.Atoi(runner.Score)
-		scoreInt += scoreUpdateAmount
+		// Update runner score
+		scoreFloat64, err := strconv.ParseFloat(runner.Score, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
+		}
+		newScore := utility.CalculateScore(scoreFloat64, true)
 
 		// Update runner total rewards
 		netEarnings, _ := sdk.ParseCoinsNormalized(runner.NetEarnings)
@@ -55,7 +58,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		updatedRunner := types.Runner{
 			Index:              runner.Index,
 			Address:            runner.Address,
-			Score:              strconv.Itoa(scoreInt),
+			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			StakedAmount:       runner.StakedAmount,
 			NetEarnings:        netEarnings.String(),
 			IpAddr:             runner.IpAddr,
@@ -65,15 +68,17 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		k.SetRunner(ctx, updatedRunner)
 
 	} else if result == "punish" {
-		// decrease runner score
-		scoreUpdateAmount := 2
-		scoreInt, _ := strconv.Atoi(runner.Score)
-		scoreInt -= scoreUpdateAmount
+		// Update runner score
+		scoreFloat64, err := strconv.ParseFloat(runner.Score, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
+		}
+		newScore := utility.CalculateScore(scoreFloat64, false)
 
 		updatedRunner := types.Runner{
 			Index:              runner.Index,
 			Address:            runner.Address,
-			Score:              strconv.Itoa(scoreInt),
+			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			StakedAmount:       runner.StakedAmount,
 			NetEarnings:        runner.NetEarnings,
 			IpAddr:             runner.IpAddr,
