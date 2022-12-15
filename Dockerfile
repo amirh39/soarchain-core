@@ -18,6 +18,8 @@ RUN soarchaind init docker_node --chain-id soarchaindevnet
 
 RUN rm -rf /root/.soarchain/config/genesis.json && cp -r /soarchain-core/genesis.json /root/.soarchain/config/
 
+RUN rm -rf /root/.soarchain/config/config.toml && cp -r /soarchain-core/config.toml /root/.soarchain/config/
+
 RUN sed -i 's/persistent_peers = ""/persistent_peers = "66efd221eceb6fd5f0ad9f60fbd09e7177b7feb4@104.248.142.45:26656"/g' /root/.soarchain/config/config.toml
 
 RUN soarchaind config keyring-backend test
