@@ -1,5 +1,5 @@
 {
-  "genesis_time": "2022-12-07T12:38:13.592750191Z",
+  "genesis_time": "2022-12-15T10:06:45.507390958Z",
   "chain_id": "soarchaindevnet",
   "initial_height": "1",
   "consensus_params": {
@@ -14,7 +14,9 @@
       "max_bytes": "1048576"
     },
     "validator": {
-      "pub_key_types": ["ed25519"]
+      "pub_key_types": [
+        "ed25519"
+      ]
     },
     "version": {}
   },
@@ -31,35 +33,35 @@
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar1f546ry0ejxpky6v0w0l94vaudczprsykvj3vu3",
+          "address": "soar15e3t0e9j6edxadupgj5ngf6nr68yaelj5m48qv",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar160ekmflduyvwjv3snhft64denhkgnmcwz3k44p",
+          "address": "soar1m8r8nct2quz4mcvrf0s8tsljg2th93w2ckkwpd",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar1e38jejsxvyyqqy4j5qhm4ruv7cunsmahv8tn55",
+          "address": "soar1nkhqhnmxetlnl9w5lqsaxacc8wjhyjawpzh5na",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar16lfp8r6a9kfucsa4tcj545nl6835auceklu0wc",
+          "address": "soar13vvuxv52jgwcjgctjqydlnyerlwj57kdsya5mp",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar1xxzq9qppw04j327rxd4ukjs3df3dq906aydyhc",
+          "address": "soar163fpdr23ruetgcv7yz7wq889t7t3k6xgesz7hj",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
@@ -76,25 +78,16 @@
       },
       "balances": [
         {
-          "address": "soar1xxzq9qppw04j327rxd4ukjs3df3dq906aydyhc",
+          "address": "soar13vvuxv52jgwcjgctjqydlnyerlwj57kdsya5mp",
           "coins": [
             {
               "denom": "soar",
-              "amount": "10000000"
+              "amount": "100700000000000"
             }
           ]
         },
         {
-          "address": "soar1f546ry0ejxpky6v0w0l94vaudczprsykvj3vu3",
-          "coins": [
-            {
-              "denom": "soar",
-              "amount": "77425000000000"
-            }
-          ]
-        },
-        {
-          "address": "soar1e38jejsxvyyqqy4j5qhm4ruv7cunsmahv8tn55",
+          "address": "soar1nkhqhnmxetlnl9w5lqsaxacc8wjhyjawpzh5na",
           "coins": [
             {
               "denom": "soar",
@@ -103,20 +96,29 @@
           ]
         },
         {
-          "address": "soar160ekmflduyvwjv3snhft64denhkgnmcwz3k44p",
+          "address": "soar15e3t0e9j6edxadupgj5ngf6nr68yaelj5m48qv",
           "coins": [
             {
               "denom": "soar",
-              "amount": "47500000000000"
+              "amount": "77425000000000"
             }
           ]
         },
         {
-          "address": "soar16lfp8r6a9kfucsa4tcj545nl6835auceklu0wc",
+          "address": "soar163fpdr23ruetgcv7yz7wq889t7t3k6xgesz7hj",
           "coins": [
             {
               "denom": "soar",
-              "amount": "100700000000000"
+              "amount": "10000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1m8r8nct2quz4mcvrf0s8tsljg2th93w2ckkwpd",
+          "coins": [
+            {
+              "denom": "soar",
+              "amount": "47500000000000"
             }
           ]
         }
@@ -167,7 +169,7 @@
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
                 "description": {
-                  "moniker": "soarnode159",
+                  "moniker": "devnetnode104",
                   "identity": "",
                   "website": "",
                   "security_contact": "",
@@ -179,11 +181,11 @@
                   "max_change_rate": "0.010000000000000000"
                 },
                 "min_self_delegation": "1",
-                "delegator_address": "soar1xxzq9qppw04j327rxd4ukjs3df3dq906aydyhc",
-                "validator_address": "soarvaloper1xxzq9qppw04j327rxd4ukjs3df3dq90633e49l",
+                "delegator_address": "soar163fpdr23ruetgcv7yz7wq889t7t3k6xgesz7hj",
+                "validator_address": "soarvaloper163fpdr23ruetgcv7yz7wq889t7t3k6xg49k094",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "mmDKJ8iX/HF2z56hNk+oHeCLjLDJWVvFHTXito+iCAw="
+                  "key": "zI9dAtoiTjdi2SMqCjEYypYPsJN1HoaM+bgWDuzgdTA="
                 },
                 "value": {
                   "denom": "soar",
@@ -191,7 +193,7 @@
                 }
               }
             ],
-            "memo": "f71213bb3e763b2aaef2eb09e4c1a7d1a8796f49@159.223.107.178:26656",
+            "memo": "66efd221eceb6fd5f0ad9f60fbd09e7177b7feb4@104.248.142.45:26656",
             "timeout_height": "0",
             "extension_options": [],
             "non_critical_extension_options": []
@@ -201,7 +203,7 @@
               {
                 "public_key": {
                   "@type": "/cosmos.crypto.secp256k1.PubKey",
-                  "key": "AwYc+roitEPeClX+9rHbQ02oWOLqwa/nWcLLQEiShd5p"
+                  "key": "AuwH5PAmQxu7jTrxk3fxWjHsohhaoNOavZtdn28hA3L+"
                 },
                 "mode_info": {
                   "single": {
@@ -219,7 +221,7 @@
             }
           },
           "signatures": [
-            "CnXfQAesvsGpgaBFgrCpxqX0CjR1ckQxW/eZZifwKt0j1Juml6r/rodo2DRCcqNdKYQiMqJYnH/UWIhT8X4Kxg=="
+            "iGELAQeRKGxe4gyjMQpdGGrBosyOAzGWzDQqBeFDmUhZK/7jPkYGkDeSJI6rSaID7pRCmOkldQEh+OciPHyE1A=="
           ]
         }
       ]
@@ -253,7 +255,10 @@
         "clients_consensus": [],
         "clients_metadata": [],
         "params": {
-          "allowed_clients": ["06-solomachine", "07-tendermint"]
+          "allowed_clients": [
+            "06-solomachine",
+            "07-tendermint"
+          ]
         },
         "create_localhost": false,
         "next_client_sequence": "0"
