@@ -27,7 +27,6 @@ export interface PoaChallengerByIndex {
 export interface PoaClient {
   index?: string;
   address?: string;
-  uniqueId?: string;
   score?: string;
   netEarnings?: string;
   lastTimeChallenged?: string;

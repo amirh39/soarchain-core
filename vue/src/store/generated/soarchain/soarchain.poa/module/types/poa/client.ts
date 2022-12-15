@@ -6,7 +6,6 @@ export const protobufPackage = "soarchain.poa";
 export interface Client {
   index: string;
   address: string;
-  uniqueId: string;
   score: string;
   netEarnings: string;
   lastTimeChallenged: string;
@@ -15,7 +14,6 @@ export interface Client {
 const baseClient: object = {
   index: "",
   address: "",
-  uniqueId: "",
   score: "",
   netEarnings: "",
   lastTimeChallenged: "",
@@ -28,9 +26,6 @@ export const Client = {
     }
     if (message.address !== "") {
       writer.uint32(18).string(message.address);
-    }
-    if (message.uniqueId !== "") {
-      writer.uint32(26).string(message.uniqueId);
     }
     if (message.score !== "") {
       writer.uint32(34).string(message.score);
@@ -56,9 +51,6 @@ export const Client = {
           break;
         case 2:
           message.address = reader.string();
-          break;
-        case 3:
-          message.uniqueId = reader.string();
           break;
         case 4:
           message.score = reader.string();
@@ -89,11 +81,6 @@ export const Client = {
     } else {
       message.address = "";
     }
-    if (object.uniqueId !== undefined && object.uniqueId !== null) {
-      message.uniqueId = String(object.uniqueId);
-    } else {
-      message.uniqueId = "";
-    }
     if (object.score !== undefined && object.score !== null) {
       message.score = String(object.score);
     } else {
@@ -119,7 +106,6 @@ export const Client = {
     const obj: any = {};
     message.index !== undefined && (obj.index = message.index);
     message.address !== undefined && (obj.address = message.address);
-    message.uniqueId !== undefined && (obj.uniqueId = message.uniqueId);
     message.score !== undefined && (obj.score = message.score);
     message.netEarnings !== undefined &&
       (obj.netEarnings = message.netEarnings);
@@ -139,11 +125,6 @@ export const Client = {
       message.address = object.address;
     } else {
       message.address = "";
-    }
-    if (object.uniqueId !== undefined && object.uniqueId !== null) {
-      message.uniqueId = object.uniqueId;
-    } else {
-      message.uniqueId = "";
     }
     if (object.score !== undefined && object.score !== null) {
       message.score = object.score;

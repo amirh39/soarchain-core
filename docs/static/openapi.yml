@@ -30652,8 +30652,6 @@ paths:
                       type: string
                     address:
                       type: string
-                    uniqueId:
-                      type: string
                     score:
                       type: string
                     netEarnings:
@@ -30781,8 +30779,6 @@ paths:
                     type: string
                   address:
                     type: string
-                  uniqueId:
-                    type: string
                   score:
                     type: string
                   netEarnings:
@@ -30882,8 +30878,6 @@ paths:
                   index:
                     type: string
                   address:
-                    type: string
-                  uniqueId:
                     type: string
                   score:
                     type: string
@@ -53439,8 +53433,6 @@ definitions:
         type: string
       address:
         type: string
-      uniqueId:
-        type: string
       score:
         type: string
       netEarnings:
@@ -53638,8 +53630,6 @@ definitions:
             index:
               type: string
             address:
-              type: string
-            uniqueId:
               type: string
             score:
               type: string
@@ -53934,8 +53924,6 @@ definitions:
             type: string
           address:
             type: string
-          uniqueId:
-            type: string
           score:
             type: string
           netEarnings:
@@ -53951,8 +53939,6 @@ definitions:
           index:
             type: string
           address:
-            type: string
-          uniqueId:
             type: string
           score:
             type: string

@@ -13,6 +13,16 @@ import (
 func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*types.MsgGenGuardResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// PubKey check
+	if msg.GuardPubKey == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Guard PubKey must be declared in the tx!")
+	}
+
+	// Tx field check
+	if msg.V2XAddr == "" && msg.V2NAddr == "" && msg.RunnerAddr == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "At least one address field must be provided!")
+	}
+
 	// Check if guard already exists
 	_, isFound := k.GetGuard(ctx, msg.GuardPubKey)
 	if isFound {
@@ -79,15 +89,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		k.SetChallengerByIndex(ctx, newIndex)
 
 	} else { // v2x address is not provided
-		newV2XChallenger = types.Challenger{
-			Index:        "",
-			Address:      "",
-			Score:        sdk.ZeroInt().String(),
-			StakedAmount: "",
-			NetEarnings:  "",
-			Type:         "nil",
-			IpAddr:       "",
-		}
+		newV2XChallenger = types.Challenger{}
 	}
 
 	// Check v2n Challenger field
@@ -150,15 +152,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		k.SetChallengerByIndex(ctx, newIndex)
 
 	} else { // v2n address is not provided
-		newV2NChallenger = types.Challenger{
-			Index:        "",
-			Address:      "",
-			Score:        sdk.ZeroInt().String(),
-			StakedAmount: "",
-			NetEarnings:  "",
-			Type:         "nil",
-			IpAddr:       "",
-		}
+		newV2NChallenger = types.Challenger{}
 	}
 
 	// Check runner
@@ -220,17 +214,10 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		k.SetRunnerByIndex(ctx, newIndex)
 
 	} else { // runner address is not provided
-		newRunner = types.Runner{
-			Index:              "",
-			Address:            "",
-			Score:              "",
-			StakedAmount:       "",
-			NetEarnings:        "",
-			IpAddr:             "",
-			LastTimeChallenged: sdk.ZeroInt().String(),
-		}
+		newRunner = types.Runner{}
 	}
 
+	// Set Guard
 	newGuard := types.Guard{
 		Index:         msg.GuardPubKey,
 		GuardId:       "",

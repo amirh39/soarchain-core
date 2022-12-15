@@ -66,7 +66,6 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
-			UniqueId:           client.UniqueId,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			NetEarnings:        netEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
@@ -85,7 +84,6 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
-			UniqueId:           client.UniqueId,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			NetEarnings:        client.NetEarnings,
 			LastTimeChallenged: ctx.BlockTime().String(),

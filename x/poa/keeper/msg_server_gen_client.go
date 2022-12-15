@@ -7,8 +7,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
-	"github.com/google/uuid"
 )
 
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
@@ -41,14 +39,10 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	//
 	clientAddr, _ := sdk.AccAddressFromBech32(msg.Address)
 
-	// uuid
-	newUUID := uuid.Must(uuid.NewRandom()).String()
-
 	// Save client into storage
 	newClient := types.Client{
 		Index:              clientAddr.String(),
 		Address:            clientAddr.String(),
-		UniqueId:           newUUID,
 		Score:              sdk.NewInt(50).String(), // Base Score
 		NetEarnings:        sdk.ZeroInt().String(),
 		LastTimeChallenged: sdk.ZeroInt().String(),
