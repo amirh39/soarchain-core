@@ -20,11 +20,11 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 
 	// Check removal fee
 	removalFee, _ := sdk.ParseCoinsNormalized("25000000soar")
-	msgFee, _ := sdk.ParseCoinsNormalized(msg.Fee)
-	if msgFee.GetDenomByIndex(0) != "soar" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+	msgFee, err := sdk.ParseCoinsNormalized(msg.Fee)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
 	}
-	if msgFee.IsAllLT(removalFee) {
+	if msgFee.IsAllLT(removalFee) || !msgFee.DenomsSubsetOf(removalFee) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for removal.")
 	}
 
@@ -36,8 +36,8 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 	// Query the staked amount and refund
 	stakedAmountStr := challenger.StakedAmount
 	stakedAmount, _ := sdk.ParseCoinsNormalized(stakedAmountStr)
-	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, msgSenderAddress, stakedAmount)
-	if err != nil {
+	transferErr := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, msgSenderAddress, stakedAmount)
+	if transferErr != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
 	}
 

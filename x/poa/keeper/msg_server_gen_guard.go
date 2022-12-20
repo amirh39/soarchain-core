@@ -47,13 +47,13 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Check v2x stake amount
-		v2XStake, _ := sdk.ParseCoinsNormalized(msg.V2XStake)
 		requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
-		if v2XStake.GetDenomByIndex(0) != "soar" {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+		v2XStake, err := sdk.ParseCoinsNormalized(msg.V2XStake)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
 		}
-		if v2XStake.IsAllLT(requiredStake) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
+		if v2XStake.IsAllLT(requiredStake) || !v2XStake.DenomsSubsetOf(requiredStake) {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
 		}
 
 		// Transfer stakedAmount to contract:
@@ -110,13 +110,13 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Check v2n stake amount
-		v2NStake, _ := sdk.ParseCoinsNormalized(msg.V2NStake)
 		requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
-		if v2NStake.GetDenomByIndex(0) != "soar" {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+		v2NStake, err := sdk.ParseCoinsNormalized(msg.V2NStake)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
 		}
-		if v2NStake.IsAllLT(requiredStake) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount: "+v2NStake.String()+" is below the required stake amount "+requiredStake.String())
+		if v2NStake.IsAllLT(requiredStake) || !v2NStake.DenomsSubsetOf(requiredStake) {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount: "+v2NStake.String()+" is below the required stake amount "+requiredStake.String())
 		}
 
 		// Transfer stakedAmount to contract:
@@ -172,13 +172,14 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Check runner stake amount
-		runnerStake, _ := sdk.ParseCoinsNormalized(msg.RunnerStake)
 		requiredStake, _ := sdk.ParseCoinsNormalized("1000000000soar")
-		if runnerStake.GetDenomByIndex(0) != "soar" {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
+		runnerStake, err := sdk.ParseCoinsNormalized(msg.RunnerStake)
+
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
 		}
-		if runnerStake.IsAllLT(requiredStake) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Staked amount: "+runnerStake.String()+" is below the required stake amount "+requiredStake.String())
+		if runnerStake.IsAllLT(requiredStake) || !runnerStake.DenomsSubsetOf(requiredStake) {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount: "+runnerStake.String()+" is below the required stake amount "+requiredStake.String())
 		}
 
 		// Transfer stakedAmount to contract:
