@@ -12,9 +12,15 @@ import (
 func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnregisterChallenger) (*types.MsgUnregisterChallengerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Check if exists
-	challenger, isFound := k.GetChallenger(ctx, msg.Creator)
+	// check guard
+	guard, isFound := k.GetGuard(ctx, msg.Creator)
 	if !isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard is not registered, Not authorized!")
+	}
+
+	// check challenger
+	challenger, isFoundChallenger := k.GetChallenger(ctx, msg.ChallengerAddress)
+	if !isFoundChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Challenger is not registered.")
 	}
 
@@ -42,7 +48,31 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 	}
 
 	// Remove challenger
-	k.RemoveChallenger(ctx, msg.Creator)
+	k.RemoveChallenger(ctx, msg.ChallengerAddress)
+
+	// Remove from guard
+	var updatedGuard types.Guard
+
+	if challenger.Type == "v2x" {
+		updatedGuard = types.Guard{
+			Index:         guard.Index,
+			GuardId:       guard.GuardId,
+			V2XChallenger: &types.Challenger{},
+			V2NChallenger: guard.V2NChallenger,
+			Runner:        guard.Runner,
+		}
+	} else if challenger.Type == "v2n" {
+		updatedGuard = types.Guard{
+			Index:         guard.Index,
+			GuardId:       guard.GuardId,
+			V2XChallenger: guard.V2XChallenger,
+			V2NChallenger: &types.Challenger{},
+			Runner:        guard.Runner,
+		}
+	} else {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't resolve challenger type!")
+	}
+	k.SetGuard(ctx, updatedGuard)
 
 	return &types.MsgUnregisterChallengerResponse{}, nil
 }

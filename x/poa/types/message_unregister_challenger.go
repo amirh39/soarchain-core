@@ -9,10 +9,11 @@ const TypeMsgUnregisterChallenger = "unregister_challenger"
 
 var _ sdk.Msg = &MsgUnregisterChallenger{}
 
-func NewMsgUnregisterChallenger(creator string, fee string) *MsgUnregisterChallenger {
+func NewMsgUnregisterChallenger(creator string, challengerAddress string, fee string) *MsgUnregisterChallenger {
 	return &MsgUnregisterChallenger{
-		Creator: creator,
-		Fee:     fee,
+		Creator:           creator,
+		ChallengerAddress: challengerAddress,
+		Fee:               fee,
 	}
 }
 

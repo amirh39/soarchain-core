@@ -30,6 +30,7 @@ export interface MsgUnregisterClientResponse {}
 
 export interface MsgUnregisterChallenger {
   creator: string;
+  challengerAddress: string;
   fee: string;
 }
 
@@ -519,7 +520,11 @@ export const MsgUnregisterClientResponse = {
   },
 };
 
-const baseMsgUnregisterChallenger: object = { creator: "", fee: "" };
+const baseMsgUnregisterChallenger: object = {
+  creator: "",
+  challengerAddress: "",
+  fee: "",
+};
 
 export const MsgUnregisterChallenger = {
   encode(
@@ -529,8 +534,11 @@ export const MsgUnregisterChallenger = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
+    if (message.challengerAddress !== "") {
+      writer.uint32(18).string(message.challengerAddress);
+    }
     if (message.fee !== "") {
-      writer.uint32(18).string(message.fee);
+      writer.uint32(26).string(message.fee);
     }
     return writer;
   },
@@ -548,6 +556,9 @@ export const MsgUnregisterChallenger = {
           message.creator = reader.string();
           break;
         case 2:
+          message.challengerAddress = reader.string();
+          break;
+        case 3:
           message.fee = reader.string();
           break;
         default:
@@ -567,6 +578,14 @@ export const MsgUnregisterChallenger = {
     } else {
       message.creator = "";
     }
+    if (
+      object.challengerAddress !== undefined &&
+      object.challengerAddress !== null
+    ) {
+      message.challengerAddress = String(object.challengerAddress);
+    } else {
+      message.challengerAddress = "";
+    }
     if (object.fee !== undefined && object.fee !== null) {
       message.fee = String(object.fee);
     } else {
@@ -578,6 +597,8 @@ export const MsgUnregisterChallenger = {
   toJSON(message: MsgUnregisterChallenger): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
+    message.challengerAddress !== undefined &&
+      (obj.challengerAddress = message.challengerAddress);
     message.fee !== undefined && (obj.fee = message.fee);
     return obj;
   },
@@ -592,6 +613,14 @@ export const MsgUnregisterChallenger = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (
+      object.challengerAddress !== undefined &&
+      object.challengerAddress !== null
+    ) {
+      message.challengerAddress = object.challengerAddress;
+    } else {
+      message.challengerAddress = "";
     }
     if (object.fee !== undefined && object.fee !== null) {
       message.fee = object.fee;

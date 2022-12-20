@@ -12,7 +12,7 @@ import (
 func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregisterRunner) (*types.MsgUnregisterRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Check if exists
+	// Check if msg.creator exists as the runner
 	runner, isFound := k.GetRunner(ctx, msg.Creator)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Runner is not registered.")

@@ -24,9 +24,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	}
 
 	// Check if guard already exists
-	_, isFound := k.GetGuard(ctx, msg.GuardPubKey)
+	_, isFound := k.GetGuard(ctx, msg.Creator)
 	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "Guard with given pubKey is already registered in storage.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "Guard with given creator address is already registered in storage.")
 	}
 
 	// Check v2x Challenger field
@@ -220,8 +220,8 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 	// Set Guard
 	newGuard := types.Guard{
-		Index:         msg.GuardPubKey,
-		GuardId:       "",
+		Index:         msg.Creator,
+		GuardId:       msg.GuardPubKey,
 		V2XChallenger: &newV2XChallenger,
 		V2NChallenger: &newV2NChallenger,
 		Runner:        &newRunner,
