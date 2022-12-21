@@ -74,6 +74,7 @@ export interface MsgDeleteTotalClientsResponse {}
 
 export interface MsgUnregisterRunner {
   creator: string;
+  runnerAddress: string;
   fee: string;
 }
 
@@ -1330,7 +1331,11 @@ export const MsgDeleteTotalClientsResponse = {
   },
 };
 
-const baseMsgUnregisterRunner: object = { creator: "", fee: "" };
+const baseMsgUnregisterRunner: object = {
+  creator: "",
+  runnerAddress: "",
+  fee: "",
+};
 
 export const MsgUnregisterRunner = {
   encode(
@@ -1340,8 +1345,11 @@ export const MsgUnregisterRunner = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
+    if (message.runnerAddress !== "") {
+      writer.uint32(18).string(message.runnerAddress);
+    }
     if (message.fee !== "") {
-      writer.uint32(18).string(message.fee);
+      writer.uint32(26).string(message.fee);
     }
     return writer;
   },
@@ -1357,6 +1365,9 @@ export const MsgUnregisterRunner = {
           message.creator = reader.string();
           break;
         case 2:
+          message.runnerAddress = reader.string();
+          break;
+        case 3:
           message.fee = reader.string();
           break;
         default:
@@ -1374,6 +1385,11 @@ export const MsgUnregisterRunner = {
     } else {
       message.creator = "";
     }
+    if (object.runnerAddress !== undefined && object.runnerAddress !== null) {
+      message.runnerAddress = String(object.runnerAddress);
+    } else {
+      message.runnerAddress = "";
+    }
     if (object.fee !== undefined && object.fee !== null) {
       message.fee = String(object.fee);
     } else {
@@ -1385,6 +1401,8 @@ export const MsgUnregisterRunner = {
   toJSON(message: MsgUnregisterRunner): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
+    message.runnerAddress !== undefined &&
+      (obj.runnerAddress = message.runnerAddress);
     message.fee !== undefined && (obj.fee = message.fee);
     return obj;
   },
@@ -1395,6 +1413,11 @@ export const MsgUnregisterRunner = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (object.runnerAddress !== undefined && object.runnerAddress !== null) {
+      message.runnerAddress = object.runnerAddress;
+    } else {
+      message.runnerAddress = "";
     }
     if (object.fee !== undefined && object.fee !== null) {
       message.fee = object.fee;

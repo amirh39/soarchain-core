@@ -12,9 +12,14 @@ import (
 func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregisterRunner) (*types.MsgUnregisterRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Check if msg.creator exists as the runner
-	runner, isFound := k.GetRunner(ctx, msg.Creator)
+	// check guard
+	guard, isFound := k.GetGuard(ctx, msg.Creator)
 	if !isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard is not registered, Not authorized!")
+	}
+	// check runner
+	runner, isFoundRunner := k.GetRunner(ctx, msg.RunnerAddress)
+	if !isFoundRunner {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Runner is not registered.")
 	}
 
@@ -42,7 +47,17 @@ func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregis
 	}
 
 	// Remove runner
-	k.RemoveRunner(ctx, msg.Creator)
+	k.RemoveRunner(ctx, msg.RunnerAddress)
+
+	// Remove from guard
+	updatedGuard := types.Guard{
+		Index:         guard.Index,
+		GuardId:       guard.GuardId,
+		V2XChallenger: guard.V2XChallenger,
+		V2NChallenger: guard.V2NChallenger,
+		Runner:        &types.Runner{},
+	}
+	k.SetGuard(ctx, updatedGuard)
 
 	return &types.MsgUnregisterRunnerResponse{}, nil
 }

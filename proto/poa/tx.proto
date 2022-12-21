@@ -92,7 +92,8 @@ message MsgDeleteTotalClients {
 message MsgDeleteTotalClientsResponse {}
 message MsgUnregisterRunner {
   string creator = 1;
-  string fee = 2;
+  string runnerAddress = 2;
+  string fee = 3;
 }
 
 message MsgUnregisterRunnerResponse {
