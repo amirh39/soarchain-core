@@ -56,6 +56,8 @@ export type PoaMsgUnregisterChallengerResponse = object;
 
 export type PoaMsgUnregisterClientResponse = object;
 
+export type PoaMsgUnregisterGuardResponse = object;
+
 export type PoaMsgUnregisterRunnerResponse = object;
 
 export type PoaMsgUpdateTotalClientsResponse = object;

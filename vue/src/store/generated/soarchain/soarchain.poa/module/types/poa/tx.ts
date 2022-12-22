@@ -88,6 +88,13 @@ export interface MsgRunnerChallenge {
 
 export interface MsgRunnerChallengeResponse {}
 
+export interface MsgUnregisterGuard {
+  creator: string;
+  fee: string;
+}
+
+export interface MsgUnregisterGuardResponse {}
+
 const baseMsgGenClient: object = { creator: "", address: "", fee: "" };
 
 export const MsgGenClient = {
@@ -1636,6 +1643,133 @@ export const MsgRunnerChallengeResponse = {
   },
 };
 
+const baseMsgUnregisterGuard: object = { creator: "", fee: "" };
+
+export const MsgUnregisterGuard = {
+  encode(
+    message: MsgUnregisterGuard,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.fee !== "") {
+      writer.uint32(18).string(message.fee);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgUnregisterGuard {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgUnregisterGuard } as MsgUnregisterGuard;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.fee = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUnregisterGuard {
+    const message = { ...baseMsgUnregisterGuard } as MsgUnregisterGuard;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.fee !== undefined && object.fee !== null) {
+      message.fee = String(object.fee);
+    } else {
+      message.fee = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgUnregisterGuard): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.fee !== undefined && (obj.fee = message.fee);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgUnregisterGuard>): MsgUnregisterGuard {
+    const message = { ...baseMsgUnregisterGuard } as MsgUnregisterGuard;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.fee !== undefined && object.fee !== null) {
+      message.fee = object.fee;
+    } else {
+      message.fee = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgUnregisterGuardResponse: object = {};
+
+export const MsgUnregisterGuardResponse = {
+  encode(
+    _: MsgUnregisterGuardResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgUnregisterGuardResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgUnregisterGuardResponse,
+    } as MsgUnregisterGuardResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUnregisterGuardResponse {
+    const message = {
+      ...baseMsgUnregisterGuardResponse,
+    } as MsgUnregisterGuardResponse;
+    return message;
+  },
+
+  toJSON(_: MsgUnregisterGuardResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgUnregisterGuardResponse>
+  ): MsgUnregisterGuardResponse {
+    const message = {
+      ...baseMsgUnregisterGuardResponse,
+    } as MsgUnregisterGuardResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -1661,10 +1795,13 @@ export interface Msg {
   UnregisterRunner(
     request: MsgUnregisterRunner
   ): Promise<MsgUnregisterRunnerResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   RunnerChallenge(
     request: MsgRunnerChallenge
   ): Promise<MsgRunnerChallengeResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  UnregisterGuard(
+    request: MsgUnregisterGuard
+  ): Promise<MsgUnregisterGuardResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1795,6 +1932,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgRunnerChallengeResponse.decode(new Reader(data))
+    );
+  }
+
+  UnregisterGuard(
+    request: MsgUnregisterGuard
+  ): Promise<MsgUnregisterGuardResponse> {
+    const data = MsgUnregisterGuard.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Msg",
+      "UnregisterGuard",
+      data
+    );
+    return promise.then((data) =>
+      MsgUnregisterGuardResponse.decode(new Reader(data))
     );
   }
 }

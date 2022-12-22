@@ -18,6 +18,7 @@ service Msg {
   rpc DeleteTotalClients(MsgDeleteTotalClients) returns (MsgDeleteTotalClientsResponse);
   rpc UnregisterRunner(MsgUnregisterRunner) returns (MsgUnregisterRunnerResponse);
   rpc RunnerChallenge(MsgRunnerChallenge) returns (MsgRunnerChallengeResponse);
+  rpc UnregisterGuard(MsgUnregisterGuard) returns (MsgUnregisterGuardResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -106,6 +107,14 @@ message MsgRunnerChallenge {
 }
 
 message MsgRunnerChallengeResponse {
+}
+
+message MsgUnregisterGuard {
+  string creator = 1;
+  string fee = 2;
+}
+
+message MsgUnregisterGuardResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
