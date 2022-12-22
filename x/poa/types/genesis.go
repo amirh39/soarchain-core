@@ -10,15 +10,10 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		ClientList:            []Client{},
-		ChallengerList:        []Challenger{},
-		RunnerList:            []Runner{},
-		GuardList:             []Guard{},
-		TotalClients:          TotalClients{Count: uint64(0)},
-		TotalChallengers:      TotalChallengers{Count: uint64(0)},
-		TotalRunners:          TotalRunners{Count: uint64(0)},
-		ChallengerByIndexList: []ChallengerByIndex{},
-		RunnerByIndexList:     []RunnerByIndex{},
+		ClientList:     []Client{},
+		ChallengerList: []Challenger{},
+		RunnerList:     []Runner{},
+		GuardList:      []Guard{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -67,26 +62,7 @@ func (gs GenesisState) Validate() error {
 		}
 		guardIndexMap[index] = struct{}{}
 	}
-	// Check for duplicated index in challengerByIndex
-	challengerByIndexIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.ChallengerByIndexList {
-		index := string(ChallengerByIndexKey(elem.Index))
-		if _, ok := challengerByIndexIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for challengerByIndex")
-		}
-		challengerByIndexIndexMap[index] = struct{}{}
-	}
-	// Check for duplicated index in runnerByIndex
-	runnerByIndexIndexMap := make(map[string]struct{})
-
-	for _, elem := range gs.RunnerByIndexList {
-		index := string(RunnerByIndexKey(elem.Index))
-		if _, ok := runnerByIndexIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for runnerByIndex")
-		}
-		runnerByIndexIndexMap[index] = struct{}{}
-	}
 	// this line is used by starport scaffolding # genesis/types/validate
 
 	return gs.Params.Validate()

@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -72,22 +71,6 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		k.SetChallenger(ctx, newV2XChallenger)
 
-		// Update Challenger Count
-		challengerCount, isFound := k.Keeper.GetTotalChallengers(ctx)
-		if !isFound {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Challenger count couldn't be fetched!")
-		}
-		challengerCount.Count++
-		k.SetTotalChallengers(ctx, challengerCount)
-
-		// Update ChallengerByIndex
-		theCountStr := strconv.FormatUint(challengerCount.Count, 10)
-		newIndex := types.ChallengerByIndex{
-			Index:      theCountStr,
-			Challenger: &newV2XChallenger,
-		}
-		k.SetChallengerByIndex(ctx, newIndex)
-
 	} else { // v2x address is not provided
 		newV2XChallenger = types.Challenger{}
 	}
@@ -135,22 +118,6 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		k.SetChallenger(ctx, newV2NChallenger)
 
-		// Update Challenger Count
-		challengerCount, isFound := k.Keeper.GetTotalChallengers(ctx)
-		if !isFound {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Challenger count couldn't be fetched!")
-		}
-		challengerCount.Count++
-		k.SetTotalChallengers(ctx, challengerCount)
-
-		// Update ChallengerByIndex
-		theCountStr := strconv.FormatUint(challengerCount.Count, 10)
-		newIndex := types.ChallengerByIndex{
-			Index:      theCountStr,
-			Challenger: &newV2NChallenger,
-		}
-		k.SetChallengerByIndex(ctx, newIndex)
-
 	} else { // v2n address is not provided
 		newV2NChallenger = types.Challenger{}
 	}
@@ -197,22 +164,6 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		k.SetRunner(ctx, newRunner)
-
-		// Update Runner Count
-		runnerCount, isFound := k.Keeper.GetTotalRunners(ctx)
-		if !isFound {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Runner count couldn't be fetched!")
-		}
-		runnerCount.Count++
-		k.SetTotalRunners(ctx, runnerCount)
-
-		// Update ChallengerByIndex
-		theCountStr := strconv.FormatUint(runnerCount.Count, 10)
-		newIndex := types.RunnerByIndex{
-			Index:  theCountStr,
-			Runner: &newRunner,
-		}
-		k.SetRunnerByIndex(ctx, newIndex)
 
 	} else { // runner address is not provided
 		newRunner = types.Runner{}

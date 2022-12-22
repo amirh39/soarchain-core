@@ -42,7 +42,6 @@ func (k msgServer) UnregisterGuard(goCtx context.Context, msg *types.MsgUnregist
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
 		}
 		k.RemoveChallenger(ctx, guard.V2XChallenger.Address)
-
 	}
 
 	// check v2n challenger

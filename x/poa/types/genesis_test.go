@@ -55,31 +55,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
-				TotalClients: types.TotalClients{
-					Count: 6,
-				},
-				TotalChallengers: types.TotalChallengers{
-					Count: 72,
-				},
-				TotalRunners: types.TotalRunners{
-					Count: 31,
-				},
-				ChallengerByIndexList: []types.ChallengerByIndex{
-					{
-						Index: "0",
-					},
-					{
-						Index: "1",
-					},
-				},
-				RunnerByIndexList: []types.RunnerByIndex{
-					{
-						Index: "0",
-					},
-					{
-						Index: "1",
-					},
-				},
+
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -140,34 +116,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			},
 			valid: false,
 		},
-		{
-			desc: "duplicated challengerByIndex",
-			genState: &types.GenesisState{
-				ChallengerByIndexList: []types.ChallengerByIndex{
-					{
-						Index: "0",
-					},
-					{
-						Index: "0",
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "duplicated runnerByIndex",
-			genState: &types.GenesisState{
-				RunnerByIndexList: []types.RunnerByIndex{
-					{
-						Index: "0",
-					},
-					{
-						Index: "0",
-					},
-				},
-			},
-			valid: false,
-		},
+
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

@@ -10,10 +10,12 @@ import (
 
 func (k Keeper) GenerateRandomNumber(goCtx context.Context) int {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	totalChallengers, _ := k.GetTotalChallengers(ctx)
+
+	allChallengers := k.GetAllChallenger(ctx)
+
 	rand.Seed(ctx.BlockTime().UnixNano())
-	min := 1
-	max := int(totalChallengers.Count)
+	min := 0
+	max := int(len(allChallengers) - 1)
 	n := rand.Intn(max-min+1) + min
 
 	return n

@@ -162,39 +162,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		poasimulation.SimulateMsgGenGuard(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgCreateTotalClients int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateTotalClients, &weightMsgCreateTotalClients, nil,
-		func(_ *rand.Rand) {
-			weightMsgCreateTotalClients = defaultWeightMsgCreateTotalClients
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreateTotalClients,
-		poasimulation.SimulateMsgCreateTotalClients(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgUpdateTotalClients int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateTotalClients, &weightMsgUpdateTotalClients, nil,
-		func(_ *rand.Rand) {
-			weightMsgUpdateTotalClients = defaultWeightMsgUpdateTotalClients
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdateTotalClients,
-		poasimulation.SimulateMsgUpdateTotalClients(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgDeleteTotalClients int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteTotalClients, &weightMsgDeleteTotalClients, nil,
-		func(_ *rand.Rand) {
-			weightMsgDeleteTotalClients = defaultWeightMsgDeleteTotalClients
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgDeleteTotalClients,
-		poasimulation.SimulateMsgDeleteTotalClients(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
 	var weightMsgUnregisterRunner int
 	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUnregisterRunner, &weightMsgUnregisterRunner, nil,
 		func(_ *rand.Rand) {

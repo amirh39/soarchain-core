@@ -42,13 +42,5 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	// Remove client
 	k.RemoveClient(ctx, msg.Address)
 
-	// Update Client Count
-	clientCount, isFound := k.Keeper.GetTotalClients(ctx)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Client count couldn't be fetched!")
-	}
-	clientCount.Count--
-	k.SetTotalClients(ctx, clientCount)
-
 	return &types.MsgUnregisterClientResponse{}, nil
 }

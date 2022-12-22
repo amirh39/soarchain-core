@@ -19,11 +19,6 @@ export interface PoaChallenger {
   ipAddr?: string;
 }
 
-export interface PoaChallengerByIndex {
-  index?: string;
-  challenger?: PoaChallenger;
-}
-
 export interface PoaClient {
   index?: string;
   address?: string;
@@ -42,10 +37,6 @@ export interface PoaGuard {
 
 export type PoaMsgChallengeServiceResponse = object;
 
-export type PoaMsgCreateTotalClientsResponse = object;
-
-export type PoaMsgDeleteTotalClientsResponse = object;
-
 export type PoaMsgGenClientResponse = object;
 
 export type PoaMsgGenGuardResponse = object;
@@ -60,27 +51,10 @@ export type PoaMsgUnregisterGuardResponse = object;
 
 export type PoaMsgUnregisterRunnerResponse = object;
 
-export type PoaMsgUpdateTotalClientsResponse = object;
-
 /**
  * Params defines the parameters for the module.
  */
 export type PoaParams = object;
-
-export interface PoaQueryAllChallengerByIndexResponse {
-  challengerByIndex?: PoaChallengerByIndex[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
 
 export interface PoaQueryAllChallengerResponse {
   challenger?: PoaChallenger[];
@@ -127,21 +101,6 @@ export interface PoaQueryAllGuardResponse {
   pagination?: V1Beta1PageResponse;
 }
 
-export interface PoaQueryAllRunnerByIndexResponse {
-  runnerByIndex?: PoaRunnerByIndex[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
-
 export interface PoaQueryAllRunnerResponse {
   runner?: PoaRunner[];
 
@@ -159,10 +118,6 @@ export interface PoaQueryAllRunnerResponse {
 
 export interface PoaQueryGetChallengerByAddressResponse {
   challenger?: PoaChallenger;
-}
-
-export interface PoaQueryGetChallengerByIndexResponse {
-  challengerByIndex?: PoaChallengerByIndex;
 }
 
 export interface PoaQueryGetChallengerResponse {
@@ -189,24 +144,8 @@ export interface PoaQueryGetRandomRunnerResponse {
   runner?: PoaRunner;
 }
 
-export interface PoaQueryGetRunnerByIndexResponse {
-  runnerByIndex?: PoaRunnerByIndex;
-}
-
 export interface PoaQueryGetRunnerResponse {
   runner?: PoaRunner;
-}
-
-export interface PoaQueryGetTotalChallengersResponse {
-  TotalChallengers?: PoaTotalChallengers;
-}
-
-export interface PoaQueryGetTotalClientsResponse {
-  TotalClients?: PoaTotalClients;
-}
-
-export interface PoaQueryGetTotalRunnersResponse {
-  TotalRunners?: PoaTotalRunners;
 }
 
 /**
@@ -225,27 +164,6 @@ export interface PoaRunner {
   netEarnings?: string;
   ipAddr?: string;
   lastTimeChallenged?: string;
-}
-
-export interface PoaRunnerByIndex {
-  index?: string;
-  runner?: PoaRunner;
-}
-
-export interface PoaTotalChallengers {
-  /** @format uint64 */
-  count?: string;
-}
-
-export interface PoaTotalClients {
-  /** @format uint64 */
-  count?: string;
-  creator?: string;
-}
-
-export interface PoaTotalRunners {
-  /** @format uint64 */
-  count?: string;
 }
 
 export interface ProtobufAny {
@@ -296,6 +214,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -525,6 +450,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -556,47 +482,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryChallengerByIndexAll
-   * @summary Queries a list of ChallengerByIndex items.
-   * @request GET:/soarchain/poa/challenger_by_index
-   */
-  queryChallengerByIndexAll = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<PoaQueryAllChallengerByIndexResponse, RpcStatus>({
-      path: `/soarchain/poa/challenger_by_index`,
-      method: "GET",
-      query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryChallengerByIndex
-   * @summary Queries a ChallengerByIndex by index.
-   * @request GET:/soarchain/poa/challenger_by_index/{index}
-   */
-  queryChallengerByIndex = (index: string, params: RequestParams = {}) =>
-    this.request<PoaQueryGetChallengerByIndexResponse, RpcStatus>({
-      path: `/soarchain/poa/challenger_by_index/${index}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
    * @name QueryClientAll
    * @summary Queries a list of Client items.
    * @request GET:/soarchain/poa/client
@@ -607,6 +492,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -712,6 +598,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -769,6 +656,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -791,95 +679,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryRunner = (index: string, params: RequestParams = {}) =>
     this.request<PoaQueryGetRunnerResponse, RpcStatus>({
       path: `/soarchain/poa/runner/${index}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryRunnerByIndexAll
-   * @summary Queries a list of RunnerByIndex items.
-   * @request GET:/soarchain/poa/runner_by_index
-   */
-  queryRunnerByIndexAll = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<PoaQueryAllRunnerByIndexResponse, RpcStatus>({
-      path: `/soarchain/poa/runner_by_index`,
-      method: "GET",
-      query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryRunnerByIndex
-   * @summary Queries a RunnerByIndex by index.
-   * @request GET:/soarchain/poa/runner_by_index/{index}
-   */
-  queryRunnerByIndex = (index: string, params: RequestParams = {}) =>
-    this.request<PoaQueryGetRunnerByIndexResponse, RpcStatus>({
-      path: `/soarchain/poa/runner_by_index/${index}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryTotalChallengers
-   * @summary Queries a TotalChallengers by index.
-   * @request GET:/soarchain/poa/total_challengers
-   */
-  queryTotalChallengers = (params: RequestParams = {}) =>
-    this.request<PoaQueryGetTotalChallengersResponse, RpcStatus>({
-      path: `/soarchain/poa/total_challengers`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryTotalClients
-   * @summary Queries a TotalClients by index.
-   * @request GET:/soarchain/poa/total_clients
-   */
-  queryTotalClients = (params: RequestParams = {}) =>
-    this.request<PoaQueryGetTotalClientsResponse, RpcStatus>({
-      path: `/soarchain/poa/total_clients`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryTotalRunners
-   * @summary Queries a TotalRunners by index.
-   * @request GET:/soarchain/poa/total_runners
-   */
-  queryTotalRunners = (params: RequestParams = {}) =>
-    this.request<PoaQueryGetTotalRunnersResponse, RpcStatus>({
-      path: `/soarchain/poa/total_runners`,
       method: "GET",
       format: "json",
       ...params,

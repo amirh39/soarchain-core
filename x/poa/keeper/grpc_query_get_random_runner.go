@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"math/rand"
-	"strconv"
 
 	"soarchain/x/poa/types"
 
@@ -20,15 +19,12 @@ func (k Keeper) GetRandomRunner(goCtx context.Context, req *types.QueryGetRandom
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Process the query
-	totalChallengers, _ := k.GetTotalRunners(ctx)
+	allRunner := k.GetAllRunner(ctx)
 
 	rand.Seed(ctx.BlockTime().UnixNano())
-	min := 1
-	max := int(totalChallengers.Count)
+	min := 0
+	max := int(len(allRunner) - 1)
 	n := rand.Intn(max-min+1) + min
-	indexStr := strconv.Itoa(int(n))
-	randRunner, _ := k.GetRunnerByIndex(ctx, indexStr)
 
-	return &types.QueryGetRandomRunnerResponse{Runner: (randRunner.Runner)}, nil
+	return &types.QueryGetRandomRunnerResponse{Runner: (&allRunner[n])}, nil
 }

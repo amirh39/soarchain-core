@@ -1,9 +1,0 @@
-syntax = "proto3";
-package soarchain.poa;
-
-option go_package = "soarchain/x/poa/types";
-
-message TotalChallengers {
-  uint64 count = 1; 
-  
-}

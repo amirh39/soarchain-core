@@ -6,11 +6,6 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
 import "poa/guard.proto";
-import "poa/total_clients.proto";
-import "poa/total_challengers.proto";
-import "poa/total_runners.proto";
-import "poa/challenger_by_index.proto";
-import "poa/runner_by_index.proto";
 // this line is used by starport scaffolding # 1
 import "poa/runner.proto";
 import "poa/challenger.proto";
@@ -74,41 +69,9 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/get_challenger_by_address/{address}";
 	}
 
-// Queries a TotalClients by index.
-	rpc TotalClients(QueryGetTotalClientsRequest) returns (QueryGetTotalClientsResponse) {
-		option (google.api.http).get = "/soarchain/poa/total_clients";
-	}
-// Queries a TotalChallengers by index.
-	rpc TotalChallengers(QueryGetTotalChallengersRequest) returns (QueryGetTotalChallengersResponse) {
-		option (google.api.http).get = "/soarchain/poa/total_challengers";
-	}
-// Queries a TotalRunners by index.
-	rpc TotalRunners(QueryGetTotalRunnersRequest) returns (QueryGetTotalRunnersResponse) {
-		option (google.api.http).get = "/soarchain/poa/total_runners";
-	}
-// Queries a ChallengerByIndex by index.
-	rpc ChallengerByIndex(QueryGetChallengerByIndexRequest) returns (QueryGetChallengerByIndexResponse) {
-		option (google.api.http).get = "/soarchain/poa/challenger_by_index/{index}";
-	}
-
-	// Queries a list of ChallengerByIndex items.
-	rpc ChallengerByIndexAll(QueryAllChallengerByIndexRequest) returns (QueryAllChallengerByIndexResponse) {
-		option (google.api.http).get = "/soarchain/poa/challenger_by_index";
-	}
-
 // Queries a list of GetRandomChallenger items.
 	rpc GetRandomChallenger(QueryGetRandomChallengerRequest) returns (QueryGetRandomChallengerResponse) {
 		option (google.api.http).get = "/soarchain/poa/get_random_challenger";
-	}
-
-// Queries a RunnerByIndex by index.
-	rpc RunnerByIndex(QueryGetRunnerByIndexRequest) returns (QueryGetRunnerByIndexResponse) {
-		option (google.api.http).get = "/soarchain/poa/runner_by_index/{index}";
-	}
-
-	// Queries a list of RunnerByIndex items.
-	rpc RunnerByIndexAll(QueryAllRunnerByIndexRequest) returns (QueryAllRunnerByIndexResponse) {
-		option (google.api.http).get = "/soarchain/poa/runner_by_index";
 	}
 
 // Queries a list of GetRandomRunner items.
@@ -216,62 +179,11 @@ message QueryGetChallengerByAddressResponse {
   Challenger challenger = 1;
 }
 
-message QueryGetTotalClientsRequest {}
-
-message QueryGetTotalClientsResponse {
-	TotalClients TotalClients = 1 [(gogoproto.nullable) = false];
-}
-message QueryGetTotalChallengersRequest {}
-
-message QueryGetTotalChallengersResponse {
-	TotalChallengers TotalChallengers = 1 [(gogoproto.nullable) = false];
-}
-message QueryGetTotalRunnersRequest {}
-
-message QueryGetTotalRunnersResponse {
-	TotalRunners TotalRunners = 1 [(gogoproto.nullable) = false];
-}
-message QueryGetChallengerByIndexRequest {
-	  string index = 1;
-
-}
-
-message QueryGetChallengerByIndexResponse {
-	ChallengerByIndex challengerByIndex = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllChallengerByIndexRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllChallengerByIndexResponse {
-	repeated ChallengerByIndex challengerByIndex = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
 message QueryGetRandomChallengerRequest {
 }
 
 message QueryGetRandomChallengerResponse {
   Challenger challenger = 1;
-}
-
-message QueryGetRunnerByIndexRequest {
-	  string index = 1;
-
-}
-
-message QueryGetRunnerByIndexResponse {
-	RunnerByIndex runnerByIndex = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllRunnerByIndexRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllRunnerByIndexResponse {
-	repeated RunnerByIndex runnerByIndex = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryGetRandomRunnerRequest {

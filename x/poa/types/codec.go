@@ -13,9 +13,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUnregisterClient{}, "poa/UnregisterClient", nil)
 	cdc.RegisterConcrete(&MsgUnregisterChallenger{}, "poa/UnregisterChallenger", nil)
 	cdc.RegisterConcrete(&MsgGenGuard{}, "poa/GenGuard", nil)
-	cdc.RegisterConcrete(&MsgCreateTotalClients{}, "poa/CreateTotalClients", nil)
-	cdc.RegisterConcrete(&MsgUpdateTotalClients{}, "poa/UpdateTotalClients", nil)
-	cdc.RegisterConcrete(&MsgDeleteTotalClients{}, "poa/DeleteTotalClients", nil)
 	cdc.RegisterConcrete(&MsgUnregisterRunner{}, "poa/UnregisterRunner", nil)
 	cdc.RegisterConcrete(&MsgRunnerChallenge{}, "poa/RunnerChallenge", nil)
 	cdc.RegisterConcrete(&MsgUnregisterGuard{}, "poa/UnregisterGuard", nil)
@@ -37,11 +34,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgGenGuard{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateTotalClients{},
-		&MsgUpdateTotalClients{},
-		&MsgDeleteTotalClients{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUnregisterRunner{},

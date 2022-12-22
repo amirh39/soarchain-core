@@ -4,11 +4,6 @@ import { Client } from "../poa/client";
 import { Challenger } from "../poa/challenger";
 import { Runner } from "../poa/runner";
 import { Guard } from "../poa/guard";
-import { TotalClients } from "../poa/total_clients";
-import { TotalChallengers } from "../poa/total_challengers";
-import { TotalRunners } from "../poa/total_runners";
-import { ChallengerByIndex } from "../poa/challenger_by_index";
-import { RunnerByIndex } from "../poa/runner_by_index";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "soarchain.poa";
@@ -19,13 +14,8 @@ export interface GenesisState {
   clientList: Client[];
   challengerList: Challenger[];
   runnerList: Runner[];
-  guardList: Guard[];
-  totalClients: TotalClients | undefined;
-  totalChallengers: TotalChallengers | undefined;
-  totalRunners: TotalRunners | undefined;
-  challengerByIndexList: ChallengerByIndex[];
   /** this line is used by starport scaffolding # genesis/proto/state */
-  runnerByIndexList: RunnerByIndex[];
+  guardList: Guard[];
 }
 
 const baseGenesisState: object = {};
@@ -47,30 +37,6 @@ export const GenesisState = {
     for (const v of message.guardList) {
       Guard.encode(v!, writer.uint32(42).fork()).ldelim();
     }
-    if (message.totalClients !== undefined) {
-      TotalClients.encode(
-        message.totalClients,
-        writer.uint32(50).fork()
-      ).ldelim();
-    }
-    if (message.totalChallengers !== undefined) {
-      TotalChallengers.encode(
-        message.totalChallengers,
-        writer.uint32(58).fork()
-      ).ldelim();
-    }
-    if (message.totalRunners !== undefined) {
-      TotalRunners.encode(
-        message.totalRunners,
-        writer.uint32(66).fork()
-      ).ldelim();
-    }
-    for (const v of message.challengerByIndexList) {
-      ChallengerByIndex.encode(v!, writer.uint32(74).fork()).ldelim();
-    }
-    for (const v of message.runnerByIndexList) {
-      RunnerByIndex.encode(v!, writer.uint32(82).fork()).ldelim();
-    }
     return writer;
   },
 
@@ -82,8 +48,6 @@ export const GenesisState = {
     message.challengerList = [];
     message.runnerList = [];
     message.guardList = [];
-    message.challengerByIndexList = [];
-    message.runnerByIndexList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -104,28 +68,6 @@ export const GenesisState = {
         case 5:
           message.guardList.push(Guard.decode(reader, reader.uint32()));
           break;
-        case 6:
-          message.totalClients = TotalClients.decode(reader, reader.uint32());
-          break;
-        case 7:
-          message.totalChallengers = TotalChallengers.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
-        case 8:
-          message.totalRunners = TotalRunners.decode(reader, reader.uint32());
-          break;
-        case 9:
-          message.challengerByIndexList.push(
-            ChallengerByIndex.decode(reader, reader.uint32())
-          );
-          break;
-        case 10:
-          message.runnerByIndexList.push(
-            RunnerByIndex.decode(reader, reader.uint32())
-          );
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -140,8 +82,6 @@ export const GenesisState = {
     message.challengerList = [];
     message.runnerList = [];
     message.guardList = [];
-    message.challengerByIndexList = [];
-    message.runnerByIndexList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -165,42 +105,6 @@ export const GenesisState = {
     if (object.guardList !== undefined && object.guardList !== null) {
       for (const e of object.guardList) {
         message.guardList.push(Guard.fromJSON(e));
-      }
-    }
-    if (object.totalClients !== undefined && object.totalClients !== null) {
-      message.totalClients = TotalClients.fromJSON(object.totalClients);
-    } else {
-      message.totalClients = undefined;
-    }
-    if (
-      object.totalChallengers !== undefined &&
-      object.totalChallengers !== null
-    ) {
-      message.totalChallengers = TotalChallengers.fromJSON(
-        object.totalChallengers
-      );
-    } else {
-      message.totalChallengers = undefined;
-    }
-    if (object.totalRunners !== undefined && object.totalRunners !== null) {
-      message.totalRunners = TotalRunners.fromJSON(object.totalRunners);
-    } else {
-      message.totalRunners = undefined;
-    }
-    if (
-      object.challengerByIndexList !== undefined &&
-      object.challengerByIndexList !== null
-    ) {
-      for (const e of object.challengerByIndexList) {
-        message.challengerByIndexList.push(ChallengerByIndex.fromJSON(e));
-      }
-    }
-    if (
-      object.runnerByIndexList !== undefined &&
-      object.runnerByIndexList !== null
-    ) {
-      for (const e of object.runnerByIndexList) {
-        message.runnerByIndexList.push(RunnerByIndex.fromJSON(e));
       }
     }
     return message;
@@ -238,32 +142,6 @@ export const GenesisState = {
     } else {
       obj.guardList = [];
     }
-    message.totalClients !== undefined &&
-      (obj.totalClients = message.totalClients
-        ? TotalClients.toJSON(message.totalClients)
-        : undefined);
-    message.totalChallengers !== undefined &&
-      (obj.totalChallengers = message.totalChallengers
-        ? TotalChallengers.toJSON(message.totalChallengers)
-        : undefined);
-    message.totalRunners !== undefined &&
-      (obj.totalRunners = message.totalRunners
-        ? TotalRunners.toJSON(message.totalRunners)
-        : undefined);
-    if (message.challengerByIndexList) {
-      obj.challengerByIndexList = message.challengerByIndexList.map((e) =>
-        e ? ChallengerByIndex.toJSON(e) : undefined
-      );
-    } else {
-      obj.challengerByIndexList = [];
-    }
-    if (message.runnerByIndexList) {
-      obj.runnerByIndexList = message.runnerByIndexList.map((e) =>
-        e ? RunnerByIndex.toJSON(e) : undefined
-      );
-    } else {
-      obj.runnerByIndexList = [];
-    }
     return obj;
   },
 
@@ -273,8 +151,6 @@ export const GenesisState = {
     message.challengerList = [];
     message.runnerList = [];
     message.guardList = [];
-    message.challengerByIndexList = [];
-    message.runnerByIndexList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -298,42 +174,6 @@ export const GenesisState = {
     if (object.guardList !== undefined && object.guardList !== null) {
       for (const e of object.guardList) {
         message.guardList.push(Guard.fromPartial(e));
-      }
-    }
-    if (object.totalClients !== undefined && object.totalClients !== null) {
-      message.totalClients = TotalClients.fromPartial(object.totalClients);
-    } else {
-      message.totalClients = undefined;
-    }
-    if (
-      object.totalChallengers !== undefined &&
-      object.totalChallengers !== null
-    ) {
-      message.totalChallengers = TotalChallengers.fromPartial(
-        object.totalChallengers
-      );
-    } else {
-      message.totalChallengers = undefined;
-    }
-    if (object.totalRunners !== undefined && object.totalRunners !== null) {
-      message.totalRunners = TotalRunners.fromPartial(object.totalRunners);
-    } else {
-      message.totalRunners = undefined;
-    }
-    if (
-      object.challengerByIndexList !== undefined &&
-      object.challengerByIndexList !== null
-    ) {
-      for (const e of object.challengerByIndexList) {
-        message.challengerByIndexList.push(ChallengerByIndex.fromPartial(e));
-      }
-    }
-    if (
-      object.runnerByIndexList !== undefined &&
-      object.runnerByIndexList !== null
-    ) {
-      for (const e of object.runnerByIndexList) {
-        message.runnerByIndexList.push(RunnerByIndex.fromPartial(e));
       }
     }
     return message;
