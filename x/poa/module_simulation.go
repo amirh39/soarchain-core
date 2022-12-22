@@ -49,18 +49,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgGenGuard int = 100
 
-	opWeightMsgCreateTotalClients = "op_weight_msg_total_clients"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreateTotalClients int = 100
-
-	opWeightMsgUpdateTotalClients = "op_weight_msg_total_clients"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgUpdateTotalClients int = 100
-
-	opWeightMsgDeleteTotalClients = "op_weight_msg_total_clients"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgDeleteTotalClients int = 100
-
 	opWeightMsgUnregisterRunner = "op_weight_msg_unregister_runner"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUnregisterRunner int = 100

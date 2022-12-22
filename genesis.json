@@ -321,19 +321,7 @@
       "clientList": [],
       "challengerList": [],
       "runnerList": [],
-      "guardList": [],
-      "totalClients": {
-        "count": "0",
-        "creator": ""
-      },
-      "totalChallengers": {
-        "count": "0"
-      },
-      "totalRunners": {
-        "count": "0"
-      },
-      "challengerByIndexList": [],
-      "runnerByIndexList": []
+      "guardList": []
     },
     "slashing": {
       "params": {

@@ -20,15 +20,3 @@ const (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
-
-const (
-	TotalClientsKey = "TotalClients-value-"
-)
-
-const (
-	TotalChallengersKey = "TotalChallengers-value-"
-)
-
-const (
-	TotalRunnersKey = "TotalRunners-value-"
-)
