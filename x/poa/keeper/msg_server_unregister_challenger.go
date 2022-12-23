@@ -36,14 +36,17 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 
 	// Transfer fee to the protocol, then burn it
 	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
+	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
+	if transferErr != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins from account to POA module!")
+	}
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, removalFee)
 
 	// Query the staked amount and refund
 	stakedAmountStr := challenger.StakedAmount
 	stakedAmount, _ := sdk.ParseCoinsNormalized(stakedAmountStr)
-	transferErr := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, msgSenderAddress, stakedAmount)
-	if transferErr != nil {
+	transferErr2 := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, msgSenderAddress, stakedAmount)
+	if transferErr2 != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
 	}
 

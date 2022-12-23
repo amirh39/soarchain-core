@@ -32,7 +32,10 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// Transfer fee to the protocol, then burn it
 	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, registrationFee)
+	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, registrationFee)
+	if transferErr != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins from account to POA module!")
+	}
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, registrationFee)
 
 	//

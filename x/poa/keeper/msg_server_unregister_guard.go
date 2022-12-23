@@ -29,7 +29,10 @@ func (k msgServer) UnregisterGuard(goCtx context.Context, msg *types.MsgUnregist
 	}
 	// Transfer fee to the protocol, then burn it
 	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
+	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
+	if transferErr != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins from account to POA module!")
+	}
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, removalFee)
 
 	// check v2x challenger

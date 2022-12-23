@@ -36,7 +36,10 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	}
 
 	// Transfer fee to the protocol, then burn it
-	k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
+	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
+	if transferErr != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins from account to POA module!")
+	}
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, removalFee)
 
 	// Remove client

@@ -56,8 +56,10 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Transfer stakedAmount to contract:
-		k.bankKeeper.SendCoinsFromAccountToModule(ctx, v2xChallengerAddr, types.ModuleName, requiredStake)
-
+		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, v2xChallengerAddr, types.ModuleName, requiredStake)
+		if transferErr != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds couldn't be transferred to POA module!")
+		}
 		//
 		newV2XChallenger = types.Challenger{
 			Index:        v2xChallengerAddr.String(),
@@ -103,8 +105,10 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Transfer stakedAmount to contract:
-		k.bankKeeper.SendCoinsFromAccountToModule(ctx, v2nChallengerAddr, types.ModuleName, requiredStake)
-
+		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, v2nChallengerAddr, types.ModuleName, requiredStake)
+		if transferErr != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds couldn't be transferred to POA module!")
+		}
 		//
 		newV2NChallenger = types.Challenger{
 			Index:        v2nChallengerAddr.String(),
@@ -150,8 +154,10 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Transfer stakedAmount to contract:
-		k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
-
+		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
+		if transferErr != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds couldn't be transferred to POA module!")
+		}
 		//
 		newRunner = types.Runner{
 			Index:              runnerAddr.String(),
