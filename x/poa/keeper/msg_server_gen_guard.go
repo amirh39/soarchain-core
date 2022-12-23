@@ -28,6 +28,11 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "Guard with given creator address is already registered in storage.")
 	}
 
+	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
+	}
+
 	// Check v2x Challenger field
 	var newV2XChallenger types.Challenger
 
@@ -56,7 +61,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Transfer stakedAmount to contract:
-		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, v2xChallengerAddr, types.ModuleName, requiredStake)
+		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 		if transferErr != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds couldn't be transferred to POA module!")
 		}
@@ -105,7 +110,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Transfer stakedAmount to contract:
-		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, v2nChallengerAddr, types.ModuleName, requiredStake)
+		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 		if transferErr != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds couldn't be transferred to POA module!")
 		}
@@ -154,7 +159,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Transfer stakedAmount to contract:
-		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
+		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 		if transferErr != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds couldn't be transferred to POA module!")
 		}

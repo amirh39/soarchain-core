@@ -12,17 +12,17 @@ accounts:
   - name: soarFacuet
     coins: ["10000000soar"]
   - name: v2xDevice1
-    coins: ["7000000000soar"]
+    coins: ["0soar"]
   - name: v2nDevice1
-    coins: ["7000000000soar"]
+    coins: ["0soar"]
   - name: runnerDevice1
-    coins: ["7000000000soar"]
+    coins: ["0soar"]
   - name: v2xDevice2
-    coins: ["7000000000soar"]
+    coins: ["0soar"]
   - name: v2nDevice2
-    coins: ["7000000000soar"]
+    coins: ["0soar"]
   - name: runnerDevice2
-    coins: ["7000000000soar"]
+    coins: ["0soar"]
 validator:
   name: soarValidator
   staked: "10000000soar"
