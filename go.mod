@@ -42,6 +42,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/coinbase/rosetta-sdk-go v0.7.0 // indirect
 	github.com/confio/ics23/go v0.7.0 // indirect
+	github.com/coniks-sys/coniks-go v0.0.0-20180722014011-11acf4819b71
 	github.com/containerd/cgroups v1.0.3 // indirect
 	github.com/containerd/containerd v1.6.2 // indirect
 	github.com/cosmos/btcutil v1.0.4 // indirect

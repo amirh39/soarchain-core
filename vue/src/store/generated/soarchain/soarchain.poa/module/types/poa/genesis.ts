@@ -4,6 +4,8 @@ import { Client } from "../poa/client";
 import { Challenger } from "../poa/challenger";
 import { Runner } from "../poa/runner";
 import { Guard } from "../poa/guard";
+import { VrfData } from "../poa/vrf_data";
+import { VrfUser } from "../poa/vrf_user";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "soarchain.poa";
@@ -14,8 +16,10 @@ export interface GenesisState {
   clientList: Client[];
   challengerList: Challenger[];
   runnerList: Runner[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   guardList: Guard[];
+  vrfDataList: VrfData[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  vrfUserList: VrfUser[];
 }
 
 const baseGenesisState: object = {};
@@ -37,6 +41,12 @@ export const GenesisState = {
     for (const v of message.guardList) {
       Guard.encode(v!, writer.uint32(42).fork()).ldelim();
     }
+    for (const v of message.vrfDataList) {
+      VrfData.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    for (const v of message.vrfUserList) {
+      VrfUser.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -48,6 +58,8 @@ export const GenesisState = {
     message.challengerList = [];
     message.runnerList = [];
     message.guardList = [];
+    message.vrfDataList = [];
+    message.vrfUserList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -68,6 +80,12 @@ export const GenesisState = {
         case 5:
           message.guardList.push(Guard.decode(reader, reader.uint32()));
           break;
+        case 6:
+          message.vrfDataList.push(VrfData.decode(reader, reader.uint32()));
+          break;
+        case 7:
+          message.vrfUserList.push(VrfUser.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -82,6 +100,8 @@ export const GenesisState = {
     message.challengerList = [];
     message.runnerList = [];
     message.guardList = [];
+    message.vrfDataList = [];
+    message.vrfUserList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -105,6 +125,16 @@ export const GenesisState = {
     if (object.guardList !== undefined && object.guardList !== null) {
       for (const e of object.guardList) {
         message.guardList.push(Guard.fromJSON(e));
+      }
+    }
+    if (object.vrfDataList !== undefined && object.vrfDataList !== null) {
+      for (const e of object.vrfDataList) {
+        message.vrfDataList.push(VrfData.fromJSON(e));
+      }
+    }
+    if (object.vrfUserList !== undefined && object.vrfUserList !== null) {
+      for (const e of object.vrfUserList) {
+        message.vrfUserList.push(VrfUser.fromJSON(e));
       }
     }
     return message;
@@ -142,6 +172,20 @@ export const GenesisState = {
     } else {
       obj.guardList = [];
     }
+    if (message.vrfDataList) {
+      obj.vrfDataList = message.vrfDataList.map((e) =>
+        e ? VrfData.toJSON(e) : undefined
+      );
+    } else {
+      obj.vrfDataList = [];
+    }
+    if (message.vrfUserList) {
+      obj.vrfUserList = message.vrfUserList.map((e) =>
+        e ? VrfUser.toJSON(e) : undefined
+      );
+    } else {
+      obj.vrfUserList = [];
+    }
     return obj;
   },
 
@@ -151,6 +195,8 @@ export const GenesisState = {
     message.challengerList = [];
     message.runnerList = [];
     message.guardList = [];
+    message.vrfDataList = [];
+    message.vrfUserList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -174,6 +220,16 @@ export const GenesisState = {
     if (object.guardList !== undefined && object.guardList !== null) {
       for (const e of object.guardList) {
         message.guardList.push(Guard.fromPartial(e));
+      }
+    }
+    if (object.vrfDataList !== undefined && object.vrfDataList !== null) {
+      for (const e of object.vrfDataList) {
+        message.vrfDataList.push(VrfData.fromPartial(e));
+      }
+    }
+    if (object.vrfUserList !== undefined && object.vrfUserList !== null) {
+      for (const e of object.vrfUserList) {
+        message.vrfUserList.push(VrfUser.fromPartial(e));
       }
     }
     return message;

@@ -74,6 +74,15 @@ export interface MsgUnregisterGuard {
 
 export interface MsgUnregisterGuardResponse {}
 
+export interface MsgSelectRandomChallenger {
+  creator: string;
+  multiplier: string;
+}
+
+export interface MsgSelectRandomChallengerResponse {
+  randomChallenger: string;
+}
+
 const baseMsgGenClient: object = { creator: "", address: "", fee: "" };
 
 export const MsgGenClient = {
@@ -1379,6 +1388,168 @@ export const MsgUnregisterGuardResponse = {
   },
 };
 
+const baseMsgSelectRandomChallenger: object = { creator: "", multiplier: "" };
+
+export const MsgSelectRandomChallenger = {
+  encode(
+    message: MsgSelectRandomChallenger,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.multiplier !== "") {
+      writer.uint32(18).string(message.multiplier);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgSelectRandomChallenger {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgSelectRandomChallenger,
+    } as MsgSelectRandomChallenger;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.multiplier = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSelectRandomChallenger {
+    const message = {
+      ...baseMsgSelectRandomChallenger,
+    } as MsgSelectRandomChallenger;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.multiplier !== undefined && object.multiplier !== null) {
+      message.multiplier = String(object.multiplier);
+    } else {
+      message.multiplier = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSelectRandomChallenger): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.multiplier !== undefined && (obj.multiplier = message.multiplier);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgSelectRandomChallenger>
+  ): MsgSelectRandomChallenger {
+    const message = {
+      ...baseMsgSelectRandomChallenger,
+    } as MsgSelectRandomChallenger;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.multiplier !== undefined && object.multiplier !== null) {
+      message.multiplier = object.multiplier;
+    } else {
+      message.multiplier = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgSelectRandomChallengerResponse: object = { randomChallenger: "" };
+
+export const MsgSelectRandomChallengerResponse = {
+  encode(
+    message: MsgSelectRandomChallengerResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.randomChallenger !== "") {
+      writer.uint32(10).string(message.randomChallenger);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgSelectRandomChallengerResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgSelectRandomChallengerResponse,
+    } as MsgSelectRandomChallengerResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.randomChallenger = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSelectRandomChallengerResponse {
+    const message = {
+      ...baseMsgSelectRandomChallengerResponse,
+    } as MsgSelectRandomChallengerResponse;
+    if (
+      object.randomChallenger !== undefined &&
+      object.randomChallenger !== null
+    ) {
+      message.randomChallenger = String(object.randomChallenger);
+    } else {
+      message.randomChallenger = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSelectRandomChallengerResponse): unknown {
+    const obj: any = {};
+    message.randomChallenger !== undefined &&
+      (obj.randomChallenger = message.randomChallenger);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgSelectRandomChallengerResponse>
+  ): MsgSelectRandomChallengerResponse {
+    const message = {
+      ...baseMsgSelectRandomChallengerResponse,
+    } as MsgSelectRandomChallengerResponse;
+    if (
+      object.randomChallenger !== undefined &&
+      object.randomChallenger !== null
+    ) {
+      message.randomChallenger = object.randomChallenger;
+    } else {
+      message.randomChallenger = "";
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -1398,10 +1569,13 @@ export interface Msg {
   RunnerChallenge(
     request: MsgRunnerChallenge
   ): Promise<MsgRunnerChallengeResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   UnregisterGuard(
     request: MsgUnregisterGuard
   ): Promise<MsgUnregisterGuardResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SelectRandomChallenger(
+    request: MsgSelectRandomChallenger
+  ): Promise<MsgSelectRandomChallengerResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1504,6 +1678,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgUnregisterGuardResponse.decode(new Reader(data))
+    );
+  }
+
+  SelectRandomChallenger(
+    request: MsgSelectRandomChallenger
+  ): Promise<MsgSelectRandomChallengerResponse> {
+    const data = MsgSelectRandomChallenger.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Msg",
+      "SelectRandomChallenger",
+      data
+    );
+    return promise.then((data) =>
+      MsgSelectRandomChallengerResponse.decode(new Reader(data))
     );
   }
 }

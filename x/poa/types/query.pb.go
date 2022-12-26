@@ -1185,6 +1185,374 @@ func (m *QueryGetRandomRunnerResponse) GetRunner() *Runner {
 	return nil
 }
 
+type QueryGetVrfDataRequest struct {
+	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (m *QueryGetVrfDataRequest) Reset()         { *m = QueryGetVrfDataRequest{} }
+func (m *QueryGetVrfDataRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetVrfDataRequest) ProtoMessage()    {}
+func (*QueryGetVrfDataRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a9dd27e9dc4e2f4, []int{26}
+}
+func (m *QueryGetVrfDataRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetVrfDataRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetVrfDataRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetVrfDataRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetVrfDataRequest.Merge(m, src)
+}
+func (m *QueryGetVrfDataRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetVrfDataRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetVrfDataRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetVrfDataRequest proto.InternalMessageInfo
+
+func (m *QueryGetVrfDataRequest) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+type QueryGetVrfDataResponse struct {
+	VrfData VrfData `protobuf:"bytes,1,opt,name=vrfData,proto3" json:"vrfData"`
+}
+
+func (m *QueryGetVrfDataResponse) Reset()         { *m = QueryGetVrfDataResponse{} }
+func (m *QueryGetVrfDataResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetVrfDataResponse) ProtoMessage()    {}
+func (*QueryGetVrfDataResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a9dd27e9dc4e2f4, []int{27}
+}
+func (m *QueryGetVrfDataResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetVrfDataResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetVrfDataResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetVrfDataResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetVrfDataResponse.Merge(m, src)
+}
+func (m *QueryGetVrfDataResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetVrfDataResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetVrfDataResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetVrfDataResponse proto.InternalMessageInfo
+
+func (m *QueryGetVrfDataResponse) GetVrfData() VrfData {
+	if m != nil {
+		return m.VrfData
+	}
+	return VrfData{}
+}
+
+type QueryAllVrfDataRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllVrfDataRequest) Reset()         { *m = QueryAllVrfDataRequest{} }
+func (m *QueryAllVrfDataRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllVrfDataRequest) ProtoMessage()    {}
+func (*QueryAllVrfDataRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a9dd27e9dc4e2f4, []int{28}
+}
+func (m *QueryAllVrfDataRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllVrfDataRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllVrfDataRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllVrfDataRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllVrfDataRequest.Merge(m, src)
+}
+func (m *QueryAllVrfDataRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllVrfDataRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllVrfDataRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllVrfDataRequest proto.InternalMessageInfo
+
+func (m *QueryAllVrfDataRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllVrfDataResponse struct {
+	VrfData    []VrfData           `protobuf:"bytes,1,rep,name=vrfData,proto3" json:"vrfData"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllVrfDataResponse) Reset()         { *m = QueryAllVrfDataResponse{} }
+func (m *QueryAllVrfDataResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllVrfDataResponse) ProtoMessage()    {}
+func (*QueryAllVrfDataResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a9dd27e9dc4e2f4, []int{29}
+}
+func (m *QueryAllVrfDataResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllVrfDataResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllVrfDataResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllVrfDataResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllVrfDataResponse.Merge(m, src)
+}
+func (m *QueryAllVrfDataResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllVrfDataResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllVrfDataResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllVrfDataResponse proto.InternalMessageInfo
+
+func (m *QueryAllVrfDataResponse) GetVrfData() []VrfData {
+	if m != nil {
+		return m.VrfData
+	}
+	return nil
+}
+
+func (m *QueryAllVrfDataResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryGetVrfUserRequest struct {
+	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (m *QueryGetVrfUserRequest) Reset()         { *m = QueryGetVrfUserRequest{} }
+func (m *QueryGetVrfUserRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetVrfUserRequest) ProtoMessage()    {}
+func (*QueryGetVrfUserRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a9dd27e9dc4e2f4, []int{30}
+}
+func (m *QueryGetVrfUserRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetVrfUserRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetVrfUserRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetVrfUserRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetVrfUserRequest.Merge(m, src)
+}
+func (m *QueryGetVrfUserRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetVrfUserRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetVrfUserRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetVrfUserRequest proto.InternalMessageInfo
+
+func (m *QueryGetVrfUserRequest) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+type QueryGetVrfUserResponse struct {
+	VrfUser VrfUser `protobuf:"bytes,1,opt,name=vrfUser,proto3" json:"vrfUser"`
+}
+
+func (m *QueryGetVrfUserResponse) Reset()         { *m = QueryGetVrfUserResponse{} }
+func (m *QueryGetVrfUserResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetVrfUserResponse) ProtoMessage()    {}
+func (*QueryGetVrfUserResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a9dd27e9dc4e2f4, []int{31}
+}
+func (m *QueryGetVrfUserResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetVrfUserResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetVrfUserResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetVrfUserResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetVrfUserResponse.Merge(m, src)
+}
+func (m *QueryGetVrfUserResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetVrfUserResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetVrfUserResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetVrfUserResponse proto.InternalMessageInfo
+
+func (m *QueryGetVrfUserResponse) GetVrfUser() VrfUser {
+	if m != nil {
+		return m.VrfUser
+	}
+	return VrfUser{}
+}
+
+type QueryAllVrfUserRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllVrfUserRequest) Reset()         { *m = QueryAllVrfUserRequest{} }
+func (m *QueryAllVrfUserRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllVrfUserRequest) ProtoMessage()    {}
+func (*QueryAllVrfUserRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a9dd27e9dc4e2f4, []int{32}
+}
+func (m *QueryAllVrfUserRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllVrfUserRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllVrfUserRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllVrfUserRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllVrfUserRequest.Merge(m, src)
+}
+func (m *QueryAllVrfUserRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllVrfUserRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllVrfUserRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllVrfUserRequest proto.InternalMessageInfo
+
+func (m *QueryAllVrfUserRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllVrfUserResponse struct {
+	VrfUser    []VrfUser           `protobuf:"bytes,1,rep,name=vrfUser,proto3" json:"vrfUser"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllVrfUserResponse) Reset()         { *m = QueryAllVrfUserResponse{} }
+func (m *QueryAllVrfUserResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllVrfUserResponse) ProtoMessage()    {}
+func (*QueryAllVrfUserResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a9dd27e9dc4e2f4, []int{33}
+}
+func (m *QueryAllVrfUserResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllVrfUserResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllVrfUserResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllVrfUserResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllVrfUserResponse.Merge(m, src)
+}
+func (m *QueryAllVrfUserResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllVrfUserResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllVrfUserResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllVrfUserResponse proto.InternalMessageInfo
+
+func (m *QueryAllVrfUserResponse) GetVrfUser() []VrfUser {
+	if m != nil {
+		return m.VrfUser
+	}
+	return nil
+}
+
+func (m *QueryAllVrfUserResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "soarchain.poa.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "soarchain.poa.QueryParamsResponse")
@@ -1212,76 +1580,97 @@ func init() {
 	proto.RegisterType((*QueryGetRandomChallengerResponse)(nil), "soarchain.poa.QueryGetRandomChallengerResponse")
 	proto.RegisterType((*QueryGetRandomRunnerRequest)(nil), "soarchain.poa.QueryGetRandomRunnerRequest")
 	proto.RegisterType((*QueryGetRandomRunnerResponse)(nil), "soarchain.poa.QueryGetRandomRunnerResponse")
+	proto.RegisterType((*QueryGetVrfDataRequest)(nil), "soarchain.poa.QueryGetVrfDataRequest")
+	proto.RegisterType((*QueryGetVrfDataResponse)(nil), "soarchain.poa.QueryGetVrfDataResponse")
+	proto.RegisterType((*QueryAllVrfDataRequest)(nil), "soarchain.poa.QueryAllVrfDataRequest")
+	proto.RegisterType((*QueryAllVrfDataResponse)(nil), "soarchain.poa.QueryAllVrfDataResponse")
+	proto.RegisterType((*QueryGetVrfUserRequest)(nil), "soarchain.poa.QueryGetVrfUserRequest")
+	proto.RegisterType((*QueryGetVrfUserResponse)(nil), "soarchain.poa.QueryGetVrfUserResponse")
+	proto.RegisterType((*QueryAllVrfUserRequest)(nil), "soarchain.poa.QueryAllVrfUserRequest")
+	proto.RegisterType((*QueryAllVrfUserResponse)(nil), "soarchain.poa.QueryAllVrfUserResponse")
 }
 
 func init() { proto.RegisterFile("poa/query.proto", fileDescriptor_9a9dd27e9dc4e2f4) }
 
 var fileDescriptor_9a9dd27e9dc4e2f4 = []byte{
-	// 1020 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x57, 0x4d, 0x6f, 0xdc, 0x44,
-	0x18, 0x8e, 0x1b, 0x12, 0xe8, 0x8b, 0x4a, 0xd1, 0x74, 0x13, 0x1a, 0x37, 0x71, 0x92, 0x49, 0x5a,
-	0xd2, 0xd2, 0xd8, 0x4d, 0x8a, 0x90, 0xe8, 0x01, 0x94, 0x20, 0x11, 0x81, 0x54, 0x29, 0xec, 0x11,
-	0xa9, 0x84, 0xd9, 0xdd, 0x91, 0xbb, 0x92, 0x63, 0xbb, 0xb6, 0x17, 0xb2, 0x2a, 0xbd, 0x70, 0xe1,
-	0xc2, 0x01, 0x01, 0x82, 0x3f, 0x80, 0xb8, 0xf0, 0x13, 0xf8, 0x03, 0x3d, 0x56, 0xe2, 0xc2, 0x09,
-	0xa1, 0x84, 0x1f, 0x82, 0x3c, 0xf3, 0xfa, 0xdb, 0xe3, 0xf5, 0x8a, 0xe5, 0x96, 0x1d, 0x3f, 0xef,
-	0x3c, 0xcf, 0xfb, 0x3d, 0x81, 0xab, 0xbe, 0xc7, 0xac, 0x27, 0x23, 0x1e, 0x8c, 0x4d, 0x3f, 0xf0,
-	0x22, 0x8f, 0x5c, 0x09, 0x3d, 0x16, 0xf4, 0x1f, 0xb3, 0xa1, 0x6b, 0xfa, 0x1e, 0xd3, 0x3b, 0xb6,
-	0x67, 0x7b, 0xe2, 0x8b, 0x15, 0xff, 0x25, 0x41, 0xfa, 0xaa, 0xed, 0x79, 0xb6, 0xc3, 0x2d, 0xe6,
-	0x0f, 0x2d, 0xe6, 0xba, 0x5e, 0xc4, 0xa2, 0xa1, 0xe7, 0x86, 0xf8, 0xf5, 0x4e, 0xdf, 0x0b, 0x4f,
-	0xbd, 0xd0, 0xea, 0xb1, 0x90, 0xcb, 0xbb, 0xad, 0x2f, 0xf6, 0x7a, 0x3c, 0x62, 0x7b, 0x96, 0xcf,
-	0xec, 0xa1, 0x2b, 0xc0, 0x88, 0x7d, 0x3d, 0xe6, 0xf7, 0x59, 0xc0, 0x4e, 0x13, 0x6b, 0xa1, 0xc8,
-	0x1e, 0xb1, 0x60, 0x90, 0x87, 0x04, 0x23, 0xd7, 0xe5, 0x01, 0x9e, 0x74, 0xe2, 0x93, 0xfe, 0x63,
-	0xe6, 0x38, 0xdc, 0xb5, 0xd3, 0x53, 0x81, 0xeb, 0x3b, 0x43, 0xee, 0x46, 0xf2, 0x84, 0x76, 0x80,
-	0x7c, 0x12, 0xd3, 0x1f, 0x8b, 0xfb, 0xbb, 0xfc, 0xc9, 0x88, 0x87, 0x11, 0xfd, 0x18, 0xae, 0x15,
-	0x4e, 0x43, 0xdf, 0x73, 0x43, 0x4e, 0xee, 0xc3, 0xa2, 0xd4, 0x71, 0x5d, 0xdb, 0xd0, 0x76, 0x5e,
-	0xdd, 0x5f, 0x32, 0x0b, 0x91, 0x30, 0x25, 0xfc, 0xf0, 0xa5, 0xe7, 0x7f, 0xad, 0xcf, 0x75, 0x11,
-	0x4a, 0x77, 0x61, 0x49, 0xdc, 0x75, 0xc4, 0xa3, 0x0f, 0x04, 0x33, 0x92, 0x90, 0x0e, 0x2c, 0x0c,
-	0xdd, 0x01, 0x3f, 0x13, 0x97, 0x5d, 0xee, 0xca, 0x1f, 0xf4, 0x21, 0x2c, 0x97, 0xe1, 0x19, 0xbb,
-	0x94, 0xae, 0x60, 0x97, 0xf0, 0x84, 0x5d, 0x42, 0xe9, 0x09, 0xb2, 0x1f, 0x38, 0x4e, 0x91, 0xfd,
-	0x43, 0x80, 0x2c, 0xd2, 0x78, 0xe3, 0x2d, 0x53, 0xa6, 0xc5, 0x8c, 0xd3, 0x62, 0xca, 0x94, 0x63,
-	0x5a, 0xcc, 0x63, 0x66, 0x73, 0xb4, 0xed, 0xe6, 0x2c, 0xe9, 0x4f, 0x1a, 0x0a, 0xce, 0x31, 0xd4,
-	0x08, 0x9e, 0x6f, 0x29, 0x98, 0x1c, 0x15, 0x74, 0x5d, 0x12, 0xba, 0xde, 0x9c, 0xa8, 0x4b, 0x32,
-	0x16, 0x84, 0xed, 0xc1, 0x4a, 0x1a, 0xc8, 0xb4, 0x0e, 0x9a, 0x63, 0xff, 0x08, 0xf4, 0x3a, 0x13,
-	0x74, 0xe7, 0x7d, 0x80, 0xac, 0xa0, 0x30, 0x62, 0x2b, 0x65, 0x97, 0x52, 0x00, 0xba, 0x95, 0x33,
-	0xa1, 0x7d, 0x54, 0x14, 0x47, 0xaa, 0xa2, 0x68, 0x56, 0xf9, 0xf8, 0x55, 0x43, 0x27, 0x4a, 0x2c,
-	0x0a, 0x27, 0xe6, 0xa7, 0x74, 0x62, 0x76, 0xf9, 0xc9, 0xf5, 0x45, 0x57, 0x74, 0x6e, 0xeb, 0xbe,
-	0x48, 0xe0, 0x59, 0x99, 0xc9, 0xd6, 0x57, 0xf4, 0x85, 0x84, 0x27, 0x65, 0x26, 0xa1, 0xf9, 0xbe,
-	0x28, 0xb2, 0xff, 0x1f, 0x7d, 0xd1, 0x20, 0x78, 0xbe, 0xa5, 0xe0, 0xd9, 0xc5, 0xfd, 0x2e, 0x74,
-	0x92, 0x40, 0x1e, 0xc5, 0x23, 0xb4, 0x39, 0xec, 0x1f, 0x65, 0x59, 0x42, 0x34, 0x3a, 0x71, 0x0f,
-	0x16, 0xc4, 0x04, 0xc6, 0x10, 0x75, 0x4a, 0x3e, 0x08, 0x30, 0xba, 0x20, 0x81, 0xf4, 0x33, 0x24,
-	0x3e, 0x70, 0x9c, 0x02, 0xf1, 0xac, 0x22, 0xfe, 0xbd, 0x96, 0xe5, 0x54, 0xa9, 0x75, 0xbe, 0x95,
-	0xd6, 0xd9, 0x45, 0xfb, 0x01, 0x18, 0xc5, 0x71, 0x7e, 0x38, 0x3e, 0x18, 0x0c, 0x02, 0x1e, 0x26,
-	0xbb, 0x86, 0x5c, 0x87, 0x97, 0x99, 0x3c, 0xc1, 0xc8, 0x27, 0x3f, 0xe9, 0x31, 0xac, 0x2b, 0x6d,
-	0xd1, 0xb3, 0xdd, 0x56, 0x3b, 0x21, 0xdd, 0x06, 0xef, 0x01, 0xad, 0x0e, 0xb8, 0x29, 0x14, 0x7d,
-	0x0e, 0x5b, 0x8d, 0xf6, 0xa8, 0xea, 0xdd, 0xa9, 0x26, 0x65, 0x61, 0x46, 0x6e, 0x66, 0x3e, 0x77,
-	0x99, 0x3b, 0xf0, 0x4e, 0x2b, 0x93, 0x92, 0x3e, 0x82, 0x0d, 0x35, 0xe4, 0xbf, 0x2b, 0x58, 0x83,
-	0x1b, 0xc5, 0xeb, 0x0b, 0xf3, 0x81, 0x3e, 0x84, 0xd5, 0xfa, 0xcf, 0x59, 0x46, 0x5a, 0x4c, 0xa3,
-	0xa4, 0xad, 0xf7, 0x7f, 0x7e, 0x0d, 0x16, 0xc4, 0x7d, 0xc4, 0x85, 0x45, 0xf9, 0x7e, 0x20, 0x9b,
-	0x25, 0x93, 0xea, 0x03, 0x45, 0xa7, 0x4d, 0x10, 0xa9, 0x84, 0xae, 0x7d, 0xfd, 0xc7, 0x3f, 0x3f,
-	0x5c, 0x7a, 0x83, 0x2c, 0x59, 0x29, 0xd6, 0xca, 0x9e, 0x52, 0xe4, 0x2b, 0x58, 0x94, 0xd5, 0x41,
-	0xb6, 0xeb, 0x2e, 0x2b, 0x3f, 0x57, 0xf4, 0x9b, 0x13, 0x50, 0xc8, 0x7a, 0x53, 0xb0, 0xae, 0x93,
-	0xb5, 0x12, 0xab, 0xac, 0x40, 0xeb, 0xa9, 0x18, 0x2b, 0xcf, 0xc8, 0x97, 0x70, 0x59, 0x1a, 0x1e,
-	0x38, 0x4e, 0xbd, 0x80, 0xf2, 0x8b, 0xa5, 0x5e, 0x40, 0xe5, 0xd5, 0xa1, 0x74, 0x1b, 0xdf, 0x17,
-	0xdf, 0x6a, 0x00, 0x59, 0xe6, 0xc9, 0x8e, 0xca, 0xab, 0x72, 0xd9, 0xe9, 0xb7, 0x5b, 0x20, 0x51,
-	0xc2, 0x6d, 0x21, 0x61, 0x8b, 0x6c, 0x96, 0x25, 0xa4, 0xd0, 0x34, 0x0e, 0xdf, 0x68, 0x70, 0x25,
-	0xbb, 0x21, 0x0e, 0xc6, 0x8e, 0xca, 0xcd, 0x76, 0x8a, 0x6a, 0xd7, 0x3e, 0xdd, 0x14, 0x8a, 0x6e,
-	0x90, 0x15, 0xa5, 0xa2, 0xb8, 0x1e, 0x64, 0x6d, 0x2a, 0xeb, 0xa1, 0xd0, 0x08, 0xca, 0x7a, 0x28,
-	0xf6, 0x83, 0xb2, 0x1e, 0x64, 0xfd, 0xe7, 0xeb, 0x41, 0x1a, 0x36, 0xd5, 0x43, 0x0b, 0x01, 0x95,
-	0x6d, 0xab, 0xac, 0x07, 0xdc, 0xab, 0x67, 0xb0, 0x20, 0xe6, 0x3f, 0xd9, 0x52, 0xf8, 0x93, 0xdf,
-	0x55, 0xfa, 0x76, 0x33, 0x08, 0x29, 0xb7, 0x05, 0xa5, 0x41, 0x56, 0x4b, 0x94, 0x62, 0xb7, 0xa4,
-	0x2e, 0x87, 0xf0, 0x8a, 0x30, 0x8b, 0x3d, 0xde, 0x52, 0xf8, 0x32, 0x99, 0xbc, 0xbc, 0xec, 0xe8,
-	0xaa, 0x20, 0x5f, 0x26, 0x9d, 0x3a, 0x72, 0xf2, 0x9b, 0x06, 0xa4, 0xba, 0x4f, 0xc8, 0x6e, 0x63,
-	0x73, 0x97, 0x37, 0x84, 0x6e, 0xb6, 0x85, 0xa3, 0xa6, 0x77, 0x84, 0xa6, 0x7b, 0xc4, 0x2c, 0x6b,
-	0xe2, 0xd1, 0x89, 0xec, 0xcb, 0x93, 0xde, 0xf8, 0x04, 0xb7, 0x8c, 0xf5, 0x14, 0xff, 0x78, 0x46,
-	0x7e, 0xd7, 0x60, 0xb9, 0x7e, 0xd7, 0x90, 0xbd, 0x89, 0xed, 0x58, 0x51, 0xbd, 0x3f, 0x8d, 0x09,
-	0x2a, 0x7f, 0x20, 0x94, 0xbf, 0x4d, 0xf6, 0xeb, 0x94, 0xa7, 0x76, 0xf5, 0xea, 0x7f, 0xd1, 0xe0,
-	0x5a, 0xcd, 0x92, 0x22, 0xaa, 0xe8, 0x29, 0x16, 0x9e, 0x6e, 0xb5, 0xc6, 0xa3, 0xe8, 0xbb, 0x42,
-	0xf4, 0x2d, 0xb2, 0x5d, 0x23, 0x3a, 0x10, 0x46, 0x39, 0xed, 0xe4, 0x47, 0x0d, 0xae, 0x96, 0xb6,
-	0x19, 0xb9, 0xd3, 0x48, 0x59, 0xec, 0xc3, 0xb7, 0x5a, 0x61, 0x51, 0xda, 0x8e, 0x90, 0x46, 0xc9,
-	0x86, 0x5a, 0x9a, 0x6c, 0xcc, 0x43, 0xeb, 0xf9, 0xb9, 0xa1, 0xbd, 0x38, 0x37, 0xb4, 0xbf, 0xcf,
-	0x0d, 0xed, 0xbb, 0x0b, 0x63, 0xee, 0xc5, 0x85, 0x31, 0xf7, 0xe7, 0x85, 0x31, 0xf7, 0xe9, 0x52,
-	0x66, 0x7a, 0x26, 0x8c, 0xa3, 0xb1, 0xcf, 0xc3, 0xde, 0xa2, 0xf8, 0x8f, 0xfe, 0xfe, 0xbf, 0x01,
-	0x00, 0x00, 0xff, 0xff, 0x57, 0x89, 0x15, 0x85, 0xb0, 0x10, 0x00, 0x00,
+	// 1225 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x98, 0xcf, 0x6f, 0xdc, 0x54,
+	0x10, 0xc7, 0xe3, 0x2e, 0x49, 0xe8, 0xa0, 0xaa, 0xe8, 0x75, 0x93, 0x34, 0x6e, 0xb2, 0xc9, 0x3a,
+	0x69, 0x9a, 0x96, 0xc6, 0x6e, 0x52, 0x54, 0x89, 0x1e, 0x40, 0x09, 0x88, 0x08, 0xa4, 0x4a, 0xe9,
+	0x4a, 0x70, 0x40, 0x2a, 0xdb, 0x97, 0x5d, 0x77, 0xbb, 0x92, 0x63, 0x6f, 0x6d, 0x6f, 0x48, 0xd4,
+	0xf6, 0x00, 0x17, 0x2e, 0x1c, 0x10, 0x20, 0x0e, 0x70, 0x45, 0x5c, 0xf8, 0x13, 0xf8, 0x07, 0x7a,
+	0xac, 0xc4, 0x85, 0x13, 0x42, 0x09, 0x7f, 0x08, 0xf2, 0x7b, 0xe3, 0x1f, 0xef, 0xd9, 0xcf, 0xeb,
+	0xa8, 0xdb, 0x5b, 0xf6, 0xed, 0x77, 0x3c, 0x9f, 0x99, 0x79, 0x33, 0x9e, 0x2c, 0x5c, 0x1c, 0x78,
+	0xd4, 0x7a, 0x32, 0xb4, 0xfd, 0x63, 0x73, 0xe0, 0x7b, 0xa1, 0x47, 0x2e, 0x04, 0x1e, 0xf5, 0x3b,
+	0x8f, 0x69, 0xdf, 0x35, 0x07, 0x1e, 0xd5, 0xeb, 0x3d, 0xaf, 0xe7, 0xb1, 0x6f, 0xac, 0xe8, 0x2f,
+	0x2e, 0xd2, 0x17, 0x7a, 0x9e, 0xd7, 0x73, 0x6c, 0x8b, 0x0e, 0xfa, 0x16, 0x75, 0x5d, 0x2f, 0xa4,
+	0x61, 0xdf, 0x73, 0x03, 0xfc, 0xf6, 0x46, 0xc7, 0x0b, 0x0e, 0xbc, 0xc0, 0xda, 0xa7, 0x81, 0xcd,
+	0x9f, 0x6d, 0x1d, 0x6e, 0xee, 0xdb, 0x21, 0xdd, 0xb4, 0x06, 0xb4, 0xd7, 0x77, 0x99, 0x18, 0xb5,
+	0x6f, 0x47, 0xfe, 0x07, 0xd4, 0xa7, 0x07, 0xb1, 0x35, 0x23, 0xea, 0x0d, 0xa9, 0xdf, 0xc5, 0x03,
+	0x12, 0x1d, 0x1c, 0xfa, 0x8f, 0xda, 0x5d, 0x1a, 0x52, 0xf9, 0x6c, 0x18, 0xd8, 0x7e, 0xf6, 0x51,
+	0xfe, 0xd0, 0x75, 0x93, 0x93, 0x7a, 0x74, 0xd2, 0x79, 0x4c, 0x1d, 0xc7, 0x76, 0x7b, 0xa2, 0xae,
+	0xe3, 0xf4, 0x6d, 0x37, 0xe4, 0x27, 0x46, 0x1d, 0xc8, 0xfd, 0x08, 0x73, 0x8f, 0x71, 0xb4, 0xec,
+	0x27, 0x43, 0x3b, 0x08, 0x8d, 0x4f, 0xe1, 0x92, 0x70, 0x1a, 0x0c, 0x3c, 0x37, 0xb0, 0xc9, 0x6d,
+	0x98, 0xe2, 0xbc, 0x97, 0xb5, 0x65, 0x6d, 0xfd, 0xad, 0xad, 0x19, 0x53, 0xc8, 0x98, 0xc9, 0xe5,
+	0x3b, 0x6f, 0xbc, 0xf8, 0x67, 0x69, 0xa2, 0x85, 0x52, 0x63, 0x03, 0x66, 0xd8, 0xb3, 0x76, 0xed,
+	0xf0, 0x43, 0xe6, 0x19, 0x9d, 0x90, 0x3a, 0x4c, 0xf6, 0xdd, 0xae, 0x7d, 0xc4, 0x1e, 0x76, 0xbe,
+	0xc5, 0x3f, 0x18, 0xf7, 0x60, 0x56, 0x96, 0xa7, 0xde, 0x39, 0xba, 0xc2, 0x3b, 0x97, 0xc7, 0xde,
+	0xb9, 0xd4, 0x68, 0xa3, 0xf7, 0x6d, 0xc7, 0x11, 0xbd, 0x7f, 0x0c, 0x90, 0x56, 0x04, 0x9f, 0xb8,
+	0x66, 0xf2, 0xf2, 0x99, 0x51, 0xf9, 0x4c, 0x7e, 0x35, 0xb0, 0x7c, 0xe6, 0x1e, 0xed, 0xd9, 0x68,
+	0xdb, 0xca, 0x58, 0x1a, 0x3f, 0x6b, 0x08, 0x9c, 0xf1, 0x50, 0x00, 0x5c, 0xab, 0x08, 0x4c, 0x76,
+	0x05, 0xae, 0x73, 0x8c, 0xeb, 0xda, 0x48, 0x2e, 0xee, 0x51, 0x00, 0xdb, 0x84, 0xf9, 0x24, 0x91,
+	0xc9, 0x3d, 0x28, 0xcf, 0xfd, 0x03, 0xd0, 0x8b, 0x4c, 0x30, 0x9c, 0x0f, 0x00, 0xd2, 0x0b, 0x85,
+	0x19, 0x9b, 0x97, 0x43, 0x4a, 0x04, 0x18, 0x56, 0xc6, 0xc4, 0xe8, 0x20, 0x51, 0x94, 0xa9, 0x1c,
+	0xd1, 0xb8, 0xea, 0xf1, 0xbb, 0x86, 0x41, 0x48, 0x5e, 0x14, 0x41, 0xd4, 0xce, 0x18, 0xc4, 0xf8,
+	0xea, 0x93, 0xe9, 0x8b, 0x16, 0xeb, 0xdc, 0xca, 0x7d, 0x11, 0xcb, 0xd3, 0x6b, 0xc6, 0x5b, 0x5f,
+	0xd1, 0x17, 0x5c, 0x1e, 0x5f, 0x33, 0x2e, 0xcd, 0xf6, 0x85, 0xe8, 0xfd, 0x75, 0xf4, 0x45, 0x09,
+	0x70, 0xad, 0x22, 0xf0, 0xf8, 0xf2, 0x7e, 0x13, 0xea, 0x71, 0x22, 0x77, 0xa3, 0x51, 0x5b, 0x9e,
+	0xf6, 0x4f, 0xd2, 0x2a, 0xa1, 0x1a, 0x83, 0xb8, 0x05, 0x93, 0x6c, 0x52, 0x63, 0x8a, 0xea, 0x52,
+	0x0c, 0x4c, 0x8c, 0x21, 0x70, 0xa1, 0xf1, 0x25, 0x3a, 0xde, 0x76, 0x1c, 0xc1, 0xf1, 0xb8, 0x32,
+	0xfe, 0x83, 0x96, 0xd6, 0x54, 0xc9, 0x5a, 0xab, 0xc4, 0x3a, 0xbe, 0x6c, 0xdf, 0x85, 0x86, 0x38,
+	0xce, 0x77, 0x8e, 0xb7, 0xbb, 0x5d, 0xdf, 0x0e, 0xe2, 0x77, 0x0d, 0xb9, 0x0c, 0xd3, 0x94, 0x9f,
+	0x60, 0xe6, 0xe3, 0x8f, 0xc6, 0x1e, 0x2c, 0x29, 0x6d, 0x31, 0xb2, 0x8d, 0x4a, 0xef, 0x84, 0xe4,
+	0x6d, 0xf0, 0x3e, 0x18, 0xf9, 0x01, 0x77, 0x06, 0xa2, 0x87, 0xb0, 0x52, 0x6a, 0x8f, 0x54, 0xef,
+	0x9d, 0x69, 0x52, 0x0a, 0x33, 0xb2, 0x99, 0xc6, 0xdc, 0xa2, 0x6e, 0xd7, 0x3b, 0xc8, 0x4d, 0x4a,
+	0xe3, 0x01, 0x2c, 0xab, 0x25, 0xaf, 0x4e, 0xb0, 0x08, 0x57, 0xc4, 0xc7, 0x0b, 0xf3, 0xc1, 0xb8,
+	0x07, 0x0b, 0xc5, 0x5f, 0xa7, 0x15, 0xa9, 0x30, 0x8d, 0x92, 0x39, 0x64, 0xa6, 0x63, 0xed, 0x73,
+	0xff, 0xd1, 0x47, 0x34, 0xa4, 0xe5, 0xfd, 0x78, 0x1f, 0xe6, 0x72, 0x7a, 0xf4, 0x7c, 0x07, 0xa6,
+	0x0f, 0xf9, 0x11, 0xba, 0x9e, 0x95, 0x5c, 0xa3, 0x01, 0xde, 0xf4, 0x58, 0x6c, 0x3c, 0x4c, 0x07,
+	0x95, 0x84, 0x30, 0xae, 0xce, 0xfc, 0x45, 0x43, 0xea, 0xac, 0x8b, 0x22, 0xea, 0x5a, 0x65, 0xea,
+	0xf1, 0x75, 0xa8, 0x58, 0x81, 0xcf, 0x82, 0x51, 0x2f, 0x22, 0xb1, 0x02, 0x5c, 0x2f, 0xc4, 0x12,
+	0x1d, 0xa9, 0x2b, 0x10, 0x7d, 0x9b, 0x89, 0x25, 0xfa, 0x28, 0x55, 0x20, 0x8b, 0xf0, 0x9a, 0x2a,
+	0xa0, 0xa6, 0xae, 0x55, 0xa6, 0x1e, 0x5b, 0x05, 0xb6, 0x7e, 0x25, 0x30, 0xc9, 0xe0, 0x88, 0x0b,
+	0x53, 0x7c, 0x87, 0x26, 0x4d, 0x89, 0x21, 0xbf, 0xa4, 0xeb, 0x46, 0x99, 0x84, 0xbb, 0x31, 0x16,
+	0xbf, 0xf9, 0xeb, 0xbf, 0x1f, 0xcf, 0xcd, 0x91, 0x19, 0x2b, 0xd1, 0x5a, 0xe9, 0xbf, 0x1d, 0xe4,
+	0x19, 0x4c, 0xf1, 0x09, 0x49, 0x56, 0x8b, 0x1e, 0x26, 0xaf, 0xec, 0xfa, 0xd5, 0x11, 0x2a, 0xf4,
+	0x7a, 0x95, 0x79, 0x5d, 0x22, 0x8b, 0x92, 0x57, 0x3e, 0x85, 0xad, 0xa7, 0xec, 0x22, 0x3d, 0x27,
+	0x5f, 0xc1, 0x79, 0x6e, 0xb8, 0xed, 0x38, 0xc5, 0x00, 0xf2, 0xd6, 0x5e, 0x0c, 0x90, 0xdb, 0xbc,
+	0x95, 0x61, 0xe3, 0x8e, 0xfd, 0x9d, 0x06, 0x90, 0x4e, 0x3f, 0xb2, 0xae, 0x8a, 0x4a, 0x1e, 0xbd,
+	0xfa, 0xf5, 0x0a, 0x4a, 0x44, 0xb8, 0xce, 0x10, 0x56, 0x48, 0x53, 0x46, 0x48, 0xa4, 0x49, 0x1e,
+	0xbe, 0xd5, 0xe0, 0x42, 0xfa, 0x84, 0x28, 0x19, 0xeb, 0xaa, 0x30, 0xab, 0x11, 0x15, 0xae, 0xbe,
+	0x46, 0x93, 0x11, 0x5d, 0x21, 0xf3, 0x4a, 0xa2, 0xe8, 0x3e, 0xf0, 0xf9, 0xac, 0xbc, 0x0f, 0xc2,
+	0xcb, 0x40, 0x79, 0x1f, 0xc4, 0x77, 0x82, 0xf2, 0x3e, 0xf0, 0x77, 0x40, 0xf6, 0x3e, 0x70, 0xc3,
+	0xb2, 0xfb, 0x50, 0x01, 0x20, 0xb7, 0x71, 0x2a, 0xef, 0x03, 0xee, 0x96, 0x47, 0x30, 0xc9, 0x76,
+	0x20, 0xb2, 0xa2, 0x88, 0x27, 0xbb, 0xaf, 0xe9, 0xab, 0xe5, 0x22, 0x74, 0xb9, 0xca, 0x5c, 0x36,
+	0xc8, 0x82, 0xe4, 0x92, 0xed, 0x57, 0x49, 0xc8, 0x01, 0xbc, 0xc9, 0xcc, 0xa2, 0x88, 0x57, 0x14,
+	0xb1, 0x8c, 0x76, 0x2e, 0x2f, 0x7c, 0xc6, 0x02, 0x73, 0x3e, 0x4b, 0xea, 0x45, 0xce, 0xc9, 0x1f,
+	0x1a, 0x90, 0xfc, 0x4e, 0x45, 0x36, 0x4a, 0x9b, 0x5b, 0xde, 0x92, 0x74, 0xb3, 0xaa, 0x1c, 0x99,
+	0xee, 0x30, 0xa6, 0x5b, 0xc4, 0x94, 0x99, 0xec, 0xb0, 0xcd, 0xfb, 0xb2, 0xbd, 0x7f, 0xdc, 0xc6,
+	0x4d, 0xcb, 0x7a, 0x8a, 0x7f, 0x3c, 0x27, 0x7f, 0x6a, 0x30, 0x5b, 0xbc, 0x6f, 0x91, 0xcd, 0x91,
+	0xed, 0x98, 0xa3, 0xde, 0x3a, 0x8b, 0x09, 0x92, 0xdf, 0x65, 0xe4, 0xef, 0x92, 0xad, 0x22, 0xf2,
+	0xc4, 0xae, 0x98, 0xfe, 0x37, 0x0d, 0x2e, 0x15, 0x2c, 0x6a, 0x44, 0x95, 0x3d, 0xc5, 0xd2, 0xa7,
+	0x5b, 0x95, 0xf5, 0x08, 0x7d, 0x93, 0x41, 0xaf, 0x91, 0xd5, 0x02, 0x68, 0x9f, 0x19, 0x65, 0xd8,
+	0xc9, 0x4f, 0x1a, 0x5c, 0x94, 0x36, 0x3a, 0x72, 0xa3, 0xd4, 0xa5, 0xd8, 0x87, 0xef, 0x54, 0xd2,
+	0x22, 0xda, 0x3a, 0x43, 0x33, 0xc8, 0xb2, 0x1a, 0x0d, 0x1b, 0xf3, 0x6b, 0x0d, 0xa6, 0x71, 0xff,
+	0x21, 0xaa, 0x59, 0x23, 0xee, 0x6c, 0xfa, 0xda, 0x28, 0x19, 0x42, 0x5c, 0x63, 0x10, 0x4d, 0xb2,
+	0x24, 0x41, 0xc4, 0xbf, 0xb6, 0x25, 0x2d, 0xfa, 0x0c, 0x00, 0x6d, 0xa3, 0x26, 0x55, 0x0d, 0x9c,
+	0x2a, 0x14, 0xf9, 0xed, 0xcf, 0x58, 0x62, 0x14, 0xf3, 0x64, 0x4e, 0x41, 0x11, 0x67, 0x80, 0x2d,
+	0x1c, 0x25, 0x19, 0xc8, 0xec, 0x4c, 0x65, 0x19, 0xc8, 0xee, 0x3d, 0xa5, 0x19, 0x18, 0x06, 0x99,
+	0xb9, 0xcc, 0x33, 0x10, 0xd9, 0x8e, 0xc8, 0xc0, 0x48, 0x8a, 0xfc, 0xf6, 0x55, 0x9a, 0x81, 0x88,
+	0x62, 0xc7, 0x7a, 0x71, 0xd2, 0xd0, 0x5e, 0x9e, 0x34, 0xb4, 0x7f, 0x4f, 0x1a, 0xda, 0xf7, 0xa7,
+	0x8d, 0x89, 0x97, 0xa7, 0x8d, 0x89, 0xbf, 0x4f, 0x1b, 0x13, 0x5f, 0xcc, 0xa4, 0x16, 0x47, 0xcc,
+	0x26, 0x3c, 0x1e, 0xd8, 0xc1, 0xfe, 0x14, 0xfb, 0x65, 0xf3, 0xf6, 0xff, 0x01, 0x00, 0x00, 0xff,
+	0xff, 0x3c, 0x4b, 0x8c, 0x25, 0xe0, 0x15, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1322,6 +1711,14 @@ type QueryClient interface {
 	GetRandomChallenger(ctx context.Context, in *QueryGetRandomChallengerRequest, opts ...grpc.CallOption) (*QueryGetRandomChallengerResponse, error)
 	// Queries a list of GetRandomRunner items.
 	GetRandomRunner(ctx context.Context, in *QueryGetRandomRunnerRequest, opts ...grpc.CallOption) (*QueryGetRandomRunnerResponse, error)
+	// Queries a VrfData by index.
+	VrfData(ctx context.Context, in *QueryGetVrfDataRequest, opts ...grpc.CallOption) (*QueryGetVrfDataResponse, error)
+	// Queries a list of VrfData items.
+	VrfDataAll(ctx context.Context, in *QueryAllVrfDataRequest, opts ...grpc.CallOption) (*QueryAllVrfDataResponse, error)
+	// Queries a VrfUser by index.
+	VrfUser(ctx context.Context, in *QueryGetVrfUserRequest, opts ...grpc.CallOption) (*QueryGetVrfUserResponse, error)
+	// Queries a list of VrfUser items.
+	VrfUserAll(ctx context.Context, in *QueryAllVrfUserRequest, opts ...grpc.CallOption) (*QueryAllVrfUserResponse, error)
 }
 
 type queryClient struct {
@@ -1449,6 +1846,42 @@ func (c *queryClient) GetRandomRunner(ctx context.Context, in *QueryGetRandomRun
 	return out, nil
 }
 
+func (c *queryClient) VrfData(ctx context.Context, in *QueryGetVrfDataRequest, opts ...grpc.CallOption) (*QueryGetVrfDataResponse, error) {
+	out := new(QueryGetVrfDataResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.poa.Query/VrfData", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) VrfDataAll(ctx context.Context, in *QueryAllVrfDataRequest, opts ...grpc.CallOption) (*QueryAllVrfDataResponse, error) {
+	out := new(QueryAllVrfDataResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.poa.Query/VrfDataAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) VrfUser(ctx context.Context, in *QueryGetVrfUserRequest, opts ...grpc.CallOption) (*QueryGetVrfUserResponse, error) {
+	out := new(QueryGetVrfUserResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.poa.Query/VrfUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) VrfUserAll(ctx context.Context, in *QueryAllVrfUserRequest, opts ...grpc.CallOption) (*QueryAllVrfUserResponse, error) {
+	out := new(QueryAllVrfUserResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.poa.Query/VrfUserAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -1477,6 +1910,14 @@ type QueryServer interface {
 	GetRandomChallenger(context.Context, *QueryGetRandomChallengerRequest) (*QueryGetRandomChallengerResponse, error)
 	// Queries a list of GetRandomRunner items.
 	GetRandomRunner(context.Context, *QueryGetRandomRunnerRequest) (*QueryGetRandomRunnerResponse, error)
+	// Queries a VrfData by index.
+	VrfData(context.Context, *QueryGetVrfDataRequest) (*QueryGetVrfDataResponse, error)
+	// Queries a list of VrfData items.
+	VrfDataAll(context.Context, *QueryAllVrfDataRequest) (*QueryAllVrfDataResponse, error)
+	// Queries a VrfUser by index.
+	VrfUser(context.Context, *QueryGetVrfUserRequest) (*QueryGetVrfUserResponse, error)
+	// Queries a list of VrfUser items.
+	VrfUserAll(context.Context, *QueryAllVrfUserRequest) (*QueryAllVrfUserResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -1521,6 +1962,18 @@ func (*UnimplementedQueryServer) GetRandomChallenger(ctx context.Context, req *Q
 }
 func (*UnimplementedQueryServer) GetRandomRunner(ctx context.Context, req *QueryGetRandomRunnerRequest) (*QueryGetRandomRunnerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRandomRunner not implemented")
+}
+func (*UnimplementedQueryServer) VrfData(ctx context.Context, req *QueryGetVrfDataRequest) (*QueryGetVrfDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VrfData not implemented")
+}
+func (*UnimplementedQueryServer) VrfDataAll(ctx context.Context, req *QueryAllVrfDataRequest) (*QueryAllVrfDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VrfDataAll not implemented")
+}
+func (*UnimplementedQueryServer) VrfUser(ctx context.Context, req *QueryGetVrfUserRequest) (*QueryGetVrfUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VrfUser not implemented")
+}
+func (*UnimplementedQueryServer) VrfUserAll(ctx context.Context, req *QueryAllVrfUserRequest) (*QueryAllVrfUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VrfUserAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -1761,6 +2214,78 @@ func _Query_GetRandomRunner_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_VrfData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetVrfDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VrfData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.poa.Query/VrfData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VrfData(ctx, req.(*QueryGetVrfDataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_VrfDataAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllVrfDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VrfDataAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.poa.Query/VrfDataAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VrfDataAll(ctx, req.(*QueryAllVrfDataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_VrfUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetVrfUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VrfUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.poa.Query/VrfUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VrfUser(ctx, req.(*QueryGetVrfUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_VrfUserAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllVrfUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VrfUserAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.poa.Query/VrfUserAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VrfUserAll(ctx, req.(*QueryAllVrfUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "soarchain.poa.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -1816,6 +2341,22 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRandomRunner",
 			Handler:    _Query_GetRandomRunner_Handler,
+		},
+		{
+			MethodName: "VrfData",
+			Handler:    _Query_VrfData_Handler,
+		},
+		{
+			MethodName: "VrfDataAll",
+			Handler:    _Query_VrfDataAll_Handler,
+		},
+		{
+			MethodName: "VrfUser",
+			Handler:    _Query_VrfUser_Handler,
+		},
+		{
+			MethodName: "VrfUserAll",
+			Handler:    _Query_VrfUserAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -2712,6 +3253,300 @@ func (m *QueryGetRandomRunnerResponse) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetVrfDataRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetVrfDataRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetVrfDataRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetVrfDataResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetVrfDataResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetVrfDataResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.VrfData.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllVrfDataRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllVrfDataRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllVrfDataRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllVrfDataResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllVrfDataResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllVrfDataResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.VrfData) > 0 {
+		for iNdEx := len(m.VrfData) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.VrfData[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetVrfUserRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetVrfUserRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetVrfUserRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetVrfUserResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetVrfUserResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetVrfUserResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.VrfUser.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllVrfUserRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllVrfUserRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllVrfUserRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllVrfUserResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllVrfUserResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllVrfUserResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.VrfUser) > 0 {
+		for iNdEx := len(m.VrfUser) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.VrfUser[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -3058,6 +3893,118 @@ func (m *QueryGetRandomRunnerResponse) Size() (n int) {
 	_ = l
 	if m.Runner != nil {
 		l = m.Runner.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetVrfDataRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetVrfDataResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.VrfData.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllVrfDataRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllVrfDataResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.VrfData) > 0 {
+		for _, e := range m.VrfData {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetVrfUserRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetVrfUserResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.VrfUser.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllVrfUserRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllVrfUserResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.VrfUser) > 0 {
+		for _, e := range m.VrfUser {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
@@ -5270,6 +6217,748 @@ func (m *QueryGetRandomRunnerResponse) Unmarshal(dAtA []byte) error {
 				m.Runner = &Runner{}
 			}
 			if err := m.Runner.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetVrfDataRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetVrfDataRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetVrfDataRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetVrfDataResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetVrfDataResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetVrfDataResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VrfData", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.VrfData.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllVrfDataRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllVrfDataRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllVrfDataRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllVrfDataResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllVrfDataResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllVrfDataResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VrfData", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.VrfData = append(m.VrfData, VrfData{})
+			if err := m.VrfData[len(m.VrfData)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetVrfUserRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetVrfUserRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetVrfUserRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetVrfUserResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetVrfUserResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetVrfUserResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VrfUser", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.VrfUser.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllVrfUserRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllVrfUserRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllVrfUserRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllVrfUserResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllVrfUserResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllVrfUserResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VrfUser", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.VrfUser = append(m.VrfUser, VrfUser{})
+			if err := m.VrfUser[len(m.VrfUser)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

@@ -56,6 +56,22 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 
+				VrfDataList: []types.VrfData{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				VrfUserList: []types.VrfUser{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -117,6 +133,34 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid: false,
 		},
 
+		{
+			desc: "duplicated vrfData",
+			genState: &types.GenesisState{
+				VrfDataList: []types.VrfData{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated vrfUser",
+			genState: &types.GenesisState{
+				VrfUserList: []types.VrfUser{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

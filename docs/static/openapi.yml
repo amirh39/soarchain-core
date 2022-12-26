@@ -52983,6 +52983,11 @@ definitions:
     type: object
   soarchain.poa.MsgRunnerChallengeResponse:
     type: object
+  soarchain.poa.MsgSelectRandomChallengerResponse:
+    type: object
+    properties:
+      randomChallenger:
+        type: string
   soarchain.poa.MsgUnregisterChallengerResponse:
     type: object
   soarchain.poa.MsgUnregisterClientResponse:

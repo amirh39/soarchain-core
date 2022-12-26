@@ -1,0 +1,20 @@
+syntax = "proto3";
+package soarchain.poa;
+
+option go_package = "soarchain/x/poa/types";
+
+message VrfData {
+  string index = 1; 
+  string creator = 2; 
+  string vrv = 3; 
+  string multiplier = 4; 
+  string proof = 5; 
+  string pubkey = 6; 
+  string message = 7; 
+  string parsedVrv = 8; 
+  string floatVrv = 9; 
+  string finalVrv = 10; 
+  string finalVrvFloat = 11; 
+  
+}
+

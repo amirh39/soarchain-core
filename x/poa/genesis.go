@@ -27,6 +27,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetGuard(ctx, elem)
 	}
 
+	// Set all the vrfData
+	for _, elem := range genState.VrfDataList {
+		k.SetVrfData(ctx, elem)
+	}
+	// Set all the vrfUser
+	for _, elem := range genState.VrfUserList {
+		k.SetVrfUser(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -41,6 +49,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.RunnerList = k.GetAllRunner(ctx)
 	genesis.GuardList = k.GetAllGuard(ctx)
 
+	genesis.VrfDataList = k.GetAllVrfData(ctx)
+	genesis.VrfUserList = k.GetAllVrfUser(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

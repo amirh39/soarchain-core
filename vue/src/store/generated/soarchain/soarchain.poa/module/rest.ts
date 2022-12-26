@@ -43,6 +43,10 @@ export type PoaMsgGenGuardResponse = object;
 
 export type PoaMsgRunnerChallengeResponse = object;
 
+export interface PoaMsgSelectRandomChallengerResponse {
+  randomChallenger?: string;
+}
+
 export type PoaMsgUnregisterChallengerResponse = object;
 
 export type PoaMsgUnregisterClientResponse = object;
@@ -116,6 +120,36 @@ export interface PoaQueryAllRunnerResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface PoaQueryAllVrfDataResponse {
+  vrfData?: PoaVrfData[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface PoaQueryAllVrfUserResponse {
+  vrfUser?: PoaVrfUser[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface PoaQueryGetChallengerByAddressResponse {
   challenger?: PoaChallenger;
 }
@@ -148,6 +182,14 @@ export interface PoaQueryGetRunnerResponse {
   runner?: PoaRunner;
 }
 
+export interface PoaQueryGetVrfDataResponse {
+  vrfData?: PoaVrfData;
+}
+
+export interface PoaQueryGetVrfUserResponse {
+  vrfUser?: PoaVrfUser;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
@@ -164,6 +206,26 @@ export interface PoaRunner {
   netEarnings?: string;
   ipAddr?: string;
   lastTimeChallenged?: string;
+}
+
+export interface PoaVrfData {
+  index?: string;
+  creator?: string;
+  vrv?: string;
+  multiplier?: string;
+  proof?: string;
+  pubkey?: string;
+  message?: string;
+  parsedVrv?: string;
+  floatVrv?: string;
+  finalVrv?: string;
+  finalVrvFloat?: string;
+}
+
+export interface PoaVrfUser {
+  index?: string;
+  address?: string;
+  count?: string;
 }
 
 export interface ProtobufAny {
@@ -668,6 +730,88 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryRunner = (index: string, params: RequestParams = {}) =>
     this.request<PoaQueryGetRunnerResponse, RpcStatus>({
       path: `/soarchain/poa/runner/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVrfDataAll
+   * @summary Queries a list of VrfData items.
+   * @request GET:/soarchain/poa/vrf_data
+   */
+  queryVrfDataAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PoaQueryAllVrfDataResponse, RpcStatus>({
+      path: `/soarchain/poa/vrf_data`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVrfData
+   * @summary Queries a VrfData by index.
+   * @request GET:/soarchain/poa/vrf_data/{index}
+   */
+  queryVrfData = (index: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetVrfDataResponse, RpcStatus>({
+      path: `/soarchain/poa/vrf_data/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVrfUserAll
+   * @summary Queries a list of VrfUser items.
+   * @request GET:/soarchain/poa/vrf_user
+   */
+  queryVrfUserAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PoaQueryAllVrfUserResponse, RpcStatus>({
+      path: `/soarchain/poa/vrf_user`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVrfUser
+   * @summary Queries a VrfUser by index.
+   * @request GET:/soarchain/poa/vrf_user/{index}
+   */
+  queryVrfUser = (index: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetVrfUserResponse, RpcStatus>({
+      path: `/soarchain/poa/vrf_user/${index}`,
       method: "GET",
       format: "json",
       ...params,

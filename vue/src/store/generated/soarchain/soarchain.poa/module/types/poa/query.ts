@@ -9,6 +9,8 @@ import {
 import { Challenger } from "../poa/challenger";
 import { Runner } from "../poa/runner";
 import { Guard } from "../poa/guard";
+import { VrfData } from "../poa/vrf_data";
+import { VrfUser } from "../poa/vrf_user";
 
 export const protobufPackage = "soarchain.poa";
 
@@ -115,6 +117,40 @@ export interface QueryGetRandomRunnerRequest {}
 
 export interface QueryGetRandomRunnerResponse {
   runner: Runner | undefined;
+}
+
+export interface QueryGetVrfDataRequest {
+  index: string;
+}
+
+export interface QueryGetVrfDataResponse {
+  vrfData: VrfData | undefined;
+}
+
+export interface QueryAllVrfDataRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllVrfDataResponse {
+  vrfData: VrfData[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetVrfUserRequest {
+  index: string;
+}
+
+export interface QueryGetVrfUserResponse {
+  vrfUser: VrfUser | undefined;
+}
+
+export interface QueryAllVrfUserRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllVrfUserResponse {
+  vrfUser: VrfUser[];
+  pagination: PageResponse | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -1876,6 +1912,586 @@ export const QueryGetRandomRunnerResponse = {
   },
 };
 
+const baseQueryGetVrfDataRequest: object = { index: "" };
+
+export const QueryGetVrfDataRequest = {
+  encode(
+    message: QueryGetVrfDataRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetVrfDataRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetVrfDataRequest } as QueryGetVrfDataRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetVrfDataRequest {
+    const message = { ...baseQueryGetVrfDataRequest } as QueryGetVrfDataRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetVrfDataRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetVrfDataRequest>
+  ): QueryGetVrfDataRequest {
+    const message = { ...baseQueryGetVrfDataRequest } as QueryGetVrfDataRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetVrfDataResponse: object = {};
+
+export const QueryGetVrfDataResponse = {
+  encode(
+    message: QueryGetVrfDataResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.vrfData !== undefined) {
+      VrfData.encode(message.vrfData, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetVrfDataResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetVrfDataResponse,
+    } as QueryGetVrfDataResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.vrfData = VrfData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetVrfDataResponse {
+    const message = {
+      ...baseQueryGetVrfDataResponse,
+    } as QueryGetVrfDataResponse;
+    if (object.vrfData !== undefined && object.vrfData !== null) {
+      message.vrfData = VrfData.fromJSON(object.vrfData);
+    } else {
+      message.vrfData = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetVrfDataResponse): unknown {
+    const obj: any = {};
+    message.vrfData !== undefined &&
+      (obj.vrfData = message.vrfData
+        ? VrfData.toJSON(message.vrfData)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetVrfDataResponse>
+  ): QueryGetVrfDataResponse {
+    const message = {
+      ...baseQueryGetVrfDataResponse,
+    } as QueryGetVrfDataResponse;
+    if (object.vrfData !== undefined && object.vrfData !== null) {
+      message.vrfData = VrfData.fromPartial(object.vrfData);
+    } else {
+      message.vrfData = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllVrfDataRequest: object = {};
+
+export const QueryAllVrfDataRequest = {
+  encode(
+    message: QueryAllVrfDataRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllVrfDataRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllVrfDataRequest } as QueryAllVrfDataRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllVrfDataRequest {
+    const message = { ...baseQueryAllVrfDataRequest } as QueryAllVrfDataRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllVrfDataRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllVrfDataRequest>
+  ): QueryAllVrfDataRequest {
+    const message = { ...baseQueryAllVrfDataRequest } as QueryAllVrfDataRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllVrfDataResponse: object = {};
+
+export const QueryAllVrfDataResponse = {
+  encode(
+    message: QueryAllVrfDataResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.vrfData) {
+      VrfData.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllVrfDataResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllVrfDataResponse,
+    } as QueryAllVrfDataResponse;
+    message.vrfData = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.vrfData.push(VrfData.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllVrfDataResponse {
+    const message = {
+      ...baseQueryAllVrfDataResponse,
+    } as QueryAllVrfDataResponse;
+    message.vrfData = [];
+    if (object.vrfData !== undefined && object.vrfData !== null) {
+      for (const e of object.vrfData) {
+        message.vrfData.push(VrfData.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllVrfDataResponse): unknown {
+    const obj: any = {};
+    if (message.vrfData) {
+      obj.vrfData = message.vrfData.map((e) =>
+        e ? VrfData.toJSON(e) : undefined
+      );
+    } else {
+      obj.vrfData = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllVrfDataResponse>
+  ): QueryAllVrfDataResponse {
+    const message = {
+      ...baseQueryAllVrfDataResponse,
+    } as QueryAllVrfDataResponse;
+    message.vrfData = [];
+    if (object.vrfData !== undefined && object.vrfData !== null) {
+      for (const e of object.vrfData) {
+        message.vrfData.push(VrfData.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetVrfUserRequest: object = { index: "" };
+
+export const QueryGetVrfUserRequest = {
+  encode(
+    message: QueryGetVrfUserRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetVrfUserRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetVrfUserRequest } as QueryGetVrfUserRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetVrfUserRequest {
+    const message = { ...baseQueryGetVrfUserRequest } as QueryGetVrfUserRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetVrfUserRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetVrfUserRequest>
+  ): QueryGetVrfUserRequest {
+    const message = { ...baseQueryGetVrfUserRequest } as QueryGetVrfUserRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetVrfUserResponse: object = {};
+
+export const QueryGetVrfUserResponse = {
+  encode(
+    message: QueryGetVrfUserResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.vrfUser !== undefined) {
+      VrfUser.encode(message.vrfUser, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetVrfUserResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetVrfUserResponse,
+    } as QueryGetVrfUserResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.vrfUser = VrfUser.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetVrfUserResponse {
+    const message = {
+      ...baseQueryGetVrfUserResponse,
+    } as QueryGetVrfUserResponse;
+    if (object.vrfUser !== undefined && object.vrfUser !== null) {
+      message.vrfUser = VrfUser.fromJSON(object.vrfUser);
+    } else {
+      message.vrfUser = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetVrfUserResponse): unknown {
+    const obj: any = {};
+    message.vrfUser !== undefined &&
+      (obj.vrfUser = message.vrfUser
+        ? VrfUser.toJSON(message.vrfUser)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetVrfUserResponse>
+  ): QueryGetVrfUserResponse {
+    const message = {
+      ...baseQueryGetVrfUserResponse,
+    } as QueryGetVrfUserResponse;
+    if (object.vrfUser !== undefined && object.vrfUser !== null) {
+      message.vrfUser = VrfUser.fromPartial(object.vrfUser);
+    } else {
+      message.vrfUser = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllVrfUserRequest: object = {};
+
+export const QueryAllVrfUserRequest = {
+  encode(
+    message: QueryAllVrfUserRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllVrfUserRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllVrfUserRequest } as QueryAllVrfUserRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllVrfUserRequest {
+    const message = { ...baseQueryAllVrfUserRequest } as QueryAllVrfUserRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllVrfUserRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllVrfUserRequest>
+  ): QueryAllVrfUserRequest {
+    const message = { ...baseQueryAllVrfUserRequest } as QueryAllVrfUserRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllVrfUserResponse: object = {};
+
+export const QueryAllVrfUserResponse = {
+  encode(
+    message: QueryAllVrfUserResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.vrfUser) {
+      VrfUser.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllVrfUserResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllVrfUserResponse,
+    } as QueryAllVrfUserResponse;
+    message.vrfUser = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.vrfUser.push(VrfUser.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllVrfUserResponse {
+    const message = {
+      ...baseQueryAllVrfUserResponse,
+    } as QueryAllVrfUserResponse;
+    message.vrfUser = [];
+    if (object.vrfUser !== undefined && object.vrfUser !== null) {
+      for (const e of object.vrfUser) {
+        message.vrfUser.push(VrfUser.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllVrfUserResponse): unknown {
+    const obj: any = {};
+    if (message.vrfUser) {
+      obj.vrfUser = message.vrfUser.map((e) =>
+        e ? VrfUser.toJSON(e) : undefined
+      );
+    } else {
+      obj.vrfUser = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllVrfUserResponse>
+  ): QueryAllVrfUserResponse {
+    const message = {
+      ...baseQueryAllVrfUserResponse,
+    } as QueryAllVrfUserResponse;
+    message.vrfUser = [];
+    if (object.vrfUser !== undefined && object.vrfUser !== null) {
+      for (const e of object.vrfUser) {
+        message.vrfUser.push(VrfUser.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1916,6 +2532,14 @@ export interface Query {
   GetRandomRunner(
     request: QueryGetRandomRunnerRequest
   ): Promise<QueryGetRandomRunnerResponse>;
+  /** Queries a VrfData by index. */
+  VrfData(request: QueryGetVrfDataRequest): Promise<QueryGetVrfDataResponse>;
+  /** Queries a list of VrfData items. */
+  VrfDataAll(request: QueryAllVrfDataRequest): Promise<QueryAllVrfDataResponse>;
+  /** Queries a VrfUser by index. */
+  VrfUser(request: QueryGetVrfUserRequest): Promise<QueryGetVrfUserResponse>;
+  /** Queries a list of VrfUser items. */
+  VrfUserAll(request: QueryAllVrfUserRequest): Promise<QueryAllVrfUserResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -2054,6 +2678,42 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetRandomRunnerResponse.decode(new Reader(data))
+    );
+  }
+
+  VrfData(request: QueryGetVrfDataRequest): Promise<QueryGetVrfDataResponse> {
+    const data = QueryGetVrfDataRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "VrfData", data);
+    return promise.then((data) =>
+      QueryGetVrfDataResponse.decode(new Reader(data))
+    );
+  }
+
+  VrfDataAll(
+    request: QueryAllVrfDataRequest
+  ): Promise<QueryAllVrfDataResponse> {
+    const data = QueryAllVrfDataRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "VrfDataAll", data);
+    return promise.then((data) =>
+      QueryAllVrfDataResponse.decode(new Reader(data))
+    );
+  }
+
+  VrfUser(request: QueryGetVrfUserRequest): Promise<QueryGetVrfUserResponse> {
+    const data = QueryGetVrfUserRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "VrfUser", data);
+    return promise.then((data) =>
+      QueryGetVrfUserResponse.decode(new Reader(data))
+    );
+  }
+
+  VrfUserAll(
+    request: QueryAllVrfUserRequest
+  ): Promise<QueryAllVrfUserResponse> {
+    const data = QueryAllVrfUserRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "VrfUserAll", data);
+    return promise.then((data) =>
+      QueryAllVrfUserResponse.decode(new Reader(data))
     );
   }
 }

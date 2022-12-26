@@ -47,6 +47,22 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		VrfDataList: []types.VrfData{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
+		VrfUserList: []types.VrfUser{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -62,5 +78,7 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.ChallengerList, got.ChallengerList)
 	require.ElementsMatch(t, genesisState.RunnerList, got.RunnerList)
 	require.ElementsMatch(t, genesisState.GuardList, got.GuardList)
+	require.ElementsMatch(t, genesisState.VrfDataList, got.VrfDataList)
+	require.ElementsMatch(t, genesisState.VrfUserList, got.VrfUserList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

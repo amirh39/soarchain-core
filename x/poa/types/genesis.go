@@ -14,6 +14,8 @@ func DefaultGenesis() *GenesisState {
 		ChallengerList: []Challenger{},
 		RunnerList:     []Runner{},
 		GuardList:      []Guard{},
+		VrfDataList:    []VrfData{},
+		VrfUserList:    []VrfUser{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -63,6 +65,26 @@ func (gs GenesisState) Validate() error {
 		guardIndexMap[index] = struct{}{}
 	}
 
+	// Check for duplicated index in vrfData
+	vrfDataIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.VrfDataList {
+		index := string(VrfDataKey(elem.Index))
+		if _, ok := vrfDataIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for vrfData")
+		}
+		vrfDataIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in vrfUser
+	vrfUserIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.VrfUserList {
+		index := string(VrfUserKey(elem.Index))
+		if _, ok := vrfUserIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for vrfUser")
+		}
+		vrfUserIndexMap[index] = struct{}{}
+	}
 	// this line is used by starport scaffolding # genesis/types/validate
 
 	return gs.Params.Validate()

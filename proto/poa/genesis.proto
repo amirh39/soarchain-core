@@ -7,6 +7,8 @@ import "poa/client.proto";
 import "poa/challenger.proto";
 import "poa/runner.proto";
 import "poa/guard.proto";
+import "poa/vrf_data.proto";
+import "poa/vrf_user.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "soarchain/x/poa/types";
@@ -18,5 +20,7 @@ message GenesisState {
   repeated Challenger challengerList = 3 [(gogoproto.nullable) = false];
   repeated Runner runnerList = 4 [(gogoproto.nullable) = false];
   repeated Guard guardList = 5 [(gogoproto.nullable) = false];
+  repeated VrfData vrfDataList = 6 [(gogoproto.nullable) = false];
+  repeated VrfUser vrfUserList = 7 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

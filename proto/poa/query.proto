@@ -6,6 +6,8 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
 import "poa/guard.proto";
+import "poa/vrf_data.proto";
+import "poa/vrf_user.proto";
 // this line is used by starport scaffolding # 1
 import "poa/runner.proto";
 import "poa/challenger.proto";
@@ -77,6 +79,26 @@ service Query {
 // Queries a list of GetRandomRunner items.
 	rpc GetRandomRunner(QueryGetRandomRunnerRequest) returns (QueryGetRandomRunnerResponse) {
 		option (google.api.http).get = "/soarchain/poa/get_random_runner";
+	}
+
+// Queries a VrfData by index.
+	rpc VrfData(QueryGetVrfDataRequest) returns (QueryGetVrfDataResponse) {
+		option (google.api.http).get = "/soarchain/poa/vrf_data/{index}";
+	}
+
+	// Queries a list of VrfData items.
+	rpc VrfDataAll(QueryAllVrfDataRequest) returns (QueryAllVrfDataResponse) {
+		option (google.api.http).get = "/soarchain/poa/vrf_data";
+	}
+
+// Queries a VrfUser by index.
+	rpc VrfUser(QueryGetVrfUserRequest) returns (QueryGetVrfUserResponse) {
+		option (google.api.http).get = "/soarchain/poa/vrf_user/{index}";
+	}
+
+	// Queries a list of VrfUser items.
+	rpc VrfUserAll(QueryAllVrfUserRequest) returns (QueryAllVrfUserResponse) {
+		option (google.api.http).get = "/soarchain/poa/vrf_user";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -191,6 +213,42 @@ message QueryGetRandomRunnerRequest {
 
 message QueryGetRandomRunnerResponse {
   Runner runner = 1;
+}
+
+message QueryGetVrfDataRequest {
+	  string index = 1;
+
+}
+
+message QueryGetVrfDataResponse {
+	VrfData vrfData = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVrfDataRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVrfDataResponse {
+	repeated VrfData vrfData = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetVrfUserRequest {
+	  string index = 1;
+
+}
+
+message QueryGetVrfUserResponse {
+	VrfUser vrfUser = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVrfUserRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVrfUserResponse {
+	repeated VrfUser vrfUser = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
