@@ -101,6 +101,11 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/vrf_user";
 	}
 
+// Queries a list of VerifyRandomNumber items.
+	rpc VerifyRandomNumber(QueryVerifyRandomNumberRequest) returns (QueryVerifyRandomNumberResponse) {
+		option (google.api.http).get = "/soarchain/poa/verify_random_number/{pubkey}/{message}/{vrv}/{proof}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -249,6 +254,17 @@ message QueryAllVrfUserRequest {
 message QueryAllVrfUserResponse {
 	repeated VrfUser vrfUser = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryVerifyRandomNumberRequest {
+  string pubkey = 1;
+  string message = 2;
+  string vrv = 3;
+  string proof = 4;
+}
+
+message QueryVerifyRandomNumberResponse {
+  bool result = 1;
 }
 
 // this line is used by starport scaffolding # 3

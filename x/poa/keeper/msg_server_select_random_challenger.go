@@ -56,7 +56,6 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 
 	if uint64(multiplier) < uint64(final_vrv) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Generated random number is out of index!")
-
 	}
 
 	//
@@ -85,10 +84,10 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 	}
 	k.SetVrfData(ctx, newRandomVal)
 
-	resultStr, err := k.VerifyRandomNumber(ctx, newRandomVal)
-	if err != nil && resultStr != "true" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't verify generated VRF")
-	}
+	// resultStr, err := k.VerifyGeneratedNumber(ctx, newRandomVal)
+	// if err != nil && resultStr != "true" {
+	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't verify generated VRF")
+	// }
 
 	newVrfUser := types.VrfUser{
 		Index:   msg.Creator,
@@ -101,25 +100,27 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 	// return &types.MsgSelectRandomChallengerResponse{RandomChallenger: (strconv.FormatUint(finalRNG, 10))}, nil
 }
 
-func (k Keeper) VerifyRandomNumber(ctx sdk.Context, vrfData types.VrfData) (string, error) {
+func (k Keeper) VerifyGeneratedNumber(ctx sdk.Context, req *types.QueryVerifyRandomNumberRequest) (bool, error) {
 
 	var public_key vrf.PublicKey
-	public_key, err := hex.DecodeString(vrfData.Pubkey)
+	public_key, err := hex.DecodeString(req.Pubkey)
 	if err != nil {
-		return "false", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Public Key cannot be decoded")
+		return false, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Public Key cannot be decoded")
 	}
-	message_value := []byte(vrfData.Message)
-	vrv_value, err := hex.DecodeString(vrfData.Vrv)
+	message_value := []byte(req.Message)
+	vrv_value, err := hex.DecodeString(req.Vrv)
 	if err != nil {
-		return "false", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "VRV Value cannot be decoded")
+		return false, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "VRV Value cannot be decoded")
 	}
 
-	proof_value, err := hex.DecodeString(vrfData.Proof)
+	proof_value, err := hex.DecodeString(req.Proof)
 	if err != nil {
-		return "false", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Proof value cannot be decoded")
+		return false, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Proof value cannot be decoded")
 	}
 
 	is_verified := public_key.Verify(message_value, vrv_value, proof_value)
 
-	return strconv.FormatBool(is_verified), err
+	// return strconv.FormatBool(is_verified), err
+	return is_verified, err
+
 }

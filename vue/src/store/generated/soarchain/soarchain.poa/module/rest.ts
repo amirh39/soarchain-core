@@ -198,6 +198,10 @@ export interface PoaQueryParamsResponse {
   params?: PoaParams;
 }
 
+export interface PoaQueryVerifyRandomNumberResponse {
+  result?: boolean;
+}
+
 export interface PoaRunner {
   index?: string;
   address?: string;
@@ -742,6 +746,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryRunner = (index: string, params: RequestParams = {}) =>
     this.request<PoaQueryGetRunnerResponse, RpcStatus>({
       path: `/soarchain/poa/runner/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVerifyRandomNumber
+   * @summary Queries a list of VerifyRandomNumber items.
+   * @request GET:/soarchain/poa/verify_random_number/{pubkey}/{message}/{vrv}/{proof}
+   */
+  queryVerifyRandomNumber = (pubkey: string, message: string, vrv: string, proof: string, params: RequestParams = {}) =>
+    this.request<PoaQueryVerifyRandomNumberResponse, RpcStatus>({
+      path: `/soarchain/poa/verify_random_number/${pubkey}/${message}/${vrv}/${proof}`,
       method: "GET",
       format: "json",
       ...params,

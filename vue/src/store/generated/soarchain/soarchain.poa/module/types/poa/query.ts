@@ -153,6 +153,17 @@ export interface QueryAllVrfUserResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryVerifyRandomNumberRequest {
+  pubkey: string;
+  message: string;
+  vrv: string;
+  proof: string;
+}
+
+export interface QueryVerifyRandomNumberResponse {
+  result: boolean;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -2492,6 +2503,200 @@ export const QueryAllVrfUserResponse = {
   },
 };
 
+const baseQueryVerifyRandomNumberRequest: object = {
+  pubkey: "",
+  message: "",
+  vrv: "",
+  proof: "",
+};
+
+export const QueryVerifyRandomNumberRequest = {
+  encode(
+    message: QueryVerifyRandomNumberRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pubkey !== "") {
+      writer.uint32(10).string(message.pubkey);
+    }
+    if (message.message !== "") {
+      writer.uint32(18).string(message.message);
+    }
+    if (message.vrv !== "") {
+      writer.uint32(26).string(message.vrv);
+    }
+    if (message.proof !== "") {
+      writer.uint32(34).string(message.proof);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryVerifyRandomNumberRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryVerifyRandomNumberRequest,
+    } as QueryVerifyRandomNumberRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pubkey = reader.string();
+          break;
+        case 2:
+          message.message = reader.string();
+          break;
+        case 3:
+          message.vrv = reader.string();
+          break;
+        case 4:
+          message.proof = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryVerifyRandomNumberRequest {
+    const message = {
+      ...baseQueryVerifyRandomNumberRequest,
+    } as QueryVerifyRandomNumberRequest;
+    if (object.pubkey !== undefined && object.pubkey !== null) {
+      message.pubkey = String(object.pubkey);
+    } else {
+      message.pubkey = "";
+    }
+    if (object.message !== undefined && object.message !== null) {
+      message.message = String(object.message);
+    } else {
+      message.message = "";
+    }
+    if (object.vrv !== undefined && object.vrv !== null) {
+      message.vrv = String(object.vrv);
+    } else {
+      message.vrv = "";
+    }
+    if (object.proof !== undefined && object.proof !== null) {
+      message.proof = String(object.proof);
+    } else {
+      message.proof = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryVerifyRandomNumberRequest): unknown {
+    const obj: any = {};
+    message.pubkey !== undefined && (obj.pubkey = message.pubkey);
+    message.message !== undefined && (obj.message = message.message);
+    message.vrv !== undefined && (obj.vrv = message.vrv);
+    message.proof !== undefined && (obj.proof = message.proof);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryVerifyRandomNumberRequest>
+  ): QueryVerifyRandomNumberRequest {
+    const message = {
+      ...baseQueryVerifyRandomNumberRequest,
+    } as QueryVerifyRandomNumberRequest;
+    if (object.pubkey !== undefined && object.pubkey !== null) {
+      message.pubkey = object.pubkey;
+    } else {
+      message.pubkey = "";
+    }
+    if (object.message !== undefined && object.message !== null) {
+      message.message = object.message;
+    } else {
+      message.message = "";
+    }
+    if (object.vrv !== undefined && object.vrv !== null) {
+      message.vrv = object.vrv;
+    } else {
+      message.vrv = "";
+    }
+    if (object.proof !== undefined && object.proof !== null) {
+      message.proof = object.proof;
+    } else {
+      message.proof = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryVerifyRandomNumberResponse: object = { result: false };
+
+export const QueryVerifyRandomNumberResponse = {
+  encode(
+    message: QueryVerifyRandomNumberResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.result === true) {
+      writer.uint32(8).bool(message.result);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryVerifyRandomNumberResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryVerifyRandomNumberResponse,
+    } as QueryVerifyRandomNumberResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.result = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryVerifyRandomNumberResponse {
+    const message = {
+      ...baseQueryVerifyRandomNumberResponse,
+    } as QueryVerifyRandomNumberResponse;
+    if (object.result !== undefined && object.result !== null) {
+      message.result = Boolean(object.result);
+    } else {
+      message.result = false;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryVerifyRandomNumberResponse): unknown {
+    const obj: any = {};
+    message.result !== undefined && (obj.result = message.result);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryVerifyRandomNumberResponse>
+  ): QueryVerifyRandomNumberResponse {
+    const message = {
+      ...baseQueryVerifyRandomNumberResponse,
+    } as QueryVerifyRandomNumberResponse;
+    if (object.result !== undefined && object.result !== null) {
+      message.result = object.result;
+    } else {
+      message.result = false;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -2540,6 +2745,10 @@ export interface Query {
   VrfUser(request: QueryGetVrfUserRequest): Promise<QueryGetVrfUserResponse>;
   /** Queries a list of VrfUser items. */
   VrfUserAll(request: QueryAllVrfUserRequest): Promise<QueryAllVrfUserResponse>;
+  /** Queries a list of VerifyRandomNumber items. */
+  VerifyRandomNumber(
+    request: QueryVerifyRandomNumberRequest
+  ): Promise<QueryVerifyRandomNumberResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -2714,6 +2923,20 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("soarchain.poa.Query", "VrfUserAll", data);
     return promise.then((data) =>
       QueryAllVrfUserResponse.decode(new Reader(data))
+    );
+  }
+
+  VerifyRandomNumber(
+    request: QueryVerifyRandomNumberRequest
+  ): Promise<QueryVerifyRandomNumberResponse> {
+    const data = QueryVerifyRandomNumberRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "soarchain.poa.Query",
+      "VerifyRandomNumber",
+      data
+    );
+    return promise.then((data) =>
+      QueryVerifyRandomNumberResponse.decode(new Reader(data))
     );
   }
 }
