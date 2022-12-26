@@ -37,11 +37,6 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't generate VRF key!")
 	}
 
-	// msgMultiplier, err := strconv.ParseUint(msg.Multiplier, 10, 64)
-	// if err != nil {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't parse VRF multiplier!")
-	// }
-
 	random_val_key := msg.Creator + "," + strconv.FormatInt(user_key_count, 10)
 	a_message := []byte(random_val_key)
 
@@ -65,26 +60,35 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 	}
 
 	//
+	var selectedChallenger types.Challenger
+	challengers := k.GetAllChallenger(ctx)
+	for i := 0; i < len(challengers); i++ {
+		if i == int(finalRNG) {
+			selectedChallenger = challengers[i]
+		}
+	}
+	//
+
 	newRandomVal := types.VrfData{
-		Index:         random_val_key,
-		Creator:       msg.Creator,
-		Vrv:           hex.EncodeToString(vrv),
-		Multiplier:    msg.Multiplier,
-		Proof:         hex.EncodeToString(proof),
-		Pubkey:        hex.EncodeToString(pub_key),
-		Message:       random_val_key,
-		ParsedVrv:     strconv.FormatUint(binary.BigEndian.Uint64(vrv), 10),
-		FloatVrv:      strconv.FormatFloat(float_vrv, 'f', 0, 64),
-		FinalVrv:      strconv.FormatUint(uint64(final_vrv), 10),
-		FinalVrvFloat: strconv.FormatFloat(final_vrv_float, 'f', 0, 64),
+		Index:              random_val_key,
+		Creator:            msg.Creator,
+		Vrv:                hex.EncodeToString(vrv),
+		Multiplier:         strconv.FormatUint(uint64(multiplier), 10),
+		Proof:              hex.EncodeToString(proof),
+		Pubkey:             hex.EncodeToString(pub_key),
+		Message:            random_val_key,
+		ParsedVrv:          strconv.FormatUint(binary.BigEndian.Uint64(vrv), 10),
+		FloatVrv:           strconv.FormatFloat(float_vrv, 'f', 0, 64),
+		FinalVrv:           strconv.FormatUint(uint64(final_vrv), 10),
+		FinalVrvFloat:      strconv.FormatFloat(final_vrv_float, 'f', 0, 64),
+		SelectedChallenger: &selectedChallenger,
 	}
 	k.SetVrfData(ctx, newRandomVal)
 
-	//
-	// resultStr, err := k.VerifyRandomNumber(ctx, newRandomVal)
-	// if err != nil && resultStr != "true" {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't verify generated VRF")
-	// }
+	resultStr, err := k.VerifyRandomNumber(ctx, newRandomVal)
+	if err != nil && resultStr != "true" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't verify generated VRF")
+	}
 
 	newVrfUser := types.VrfUser{
 		Index:   msg.Creator,
@@ -93,7 +97,8 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 	}
 	k.SetVrfUser(ctx, newVrfUser)
 
-	return &types.MsgSelectRandomChallengerResponse{RandomChallenger: (strconv.FormatUint(finalRNG, 10))}, nil
+	return &types.MsgSelectRandomChallengerResponse{RandomChallenger: &selectedChallenger}, nil
+	// return &types.MsgSelectRandomChallengerResponse{RandomChallenger: (strconv.FormatUint(finalRNG, 10))}, nil
 }
 
 func (k Keeper) VerifyRandomNumber(ctx sdk.Context, vrfData types.VrfData) (string, error) {

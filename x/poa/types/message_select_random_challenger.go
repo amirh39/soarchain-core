@@ -9,10 +9,9 @@ const TypeMsgSelectRandomChallenger = "select_random_challenger"
 
 var _ sdk.Msg = &MsgSelectRandomChallenger{}
 
-func NewMsgSelectRandomChallenger(creator string, multiplier string) *MsgSelectRandomChallenger {
+func NewMsgSelectRandomChallenger(creator string) *MsgSelectRandomChallenger {
 	return &MsgSelectRandomChallenger{
-		Creator:    creator,
-		Multiplier: multiplier,
+		Creator: creator,
 	}
 }
 

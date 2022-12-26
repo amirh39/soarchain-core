@@ -3,22 +3,22 @@ package cli
 import (
 	"strconv"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
 var _ = strconv.Itoa(0)
 
 func CmdSelectRandomChallenger() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "select-random-challenger [multiplier]",
+		Use:   "select-random-challenger",
 		Short: "Broadcast message select-random-challenger",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argMultiplier := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -27,7 +27,6 @@ func CmdSelectRandomChallenger() *cobra.Command {
 
 			msg := types.NewMsgSelectRandomChallenger(
 				clientCtx.GetFromAddress().String(),
-				argMultiplier,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

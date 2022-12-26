@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { Reader, Writer } from "protobufjs/minimal";
+import { Challenger } from "../poa/challenger";
 
 export const protobufPackage = "soarchain.poa";
 
@@ -76,11 +77,10 @@ export interface MsgUnregisterGuardResponse {}
 
 export interface MsgSelectRandomChallenger {
   creator: string;
-  multiplier: string;
 }
 
 export interface MsgSelectRandomChallengerResponse {
-  randomChallenger: string;
+  randomChallenger: Challenger | undefined;
 }
 
 const baseMsgGenClient: object = { creator: "", address: "", fee: "" };
@@ -1388,7 +1388,7 @@ export const MsgUnregisterGuardResponse = {
   },
 };
 
-const baseMsgSelectRandomChallenger: object = { creator: "", multiplier: "" };
+const baseMsgSelectRandomChallenger: object = { creator: "" };
 
 export const MsgSelectRandomChallenger = {
   encode(
@@ -1397,9 +1397,6 @@ export const MsgSelectRandomChallenger = {
   ): Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
-    }
-    if (message.multiplier !== "") {
-      writer.uint32(18).string(message.multiplier);
     }
     return writer;
   },
@@ -1419,9 +1416,6 @@ export const MsgSelectRandomChallenger = {
         case 1:
           message.creator = reader.string();
           break;
-        case 2:
-          message.multiplier = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1439,18 +1433,12 @@ export const MsgSelectRandomChallenger = {
     } else {
       message.creator = "";
     }
-    if (object.multiplier !== undefined && object.multiplier !== null) {
-      message.multiplier = String(object.multiplier);
-    } else {
-      message.multiplier = "";
-    }
     return message;
   },
 
   toJSON(message: MsgSelectRandomChallenger): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.multiplier !== undefined && (obj.multiplier = message.multiplier);
     return obj;
   },
 
@@ -1465,24 +1453,22 @@ export const MsgSelectRandomChallenger = {
     } else {
       message.creator = "";
     }
-    if (object.multiplier !== undefined && object.multiplier !== null) {
-      message.multiplier = object.multiplier;
-    } else {
-      message.multiplier = "";
-    }
     return message;
   },
 };
 
-const baseMsgSelectRandomChallengerResponse: object = { randomChallenger: "" };
+const baseMsgSelectRandomChallengerResponse: object = {};
 
 export const MsgSelectRandomChallengerResponse = {
   encode(
     message: MsgSelectRandomChallengerResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.randomChallenger !== "") {
-      writer.uint32(10).string(message.randomChallenger);
+    if (message.randomChallenger !== undefined) {
+      Challenger.encode(
+        message.randomChallenger,
+        writer.uint32(10).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -1500,7 +1486,7 @@ export const MsgSelectRandomChallengerResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.randomChallenger = reader.string();
+          message.randomChallenger = Challenger.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1518,9 +1504,9 @@ export const MsgSelectRandomChallengerResponse = {
       object.randomChallenger !== undefined &&
       object.randomChallenger !== null
     ) {
-      message.randomChallenger = String(object.randomChallenger);
+      message.randomChallenger = Challenger.fromJSON(object.randomChallenger);
     } else {
-      message.randomChallenger = "";
+      message.randomChallenger = undefined;
     }
     return message;
   },
@@ -1528,7 +1514,9 @@ export const MsgSelectRandomChallengerResponse = {
   toJSON(message: MsgSelectRandomChallengerResponse): unknown {
     const obj: any = {};
     message.randomChallenger !== undefined &&
-      (obj.randomChallenger = message.randomChallenger);
+      (obj.randomChallenger = message.randomChallenger
+        ? Challenger.toJSON(message.randomChallenger)
+        : undefined);
     return obj;
   },
 
@@ -1542,9 +1530,11 @@ export const MsgSelectRandomChallengerResponse = {
       object.randomChallenger !== undefined &&
       object.randomChallenger !== null
     ) {
-      message.randomChallenger = object.randomChallenger;
+      message.randomChallenger = Challenger.fromPartial(
+        object.randomChallenger
+      );
     } else {
-      message.randomChallenger = "";
+      message.randomChallenger = undefined;
     }
     return message;
   },

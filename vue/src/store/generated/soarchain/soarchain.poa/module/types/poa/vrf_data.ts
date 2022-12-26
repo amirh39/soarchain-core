@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { Challenger } from "../poa/challenger";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "soarchain.poa";
@@ -15,6 +16,7 @@ export interface VrfData {
   floatVrv: string;
   finalVrv: string;
   finalVrvFloat: string;
+  selectedChallenger: Challenger | undefined;
 }
 
 const baseVrfData: object = {
@@ -66,6 +68,12 @@ export const VrfData = {
     if (message.finalVrvFloat !== "") {
       writer.uint32(90).string(message.finalVrvFloat);
     }
+    if (message.selectedChallenger !== undefined) {
+      Challenger.encode(
+        message.selectedChallenger,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -108,6 +116,12 @@ export const VrfData = {
           break;
         case 11:
           message.finalVrvFloat = reader.string();
+          break;
+        case 12:
+          message.selectedChallenger = Challenger.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -174,6 +188,16 @@ export const VrfData = {
     } else {
       message.finalVrvFloat = "";
     }
+    if (
+      object.selectedChallenger !== undefined &&
+      object.selectedChallenger !== null
+    ) {
+      message.selectedChallenger = Challenger.fromJSON(
+        object.selectedChallenger
+      );
+    } else {
+      message.selectedChallenger = undefined;
+    }
     return message;
   },
 
@@ -191,6 +215,10 @@ export const VrfData = {
     message.finalVrv !== undefined && (obj.finalVrv = message.finalVrv);
     message.finalVrvFloat !== undefined &&
       (obj.finalVrvFloat = message.finalVrvFloat);
+    message.selectedChallenger !== undefined &&
+      (obj.selectedChallenger = message.selectedChallenger
+        ? Challenger.toJSON(message.selectedChallenger)
+        : undefined);
     return obj;
   },
 
@@ -250,6 +278,16 @@ export const VrfData = {
       message.finalVrvFloat = object.finalVrvFloat;
     } else {
       message.finalVrvFloat = "";
+    }
+    if (
+      object.selectedChallenger !== undefined &&
+      object.selectedChallenger !== null
+    ) {
+      message.selectedChallenger = Challenger.fromPartial(
+        object.selectedChallenger
+      );
+    } else {
+      message.selectedChallenger = undefined;
     }
     return message;
   },

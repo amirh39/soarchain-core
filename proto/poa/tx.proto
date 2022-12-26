@@ -1,6 +1,8 @@
 syntax = "proto3";
 package soarchain.poa;
 
+import "poa/challenger.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "soarchain/x/poa/types";
@@ -100,11 +102,10 @@ message MsgUnregisterGuardResponse {
 
 message MsgSelectRandomChallenger {
   string creator = 1;
-  string multiplier = 2;
 }
 
 message MsgSelectRandomChallengerResponse {
-  string randomChallenger = 1;
+  Challenger randomChallenger = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
