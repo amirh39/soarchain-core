@@ -71,11 +71,6 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/get_challenger_by_address/{address}";
 	}
 
-// Queries a list of GetRandomChallenger items.
-	rpc GetRandomChallenger(QueryGetRandomChallengerRequest) returns (QueryGetRandomChallengerResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_random_challenger";
-	}
-
 // Queries a list of GetRandomRunner items.
 	rpc GetRandomRunner(QueryGetRandomRunnerRequest) returns (QueryGetRandomRunnerResponse) {
 		option (google.api.http).get = "/soarchain/poa/get_random_runner";
@@ -203,13 +198,6 @@ message QueryGetChallengerByAddressRequest {
 }
 
 message QueryGetChallengerByAddressResponse {
-  Challenger challenger = 1;
-}
-
-message QueryGetRandomChallengerRequest {
-}
-
-message QueryGetRandomChallengerResponse {
   Challenger challenger = 1;
 }
 

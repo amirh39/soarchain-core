@@ -107,12 +107,6 @@ export interface QueryGetChallengerByAddressResponse {
   challenger: Challenger | undefined;
 }
 
-export interface QueryGetRandomChallengerRequest {}
-
-export interface QueryGetRandomChallengerResponse {
-  challenger: Challenger | undefined;
-}
-
 export interface QueryGetRandomRunnerRequest {}
 
 export interface QueryGetRandomRunnerResponse {
@@ -1677,130 +1671,6 @@ export const QueryGetChallengerByAddressResponse = {
   },
 };
 
-const baseQueryGetRandomChallengerRequest: object = {};
-
-export const QueryGetRandomChallengerRequest = {
-  encode(
-    _: QueryGetRandomChallengerRequest,
-    writer: Writer = Writer.create()
-  ): Writer {
-    return writer;
-  },
-
-  decode(
-    input: Reader | Uint8Array,
-    length?: number
-  ): QueryGetRandomChallengerRequest {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseQueryGetRandomChallengerRequest,
-    } as QueryGetRandomChallengerRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): QueryGetRandomChallengerRequest {
-    const message = {
-      ...baseQueryGetRandomChallengerRequest,
-    } as QueryGetRandomChallengerRequest;
-    return message;
-  },
-
-  toJSON(_: QueryGetRandomChallengerRequest): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial(
-    _: DeepPartial<QueryGetRandomChallengerRequest>
-  ): QueryGetRandomChallengerRequest {
-    const message = {
-      ...baseQueryGetRandomChallengerRequest,
-    } as QueryGetRandomChallengerRequest;
-    return message;
-  },
-};
-
-const baseQueryGetRandomChallengerResponse: object = {};
-
-export const QueryGetRandomChallengerResponse = {
-  encode(
-    message: QueryGetRandomChallengerResponse,
-    writer: Writer = Writer.create()
-  ): Writer {
-    if (message.challenger !== undefined) {
-      Challenger.encode(message.challenger, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(
-    input: Reader | Uint8Array,
-    length?: number
-  ): QueryGetRandomChallengerResponse {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseQueryGetRandomChallengerResponse,
-    } as QueryGetRandomChallengerResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.challenger = Challenger.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetRandomChallengerResponse {
-    const message = {
-      ...baseQueryGetRandomChallengerResponse,
-    } as QueryGetRandomChallengerResponse;
-    if (object.challenger !== undefined && object.challenger !== null) {
-      message.challenger = Challenger.fromJSON(object.challenger);
-    } else {
-      message.challenger = undefined;
-    }
-    return message;
-  },
-
-  toJSON(message: QueryGetRandomChallengerResponse): unknown {
-    const obj: any = {};
-    message.challenger !== undefined &&
-      (obj.challenger = message.challenger
-        ? Challenger.toJSON(message.challenger)
-        : undefined);
-    return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<QueryGetRandomChallengerResponse>
-  ): QueryGetRandomChallengerResponse {
-    const message = {
-      ...baseQueryGetRandomChallengerResponse,
-    } as QueryGetRandomChallengerResponse;
-    if (object.challenger !== undefined && object.challenger !== null) {
-      message.challenger = Challenger.fromPartial(object.challenger);
-    } else {
-      message.challenger = undefined;
-    }
-    return message;
-  },
-};
-
 const baseQueryGetRandomRunnerRequest: object = {};
 
 export const QueryGetRandomRunnerRequest = {
@@ -2729,10 +2599,6 @@ export interface Query {
   GetChallengerByAddress(
     request: QueryGetChallengerByAddressRequest
   ): Promise<QueryGetChallengerByAddressResponse>;
-  /** Queries a list of GetRandomChallenger items. */
-  GetRandomChallenger(
-    request: QueryGetRandomChallengerRequest
-  ): Promise<QueryGetRandomChallengerResponse>;
   /** Queries a list of GetRandomRunner items. */
   GetRandomRunner(
     request: QueryGetRandomRunnerRequest
@@ -2859,20 +2725,6 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetChallengerByAddressResponse.decode(new Reader(data))
-    );
-  }
-
-  GetRandomChallenger(
-    request: QueryGetRandomChallengerRequest
-  ): Promise<QueryGetRandomChallengerResponse> {
-    const data = QueryGetRandomChallengerRequest.encode(request).finish();
-    const promise = this.rpc.request(
-      "soarchain.poa.Query",
-      "GetRandomChallenger",
-      data
-    );
-    return promise.then((data) =>
-      QueryGetRandomChallengerResponse.decode(new Reader(data))
     );
   }
 
