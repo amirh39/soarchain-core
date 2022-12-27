@@ -2,6 +2,7 @@ syntax = "proto3";
 package soarchain.poa;
 
 import "poa/challenger.proto";
+import "poa/runner.proto";
 
 option go_package = "soarchain/x/poa/types";
 
@@ -18,5 +19,6 @@ message VrfData {
   string finalVrv = 10; 
   string finalVrvFloat = 11; 
   Challenger selectedChallenger = 12;
+  Runner selectedRunner = 13;
 }
 

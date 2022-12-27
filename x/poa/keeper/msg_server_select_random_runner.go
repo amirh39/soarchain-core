@@ -11,11 +11,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgSelectRandomChallenger) (*types.MsgSelectRandomChallengerResponse, error) {
+func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelectRandomRunner) (*types.MsgSelectRandomRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	allChallengers := k.GetAllChallenger(ctx)
-	multiplier := int(len(allChallengers))
+	allRunners := k.GetAllRunner(ctx)
+	multiplier := int(len(allRunners))
 
 	vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
 	if vrfErr != nil {
@@ -26,11 +26,11 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "vrfData.FinalVrv parse error!")
 	}
-	var selectedChallenger types.Challenger
-	challengers := k.GetAllChallenger(ctx)
-	for i := 0; i < len(challengers); i++ {
+	var selectedRunner types.Runner
+	runenrs := k.GetAllRunner(ctx)
+	for i := 0; i < len(runenrs); i++ {
 		if i == int(generatedNumber) {
-			selectedChallenger = challengers[i]
+			selectedRunner = runenrs[i]
 		}
 	}
 
@@ -51,10 +51,10 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 		FloatVrv:           vrf.FloatVrv,
 		FinalVrv:           vrf.FinalVrv,
 		FinalVrvFloat:      vrf.FinalVrvFloat,
-		SelectedChallenger: &selectedChallenger,
-		SelectedRunner:     nil,
+		SelectedChallenger: nil,
+		SelectedRunner:     &selectedRunner,
 	}
 	k.SetVrfData(ctx, updateVrf)
 
-	return &types.MsgSelectRandomChallengerResponse{RandomChallenger: &selectedChallenger}, nil
+	return &types.MsgSelectRandomRunnerResponse{RandomRunner: &selectedRunner}, nil
 }

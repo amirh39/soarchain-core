@@ -65,6 +65,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSelectRandomChallenger int = 100
 
+	opWeightMsgSelectRandomRunner = "op_weight_msg_select_random_runner"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSelectRandomRunner int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -196,6 +200,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgSelectRandomChallenger,
 		poasimulation.SimulateMsgSelectRandomChallenger(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSelectRandomRunner int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSelectRandomRunner, &weightMsgSelectRandomRunner, nil,
+		func(_ *rand.Rand) {
+			weightMsgSelectRandomRunner = defaultWeightMsgSelectRandomRunner
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSelectRandomRunner,
+		poasimulation.SimulateMsgSelectRandomRunner(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

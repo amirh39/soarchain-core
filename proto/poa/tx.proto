@@ -4,6 +4,7 @@ package soarchain.poa;
 import "poa/challenger.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
+import "poa/runner.proto";
 
 option go_package = "soarchain/x/poa/types";
 
@@ -18,6 +19,7 @@ service Msg {
   rpc RunnerChallenge(MsgRunnerChallenge) returns (MsgRunnerChallengeResponse);
   rpc UnregisterGuard(MsgUnregisterGuard) returns (MsgUnregisterGuardResponse);
   rpc SelectRandomChallenger(MsgSelectRandomChallenger) returns (MsgSelectRandomChallengerResponse);
+  rpc SelectRandomRunner(MsgSelectRandomRunner) returns (MsgSelectRandomRunnerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -106,6 +108,14 @@ message MsgSelectRandomChallenger {
 
 message MsgSelectRandomChallengerResponse {
   Challenger randomChallenger = 1;
+}
+
+message MsgSelectRandomRunner {
+  string creator = 1;
+}
+
+message MsgSelectRandomRunnerResponse {
+  Runner randomRunner = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

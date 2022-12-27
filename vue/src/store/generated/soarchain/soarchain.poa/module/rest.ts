@@ -47,6 +47,10 @@ export interface PoaMsgSelectRandomChallengerResponse {
   randomChallenger?: PoaChallenger;
 }
 
+export interface PoaMsgSelectRandomRunnerResponse {
+  randomRunner?: PoaRunner;
+}
+
 export type PoaMsgUnregisterChallengerResponse = object;
 
 export type PoaMsgUnregisterClientResponse = object;
@@ -221,6 +225,7 @@ export interface PoaVrfData {
   finalVrv?: string;
   finalVrvFloat?: string;
   selectedChallenger?: PoaChallenger;
+  selectedRunner?: PoaRunner;
 }
 
 export interface PoaVrfUser {

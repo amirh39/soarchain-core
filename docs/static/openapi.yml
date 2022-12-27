@@ -30695,53 +30695,6 @@ paths:
           type: string
       tags:
         - Query
-  /soarchain/poa/get_random_challenger:
-    get:
-      summary: Queries a list of GetRandomChallenger items.
-      operationId: SoarchainPoaGetRandomChallenger
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              challenger:
-                type: object
-                properties:
-                  index:
-                    type: string
-                  address:
-                    type: string
-                  score:
-                    type: string
-                  stakedAmount:
-                    type: string
-                  netEarnings:
-                    type: string
-                  type:
-                    type: string
-                  ipAddr:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
   /soarchain/poa/get_random_runner:
     get:
       summary: Queries a list of GetRandomRunner items.
@@ -31360,6 +31313,23 @@ paths:
                           type: string
                         ipAddr:
                           type: string
+                    selectedRunner:
+                      type: object
+                      properties:
+                        index:
+                          type: string
+                        address:
+                          type: string
+                        score:
+                          type: string
+                        stakedAmount:
+                          type: string
+                        netEarnings:
+                          type: string
+                        ipAddr:
+                          type: string
+                        lastTimeChallenged:
+                          type: string
               pagination:
                 type: object
                 properties:
@@ -31505,6 +31475,23 @@ paths:
                       type:
                         type: string
                       ipAddr:
+                        type: string
+                  selectedRunner:
+                    type: object
+                    properties:
+                      index:
+                        type: string
+                      address:
+                        type: string
+                      score:
+                        type: string
+                      stakedAmount:
+                        type: string
+                      netEarnings:
+                        type: string
+                      ipAddr:
+                        type: string
+                      lastTimeChallenged:
                         type: string
         default:
           description: An unexpected error response.
@@ -53396,6 +53383,26 @@ definitions:
             type: string
           ipAddr:
             type: string
+  soarchain.poa.MsgSelectRandomRunnerResponse:
+    type: object
+    properties:
+      randomRunner:
+        type: object
+        properties:
+          index:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          ipAddr:
+            type: string
+          lastTimeChallenged:
+            type: string
   soarchain.poa.MsgUnregisterChallengerResponse:
     type: object
   soarchain.poa.MsgUnregisterClientResponse:
@@ -53679,6 +53686,23 @@ definitions:
                   type: string
                 ipAddr:
                   type: string
+            selectedRunner:
+              type: object
+              properties:
+                index:
+                  type: string
+                address:
+                  type: string
+                score:
+                  type: string
+                stakedAmount:
+                  type: string
+                netEarnings:
+                  type: string
+                ipAddr:
+                  type: string
+                lastTimeChallenged:
+                  type: string
       pagination:
         type: object
         properties:
@@ -53876,26 +53900,6 @@ definitions:
                 type: string
               ipAddr:
                 type: string
-  soarchain.poa.QueryGetRandomChallengerResponse:
-    type: object
-    properties:
-      challenger:
-        type: object
-        properties:
-          index:
-            type: string
-          address:
-            type: string
-          score:
-            type: string
-          stakedAmount:
-            type: string
-          netEarnings:
-            type: string
-          type:
-            type: string
-          ipAddr:
-            type: string
   soarchain.poa.QueryGetRandomRunnerResponse:
     type: object
     properties:
@@ -53981,6 +53985,23 @@ definitions:
                 type: string
               ipAddr:
                 type: string
+          selectedRunner:
+            type: object
+            properties:
+              index:
+                type: string
+              address:
+                type: string
+              score:
+                type: string
+              stakedAmount:
+                type: string
+              netEarnings:
+                type: string
+              ipAddr:
+                type: string
+              lastTimeChallenged:
+                type: string
   soarchain.poa.QueryGetVrfUserResponse:
     type: object
     properties:
@@ -54063,6 +54084,23 @@ definitions:
           type:
             type: string
           ipAddr:
+            type: string
+      selectedRunner:
+        type: object
+        properties:
+          index:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          ipAddr:
+            type: string
+          lastTimeChallenged:
             type: string
   soarchain.poa.VrfUser:
     type: object

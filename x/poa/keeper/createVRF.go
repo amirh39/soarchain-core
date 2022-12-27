@@ -50,19 +50,27 @@ func (k Keeper) CreateVRF(ctx sdk.Context, msgCreator string, multiplier int) (t
 	final_vrv := float_vrv * float64(multiplier)
 	final_vrv_float := float_vrv * float64(multiplier)
 
-	generatedVrf := uint64(final_vrv)
-
 	if uint64(multiplier) < uint64(final_vrv) {
 		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "Generated random number is out of index!")
 	}
 
-	var selectedChallenger types.Challenger
-	challengers := k.GetAllChallenger(ctx)
-	for i := 0; i < len(challengers); i++ {
-		if i == int(generatedVrf) {
-			selectedChallenger = challengers[i]
-		}
-	}
+	// generatedVrf := uint64(final_vrv)
+
+	// var selectedChallenger types.Challenger
+	// challengers := k.GetAllChallenger(ctx)
+	// for i := 0; i < len(challengers); i++ {
+	// 	if i == int(generatedVrf) {
+	// 		selectedChallenger = challengers[i]
+	// 	}
+	// }
+
+	// var selectedRunner types.Runner
+	// runenrs := k.GetAllRunner(ctx)
+	// for i := 0; i < len(runenrs); i++ {
+	// 	if i == int(generatedVrf) {
+	// 		selectedRunner = runenrs[i]
+	// 	}
+	// }
 
 	newRandomVal := types.VrfData{
 		Index:              random_val_key,
@@ -76,7 +84,8 @@ func (k Keeper) CreateVRF(ctx sdk.Context, msgCreator string, multiplier int) (t
 		FloatVrv:           strconv.FormatFloat(float_vrv, 'f', 0, 64),
 		FinalVrv:           strconv.FormatUint(uint64(final_vrv), 10),
 		FinalVrvFloat:      strconv.FormatFloat(final_vrv_float, 'f', 0, 64),
-		SelectedChallenger: &selectedChallenger,
+		SelectedChallenger: nil,
+		SelectedRunner:     nil,
 	}
 	k.SetVrfData(ctx, newRandomVal)
 

@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { Challenger } from "../poa/challenger";
+import { Runner } from "../poa/runner";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "soarchain.poa";
@@ -17,6 +18,7 @@ export interface VrfData {
   finalVrv: string;
   finalVrvFloat: string;
   selectedChallenger: Challenger | undefined;
+  selectedRunner: Runner | undefined;
 }
 
 const baseVrfData: object = {
@@ -74,6 +76,9 @@ export const VrfData = {
         writer.uint32(98).fork()
       ).ldelim();
     }
+    if (message.selectedRunner !== undefined) {
+      Runner.encode(message.selectedRunner, writer.uint32(106).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -122,6 +127,9 @@ export const VrfData = {
             reader,
             reader.uint32()
           );
+          break;
+        case 13:
+          message.selectedRunner = Runner.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -198,6 +206,11 @@ export const VrfData = {
     } else {
       message.selectedChallenger = undefined;
     }
+    if (object.selectedRunner !== undefined && object.selectedRunner !== null) {
+      message.selectedRunner = Runner.fromJSON(object.selectedRunner);
+    } else {
+      message.selectedRunner = undefined;
+    }
     return message;
   },
 
@@ -218,6 +231,10 @@ export const VrfData = {
     message.selectedChallenger !== undefined &&
       (obj.selectedChallenger = message.selectedChallenger
         ? Challenger.toJSON(message.selectedChallenger)
+        : undefined);
+    message.selectedRunner !== undefined &&
+      (obj.selectedRunner = message.selectedRunner
+        ? Runner.toJSON(message.selectedRunner)
         : undefined);
     return obj;
   },
@@ -288,6 +305,11 @@ export const VrfData = {
       );
     } else {
       message.selectedChallenger = undefined;
+    }
+    if (object.selectedRunner !== undefined && object.selectedRunner !== null) {
+      message.selectedRunner = Runner.fromPartial(object.selectedRunner);
+    } else {
+      message.selectedRunner = undefined;
     }
     return message;
   },
