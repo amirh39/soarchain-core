@@ -30449,6 +30449,8 @@ paths:
                       type: string
                     score:
                       type: string
+                    rewardMultiplier:
+                      type: string
                     netEarnings:
                       type: string
                     lastTimeChallenged:
@@ -30566,6 +30568,8 @@ paths:
                     type: string
                   score:
                     type: string
+                  rewardMultiplier:
+                    type: string
                   netEarnings:
                     type: string
                   lastTimeChallenged:
@@ -30665,6 +30669,8 @@ paths:
                   address:
                     type: string
                   score:
+                    type: string
+                  rewardMultiplier:
                     type: string
                   netEarnings:
                     type: string
@@ -53293,6 +53299,8 @@ definitions:
         type: string
       score:
         type: string
+      rewardMultiplier:
+        type: string
       netEarnings:
         type: string
       lastTimeChallenged:
@@ -53474,6 +53482,8 @@ definitions:
             address:
               type: string
             score:
+              type: string
+            rewardMultiplier:
               type: string
             netEarnings:
               type: string
@@ -53819,6 +53829,8 @@ definitions:
             type: string
           score:
             type: string
+          rewardMultiplier:
+            type: string
           netEarnings:
             type: string
           lastTimeChallenged:
@@ -53834,6 +53846,8 @@ definitions:
           address:
             type: string
           score:
+            type: string
+          rewardMultiplier:
             type: string
           netEarnings:
             type: string

@@ -23,6 +23,7 @@ export interface PoaClient {
   index?: string;
   address?: string;
   score?: string;
+  rewardMultiplier?: string;
   netEarnings?: string;
   lastTimeChallenged?: string;
 }

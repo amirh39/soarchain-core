@@ -6,8 +6,9 @@ option go_package = "soarchain/x/poa/types";
 message Client {
   string index = 1; 
   string address = 2; 
-  string score = 4; 
-  string netEarnings = 6;
-  string lastTimeChallenged = 7;
+  string score = 3;
+  string rewardMultiplier = 4;
+  string netEarnings = 5;
+  string lastTimeChallenged = 6;
 }
 

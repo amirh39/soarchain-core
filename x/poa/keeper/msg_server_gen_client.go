@@ -46,6 +46,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		Index:              clientAddr.String(),
 		Address:            clientAddr.String(),
 		Score:              sdk.NewInt(50).String(), // Base Score
+		RewardMultiplier:   sdk.ZeroInt().String(),
 		NetEarnings:        sdk.ZeroInt().String(),
 		LastTimeChallenged: sdk.ZeroInt().String(),
 	}

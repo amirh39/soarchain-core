@@ -7,6 +7,7 @@ export interface Client {
   index: string;
   address: string;
   score: string;
+  rewardMultiplier: string;
   netEarnings: string;
   lastTimeChallenged: string;
 }
@@ -15,6 +16,7 @@ const baseClient: object = {
   index: "",
   address: "",
   score: "",
+  rewardMultiplier: "",
   netEarnings: "",
   lastTimeChallenged: "",
 };
@@ -28,13 +30,16 @@ export const Client = {
       writer.uint32(18).string(message.address);
     }
     if (message.score !== "") {
-      writer.uint32(34).string(message.score);
+      writer.uint32(26).string(message.score);
+    }
+    if (message.rewardMultiplier !== "") {
+      writer.uint32(34).string(message.rewardMultiplier);
     }
     if (message.netEarnings !== "") {
-      writer.uint32(50).string(message.netEarnings);
+      writer.uint32(42).string(message.netEarnings);
     }
     if (message.lastTimeChallenged !== "") {
-      writer.uint32(58).string(message.lastTimeChallenged);
+      writer.uint32(50).string(message.lastTimeChallenged);
     }
     return writer;
   },
@@ -52,13 +57,16 @@ export const Client = {
         case 2:
           message.address = reader.string();
           break;
-        case 4:
+        case 3:
           message.score = reader.string();
           break;
-        case 6:
+        case 4:
+          message.rewardMultiplier = reader.string();
+          break;
+        case 5:
           message.netEarnings = reader.string();
           break;
-        case 7:
+        case 6:
           message.lastTimeChallenged = reader.string();
           break;
         default:
@@ -86,6 +94,14 @@ export const Client = {
     } else {
       message.score = "";
     }
+    if (
+      object.rewardMultiplier !== undefined &&
+      object.rewardMultiplier !== null
+    ) {
+      message.rewardMultiplier = String(object.rewardMultiplier);
+    } else {
+      message.rewardMultiplier = "";
+    }
     if (object.netEarnings !== undefined && object.netEarnings !== null) {
       message.netEarnings = String(object.netEarnings);
     } else {
@@ -107,6 +123,8 @@ export const Client = {
     message.index !== undefined && (obj.index = message.index);
     message.address !== undefined && (obj.address = message.address);
     message.score !== undefined && (obj.score = message.score);
+    message.rewardMultiplier !== undefined &&
+      (obj.rewardMultiplier = message.rewardMultiplier);
     message.netEarnings !== undefined &&
       (obj.netEarnings = message.netEarnings);
     message.lastTimeChallenged !== undefined &&
@@ -130,6 +148,14 @@ export const Client = {
       message.score = object.score;
     } else {
       message.score = "";
+    }
+    if (
+      object.rewardMultiplier !== undefined &&
+      object.rewardMultiplier !== null
+    ) {
+      message.rewardMultiplier = object.rewardMultiplier;
+    } else {
+      message.rewardMultiplier = "";
     }
     if (object.netEarnings !== undefined && object.netEarnings !== null) {
       message.netEarnings = object.netEarnings;

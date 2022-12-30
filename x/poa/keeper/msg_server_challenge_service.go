@@ -58,16 +58,15 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 		newScore := utility.CalculateScore(scoreFloat64, true)
 
-		// Update challengee total rewards
-		netEarnings, _ := sdk.ParseCoinsNormalized(client.NetEarnings)
-		rewardAmountCoin, _ := sdk.ParseCoinNormalized("10000000soar")
-		netEarnings = netEarnings.Add(rewardAmountCoin)
+		// Update rewardMultiplier
+		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
-			NetEarnings:        netEarnings.String(),
+			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
+			NetEarnings:        client.NetEarnings,
 			LastTimeChallenged: ctx.BlockTime().String(),
 		}
 
@@ -81,10 +80,14 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 		newScore := utility.CalculateScore(scoreFloat64, false)
 
+		// Update rewardMultiplier
+		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
+
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
+			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			NetEarnings:        client.NetEarnings,
 			LastTimeChallenged: ctx.BlockTime().String(),
 		}
