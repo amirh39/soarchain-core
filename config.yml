@@ -10,7 +10,7 @@ accounts:
   - name: soarValidator
     coins: ["10000000soar"]
   - name: soarFacuet
-    coins: ["10000000soar"]
+    coins: ["100000000000000000000000000soar"]
   - name: v2xDevice1
     coins: ["0soar"]
   - name: v2nDevice1

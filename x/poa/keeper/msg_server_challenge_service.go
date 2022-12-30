@@ -61,12 +61,25 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// Update rewardMultiplier
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
+		// Calculate reward earned
+		earnedTokenRewards, err := k.MotusReward(ctx, rewardMultiplier)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+		}
+
+		netEarnings, err := strconv.ParseFloat(client.NetEarnings, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+		}
+		earnedRewards := netEarnings + earnedTokenRewards
+
+		//
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-			NetEarnings:        client.NetEarnings,
+			NetEarnings:        strconv.FormatFloat(earnedRewards, 'f', -1, 64),
 			LastTimeChallenged: ctx.BlockTime().String(),
 		}
 
