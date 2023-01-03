@@ -30374,6 +30374,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/soarchain/poa/challenger/{index}':
@@ -30446,6 +30456,8 @@ paths:
                     index:
                       type: string
                     address:
+                      type: string
+                    registrant:
                       type: string
                     score:
                       type: string
@@ -30547,6 +30559,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/soarchain/poa/client/{index}':
@@ -30565,6 +30587,8 @@ paths:
                   index:
                     type: string
                   address:
+                    type: string
+                  registrant:
                     type: string
                   score:
                     type: string
@@ -30667,6 +30691,8 @@ paths:
                   index:
                     type: string
                   address:
+                    type: string
+                  registrant:
                     type: string
                   score:
                     type: string
@@ -30907,6 +30933,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -31159,6 +31195,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -31428,6 +31474,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/soarchain/poa/vrf_data/{index}':
@@ -31634,6 +31690,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -53297,6 +53363,8 @@ definitions:
         type: string
       address:
         type: string
+      registrant:
+        type: string
       score:
         type: string
       rewardMultiplier:
@@ -53480,6 +53548,8 @@ definitions:
             index:
               type: string
             address:
+              type: string
+            registrant:
               type: string
             score:
               type: string
@@ -53827,6 +53897,8 @@ definitions:
             type: string
           address:
             type: string
+          registrant:
+            type: string
           score:
             type: string
           rewardMultiplier:
@@ -53844,6 +53916,8 @@ definitions:
           index:
             type: string
           address:
+            type: string
+          registrant:
             type: string
           score:
             type: string

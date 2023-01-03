@@ -4,20 +4,33 @@ import (
 	"math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 const (
 	minutesPerYear = 525600
 )
 
-func V2VReceiveRewardEmissionPerBlock(ctx sdk.Context) float64 {
+func MotusRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) (float64, error) {
 
-	// ctx := sdk.UnwrapSDKContext(goCtx)
+	// Calculates reward coin emissions for each reward type
 
 	blocksPerMinute := 1.0
 	currentBlockNumber := int(ctx.BlockHeight())
 
-	initialTokensPerYear := 37366809.21 // initial value
+	var initialTokensPerYear float64
+	switch clientCommunicationMode {
+	case "v2v-rx":
+		initialTokensPerYear = 37366809.21 // v2v receiver initial annual emission
+	case "v2v-bx":
+		initialTokensPerYear = 17416733.11 // v2v broadcaster initial annual emission
+	case "v2n-bx":
+		initialTokensPerYear = 64283578.56 // v2n broadcaster initial annual emission
+	case "runner":
+		initialTokensPerYear = 21850083.35 // v2n receiver (runner) initial annual emission
+	default:
+		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "Client communication mode is not supported!")
+	}
 
 	// Number of tokens issued per year by the total number of blocks produced per year
 	tokensPerBlock := initialTokensPerYear / (blocksPerMinute * minutesPerYear)
@@ -34,5 +47,5 @@ func V2VReceiveRewardEmissionPerBlock(ctx sdk.Context) float64 {
 		tokensPerBlock = initialTokensPerYear / (blocksPerMinute * minutesPerYear)
 	}
 
-	return tokensPerBlock
+	return tokensPerBlock, nil
 }

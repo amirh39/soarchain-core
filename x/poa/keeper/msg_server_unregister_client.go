@@ -13,16 +13,14 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the client exists
-	_, isFound := k.GetClient(ctx, msg.Address)
+	client, isFound := k.GetClient(ctx, msg.Address)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Client is not registered.")
 	}
 
-	// Check msg sender is the client, only owner of MOTUS can remove itself
-	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	clientAddr, _ := sdk.AccAddressFromBech32(msg.Address)
-	if !(msgSenderAddress.Equals(clientAddr)) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Client signature is required!")
+	// Check if authorized
+	if client.Registrant != msg.Creator {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Registrant is not recognized!")
 	}
 
 	// Check removal fee
@@ -36,6 +34,8 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	}
 
 	// Transfer fee to the protocol, then burn it
+	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
+
 	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
 	if transferErr != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins from account to POA module!")

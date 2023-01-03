@@ -8,14 +8,14 @@ export const protobufPackage = "soarchain.poa";
 export interface MsgGenClient {
   creator: string;
   address: string;
-  fee: string;
 }
 
 export interface MsgGenClientResponse {}
 
 export interface MsgChallengeService {
   creator: string;
-  challengeeAddress: string;
+  clientAddress: string;
+  clientCommunicationMode: string;
   challengeResult: string;
 }
 
@@ -92,7 +92,7 @@ export interface MsgSelectRandomRunnerResponse {
   randomRunner: Runner | undefined;
 }
 
-const baseMsgGenClient: object = { creator: "", address: "", fee: "" };
+const baseMsgGenClient: object = { creator: "", address: "" };
 
 export const MsgGenClient = {
   encode(message: MsgGenClient, writer: Writer = Writer.create()): Writer {
@@ -101,9 +101,6 @@ export const MsgGenClient = {
     }
     if (message.address !== "") {
       writer.uint32(18).string(message.address);
-    }
-    if (message.fee !== "") {
-      writer.uint32(26).string(message.fee);
     }
     return writer;
   },
@@ -120,9 +117,6 @@ export const MsgGenClient = {
           break;
         case 2:
           message.address = reader.string();
-          break;
-        case 3:
-          message.fee = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -144,11 +138,6 @@ export const MsgGenClient = {
     } else {
       message.address = "";
     }
-    if (object.fee !== undefined && object.fee !== null) {
-      message.fee = String(object.fee);
-    } else {
-      message.fee = "";
-    }
     return message;
   },
 
@@ -156,7 +145,6 @@ export const MsgGenClient = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.address !== undefined && (obj.address = message.address);
-    message.fee !== undefined && (obj.fee = message.fee);
     return obj;
   },
 
@@ -171,11 +159,6 @@ export const MsgGenClient = {
       message.address = object.address;
     } else {
       message.address = "";
-    }
-    if (object.fee !== undefined && object.fee !== null) {
-      message.fee = object.fee;
-    } else {
-      message.fee = "";
     }
     return message;
   },
@@ -221,7 +204,8 @@ export const MsgGenClientResponse = {
 
 const baseMsgChallengeService: object = {
   creator: "",
-  challengeeAddress: "",
+  clientAddress: "",
+  clientCommunicationMode: "",
   challengeResult: "",
 };
 
@@ -233,11 +217,14 @@ export const MsgChallengeService = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.challengeeAddress !== "") {
-      writer.uint32(18).string(message.challengeeAddress);
+    if (message.clientAddress !== "") {
+      writer.uint32(18).string(message.clientAddress);
+    }
+    if (message.clientCommunicationMode !== "") {
+      writer.uint32(26).string(message.clientCommunicationMode);
     }
     if (message.challengeResult !== "") {
-      writer.uint32(26).string(message.challengeResult);
+      writer.uint32(34).string(message.challengeResult);
     }
     return writer;
   },
@@ -253,9 +240,12 @@ export const MsgChallengeService = {
           message.creator = reader.string();
           break;
         case 2:
-          message.challengeeAddress = reader.string();
+          message.clientAddress = reader.string();
           break;
         case 3:
+          message.clientCommunicationMode = reader.string();
+          break;
+        case 4:
           message.challengeResult = reader.string();
           break;
         default:
@@ -273,13 +263,18 @@ export const MsgChallengeService = {
     } else {
       message.creator = "";
     }
-    if (
-      object.challengeeAddress !== undefined &&
-      object.challengeeAddress !== null
-    ) {
-      message.challengeeAddress = String(object.challengeeAddress);
+    if (object.clientAddress !== undefined && object.clientAddress !== null) {
+      message.clientAddress = String(object.clientAddress);
     } else {
-      message.challengeeAddress = "";
+      message.clientAddress = "";
+    }
+    if (
+      object.clientCommunicationMode !== undefined &&
+      object.clientCommunicationMode !== null
+    ) {
+      message.clientCommunicationMode = String(object.clientCommunicationMode);
+    } else {
+      message.clientCommunicationMode = "";
     }
     if (
       object.challengeResult !== undefined &&
@@ -295,8 +290,10 @@ export const MsgChallengeService = {
   toJSON(message: MsgChallengeService): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.challengeeAddress !== undefined &&
-      (obj.challengeeAddress = message.challengeeAddress);
+    message.clientAddress !== undefined &&
+      (obj.clientAddress = message.clientAddress);
+    message.clientCommunicationMode !== undefined &&
+      (obj.clientCommunicationMode = message.clientCommunicationMode);
     message.challengeResult !== undefined &&
       (obj.challengeResult = message.challengeResult);
     return obj;
@@ -309,13 +306,18 @@ export const MsgChallengeService = {
     } else {
       message.creator = "";
     }
-    if (
-      object.challengeeAddress !== undefined &&
-      object.challengeeAddress !== null
-    ) {
-      message.challengeeAddress = object.challengeeAddress;
+    if (object.clientAddress !== undefined && object.clientAddress !== null) {
+      message.clientAddress = object.clientAddress;
     } else {
-      message.challengeeAddress = "";
+      message.clientAddress = "";
+    }
+    if (
+      object.clientCommunicationMode !== undefined &&
+      object.clientCommunicationMode !== null
+    ) {
+      message.clientCommunicationMode = object.clientCommunicationMode;
+    } else {
+      message.clientCommunicationMode = "";
     }
     if (
       object.challengeResult !== undefined &&

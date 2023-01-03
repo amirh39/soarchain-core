@@ -3,23 +3,25 @@ package cli
 import (
 	"strconv"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
 var _ = strconv.Itoa(0)
 
 func CmdChallengeService() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "challenge-service [challengee-address] [challenge-result]",
+		Use:   "challenge-service [challengee-address] [client-communication-mode] [challenge-result]",
 		Short: "Broadcast message challenge-service",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argChallengeeAddress := args[0]
-			argChallengeResult := args[1]
+			argClientAddress := args[0]
+			argClientCommunicationMode := args[1]
+			argChallengeResult := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -28,7 +30,8 @@ func CmdChallengeService() *cobra.Command {
 
 			msg := types.NewMsgChallengeService(
 				clientCtx.GetFromAddress().String(),
-				argChallengeeAddress,
+				argClientAddress,
+				argClientCommunicationMode,
 				argChallengeResult,
 			)
 			if err := msg.ValidateBasic(); err != nil {

@@ -8,7 +8,17 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) MotusReward(ctx sdk.Context, rewardMultiplier float64) (float64, error) {
+func (k msgServer) MotusReward(ctx sdk.Context, rewardMultiplier float64, clientCommunicationMode string) (float64, error) {
+
+	rewardPerBlock, err := utility.MotusRewardEmissionPerBlock(ctx, clientCommunicationMode)
+	if err != nil {
+		return 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "Motus Reward Emission per block couldn't be computed. Check client communication mode.")
+	}
+
+	// Score is below 50, no rewards are earned
+	if rewardMultiplier == 0 {
+		return 0, nil
+	}
 
 	allClients := k.GetAllClient(ctx)
 	var totalMultipliers float64 = 0.0
@@ -21,8 +31,11 @@ func (k msgServer) MotusReward(ctx sdk.Context, rewardMultiplier float64) (float
 		totalMultipliers += currMultiplier
 	}
 
-	rewardPerBlock := utility.V2VReceiveRewardEmissionPerBlock(ctx)
-
-	return (rewardMultiplier / totalMultipliers) * rewardPerBlock, nil
+	// Protection against +Inf netEarnings calculation
+	if totalMultipliers > 0 {
+		return (rewardMultiplier / totalMultipliers) * rewardPerBlock, nil
+	} else {
+		return 0, nil
+	}
 
 }

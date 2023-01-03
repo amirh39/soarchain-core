@@ -26,7 +26,6 @@ service Msg {
 message MsgGenClient {
   string creator = 1;
   string address = 2;
-  string fee = 3;
 }
 
 message MsgGenClientResponse {
@@ -34,8 +33,10 @@ message MsgGenClientResponse {
 
 message MsgChallengeService {
   string creator = 1;
-  string challengeeAddress = 2;
-  string challengeResult = 3;
+  string clientAddress = 2;
+  string clientCommunicationMode = 3;
+  string challengeResult = 4;
+
 }
 
 message MsgChallengeServiceResponse {

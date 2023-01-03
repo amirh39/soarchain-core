@@ -6,6 +6,7 @@ export const protobufPackage = "soarchain.poa";
 export interface Client {
   index: string;
   address: string;
+  registrant: string;
   score: string;
   rewardMultiplier: string;
   netEarnings: string;
@@ -15,6 +16,7 @@ export interface Client {
 const baseClient: object = {
   index: "",
   address: "",
+  registrant: "",
   score: "",
   rewardMultiplier: "",
   netEarnings: "",
@@ -29,17 +31,20 @@ export const Client = {
     if (message.address !== "") {
       writer.uint32(18).string(message.address);
     }
+    if (message.registrant !== "") {
+      writer.uint32(26).string(message.registrant);
+    }
     if (message.score !== "") {
-      writer.uint32(26).string(message.score);
+      writer.uint32(34).string(message.score);
     }
     if (message.rewardMultiplier !== "") {
-      writer.uint32(34).string(message.rewardMultiplier);
+      writer.uint32(42).string(message.rewardMultiplier);
     }
     if (message.netEarnings !== "") {
-      writer.uint32(42).string(message.netEarnings);
+      writer.uint32(50).string(message.netEarnings);
     }
     if (message.lastTimeChallenged !== "") {
-      writer.uint32(50).string(message.lastTimeChallenged);
+      writer.uint32(58).string(message.lastTimeChallenged);
     }
     return writer;
   },
@@ -58,15 +63,18 @@ export const Client = {
           message.address = reader.string();
           break;
         case 3:
-          message.score = reader.string();
+          message.registrant = reader.string();
           break;
         case 4:
-          message.rewardMultiplier = reader.string();
+          message.score = reader.string();
           break;
         case 5:
-          message.netEarnings = reader.string();
+          message.rewardMultiplier = reader.string();
           break;
         case 6:
+          message.netEarnings = reader.string();
+          break;
+        case 7:
           message.lastTimeChallenged = reader.string();
           break;
         default:
@@ -88,6 +96,11 @@ export const Client = {
       message.address = String(object.address);
     } else {
       message.address = "";
+    }
+    if (object.registrant !== undefined && object.registrant !== null) {
+      message.registrant = String(object.registrant);
+    } else {
+      message.registrant = "";
     }
     if (object.score !== undefined && object.score !== null) {
       message.score = String(object.score);
@@ -122,6 +135,7 @@ export const Client = {
     const obj: any = {};
     message.index !== undefined && (obj.index = message.index);
     message.address !== undefined && (obj.address = message.address);
+    message.registrant !== undefined && (obj.registrant = message.registrant);
     message.score !== undefined && (obj.score = message.score);
     message.rewardMultiplier !== undefined &&
       (obj.rewardMultiplier = message.rewardMultiplier);
@@ -143,6 +157,11 @@ export const Client = {
       message.address = object.address;
     } else {
       message.address = "";
+    }
+    if (object.registrant !== undefined && object.registrant !== null) {
+      message.registrant = object.registrant;
+    } else {
+      message.registrant = "";
     }
     if (object.score !== undefined && object.score !== null) {
       message.score = object.score;

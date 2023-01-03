@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestV2VReceiveRewardEmissionPerBlock(t *testing.T) {
@@ -23,7 +24,8 @@ func TestV2VReceiveRewardEmissionPerBlock(t *testing.T) {
 		ctx = ctx.WithBlockHeight(int64(test.currentBlockNumber))
 
 		// Call the V2VReceiveReward
-		actualTokensPerBlock := V2VReceiveRewardEmissionPerBlock(ctx)
+		actualTokensPerBlock, err := MotusRewardEmissionPerBlock(ctx, "v2v-rx")
+		require.NoError(t, err)
 
 		if actualTokensPerBlock != test.expectedTokensPerBlock {
 			t.Errorf("Test failed: expected tokens per block of %f, got %f", test.expectedTokensPerBlock, actualTokensPerBlock)

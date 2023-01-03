@@ -33,13 +33,13 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 
 	// Fetch client from the store
-	client, isFound := k.GetClient(ctx, msg.ChallengeeAddress)
+	client, isFound := k.GetClient(ctx, msg.ClientAddress)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target client is not registered in the store!")
 	}
 
 	// Check the challenge result
-	clientAccount, _ := sdk.AccAddressFromBech32(msg.ChallengeeAddress)
+	clientAccount, _ := sdk.AccAddressFromBech32(msg.ClientAddress)
 
 	result := msg.ChallengeResult
 	if result == "reward" { // reward condition
@@ -62,7 +62,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
 		// Calculate reward earned
-		earnedTokenRewards, err := k.MotusReward(ctx, rewardMultiplier)
+		earnedTokenRewards, err := k.MotusReward(ctx, rewardMultiplier, msg.ClientCommunicationMode)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 		}
@@ -77,6 +77,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
+			Registrant:         client.Registrant,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			NetEarnings:        strconv.FormatFloat(earnedRewards, 'f', -1, 64),
@@ -99,6 +100,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
+			Registrant:         client.Registrant,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			NetEarnings:        client.NetEarnings,
