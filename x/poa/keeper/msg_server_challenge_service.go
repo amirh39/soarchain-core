@@ -62,7 +62,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
 		// Calculate reward earned
-		earnedTokenRewards, err := k.MotusReward(ctx, rewardMultiplier, msg.ClientCommunicationMode)
+		earnedTokenRewards, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 		}

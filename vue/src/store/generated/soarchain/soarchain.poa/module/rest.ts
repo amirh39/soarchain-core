@@ -208,6 +208,7 @@ export interface PoaRunner {
   index?: string;
   address?: string;
   score?: string;
+  rewardMultiplier?: string;
   stakedAmount?: string;
   netEarnings?: string;
   ipAddr?: string;

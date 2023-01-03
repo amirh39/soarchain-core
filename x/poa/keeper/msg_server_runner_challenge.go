@@ -50,17 +50,26 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		}
 		newScore := utility.CalculateScore(scoreFloat64, true)
 
-		// Update runner total rewards
-		netEarnings, _ := sdk.ParseCoinsNormalized(runner.NetEarnings)
-		rewardAmountCoin, _ := sdk.ParseCoinNormalized("1000000soar")
-		netEarnings = netEarnings.Add(rewardAmountCoin)
+		// Update rewardMultiplier
+		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
+		// Calculate reward earned
+		earnedTokenRewards, err := k.V2NRewardCalculator(ctx, rewardMultiplier, msg.V2NDeviceType)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+		}
+		netEarnings, err := strconv.ParseFloat(runner.NetEarnings, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+		}
+		earnedRewards := netEarnings + earnedTokenRewards
 
 		updatedRunner := types.Runner{
 			Index:              runner.Index,
 			Address:            runner.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
+			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			StakedAmount:       runner.StakedAmount,
-			NetEarnings:        netEarnings.String(),
+			NetEarnings:        strconv.FormatFloat(earnedRewards, 'f', -1, 64),
 			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
 		}
@@ -75,10 +84,14 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		}
 		newScore := utility.CalculateScore(scoreFloat64, false)
 
+		// Update rewardMultiplier
+		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
+
 		updatedRunner := types.Runner{
 			Index:              runner.Index,
 			Address:            runner.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
+			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			StakedAmount:       runner.StakedAmount,
 			NetEarnings:        runner.NetEarnings,
 			IpAddr:             runner.IpAddr,

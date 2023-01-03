@@ -30374,16 +30374,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/challenger/{index}':
@@ -30556,16 +30546,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -30746,6 +30726,8 @@ paths:
                     type: string
                   score:
                     type: string
+                  rewardMultiplier:
+                    type: string
                   stakedAmount:
                     type: string
                   netEarnings:
@@ -30801,6 +30783,8 @@ paths:
                         address:
                           type: string
                         score:
+                          type: string
+                        rewardMultiplier:
                           type: string
                         stakedAmount:
                           type: string
@@ -30936,16 +30920,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/guard/{index}':
@@ -30973,6 +30947,8 @@ paths:
                       address:
                         type: string
                       score:
+                        type: string
+                      rewardMultiplier:
                         type: string
                       stakedAmount:
                         type: string
@@ -31098,6 +31074,8 @@ paths:
                       type: string
                     score:
                       type: string
+                    rewardMultiplier:
+                      type: string
                     stakedAmount:
                       type: string
                     netEarnings:
@@ -31198,16 +31176,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/runner/{index}':
@@ -31228,6 +31196,8 @@ paths:
                   address:
                     type: string
                   score:
+                    type: string
+                  rewardMultiplier:
                     type: string
                   stakedAmount:
                     type: string
@@ -31374,6 +31344,8 @@ paths:
                           type: string
                         score:
                           type: string
+                        rewardMultiplier:
+                          type: string
                         stakedAmount:
                           type: string
                         netEarnings:
@@ -31474,16 +31446,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/soarchain/poa/vrf_data/{index}':
@@ -31546,6 +31508,8 @@ paths:
                       address:
                         type: string
                       score:
+                        type: string
+                      rewardMultiplier:
                         type: string
                       stakedAmount:
                         type: string
@@ -31690,16 +31654,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -53389,6 +53343,8 @@ definitions:
             type: string
           score:
             type: string
+          rewardMultiplier:
+            type: string
           stakedAmount:
             type: string
           netEarnings:
@@ -53470,6 +53426,8 @@ definitions:
           address:
             type: string
           score:
+            type: string
+          rewardMultiplier:
             type: string
           stakedAmount:
             type: string
@@ -53605,6 +53563,8 @@ definitions:
                   type: string
                 score:
                   type: string
+                rewardMultiplier:
+                  type: string
                 stakedAmount:
                   type: string
                 netEarnings:
@@ -53685,6 +53645,8 @@ definitions:
             address:
               type: string
             score:
+              type: string
+            rewardMultiplier:
               type: string
             stakedAmount:
               type: string
@@ -53774,6 +53736,8 @@ definitions:
                 address:
                   type: string
                 score:
+                  type: string
+                rewardMultiplier:
                   type: string
                 stakedAmount:
                   type: string
@@ -53946,6 +53910,8 @@ definitions:
                 type: string
               score:
                 type: string
+              rewardMultiplier:
+                type: string
               stakedAmount:
                 type: string
               netEarnings:
@@ -54000,6 +53966,8 @@ definitions:
             type: string
           score:
             type: string
+          rewardMultiplier:
+            type: string
           stakedAmount:
             type: string
           netEarnings:
@@ -54019,6 +53987,8 @@ definitions:
           address:
             type: string
           score:
+            type: string
+          rewardMultiplier:
             type: string
           stakedAmount:
             type: string
@@ -54082,6 +54052,8 @@ definitions:
                 type: string
               score:
                 type: string
+              rewardMultiplier:
+                type: string
               stakedAmount:
                 type: string
               netEarnings:
@@ -54122,6 +54094,8 @@ definitions:
       address:
         type: string
       score:
+        type: string
+      rewardMultiplier:
         type: string
       stakedAmount:
         type: string
@@ -54181,6 +54155,8 @@ definitions:
           address:
             type: string
           score:
+            type: string
+          rewardMultiplier:
             type: string
           stakedAmount:
             type: string

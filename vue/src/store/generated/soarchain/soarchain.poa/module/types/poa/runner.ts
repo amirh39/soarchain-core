@@ -7,6 +7,7 @@ export interface Runner {
   index: string;
   address: string;
   score: string;
+  rewardMultiplier: string;
   stakedAmount: string;
   netEarnings: string;
   ipAddr: string;
@@ -17,6 +18,7 @@ const baseRunner: object = {
   index: "",
   address: "",
   score: "",
+  rewardMultiplier: "",
   stakedAmount: "",
   netEarnings: "",
   ipAddr: "",
@@ -34,17 +36,20 @@ export const Runner = {
     if (message.score !== "") {
       writer.uint32(26).string(message.score);
     }
+    if (message.rewardMultiplier !== "") {
+      writer.uint32(34).string(message.rewardMultiplier);
+    }
     if (message.stakedAmount !== "") {
-      writer.uint32(34).string(message.stakedAmount);
+      writer.uint32(42).string(message.stakedAmount);
     }
     if (message.netEarnings !== "") {
-      writer.uint32(42).string(message.netEarnings);
+      writer.uint32(50).string(message.netEarnings);
     }
     if (message.ipAddr !== "") {
-      writer.uint32(50).string(message.ipAddr);
+      writer.uint32(58).string(message.ipAddr);
     }
     if (message.lastTimeChallenged !== "") {
-      writer.uint32(58).string(message.lastTimeChallenged);
+      writer.uint32(66).string(message.lastTimeChallenged);
     }
     return writer;
   },
@@ -66,15 +71,18 @@ export const Runner = {
           message.score = reader.string();
           break;
         case 4:
-          message.stakedAmount = reader.string();
+          message.rewardMultiplier = reader.string();
           break;
         case 5:
-          message.netEarnings = reader.string();
+          message.stakedAmount = reader.string();
           break;
         case 6:
-          message.ipAddr = reader.string();
+          message.netEarnings = reader.string();
           break;
         case 7:
+          message.ipAddr = reader.string();
+          break;
+        case 8:
           message.lastTimeChallenged = reader.string();
           break;
         default:
@@ -101,6 +109,14 @@ export const Runner = {
       message.score = String(object.score);
     } else {
       message.score = "";
+    }
+    if (
+      object.rewardMultiplier !== undefined &&
+      object.rewardMultiplier !== null
+    ) {
+      message.rewardMultiplier = String(object.rewardMultiplier);
+    } else {
+      message.rewardMultiplier = "";
     }
     if (object.stakedAmount !== undefined && object.stakedAmount !== null) {
       message.stakedAmount = String(object.stakedAmount);
@@ -133,6 +149,8 @@ export const Runner = {
     message.index !== undefined && (obj.index = message.index);
     message.address !== undefined && (obj.address = message.address);
     message.score !== undefined && (obj.score = message.score);
+    message.rewardMultiplier !== undefined &&
+      (obj.rewardMultiplier = message.rewardMultiplier);
     message.stakedAmount !== undefined &&
       (obj.stakedAmount = message.stakedAmount);
     message.netEarnings !== undefined &&
@@ -159,6 +177,14 @@ export const Runner = {
       message.score = object.score;
     } else {
       message.score = "";
+    }
+    if (
+      object.rewardMultiplier !== undefined &&
+      object.rewardMultiplier !== null
+    ) {
+      message.rewardMultiplier = object.rewardMultiplier;
+    } else {
+      message.rewardMultiplier = "";
     }
     if (object.stakedAmount !== undefined && object.stakedAmount !== null) {
       message.stakedAmount = object.stakedAmount;

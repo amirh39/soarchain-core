@@ -64,6 +64,7 @@ export interface MsgUnregisterRunnerResponse {}
 export interface MsgRunnerChallenge {
   creator: string;
   runnerAddress: string;
+  v2nDeviceType: string;
   challengeResult: string;
 }
 
@@ -1119,6 +1120,7 @@ export const MsgUnregisterRunnerResponse = {
 const baseMsgRunnerChallenge: object = {
   creator: "",
   runnerAddress: "",
+  v2nDeviceType: "",
   challengeResult: "",
 };
 
@@ -1133,8 +1135,11 @@ export const MsgRunnerChallenge = {
     if (message.runnerAddress !== "") {
       writer.uint32(18).string(message.runnerAddress);
     }
+    if (message.v2nDeviceType !== "") {
+      writer.uint32(26).string(message.v2nDeviceType);
+    }
     if (message.challengeResult !== "") {
-      writer.uint32(26).string(message.challengeResult);
+      writer.uint32(34).string(message.challengeResult);
     }
     return writer;
   },
@@ -1153,6 +1158,9 @@ export const MsgRunnerChallenge = {
           message.runnerAddress = reader.string();
           break;
         case 3:
+          message.v2nDeviceType = reader.string();
+          break;
+        case 4:
           message.challengeResult = reader.string();
           break;
         default:
@@ -1175,6 +1183,11 @@ export const MsgRunnerChallenge = {
     } else {
       message.runnerAddress = "";
     }
+    if (object.v2nDeviceType !== undefined && object.v2nDeviceType !== null) {
+      message.v2nDeviceType = String(object.v2nDeviceType);
+    } else {
+      message.v2nDeviceType = "";
+    }
     if (
       object.challengeResult !== undefined &&
       object.challengeResult !== null
@@ -1191,6 +1204,8 @@ export const MsgRunnerChallenge = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.runnerAddress !== undefined &&
       (obj.runnerAddress = message.runnerAddress);
+    message.v2nDeviceType !== undefined &&
+      (obj.v2nDeviceType = message.v2nDeviceType);
     message.challengeResult !== undefined &&
       (obj.challengeResult = message.challengeResult);
     return obj;
@@ -1207,6 +1222,11 @@ export const MsgRunnerChallenge = {
       message.runnerAddress = object.runnerAddress;
     } else {
       message.runnerAddress = "";
+    }
+    if (object.v2nDeviceType !== undefined && object.v2nDeviceType !== null) {
+      message.v2nDeviceType = object.v2nDeviceType;
+    } else {
+      message.v2nDeviceType = "";
     }
     if (
       object.challengeResult !== undefined &&

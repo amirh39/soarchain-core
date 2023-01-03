@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestV2VReceiveRewardEmissionPerBlock(t *testing.T) {
+func TestV2VRewardEmissionPerBlock(t *testing.T) {
 	tests := []struct {
 		currentBlockNumber     int
 		expectedTokensPerBlock float64
@@ -24,7 +24,7 @@ func TestV2VReceiveRewardEmissionPerBlock(t *testing.T) {
 		ctx = ctx.WithBlockHeight(int64(test.currentBlockNumber))
 
 		// Call the V2VReceiveReward
-		actualTokensPerBlock, err := MotusRewardEmissionPerBlock(ctx, "v2v-rx")
+		actualTokensPerBlock, err := V2VRewardEmissionPerBlock(ctx, "v2v-rx")
 		require.NoError(t, err)
 
 		if actualTokensPerBlock != test.expectedTokensPerBlock {

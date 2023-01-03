@@ -89,7 +89,8 @@ message MsgUnregisterRunnerResponse {
 message MsgRunnerChallenge {
   string creator = 1;
   string runnerAddress = 2;
-  string challengeResult = 3;
+  string v2nDeviceType = 3;
+  string challengeResult = 4;
 }
 
 message MsgRunnerChallengeResponse {

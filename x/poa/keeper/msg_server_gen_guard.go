@@ -2,6 +2,9 @@ package keeper
 
 import (
 	"context"
+	"strconv"
+
+	"soarchain/x/poa/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -163,13 +166,18 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		if transferErr != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds couldn't be transferred to POA module!")
 		}
-		//
+
+		// rewardMultiplier
+		var initialScore float64 = 50
+		rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
+
 		newRunner = types.Runner{
 			Index:              runnerAddr.String(),
 			Address:            runnerAddr.String(),
 			Score:              sdk.NewInt(50).String(), // Base Score
+			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			StakedAmount:       runnerStake.String(),
-			NetEarnings:        "",
+			NetEarnings:        sdk.ZeroInt().String(),
 			IpAddr:             msg.RunnerIp,
 			LastTimeChallenged: sdk.ZeroInt().String(),
 		}
