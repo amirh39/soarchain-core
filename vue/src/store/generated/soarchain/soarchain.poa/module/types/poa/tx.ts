@@ -103,6 +103,16 @@ export interface MsgV2VChallenge {
 
 export interface MsgV2VChallengeResponse {}
 
+export interface MsgV2NChallenge {
+  creator: string;
+  runnerAddress: string;
+  runnerResult: string;
+  v2NBxAddress: string[];
+  v2NBxResult: string[];
+}
+
+export interface MsgV2NChallengeResponse {}
+
 const baseMsgGenClient: object = { creator: "", address: "" };
 
 export const MsgGenClient = {
@@ -1902,6 +1912,197 @@ export const MsgV2VChallengeResponse = {
   },
 };
 
+const baseMsgV2NChallenge: object = {
+  creator: "",
+  runnerAddress: "",
+  runnerResult: "",
+  v2NBxAddress: "",
+  v2NBxResult: "",
+};
+
+export const MsgV2NChallenge = {
+  encode(message: MsgV2NChallenge, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.runnerAddress !== "") {
+      writer.uint32(18).string(message.runnerAddress);
+    }
+    if (message.runnerResult !== "") {
+      writer.uint32(26).string(message.runnerResult);
+    }
+    for (const v of message.v2NBxAddress) {
+      writer.uint32(34).string(v!);
+    }
+    for (const v of message.v2NBxResult) {
+      writer.uint32(42).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgV2NChallenge {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgV2NChallenge } as MsgV2NChallenge;
+    message.v2NBxAddress = [];
+    message.v2NBxResult = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.runnerAddress = reader.string();
+          break;
+        case 3:
+          message.runnerResult = reader.string();
+          break;
+        case 4:
+          message.v2NBxAddress.push(reader.string());
+          break;
+        case 5:
+          message.v2NBxResult.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgV2NChallenge {
+    const message = { ...baseMsgV2NChallenge } as MsgV2NChallenge;
+    message.v2NBxAddress = [];
+    message.v2NBxResult = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.runnerAddress !== undefined && object.runnerAddress !== null) {
+      message.runnerAddress = String(object.runnerAddress);
+    } else {
+      message.runnerAddress = "";
+    }
+    if (object.runnerResult !== undefined && object.runnerResult !== null) {
+      message.runnerResult = String(object.runnerResult);
+    } else {
+      message.runnerResult = "";
+    }
+    if (object.v2NBxAddress !== undefined && object.v2NBxAddress !== null) {
+      for (const e of object.v2NBxAddress) {
+        message.v2NBxAddress.push(String(e));
+      }
+    }
+    if (object.v2NBxResult !== undefined && object.v2NBxResult !== null) {
+      for (const e of object.v2NBxResult) {
+        message.v2NBxResult.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgV2NChallenge): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.runnerAddress !== undefined &&
+      (obj.runnerAddress = message.runnerAddress);
+    message.runnerResult !== undefined &&
+      (obj.runnerResult = message.runnerResult);
+    if (message.v2NBxAddress) {
+      obj.v2NBxAddress = message.v2NBxAddress.map((e) => e);
+    } else {
+      obj.v2NBxAddress = [];
+    }
+    if (message.v2NBxResult) {
+      obj.v2NBxResult = message.v2NBxResult.map((e) => e);
+    } else {
+      obj.v2NBxResult = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgV2NChallenge>): MsgV2NChallenge {
+    const message = { ...baseMsgV2NChallenge } as MsgV2NChallenge;
+    message.v2NBxAddress = [];
+    message.v2NBxResult = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.runnerAddress !== undefined && object.runnerAddress !== null) {
+      message.runnerAddress = object.runnerAddress;
+    } else {
+      message.runnerAddress = "";
+    }
+    if (object.runnerResult !== undefined && object.runnerResult !== null) {
+      message.runnerResult = object.runnerResult;
+    } else {
+      message.runnerResult = "";
+    }
+    if (object.v2NBxAddress !== undefined && object.v2NBxAddress !== null) {
+      for (const e of object.v2NBxAddress) {
+        message.v2NBxAddress.push(e);
+      }
+    }
+    if (object.v2NBxResult !== undefined && object.v2NBxResult !== null) {
+      for (const e of object.v2NBxResult) {
+        message.v2NBxResult.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgV2NChallengeResponse: object = {};
+
+export const MsgV2NChallengeResponse = {
+  encode(_: MsgV2NChallengeResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgV2NChallengeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgV2NChallengeResponse,
+    } as MsgV2NChallengeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgV2NChallengeResponse {
+    const message = {
+      ...baseMsgV2NChallengeResponse,
+    } as MsgV2NChallengeResponse;
+    return message;
+  },
+
+  toJSON(_: MsgV2NChallengeResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgV2NChallengeResponse>
+  ): MsgV2NChallengeResponse {
+    const message = {
+      ...baseMsgV2NChallengeResponse,
+    } as MsgV2NChallengeResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -1930,8 +2131,9 @@ export interface Msg {
   SelectRandomRunner(
     request: MsgSelectRandomRunner
   ): Promise<MsgSelectRandomRunnerResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   V2VChallenge(request: MsgV2VChallenge): Promise<MsgV2VChallengeResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  V2NChallenge(request: MsgV2NChallenge): Promise<MsgV2NChallengeResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -2070,6 +2272,14 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("soarchain.poa.Msg", "V2VChallenge", data);
     return promise.then((data) =>
       MsgV2VChallengeResponse.decode(new Reader(data))
+    );
+  }
+
+  V2NChallenge(request: MsgV2NChallenge): Promise<MsgV2NChallengeResponse> {
+    const data = MsgV2NChallenge.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Msg", "V2NChallenge", data);
+    return promise.then((data) =>
+      MsgV2NChallengeResponse.decode(new Reader(data))
     );
   }
 }

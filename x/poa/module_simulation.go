@@ -73,6 +73,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgV2VChallenge int = 100
 
+	opWeightMsgV2NChallenge = "op_weight_msg_v_2_n_challenge"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgV2NChallenge int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -226,6 +230,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgV2VChallenge,
 		poasimulation.SimulateMsgV2VChallenge(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgV2NChallenge int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgV2NChallenge, &weightMsgV2NChallenge, nil,
+		func(_ *rand.Rand) {
+			weightMsgV2NChallenge = defaultWeightMsgV2NChallenge
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgV2NChallenge,
+		poasimulation.SimulateMsgV2NChallenge(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

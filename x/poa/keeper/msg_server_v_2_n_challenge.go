@@ -4,14 +4,14 @@ import (
 	"context"
 	"strconv"
 
-	"soarchain/x/poa/types"
-	"soarchain/x/poa/utility"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"soarchain/x/poa/types"
+	"soarchain/x/poa/utility"
 )
 
-func (k msgServer) V2VChallenge(goCtx context.Context, msg *types.MsgV2VChallenge) (*types.MsgV2VChallengeResponse, error) {
+func (k msgServer) V2NChallenge(goCtx context.Context, msg *types.MsgV2NChallenge) (*types.MsgV2NChallengeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	challenger, isFound := k.GetChallenger(ctx, msg.Creator)
@@ -19,25 +19,23 @@ func (k msgServer) V2VChallenge(goCtx context.Context, msg *types.MsgV2VChalleng
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Only registered challengers can initiate this transaction.")
 	}
 
-	// Challenger type must be v2x for this operation
-	if challenger.Type != "v2x" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Only v2x type challengers can initiate this transaction.")
+	// Challenger type must be v2n for this operation
+	if challenger.Type != "v2n" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Only v2n type challengers can initiate this transaction.")
 	}
 
-	// Fetch Rx client from the store
-	rxClient, isFound := k.GetClient(ctx, msg.RxAddress)
+	// Fetch runner from the store
+	runner, isFound := k.GetRunner(ctx, msg.RunnerAddress)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Rx client is not registered in the store!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target runner is not registered in the store!")
 	}
 
 	// Check the challenge result
-	// clientAccount, _ := sdk.AccAddressFromBech32(msg.RxAddress)
-	result := msg.RxResult
+	result := msg.RunnerResult
 
-	if result == "reward" { // reward condition
-
-		// Update challengee score
-		scoreFloat64, err := strconv.ParseFloat(rxClient.Score, 64)
+	if result == "reward" {
+		// Update runner score
+		scoreFloat64, err := strconv.ParseFloat(runner.Score, 64)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
 		}
@@ -45,35 +43,33 @@ func (k msgServer) V2VChallenge(goCtx context.Context, msg *types.MsgV2VChalleng
 
 		// Update rewardMultiplier
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
-
 		// Calculate reward earned
-		earnedTokenRewards, err := k.V2VRewardCalculator(ctx, rewardMultiplier, "v2v-rx")
+		earnedTokenRewards, err := k.V2NRewardCalculator(ctx, rewardMultiplier, "runner")
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 		}
-
-		netEarnings, err := strconv.ParseFloat(rxClient.NetEarnings, 64)
+		netEarnings, err := strconv.ParseFloat(runner.NetEarnings, 64)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 		}
 		earnedRewards := netEarnings + earnedTokenRewards
 
-		//
-		updatedClient := types.Client{
-			Index:              rxClient.Index,
-			Address:            rxClient.Address,
-			Registrant:         rxClient.Registrant,
+		updatedRunner := types.Runner{
+			Index:              runner.Index,
+			Address:            runner.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
+			StakedAmount:       runner.StakedAmount,
 			NetEarnings:        strconv.FormatFloat(earnedRewards, 'f', -1, 64),
+			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
 		}
 
-		k.SetClient(ctx, updatedClient)
+		k.SetRunner(ctx, updatedRunner)
 
 	} else if result == "punish" {
-		// Update challengee score
-		scoreFloat64, err := strconv.ParseFloat(rxClient.Score, 64)
+		// Update runner score
+		scoreFloat64, err := strconv.ParseFloat(runner.Score, 64)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
 		}
@@ -82,42 +78,41 @@ func (k msgServer) V2VChallenge(goCtx context.Context, msg *types.MsgV2VChalleng
 		// Update rewardMultiplier
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
-		updatedClient := types.Client{
-			Index:              rxClient.Index,
-			Address:            rxClient.Address,
-			Registrant:         rxClient.Registrant,
+		updatedRunner := types.Runner{
+			Index:              runner.Index,
+			Address:            runner.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-			NetEarnings:        rxClient.NetEarnings,
+			StakedAmount:       runner.StakedAmount,
+			NetEarnings:        runner.NetEarnings,
+			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
 		}
 
-		k.SetClient(ctx, updatedClient)
+		k.SetRunner(ctx, updatedRunner)
 
 	} else {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenge result")
 	}
 
-	// BX
-	bxAddrCount := len(msg.BxAddress)
-	bxResultsCount := len(msg.BxResult)
+	// V2N-BX
+	v2nBxAddrCount := len(msg.V2NBxAddress)
+	v2nBxResultCount := len(msg.V2NBxResult)
 
-	if bxAddrCount != bxResultsCount {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Mismatch between BX address and BX result fields")
+	if v2nBxAddrCount != v2nBxResultCount {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Mismatch between V2N BX address and BX result fields")
 	}
 
-	for i := 0; i < bxAddrCount; i++ {
-
+	for i := 0; i < v2nBxAddrCount; i++ {
 		// Fetch Rx client from the store
-		bxClient, isFound := k.GetClient(ctx, msg.BxAddress[i])
+		v2nBxClient, isFound := k.GetClient(ctx, msg.V2NBxAddress[i])
 		if !isFound {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Bx client is not registered in the store!")
 		}
-
-		result := msg.BxResult[i]
+		result := msg.V2NBxResult[i]
 		if result == "reward" {
 			// Update challengee score
-			scoreFloat64, err := strconv.ParseFloat(bxClient.Score, 64)
+			scoreFloat64, err := strconv.ParseFloat(v2nBxClient.Score, 64)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
 			}
@@ -127,21 +122,20 @@ func (k msgServer) V2VChallenge(goCtx context.Context, msg *types.MsgV2VChalleng
 			rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
 			// Calculate reward earned
-			earnedTokenRewards, err := k.V2VRewardCalculator(ctx, rewardMultiplier, "v2v-bx")
+			earnedTokenRewards, err := k.V2NRewardCalculator(ctx, rewardMultiplier, "v2n-bx")
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 			}
-
-			netEarnings, err := strconv.ParseFloat(bxClient.NetEarnings, 64)
+			netEarnings, err := strconv.ParseFloat(v2nBxClient.NetEarnings, 64)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 			}
 			earnedRewards := netEarnings + earnedTokenRewards
 
 			updatedClient := types.Client{
-				Index:              bxClient.Index,
-				Address:            bxClient.Address,
-				Registrant:         bxClient.Registrant,
+				Index:              v2nBxClient.Index,
+				Address:            v2nBxClient.Address,
+				Registrant:         v2nBxClient.Registrant,
 				Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 				RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 				NetEarnings:        strconv.FormatFloat(earnedRewards, 'f', -1, 64),
@@ -149,10 +143,9 @@ func (k msgServer) V2VChallenge(goCtx context.Context, msg *types.MsgV2VChalleng
 			}
 
 			k.SetClient(ctx, updatedClient)
-
 		} else if result == "punish" {
 			// Update challengee score
-			scoreFloat64, err := strconv.ParseFloat(bxClient.Score, 64)
+			scoreFloat64, err := strconv.ParseFloat(v2nBxClient.Score, 64)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
 			}
@@ -162,12 +155,12 @@ func (k msgServer) V2VChallenge(goCtx context.Context, msg *types.MsgV2VChalleng
 			rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
 			updatedClient := types.Client{
-				Index:              bxClient.Index,
-				Address:            bxClient.Address,
-				Registrant:         bxClient.Registrant,
+				Index:              v2nBxClient.Index,
+				Address:            v2nBxClient.Address,
+				Registrant:         v2nBxClient.Registrant,
 				Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 				RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-				NetEarnings:        bxClient.NetEarnings,
+				NetEarnings:        v2nBxClient.NetEarnings,
 				LastTimeChallenged: ctx.BlockTime().String(),
 			}
 
@@ -194,5 +187,5 @@ func (k msgServer) V2VChallenge(goCtx context.Context, msg *types.MsgV2VChalleng
 
 	k.SetChallenger(ctx, updatedChallenger)
 
-	return &types.MsgV2VChallengeResponse{}, nil
+	return &types.MsgV2NChallengeResponse{}, nil
 }
