@@ -31,18 +31,9 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	}
 
 	// Check the challenge result
-	runnerAccount, _ := sdk.AccAddressFromBech32(msg.RunnerAddress)
-
 	result := msg.ChallengeResult
-	if result == "reward" {
-		rewardAmount, _ := sdk.ParseCoinsNormalized("1000000soar")
-		//Rewards are issued from the module - soarchain protocol
-		k.bankKeeper.MintCoins(ctx, types.ModuleName, rewardAmount)
-		err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, runnerAccount, rewardAmount)
-		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
-		}
 
+	if result == "reward" {
 		// Update runner score
 		scoreFloat64, err := strconv.ParseFloat(runner.Score, 64)
 		if err != nil {

@@ -93,6 +93,16 @@ export interface MsgSelectRandomRunnerResponse {
   randomRunner: Runner | undefined;
 }
 
+export interface MsgV2VChallenge {
+  creator: string;
+  rxAddress: string;
+  rxResult: string;
+  bxAddress: string[];
+  bxResult: string[];
+}
+
+export interface MsgV2VChallengeResponse {}
+
 const baseMsgGenClient: object = { creator: "", address: "" };
 
 export const MsgGenClient = {
@@ -1703,6 +1713,195 @@ export const MsgSelectRandomRunnerResponse = {
   },
 };
 
+const baseMsgV2VChallenge: object = {
+  creator: "",
+  rxAddress: "",
+  rxResult: "",
+  bxAddress: "",
+  bxResult: "",
+};
+
+export const MsgV2VChallenge = {
+  encode(message: MsgV2VChallenge, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.rxAddress !== "") {
+      writer.uint32(18).string(message.rxAddress);
+    }
+    if (message.rxResult !== "") {
+      writer.uint32(26).string(message.rxResult);
+    }
+    for (const v of message.bxAddress) {
+      writer.uint32(34).string(v!);
+    }
+    for (const v of message.bxResult) {
+      writer.uint32(42).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgV2VChallenge {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgV2VChallenge } as MsgV2VChallenge;
+    message.bxAddress = [];
+    message.bxResult = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.rxAddress = reader.string();
+          break;
+        case 3:
+          message.rxResult = reader.string();
+          break;
+        case 4:
+          message.bxAddress.push(reader.string());
+          break;
+        case 5:
+          message.bxResult.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgV2VChallenge {
+    const message = { ...baseMsgV2VChallenge } as MsgV2VChallenge;
+    message.bxAddress = [];
+    message.bxResult = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.rxAddress !== undefined && object.rxAddress !== null) {
+      message.rxAddress = String(object.rxAddress);
+    } else {
+      message.rxAddress = "";
+    }
+    if (object.rxResult !== undefined && object.rxResult !== null) {
+      message.rxResult = String(object.rxResult);
+    } else {
+      message.rxResult = "";
+    }
+    if (object.bxAddress !== undefined && object.bxAddress !== null) {
+      for (const e of object.bxAddress) {
+        message.bxAddress.push(String(e));
+      }
+    }
+    if (object.bxResult !== undefined && object.bxResult !== null) {
+      for (const e of object.bxResult) {
+        message.bxResult.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgV2VChallenge): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.rxAddress !== undefined && (obj.rxAddress = message.rxAddress);
+    message.rxResult !== undefined && (obj.rxResult = message.rxResult);
+    if (message.bxAddress) {
+      obj.bxAddress = message.bxAddress.map((e) => e);
+    } else {
+      obj.bxAddress = [];
+    }
+    if (message.bxResult) {
+      obj.bxResult = message.bxResult.map((e) => e);
+    } else {
+      obj.bxResult = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgV2VChallenge>): MsgV2VChallenge {
+    const message = { ...baseMsgV2VChallenge } as MsgV2VChallenge;
+    message.bxAddress = [];
+    message.bxResult = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.rxAddress !== undefined && object.rxAddress !== null) {
+      message.rxAddress = object.rxAddress;
+    } else {
+      message.rxAddress = "";
+    }
+    if (object.rxResult !== undefined && object.rxResult !== null) {
+      message.rxResult = object.rxResult;
+    } else {
+      message.rxResult = "";
+    }
+    if (object.bxAddress !== undefined && object.bxAddress !== null) {
+      for (const e of object.bxAddress) {
+        message.bxAddress.push(e);
+      }
+    }
+    if (object.bxResult !== undefined && object.bxResult !== null) {
+      for (const e of object.bxResult) {
+        message.bxResult.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgV2VChallengeResponse: object = {};
+
+export const MsgV2VChallengeResponse = {
+  encode(_: MsgV2VChallengeResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgV2VChallengeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgV2VChallengeResponse,
+    } as MsgV2VChallengeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgV2VChallengeResponse {
+    const message = {
+      ...baseMsgV2VChallengeResponse,
+    } as MsgV2VChallengeResponse;
+    return message;
+  },
+
+  toJSON(_: MsgV2VChallengeResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgV2VChallengeResponse>
+  ): MsgV2VChallengeResponse {
+    const message = {
+      ...baseMsgV2VChallengeResponse,
+    } as MsgV2VChallengeResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -1728,10 +1927,11 @@ export interface Msg {
   SelectRandomChallenger(
     request: MsgSelectRandomChallenger
   ): Promise<MsgSelectRandomChallengerResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   SelectRandomRunner(
     request: MsgSelectRandomRunner
   ): Promise<MsgSelectRandomRunnerResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  V2VChallenge(request: MsgV2VChallenge): Promise<MsgV2VChallengeResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1862,6 +2062,14 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgSelectRandomRunnerResponse.decode(new Reader(data))
+    );
+  }
+
+  V2VChallenge(request: MsgV2VChallenge): Promise<MsgV2VChallengeResponse> {
+    const data = MsgV2VChallenge.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Msg", "V2VChallenge", data);
+    return promise.then((data) =>
+      MsgV2VChallengeResponse.decode(new Reader(data))
     );
   }
 }

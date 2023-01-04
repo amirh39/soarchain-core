@@ -209,13 +209,19 @@ export interface TypesHeader {
   time?: string;
   last_block_id?: TypesBlockID;
 
-  /** @format byte */
+  /**
+   * commit from validators from the last block
+   * @format byte
+   */
   last_commit_hash?: string;
 
   /** @format byte */
   data_hash?: string;
 
-  /** @format byte */
+  /**
+   * validators for the current block
+   * @format byte
+   */
   validators_hash?: string;
 
   /** @format byte */
@@ -230,7 +236,10 @@ export interface TypesHeader {
   /** @format byte */
   last_results_hash?: string;
 
-  /** @format byte */
+  /**
+   * evidence included in the block
+   * @format byte
+   */
   evidence_hash?: string;
 
   /** @format byte */
@@ -643,7 +652,11 @@ export interface V1Beta1Redelegation {
   /** validator_dst_address is the validator redelegation destination operator address. */
   validator_dst_address?: string;
 
-  /** entries are the redelegation entries. */
+  /**
+   * entries are the redelegation entries.
+   *
+   * redelegation entries
+   */
   entries?: V1Beta1RedelegationEntry[];
 }
 
@@ -706,7 +719,11 @@ export interface V1Beta1UnbondingDelegation {
   /** validator_address is the bech32-encoded address of the validator. */
   validator_address?: string;
 
-  /** entries are the unbonding delegation entries. */
+  /**
+   * entries are the unbonding delegation entries.
+   *
+   * unbonding delegation entries
+   */
   entries?: V1Beta1UnbondingDelegationEntry[];
 }
 
