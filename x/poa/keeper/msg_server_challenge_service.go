@@ -38,6 +38,17 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target client is not registered in the store!")
 	}
 
+	// Check challengeability
+	isChallengeable, point, err := utility.IsChallengeable(ctx, client.Score, client.LastTimeChallenged, 5)
+	if err != nil {
+		return nil, err
+	}
+	if !isChallengeable {
+		pointString := strconv.FormatFloat(point, 'f', -1, 64)
+
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Client is not challengeable at the moment! Point is: "+pointString)
+	}
+
 	// Check the challenge result
 	result := msg.ChallengeResult
 

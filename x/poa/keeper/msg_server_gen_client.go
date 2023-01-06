@@ -22,24 +22,6 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
 	}
 
-	// // Registration fee
-	// registrationFee, _ := sdk.ParseCoinsNormalized("25000000soar")
-	// msgFee, err := sdk.ParseCoinsNormalized(msg.Fee)
-	// if err != nil {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
-	// }
-	// if msgFee.IsAllLT(registrationFee) || !msgFee.DenomsSubsetOf(registrationFee) {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for registration.")
-	// }
-
-	// // Transfer fee to the protocol, then burn it
-	// msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	// transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, registrationFee)
-	// if transferErr != nil {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins from account to POA module!")
-	// }
-	// k.bankKeeper.BurnCoins(ctx, types.ModuleName, registrationFee)
-
 	// rewardMultiplier
 	var initialScore float64 = 50
 	rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
@@ -52,7 +34,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		NetEarnings:        sdk.ZeroInt().String(),
-		LastTimeChallenged: sdk.ZeroInt().String(),
+		LastTimeChallenged: ctx.BlockTime().String(),
 	}
 
 	k.SetClient(ctx, newClient)
