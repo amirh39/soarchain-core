@@ -39,14 +39,13 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 
 	// Check challengeability
-	isChallengeable, point, err := utility.IsChallengeable(ctx, client.Score, client.LastTimeChallenged, 5)
+	isChallengeable, point, err := utility.IsChallengeable(ctx, client.Score, client.LastTimeChallenged, client.CoolDownTolerance)
 	if err != nil {
 		return nil, err
 	}
 	if !isChallengeable {
 		pointString := strconv.FormatFloat(point, 'f', -1, 64)
-
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Client is not challengeable at the moment! Point is: "+pointString)
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Client is not challengeable at the moment! Point is: "+pointString+" with multiplier: "+client.CoolDownTolerance)
 	}
 
 	// Check the challenge result
@@ -76,7 +75,26 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 		earnedRewards := netEarnings + earnedTokenRewards
 
-		//
+		// Generate random coolDownMultiplier
+		multiplier := int(5)
+
+		vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
+		if vrfErr != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "VRF error!")
+		}
+
+		generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "vrfData.FinalVrv parse error!")
+		}
+
+		var coolDownMultiplier uint64
+		if generatedNumber > 0 {
+			coolDownMultiplier = generatedNumber
+		} else {
+			coolDownMultiplier = 1
+		}
+
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
@@ -85,6 +103,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			NetEarnings:        strconv.FormatFloat(earnedRewards, 'f', -1, 64),
 			LastTimeChallenged: ctx.BlockTime().String(),
+			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 		}
 
 		k.SetClient(ctx, updatedClient)
@@ -100,6 +119,26 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// Update rewardMultiplier
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
+		// Generate random coolDownMultiplier
+		multiplier := int(5)
+
+		vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
+		if vrfErr != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "VRF error!")
+		}
+
+		generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "vrfData.FinalVrv parse error!")
+		}
+
+		var coolDownMultiplier uint64
+		if generatedNumber > 0 {
+			coolDownMultiplier = generatedNumber
+		} else {
+			coolDownMultiplier = 1
+		}
+
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
@@ -108,6 +147,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			NetEarnings:        client.NetEarnings,
 			LastTimeChallenged: ctx.BlockTime().String(),
+			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 		}
 
 		k.SetClient(ctx, updatedClient)

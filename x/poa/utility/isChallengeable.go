@@ -8,9 +8,15 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func IsChallengeable(ctx sdk.Context, score string, lastChallengeTime string, cooldownTolerance float64) (bool, float64, error) {
+func IsChallengeable(ctx sdk.Context, score string, lastChallengeTime string, cooldownTolerance string) (bool, float64, error) {
 
-	if cooldownTolerance < 1 || cooldownTolerance > 5 {
+	// Convert cooldownTolerance to uint64
+	cooldownToleranceUint64, err := strconv.ParseUint(cooldownTolerance, 10, 64)
+	if err != nil {
+		return false, 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to uint64")
+	}
+
+	if cooldownToleranceUint64 < 1 || cooldownToleranceUint64 > 5 {
 		return false, 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "Invalid interval for cooldown tolerance parameter!")
 	}
 
@@ -43,7 +49,8 @@ func IsChallengeable(ctx sdk.Context, score string, lastChallengeTime string, co
 	}
 
 	// Calculate challengeability
-	C := (100 - scoreFloat64) + ((interval * cooldownTolerance) / 2)
+
+	C := (100 - scoreFloat64) + ((interval * float64(cooldownToleranceUint64)) / 2)
 	if C > 100 {
 		return true, C, nil
 	}

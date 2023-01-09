@@ -54,24 +54,6 @@ func (k Keeper) CreateVRF(ctx sdk.Context, msgCreator string, multiplier int) (t
 		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "Generated random number is out of index!")
 	}
 
-	// generatedVrf := uint64(final_vrv)
-
-	// var selectedChallenger types.Challenger
-	// challengers := k.GetAllChallenger(ctx)
-	// for i := 0; i < len(challengers); i++ {
-	// 	if i == int(generatedVrf) {
-	// 		selectedChallenger = challengers[i]
-	// 	}
-	// }
-
-	// var selectedRunner types.Runner
-	// runenrs := k.GetAllRunner(ctx)
-	// for i := 0; i < len(runenrs); i++ {
-	// 	if i == int(generatedVrf) {
-	// 		selectedRunner = runenrs[i]
-	// 	}
-	// }
-
 	newRandomVal := types.VrfData{
 		Index:              random_val_key,
 		Creator:            msgCreator,

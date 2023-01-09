@@ -11,6 +11,7 @@ export interface Client {
   rewardMultiplier: string;
   netEarnings: string;
   lastTimeChallenged: string;
+  coolDownTolerance: string;
 }
 
 const baseClient: object = {
@@ -21,6 +22,7 @@ const baseClient: object = {
   rewardMultiplier: "",
   netEarnings: "",
   lastTimeChallenged: "",
+  coolDownTolerance: "",
 };
 
 export const Client = {
@@ -45,6 +47,9 @@ export const Client = {
     }
     if (message.lastTimeChallenged !== "") {
       writer.uint32(58).string(message.lastTimeChallenged);
+    }
+    if (message.coolDownTolerance !== "") {
+      writer.uint32(66).string(message.coolDownTolerance);
     }
     return writer;
   },
@@ -76,6 +81,9 @@ export const Client = {
           break;
         case 7:
           message.lastTimeChallenged = reader.string();
+          break;
+        case 8:
+          message.coolDownTolerance = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -128,6 +136,14 @@ export const Client = {
     } else {
       message.lastTimeChallenged = "";
     }
+    if (
+      object.coolDownTolerance !== undefined &&
+      object.coolDownTolerance !== null
+    ) {
+      message.coolDownTolerance = String(object.coolDownTolerance);
+    } else {
+      message.coolDownTolerance = "";
+    }
     return message;
   },
 
@@ -143,6 +159,8 @@ export const Client = {
       (obj.netEarnings = message.netEarnings);
     message.lastTimeChallenged !== undefined &&
       (obj.lastTimeChallenged = message.lastTimeChallenged);
+    message.coolDownTolerance !== undefined &&
+      (obj.coolDownTolerance = message.coolDownTolerance);
     return obj;
   },
 
@@ -188,6 +206,14 @@ export const Client = {
       message.lastTimeChallenged = object.lastTimeChallenged;
     } else {
       message.lastTimeChallenged = "";
+    }
+    if (
+      object.coolDownTolerance !== undefined &&
+      object.coolDownTolerance !== null
+    ) {
+      message.coolDownTolerance = object.coolDownTolerance;
+    } else {
+      message.coolDownTolerance = "";
     }
     return message;
   },
