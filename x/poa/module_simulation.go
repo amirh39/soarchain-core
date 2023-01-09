@@ -221,28 +221,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		poasimulation.SimulateMsgSelectRandomRunner(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgV2VChallenge int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgV2VChallenge, &weightMsgV2VChallenge, nil,
-		func(_ *rand.Rand) {
-			weightMsgV2VChallenge = defaultWeightMsgV2VChallenge
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgV2VChallenge,
-		poasimulation.SimulateMsgV2VChallenge(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgV2NChallenge int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgV2NChallenge, &weightMsgV2NChallenge, nil,
-		func(_ *rand.Rand) {
-			weightMsgV2NChallenge = defaultWeightMsgV2NChallenge
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgV2NChallenge,
-		poasimulation.SimulateMsgV2NChallenge(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations

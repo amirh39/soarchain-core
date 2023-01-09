@@ -20,8 +20,6 @@ service Msg {
   rpc UnregisterGuard(MsgUnregisterGuard) returns (MsgUnregisterGuardResponse);
   rpc SelectRandomChallenger(MsgSelectRandomChallenger) returns (MsgSelectRandomChallengerResponse);
   rpc SelectRandomRunner(MsgSelectRandomRunner) returns (MsgSelectRandomRunnerResponse);
-  rpc V2VChallenge(MsgV2VChallenge) returns (MsgV2VChallengeResponse);
-  rpc V2NChallenge(MsgV2NChallenge) returns (MsgV2NChallengeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -120,28 +118,6 @@ message MsgSelectRandomRunner {
 
 message MsgSelectRandomRunnerResponse {
   Runner randomRunner = 1;
-}
-
-message MsgV2VChallenge {
-  string creator = 1;
-  string rxAddress = 2;
-  string rxResult = 3;
-  repeated string bxAddress = 4;
-  repeated string bxResult = 5;
-}
-
-message MsgV2VChallengeResponse {
-}
-
-message MsgV2NChallenge {
-  string creator = 1;
-  string runnerAddress = 2;
-  string runnerResult = 3;
-  repeated string v2NBxAddress = 4;
-  repeated string v2NBxResult = 5;
-}
-
-message MsgV2NChallengeResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

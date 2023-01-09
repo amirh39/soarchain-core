@@ -71,11 +71,6 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/get_challenger_by_address/{address}";
 	}
 
-// Queries a list of GetRandomRunner items.
-	rpc GetRandomRunner(QueryGetRandomRunnerRequest) returns (QueryGetRandomRunnerResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_random_runner";
-	}
-
 // Queries a VrfData by index.
 	rpc VrfData(QueryGetVrfDataRequest) returns (QueryGetVrfDataResponse) {
 		option (google.api.http).get = "/soarchain/poa/vrf_data/{index}";
@@ -199,13 +194,6 @@ message QueryGetChallengerByAddressRequest {
 
 message QueryGetChallengerByAddressResponse {
   Challenger challenger = 1;
-}
-
-message QueryGetRandomRunnerRequest {
-}
-
-message QueryGetRandomRunnerResponse {
-  Runner runner = 1;
 }
 
 message QueryGetVrfDataRequest {

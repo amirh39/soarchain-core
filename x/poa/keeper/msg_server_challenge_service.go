@@ -139,6 +139,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			coolDownMultiplier = 1
 		}
 
+		//
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,

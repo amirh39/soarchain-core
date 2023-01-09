@@ -107,12 +107,6 @@ export interface QueryGetChallengerByAddressResponse {
   challenger: Challenger | undefined;
 }
 
-export interface QueryGetRandomRunnerRequest {}
-
-export interface QueryGetRandomRunnerResponse {
-  runner: Runner | undefined;
-}
-
 export interface QueryGetVrfDataRequest {
   index: string;
 }
@@ -1671,128 +1665,6 @@ export const QueryGetChallengerByAddressResponse = {
   },
 };
 
-const baseQueryGetRandomRunnerRequest: object = {};
-
-export const QueryGetRandomRunnerRequest = {
-  encode(
-    _: QueryGetRandomRunnerRequest,
-    writer: Writer = Writer.create()
-  ): Writer {
-    return writer;
-  },
-
-  decode(
-    input: Reader | Uint8Array,
-    length?: number
-  ): QueryGetRandomRunnerRequest {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseQueryGetRandomRunnerRequest,
-    } as QueryGetRandomRunnerRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): QueryGetRandomRunnerRequest {
-    const message = {
-      ...baseQueryGetRandomRunnerRequest,
-    } as QueryGetRandomRunnerRequest;
-    return message;
-  },
-
-  toJSON(_: QueryGetRandomRunnerRequest): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial(
-    _: DeepPartial<QueryGetRandomRunnerRequest>
-  ): QueryGetRandomRunnerRequest {
-    const message = {
-      ...baseQueryGetRandomRunnerRequest,
-    } as QueryGetRandomRunnerRequest;
-    return message;
-  },
-};
-
-const baseQueryGetRandomRunnerResponse: object = {};
-
-export const QueryGetRandomRunnerResponse = {
-  encode(
-    message: QueryGetRandomRunnerResponse,
-    writer: Writer = Writer.create()
-  ): Writer {
-    if (message.runner !== undefined) {
-      Runner.encode(message.runner, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(
-    input: Reader | Uint8Array,
-    length?: number
-  ): QueryGetRandomRunnerResponse {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseQueryGetRandomRunnerResponse,
-    } as QueryGetRandomRunnerResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.runner = Runner.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetRandomRunnerResponse {
-    const message = {
-      ...baseQueryGetRandomRunnerResponse,
-    } as QueryGetRandomRunnerResponse;
-    if (object.runner !== undefined && object.runner !== null) {
-      message.runner = Runner.fromJSON(object.runner);
-    } else {
-      message.runner = undefined;
-    }
-    return message;
-  },
-
-  toJSON(message: QueryGetRandomRunnerResponse): unknown {
-    const obj: any = {};
-    message.runner !== undefined &&
-      (obj.runner = message.runner ? Runner.toJSON(message.runner) : undefined);
-    return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<QueryGetRandomRunnerResponse>
-  ): QueryGetRandomRunnerResponse {
-    const message = {
-      ...baseQueryGetRandomRunnerResponse,
-    } as QueryGetRandomRunnerResponse;
-    if (object.runner !== undefined && object.runner !== null) {
-      message.runner = Runner.fromPartial(object.runner);
-    } else {
-      message.runner = undefined;
-    }
-    return message;
-  },
-};
-
 const baseQueryGetVrfDataRequest: object = { index: "" };
 
 export const QueryGetVrfDataRequest = {
@@ -2599,10 +2471,6 @@ export interface Query {
   GetChallengerByAddress(
     request: QueryGetChallengerByAddressRequest
   ): Promise<QueryGetChallengerByAddressResponse>;
-  /** Queries a list of GetRandomRunner items. */
-  GetRandomRunner(
-    request: QueryGetRandomRunnerRequest
-  ): Promise<QueryGetRandomRunnerResponse>;
   /** Queries a VrfData by index. */
   VrfData(request: QueryGetVrfDataRequest): Promise<QueryGetVrfDataResponse>;
   /** Queries a list of VrfData items. */
@@ -2725,20 +2593,6 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetChallengerByAddressResponse.decode(new Reader(data))
-    );
-  }
-
-  GetRandomRunner(
-    request: QueryGetRandomRunnerRequest
-  ): Promise<QueryGetRandomRunnerResponse> {
-    const data = QueryGetRandomRunnerRequest.encode(request).finish();
-    const promise = this.rpc.request(
-      "soarchain.poa.Query",
-      "GetRandomRunner",
-      data
-    );
-    return promise.then((data) =>
-      QueryGetRandomRunnerResponse.decode(new Reader(data))
     );
   }
 
