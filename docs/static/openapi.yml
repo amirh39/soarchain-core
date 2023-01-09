@@ -30713,55 +30713,6 @@ paths:
           type: string
       tags:
         - Query
-  /soarchain/poa/get_random_runner:
-    get:
-      summary: Queries a list of GetRandomRunner items.
-      operationId: SoarchainPoaGetRandomRunner
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              runner:
-                type: object
-                properties:
-                  index:
-                    type: string
-                  address:
-                    type: string
-                  score:
-                    type: string
-                  rewardMultiplier:
-                    type: string
-                  stakedAmount:
-                    type: string
-                  netEarnings:
-                    type: string
-                  ipAddr:
-                    type: string
-                  lastTimeChallenged:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
   /soarchain/poa/guard:
     get:
       summary: Queries a list of Guard items.
@@ -30799,6 +30750,8 @@ paths:
                         ipAddr:
                           type: string
                         lastTimeChallenged:
+                          type: string
+                        coolDownTolerance:
                           type: string
                     v2XChallenger:
                       type: object
@@ -30964,6 +30917,8 @@ paths:
                         type: string
                       lastTimeChallenged:
                         type: string
+                      coolDownTolerance:
+                        type: string
                   v2XChallenger:
                     type: object
                     properties:
@@ -31090,6 +31045,8 @@ paths:
                       type: string
                     lastTimeChallenged:
                       type: string
+                    coolDownTolerance:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -31212,6 +31169,8 @@ paths:
                   ipAddr:
                     type: string
                   lastTimeChallenged:
+                    type: string
+                  coolDownTolerance:
                     type: string
         default:
           description: An unexpected error response.
@@ -31359,6 +31318,8 @@ paths:
                         ipAddr:
                           type: string
                         lastTimeChallenged:
+                          type: string
+                        coolDownTolerance:
                           type: string
               pagination:
                 type: object
@@ -31524,6 +31485,8 @@ paths:
                       ipAddr:
                         type: string
                       lastTimeChallenged:
+                        type: string
+                      coolDownTolerance:
                         type: string
         default:
           description: An unexpected error response.
@@ -53361,6 +53324,8 @@ definitions:
             type: string
           lastTimeChallenged:
             type: string
+          coolDownTolerance:
+            type: string
       v2XChallenger:
         type: object
         properties:
@@ -53444,6 +53409,8 @@ definitions:
           ipAddr:
             type: string
           lastTimeChallenged:
+            type: string
+          coolDownTolerance:
             type: string
   soarchain.poa.MsgUnregisterChallengerResponse:
     type: object
@@ -53583,6 +53550,8 @@ definitions:
                   type: string
                 lastTimeChallenged:
                   type: string
+                coolDownTolerance:
+                  type: string
             v2XChallenger:
               type: object
               properties:
@@ -53665,6 +53634,8 @@ definitions:
             ipAddr:
               type: string
             lastTimeChallenged:
+              type: string
+            coolDownTolerance:
               type: string
       pagination:
         type: object
@@ -53756,6 +53727,8 @@ definitions:
                 ipAddr:
                   type: string
                 lastTimeChallenged:
+                  type: string
+                coolDownTolerance:
                   type: string
       pagination:
         type: object
@@ -53934,6 +53907,8 @@ definitions:
                 type: string
               lastTimeChallenged:
                 type: string
+              coolDownTolerance:
+                type: string
           v2XChallenger:
             type: object
             properties:
@@ -53968,28 +53943,6 @@ definitions:
                 type: string
               ipAddr:
                 type: string
-  soarchain.poa.QueryGetRandomRunnerResponse:
-    type: object
-    properties:
-      runner:
-        type: object
-        properties:
-          index:
-            type: string
-          address:
-            type: string
-          score:
-            type: string
-          rewardMultiplier:
-            type: string
-          stakedAmount:
-            type: string
-          netEarnings:
-            type: string
-          ipAddr:
-            type: string
-          lastTimeChallenged:
-            type: string
   soarchain.poa.QueryGetRunnerResponse:
     type: object
     properties:
@@ -54011,6 +53964,8 @@ definitions:
           ipAddr:
             type: string
           lastTimeChallenged:
+            type: string
+          coolDownTolerance:
             type: string
   soarchain.poa.QueryGetVrfDataResponse:
     type: object
@@ -54076,6 +54031,8 @@ definitions:
                 type: string
               lastTimeChallenged:
                 type: string
+              coolDownTolerance:
+                type: string
   soarchain.poa.QueryGetVrfUserResponse:
     type: object
     properties:
@@ -54118,6 +54075,8 @@ definitions:
       ipAddr:
         type: string
       lastTimeChallenged:
+        type: string
+      coolDownTolerance:
         type: string
   soarchain.poa.VrfData:
     type: object
@@ -54179,6 +54138,8 @@ definitions:
           ipAddr:
             type: string
           lastTimeChallenged:
+            type: string
+          coolDownTolerance:
             type: string
   soarchain.poa.VrfUser:
     type: object

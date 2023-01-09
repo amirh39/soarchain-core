@@ -179,7 +179,8 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			StakedAmount:       runnerStake.String(),
 			NetEarnings:        sdk.ZeroInt().String(),
 			IpAddr:             msg.RunnerIp,
-			LastTimeChallenged: sdk.ZeroInt().String(),
+			LastTimeChallenged: ctx.BlockTime().String(),
+			CoolDownTolerance:  strconv.FormatUint(1, 10),
 		}
 
 		k.SetRunner(ctx, newRunner)

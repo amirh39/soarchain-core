@@ -49,8 +49,8 @@ func IsChallengeable(ctx sdk.Context, score string, lastChallengeTime string, co
 	}
 
 	// Calculate challengeability
-
-	C := (100 - scoreFloat64) + ((interval * float64(cooldownToleranceUint64)) / 2)
+	var normalizer float64 = 60
+	C := (100 - scoreFloat64) + ((interval * float64(cooldownToleranceUint64)) * normalizer)
 	if C > 100 {
 		return true, C, nil
 	}

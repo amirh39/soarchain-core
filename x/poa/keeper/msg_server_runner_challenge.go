@@ -30,6 +30,16 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target runner is not registered in the store!")
 	}
 
+	// Check runner challengeability
+	isChallengeable, point, err := utility.IsChallengeable(ctx, runner.Score, runner.LastTimeChallenged, runner.CoolDownTolerance)
+	if err != nil {
+		return nil, err
+	}
+	if !isChallengeable {
+		pointString := strconv.FormatFloat(point, 'f', -1, 64)
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Runner is not challengeable at the moment! Point is: "+pointString+" with multiplier: "+runner.CoolDownTolerance)
+	}
+
 	// Check the challenge result
 	result := msg.ChallengeResult
 
@@ -54,6 +64,26 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		}
 		earnedRewards := netEarnings + earnedTokenRewards
 
+		// Generate random coolDownMultiplier
+		multiplier := int(5)
+
+		vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
+		if vrfErr != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "VRF error!")
+		}
+
+		generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "vrfData.FinalVrv parse error!")
+		}
+
+		var coolDownMultiplier uint64
+		if generatedNumber > 0 {
+			coolDownMultiplier = generatedNumber
+		} else {
+			coolDownMultiplier = 1
+		}
+
 		updatedRunner := types.Runner{
 			Index:              runner.Index,
 			Address:            runner.Address,
@@ -63,6 +93,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			NetEarnings:        strconv.FormatFloat(earnedRewards, 'f', -1, 64),
 			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
+			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 		}
 
 		k.SetRunner(ctx, updatedRunner)
@@ -78,6 +109,26 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		// Update rewardMultiplier
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
+		// Generate random coolDownMultiplier
+		multiplier := int(5)
+
+		vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
+		if vrfErr != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "VRF error!")
+		}
+
+		generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "vrfData.FinalVrv parse error!")
+		}
+
+		var coolDownMultiplier uint64
+		if generatedNumber > 0 {
+			coolDownMultiplier = generatedNumber
+		} else {
+			coolDownMultiplier = 1
+		}
+
 		updatedRunner := types.Runner{
 			Index:              runner.Index,
 			Address:            runner.Address,
@@ -87,6 +138,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			NetEarnings:        runner.NetEarnings,
 			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
+			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 		}
 
 		k.SetRunner(ctx, updatedRunner)

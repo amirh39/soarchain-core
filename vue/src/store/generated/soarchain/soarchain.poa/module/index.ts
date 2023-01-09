@@ -4,29 +4,29 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgUnregisterGuard } from "./types/poa/tx";
-import { MsgChallengeService } from "./types/poa/tx";
-import { MsgRunnerChallenge } from "./types/poa/tx";
-import { MsgUnregisterChallenger } from "./types/poa/tx";
-import { MsgSelectRandomChallenger } from "./types/poa/tx";
-import { MsgSelectRandomRunner } from "./types/poa/tx";
-import { MsgGenClient } from "./types/poa/tx";
+import { MsgUnregisterClient } from "./types/poa/tx";
 import { MsgGenGuard } from "./types/poa/tx";
 import { MsgUnregisterRunner } from "./types/poa/tx";
-import { MsgUnregisterClient } from "./types/poa/tx";
+import { MsgGenClient } from "./types/poa/tx";
+import { MsgChallengeService } from "./types/poa/tx";
+import { MsgUnregisterChallenger } from "./types/poa/tx";
+import { MsgSelectRandomChallenger } from "./types/poa/tx";
+import { MsgRunnerChallenge } from "./types/poa/tx";
+import { MsgUnregisterGuard } from "./types/poa/tx";
+import { MsgSelectRandomRunner } from "./types/poa/tx";
 
 
 const types = [
-  ["/soarchain.poa.MsgUnregisterGuard", MsgUnregisterGuard],
-  ["/soarchain.poa.MsgChallengeService", MsgChallengeService],
-  ["/soarchain.poa.MsgRunnerChallenge", MsgRunnerChallenge],
-  ["/soarchain.poa.MsgUnregisterChallenger", MsgUnregisterChallenger],
-  ["/soarchain.poa.MsgSelectRandomChallenger", MsgSelectRandomChallenger],
-  ["/soarchain.poa.MsgSelectRandomRunner", MsgSelectRandomRunner],
-  ["/soarchain.poa.MsgGenClient", MsgGenClient],
+  ["/soarchain.poa.MsgUnregisterClient", MsgUnregisterClient],
   ["/soarchain.poa.MsgGenGuard", MsgGenGuard],
   ["/soarchain.poa.MsgUnregisterRunner", MsgUnregisterRunner],
-  ["/soarchain.poa.MsgUnregisterClient", MsgUnregisterClient],
+  ["/soarchain.poa.MsgGenClient", MsgGenClient],
+  ["/soarchain.poa.MsgChallengeService", MsgChallengeService],
+  ["/soarchain.poa.MsgUnregisterChallenger", MsgUnregisterChallenger],
+  ["/soarchain.poa.MsgSelectRandomChallenger", MsgSelectRandomChallenger],
+  ["/soarchain.poa.MsgRunnerChallenge", MsgRunnerChallenge],
+  ["/soarchain.poa.MsgUnregisterGuard", MsgUnregisterGuard],
+  ["/soarchain.poa.MsgSelectRandomRunner", MsgSelectRandomRunner],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -59,16 +59,16 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgUnregisterGuard: (data: MsgUnregisterGuard): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterGuard", value: MsgUnregisterGuard.fromPartial( data ) }),
-    msgChallengeService: (data: MsgChallengeService): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgChallengeService", value: MsgChallengeService.fromPartial( data ) }),
-    msgRunnerChallenge: (data: MsgRunnerChallenge): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgRunnerChallenge", value: MsgRunnerChallenge.fromPartial( data ) }),
-    msgUnregisterChallenger: (data: MsgUnregisterChallenger): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterChallenger", value: MsgUnregisterChallenger.fromPartial( data ) }),
-    msgSelectRandomChallenger: (data: MsgSelectRandomChallenger): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgSelectRandomChallenger", value: MsgSelectRandomChallenger.fromPartial( data ) }),
-    msgSelectRandomRunner: (data: MsgSelectRandomRunner): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgSelectRandomRunner", value: MsgSelectRandomRunner.fromPartial( data ) }),
-    msgGenClient: (data: MsgGenClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenClient", value: MsgGenClient.fromPartial( data ) }),
+    msgUnregisterClient: (data: MsgUnregisterClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterClient", value: MsgUnregisterClient.fromPartial( data ) }),
     msgGenGuard: (data: MsgGenGuard): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenGuard", value: MsgGenGuard.fromPartial( data ) }),
     msgUnregisterRunner: (data: MsgUnregisterRunner): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterRunner", value: MsgUnregisterRunner.fromPartial( data ) }),
-    msgUnregisterClient: (data: MsgUnregisterClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterClient", value: MsgUnregisterClient.fromPartial( data ) }),
+    msgGenClient: (data: MsgGenClient): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgGenClient", value: MsgGenClient.fromPartial( data ) }),
+    msgChallengeService: (data: MsgChallengeService): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgChallengeService", value: MsgChallengeService.fromPartial( data ) }),
+    msgUnregisterChallenger: (data: MsgUnregisterChallenger): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterChallenger", value: MsgUnregisterChallenger.fromPartial( data ) }),
+    msgSelectRandomChallenger: (data: MsgSelectRandomChallenger): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgSelectRandomChallenger", value: MsgSelectRandomChallenger.fromPartial( data ) }),
+    msgRunnerChallenge: (data: MsgRunnerChallenge): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgRunnerChallenge", value: MsgRunnerChallenge.fromPartial( data ) }),
+    msgUnregisterGuard: (data: MsgUnregisterGuard): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgUnregisterGuard", value: MsgUnregisterGuard.fromPartial( data ) }),
+    msgSelectRandomRunner: (data: MsgSelectRandomRunner): EncodeObject => ({ typeUrl: "/soarchain.poa.MsgSelectRandomRunner", value: MsgSelectRandomRunner.fromPartial( data ) }),
     
   };
 };

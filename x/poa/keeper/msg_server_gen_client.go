@@ -35,6 +35,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		NetEarnings:        sdk.ZeroInt().String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
+		CoolDownTolerance:  strconv.FormatUint(1, 10),
 	}
 
 	k.SetClient(ctx, newClient)
