@@ -96,6 +96,11 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/verify_random_number/{pubkey}/{message}/{vrv}/{proof}";
 	}
 
+// Queries a list of IsChallengeable items.
+	rpc IsChallengeable(QueryIsChallengeableRequest) returns (QueryIsChallengeableResponse) {
+		option (google.api.http).get = "/soarchain/poa/is_challengeable/{clientAddr}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -241,6 +246,15 @@ message QueryVerifyRandomNumberRequest {
 
 message QueryVerifyRandomNumberResponse {
   bool result = 1;
+}
+
+message QueryIsChallengeableRequest {
+  string clientAddr = 1;
+}
+
+message QueryIsChallengeableResponse {
+  string resultBool = 1;
+  string challengeabilityScore = 2;
 }
 
 // this line is used by starport scaffolding # 3
