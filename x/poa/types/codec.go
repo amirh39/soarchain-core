@@ -18,6 +18,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUnregisterGuard{}, "poa/UnregisterGuard", nil)
 	cdc.RegisterConcrete(&MsgSelectRandomChallenger{}, "poa/SelectRandomChallenger", nil)
 	cdc.RegisterConcrete(&MsgSelectRandomRunner{}, "poa/SelectRandomRunner", nil)
+	cdc.RegisterConcrete(&MsgUpdateGuard{}, "poa/UpdateGuard", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -53,6 +54,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSelectRandomRunner{},
 	)
 
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUpdateGuard{},
+	)
 	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
