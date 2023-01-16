@@ -10,12 +10,12 @@ import (
 func TestV2VRewardEmissionPerBlock(t *testing.T) {
 	tests := []struct {
 		currentBlockNumber     int
-		expectedTokensPerBlock float64
+		expectedTokensPerBlock int
 	}{
-		{0, 37366809.21 / (1 * minutesPerYear)},
-		{600000, 37366809.21 / (1 * minutesPerYear)},
-		{2102400, 37366809.21 / (1 * minutesPerYear) / 2},
-		{3679200, 37366809.21 / (1 * minutesPerYear) / 4},
+		{0, 373668092100 / (1 * minutesPerYear)},
+		{600000, 373668092100 / (1 * minutesPerYear)},
+		{2102400, 373668092100 / (1 * minutesPerYear) / 2},
+		{3679200, 373668092100 / (1 * minutesPerYear) / 4},
 	}
 
 	for _, test := range tests {

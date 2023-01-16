@@ -1,20 +1,18 @@
 package utility
 
 import (
-	"math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) (float64, error) {
+func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) (int, error) {
 
 	// Calculates reward coin emissions for each reward type
 
-	blocksPerMinute := 1.0
+	blocksPerMinute := 1
 	currentBlockNumber := int(ctx.BlockHeight())
 
-	var initialTokensPerYear float64
+	var initialTokensPerYear int
 	switch clientCommunicationMode {
 	case "v2n-bx":
 		initialTokensPerYear = 64283578560000 // v2n broadcaster initial annual emission
@@ -28,10 +26,10 @@ func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 	tokensPerBlock := initialTokensPerYear / (blocksPerMinute * minutesPerYear)
 
 	// Calculate the number of years that have passed since the start of the token issuance
-	yearsSinceStart := int(math.Floor(float64(currentBlockNumber) / (blocksPerMinute * minutesPerYear)))
+	yearsSinceStart := (currentBlockNumber) / (blocksPerMinute * minutesPerYear)
 
 	// Calculate the number of times the token issuance rate has been halved
-	halvings := int(math.Floor(float64(yearsSinceStart) / 3))
+	halvings := (yearsSinceStart) / 3
 
 	// Update the token issuance rate for each halving that has occurred
 	for i := 0; i < halvings; i++ {
