@@ -54,7 +54,8 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Check v2x stake amount
-		requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
+		// requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
+		requiredStake := sdk.Coins{sdk.NewInt64Coin("soar", 2000000000)}
 		v2XStake, err := sdk.ParseCoinsNormalized(msg.V2XStake)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
@@ -64,6 +65,11 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Transfer stakedAmount to contract:
+		balance := sdk.Coins{k.bankKeeper.GetBalance(ctx, msgSenderAddress, "soar")}
+		if balance.IsAllLT(requiredStake) {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
+		}
+
 		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 		if transferErr != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds couldn't be transferred to POA module!")
