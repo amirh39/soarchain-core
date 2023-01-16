@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"soarchain/app"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/simapp"
@@ -17,7 +19,6 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-	"soarchain/app"
 )
 
 func init() {
@@ -74,7 +75,7 @@ func BenchmarkSimulation(b *testing.B) {
 
 	encoding := cosmoscmd.MakeEncodingConfig(app.ModuleBasics)
 
-	app := app.New(
+	app := app.NewsoarchainApp(
 		logger,
 		db,
 		nil,

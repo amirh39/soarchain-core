@@ -7,74 +7,20 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgUnregisterGuard } from "./types/poa/tx";
-import { MsgGenClient } from "./types/poa/tx";
-import { MsgUnregisterChallenger } from "./types/poa/tx";
-import { MsgUnregisterRunner } from "./types/poa/tx";
-import { MsgUnregisterClient } from "./types/poa/tx";
-import { MsgSelectRandomChallenger } from "./types/poa/tx";
-import { MsgUpdateGuard } from "./types/poa/tx";
-import { MsgGenGuard } from "./types/poa/tx";
-import { MsgRunnerChallenge } from "./types/poa/tx";
 import { MsgChallengeService } from "./types/poa/tx";
 import { MsgSelectRandomRunner } from "./types/poa/tx";
+import { MsgGenClient } from "./types/poa/tx";
+import { MsgRunnerChallenge } from "./types/poa/tx";
+import { MsgUnregisterGuard } from "./types/poa/tx";
+import { MsgUnregisterClient } from "./types/poa/tx";
+import { MsgUnregisterChallenger } from "./types/poa/tx";
+import { MsgGenGuard } from "./types/poa/tx";
+import { MsgUpdateGuard } from "./types/poa/tx";
+import { MsgSelectRandomChallenger } from "./types/poa/tx";
+import { MsgUnregisterRunner } from "./types/poa/tx";
 
 
-export { MsgUnregisterGuard, MsgGenClient, MsgUnregisterChallenger, MsgUnregisterRunner, MsgUnregisterClient, MsgSelectRandomChallenger, MsgUpdateGuard, MsgGenGuard, MsgRunnerChallenge, MsgChallengeService, MsgSelectRandomRunner };
-
-type sendMsgUnregisterGuardParams = {
-  value: MsgUnregisterGuard,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgGenClientParams = {
-  value: MsgGenClient,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUnregisterChallengerParams = {
-  value: MsgUnregisterChallenger,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUnregisterRunnerParams = {
-  value: MsgUnregisterRunner,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUnregisterClientParams = {
-  value: MsgUnregisterClient,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgSelectRandomChallengerParams = {
-  value: MsgSelectRandomChallenger,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateGuardParams = {
-  value: MsgUpdateGuard,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgGenGuardParams = {
-  value: MsgGenGuard,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgRunnerChallengeParams = {
-  value: MsgRunnerChallenge,
-  fee?: StdFee,
-  memo?: string
-};
+export { MsgChallengeService, MsgSelectRandomRunner, MsgGenClient, MsgRunnerChallenge, MsgUnregisterGuard, MsgUnregisterClient, MsgUnregisterChallenger, MsgGenGuard, MsgUpdateGuard, MsgSelectRandomChallenger, MsgUnregisterRunner };
 
 type sendMsgChallengeServiceParams = {
   value: MsgChallengeService,
@@ -88,42 +34,60 @@ type sendMsgSelectRandomRunnerParams = {
   memo?: string
 };
 
-
-type msgUnregisterGuardParams = {
-  value: MsgUnregisterGuard,
-};
-
-type msgGenClientParams = {
+type sendMsgGenClientParams = {
   value: MsgGenClient,
+  fee?: StdFee,
+  memo?: string
 };
 
-type msgUnregisterChallengerParams = {
-  value: MsgUnregisterChallenger,
-};
-
-type msgUnregisterRunnerParams = {
-  value: MsgUnregisterRunner,
-};
-
-type msgUnregisterClientParams = {
-  value: MsgUnregisterClient,
-};
-
-type msgSelectRandomChallengerParams = {
-  value: MsgSelectRandomChallenger,
-};
-
-type msgUpdateGuardParams = {
-  value: MsgUpdateGuard,
-};
-
-type msgGenGuardParams = {
-  value: MsgGenGuard,
-};
-
-type msgRunnerChallengeParams = {
+type sendMsgRunnerChallengeParams = {
   value: MsgRunnerChallenge,
+  fee?: StdFee,
+  memo?: string
 };
+
+type sendMsgUnregisterGuardParams = {
+  value: MsgUnregisterGuard,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUnregisterClientParams = {
+  value: MsgUnregisterClient,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUnregisterChallengerParams = {
+  value: MsgUnregisterChallenger,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgGenGuardParams = {
+  value: MsgGenGuard,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdateGuardParams = {
+  value: MsgUpdateGuard,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgSelectRandomChallengerParams = {
+  value: MsgSelectRandomChallenger,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUnregisterRunnerParams = {
+  value: MsgUnregisterRunner,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgChallengeServiceParams = {
   value: MsgChallengeService,
@@ -131,6 +95,42 @@ type msgChallengeServiceParams = {
 
 type msgSelectRandomRunnerParams = {
   value: MsgSelectRandomRunner,
+};
+
+type msgGenClientParams = {
+  value: MsgGenClient,
+};
+
+type msgRunnerChallengeParams = {
+  value: MsgRunnerChallenge,
+};
+
+type msgUnregisterGuardParams = {
+  value: MsgUnregisterGuard,
+};
+
+type msgUnregisterClientParams = {
+  value: MsgUnregisterClient,
+};
+
+type msgUnregisterChallengerParams = {
+  value: MsgUnregisterChallenger,
+};
+
+type msgGenGuardParams = {
+  value: MsgGenGuard,
+};
+
+type msgUpdateGuardParams = {
+  value: MsgUpdateGuard,
+};
+
+type msgSelectRandomChallengerParams = {
+  value: MsgSelectRandomChallenger,
+};
+
+type msgUnregisterRunnerParams = {
+  value: MsgUnregisterRunner,
 };
 
 
@@ -150,132 +150,6 @@ interface TxClientOptions {
 export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
 
   return {
-		
-		async sendMsgUnregisterGuard({ value, fee, memo }: sendMsgUnregisterGuardParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUnregisterGuard: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgUnregisterGuard({ value: MsgUnregisterGuard.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUnregisterGuard: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgGenClient({ value, fee, memo }: sendMsgGenClientParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgGenClient: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgGenClient({ value: MsgGenClient.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgGenClient: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUnregisterChallenger({ value, fee, memo }: sendMsgUnregisterChallengerParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUnregisterChallenger: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgUnregisterChallenger({ value: MsgUnregisterChallenger.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUnregisterChallenger: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUnregisterRunner({ value, fee, memo }: sendMsgUnregisterRunnerParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUnregisterRunner: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgUnregisterRunner({ value: MsgUnregisterRunner.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUnregisterRunner: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUnregisterClient({ value, fee, memo }: sendMsgUnregisterClientParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUnregisterClient: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgUnregisterClient({ value: MsgUnregisterClient.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUnregisterClient: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgSelectRandomChallenger({ value, fee, memo }: sendMsgSelectRandomChallengerParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSelectRandomChallenger: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgSelectRandomChallenger({ value: MsgSelectRandomChallenger.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSelectRandomChallenger: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateGuard({ value, fee, memo }: sendMsgUpdateGuardParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateGuard: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgUpdateGuard({ value: MsgUpdateGuard.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateGuard: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgGenGuard({ value, fee, memo }: sendMsgGenGuardParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgGenGuard: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgGenGuard({ value: MsgGenGuard.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgGenGuard: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgRunnerChallenge({ value, fee, memo }: sendMsgRunnerChallengeParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRunnerChallenge: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgRunnerChallenge({ value: MsgRunnerChallenge.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRunnerChallenge: Could not broadcast Tx: '+ e.message)
-			}
-		},
 		
 		async sendMsgChallengeService({ value, fee, memo }: sendMsgChallengeServiceParams): Promise<DeliverTxResponse> {
 			if (!signer) {
@@ -305,78 +179,132 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgUnregisterGuard({ value }: msgUnregisterGuardParams): EncodeObject {
-			try {
-				return { typeUrl: "/soarchain.poa.MsgUnregisterGuard", value: MsgUnregisterGuard.fromPartial( value ) }  
+		async sendMsgGenClient({ value, fee, memo }: sendMsgGenClientParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgGenClient: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgGenClient({ value: MsgGenClient.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUnregisterGuard: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgGenClient: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgGenClient({ value }: msgGenClientParams): EncodeObject {
-			try {
-				return { typeUrl: "/soarchain.poa.MsgGenClient", value: MsgGenClient.fromPartial( value ) }  
+		async sendMsgRunnerChallenge({ value, fee, memo }: sendMsgRunnerChallengeParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRunnerChallenge: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgRunnerChallenge({ value: MsgRunnerChallenge.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgGenClient: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgRunnerChallenge: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgUnregisterChallenger({ value }: msgUnregisterChallengerParams): EncodeObject {
-			try {
-				return { typeUrl: "/soarchain.poa.MsgUnregisterChallenger", value: MsgUnregisterChallenger.fromPartial( value ) }  
+		async sendMsgUnregisterGuard({ value, fee, memo }: sendMsgUnregisterGuardParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUnregisterGuard: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgUnregisterGuard({ value: MsgUnregisterGuard.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUnregisterChallenger: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgUnregisterGuard: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgUnregisterRunner({ value }: msgUnregisterRunnerParams): EncodeObject {
-			try {
-				return { typeUrl: "/soarchain.poa.MsgUnregisterRunner", value: MsgUnregisterRunner.fromPartial( value ) }  
+		async sendMsgUnregisterClient({ value, fee, memo }: sendMsgUnregisterClientParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUnregisterClient: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgUnregisterClient({ value: MsgUnregisterClient.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUnregisterRunner: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgUnregisterClient: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgUnregisterClient({ value }: msgUnregisterClientParams): EncodeObject {
-			try {
-				return { typeUrl: "/soarchain.poa.MsgUnregisterClient", value: MsgUnregisterClient.fromPartial( value ) }  
+		async sendMsgUnregisterChallenger({ value, fee, memo }: sendMsgUnregisterChallengerParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUnregisterChallenger: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgUnregisterChallenger({ value: MsgUnregisterChallenger.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUnregisterClient: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgUnregisterChallenger: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgSelectRandomChallenger({ value }: msgSelectRandomChallengerParams): EncodeObject {
-			try {
-				return { typeUrl: "/soarchain.poa.MsgSelectRandomChallenger", value: MsgSelectRandomChallenger.fromPartial( value ) }  
+		async sendMsgGenGuard({ value, fee, memo }: sendMsgGenGuardParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgGenGuard: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgGenGuard({ value: MsgGenGuard.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgSelectRandomChallenger: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgGenGuard: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgUpdateGuard({ value }: msgUpdateGuardParams): EncodeObject {
-			try {
-				return { typeUrl: "/soarchain.poa.MsgUpdateGuard", value: MsgUpdateGuard.fromPartial( value ) }  
+		async sendMsgUpdateGuard({ value, fee, memo }: sendMsgUpdateGuardParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateGuard: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgUpdateGuard({ value: MsgUpdateGuard.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateGuard: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgUpdateGuard: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgGenGuard({ value }: msgGenGuardParams): EncodeObject {
-			try {
-				return { typeUrl: "/soarchain.poa.MsgGenGuard", value: MsgGenGuard.fromPartial( value ) }  
+		async sendMsgSelectRandomChallenger({ value, fee, memo }: sendMsgSelectRandomChallengerParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSelectRandomChallenger: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgSelectRandomChallenger({ value: MsgSelectRandomChallenger.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgGenGuard: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgSelectRandomChallenger: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgRunnerChallenge({ value }: msgRunnerChallengeParams): EncodeObject {
-			try {
-				return { typeUrl: "/soarchain.poa.MsgRunnerChallenge", value: MsgRunnerChallenge.fromPartial( value ) }  
+		async sendMsgUnregisterRunner({ value, fee, memo }: sendMsgUnregisterRunnerParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUnregisterRunner: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgUnregisterRunner({ value: MsgUnregisterRunner.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgRunnerChallenge: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgUnregisterRunner: Could not broadcast Tx: '+ e.message)
 			}
 		},
+		
 		
 		msgChallengeService({ value }: msgChallengeServiceParams): EncodeObject {
 			try {
@@ -391,6 +319,78 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/soarchain.poa.MsgSelectRandomRunner", value: MsgSelectRandomRunner.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgSelectRandomRunner: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgGenClient({ value }: msgGenClientParams): EncodeObject {
+			try {
+				return { typeUrl: "/soarchain.poa.MsgGenClient", value: MsgGenClient.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgGenClient: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgRunnerChallenge({ value }: msgRunnerChallengeParams): EncodeObject {
+			try {
+				return { typeUrl: "/soarchain.poa.MsgRunnerChallenge", value: MsgRunnerChallenge.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRunnerChallenge: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUnregisterGuard({ value }: msgUnregisterGuardParams): EncodeObject {
+			try {
+				return { typeUrl: "/soarchain.poa.MsgUnregisterGuard", value: MsgUnregisterGuard.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUnregisterGuard: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUnregisterClient({ value }: msgUnregisterClientParams): EncodeObject {
+			try {
+				return { typeUrl: "/soarchain.poa.MsgUnregisterClient", value: MsgUnregisterClient.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUnregisterClient: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUnregisterChallenger({ value }: msgUnregisterChallengerParams): EncodeObject {
+			try {
+				return { typeUrl: "/soarchain.poa.MsgUnregisterChallenger", value: MsgUnregisterChallenger.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUnregisterChallenger: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgGenGuard({ value }: msgGenGuardParams): EncodeObject {
+			try {
+				return { typeUrl: "/soarchain.poa.MsgGenGuard", value: MsgGenGuard.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgGenGuard: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateGuard({ value }: msgUpdateGuardParams): EncodeObject {
+			try {
+				return { typeUrl: "/soarchain.poa.MsgUpdateGuard", value: MsgUpdateGuard.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateGuard: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgSelectRandomChallenger({ value }: msgSelectRandomChallengerParams): EncodeObject {
+			try {
+				return { typeUrl: "/soarchain.poa.MsgSelectRandomChallenger", value: MsgSelectRandomChallenger.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSelectRandomChallenger: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUnregisterRunner({ value }: msgUnregisterRunnerParams): EncodeObject {
+			try {
+				return { typeUrl: "/soarchain.poa.MsgUnregisterRunner", value: MsgUnregisterRunner.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUnregisterRunner: Could not create message: ' + e.message)
 			}
 		},
 		
