@@ -14,7 +14,7 @@ func TeamReserveEmissionPerBlock(ctx sdk.Context) float64 {
 
 	var tokensPerBlock float64
 	if yearsSinceStart >= 0 && yearsSinceStart <= 5 {
-		tokensPerYear := 57000000.0
+		tokensPerYear := 57000000000000.0
 		tokensPerBlock = tokensPerYear / (blocksPerMinute * minutesPerYear)
 
 	} else {

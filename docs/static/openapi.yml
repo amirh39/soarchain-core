@@ -30374,6 +30374,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/soarchain/poa/challenger/{index}':
@@ -30548,6 +30558,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -30879,6 +30899,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/soarchain/poa/guard/{index}':
@@ -30973,6 +31003,45 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/poa/is_challengeable/{clientAddr}':
+    get:
+      summary: Queries a list of IsChallengeable items.
+      operationId: SoarchainPoaIsChallengeable
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              resultBool:
+                type: string
+              challengeabilityScore:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: clientAddr
           in: path
           required: true
           type: string
@@ -31136,6 +31205,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -31413,6 +31492,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/soarchain/poa/vrf_data/{index}':
@@ -31623,6 +31712,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -53362,6 +53461,8 @@ definitions:
             type: string
   soarchain.poa.MsgChallengeServiceResponse:
     type: object
+  soarchain.poa.MsgClaimMotusRewardsResponse:
+    type: object
   soarchain.poa.MsgGenClientResponse:
     type: object
   soarchain.poa.MsgGenGuardResponse:
@@ -53419,6 +53520,8 @@ definitions:
   soarchain.poa.MsgUnregisterGuardResponse:
     type: object
   soarchain.poa.MsgUnregisterRunnerResponse:
+    type: object
+  soarchain.poa.MsgUpdateGuardResponse:
     type: object
   soarchain.poa.Params:
     type: object
@@ -54045,6 +54148,13 @@ definitions:
             type: string
           count:
             type: string
+  soarchain.poa.QueryIsChallengeableResponse:
+    type: object
+    properties:
+      resultBool:
+        type: string
+      challengeabilityScore:
+        type: string
   soarchain.poa.QueryParamsResponse:
     type: object
     properties:

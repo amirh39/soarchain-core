@@ -14,7 +14,7 @@ func StrategicReserveEmissionPerBlock(ctx sdk.Context) float64 {
 
 	var tokensPerBlock float64
 	if yearsSinceStart >= 1 && yearsSinceStart <= 6 {
-		tokensPerYear := 46455000.0
+		tokensPerYear := 46455000000000.0
 		tokensPerBlock = tokensPerYear / (blocksPerMinute * minutesPerYear)
 
 	} else {

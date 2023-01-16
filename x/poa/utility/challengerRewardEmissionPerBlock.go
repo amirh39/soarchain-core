@@ -13,7 +13,7 @@ func ChallengerRewardEmissionPerBlock(ctx sdk.Context) (float64, error) {
 	blocksPerMinute := 1.0
 	currentBlockNumber := int(ctx.BlockHeight())
 
-	initialTokensPerYear := 21850083.35 // v2n receiver (runner) initial annual emission
+	initialTokensPerYear := 21850083350000.0 // v2n receiver (runner) initial annual emission
 
 	// Number of tokens issued per year by the total number of blocks produced per year
 	tokensPerBlock := initialTokensPerYear / (blocksPerMinute * minutesPerYear)

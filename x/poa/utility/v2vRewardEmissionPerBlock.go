@@ -21,9 +21,9 @@ func V2VRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 	var initialTokensPerYear float64
 	switch clientCommunicationMode {
 	case "v2v-rx":
-		initialTokensPerYear = 37366809.21 // v2v receiver initial annual emission
+		initialTokensPerYear = 37366809210000 // v2v receiver initial annual emission
 	case "v2v-bx":
-		initialTokensPerYear = 17416733.11 // v2v broadcaster initial annual emission
+		initialTokensPerYear = 17416733110000 // v2v broadcaster initial annual emission
 	default:
 		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "V2V client communication mode is not supported!")
 	}

@@ -17,9 +17,9 @@ func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 	var initialTokensPerYear float64
 	switch clientCommunicationMode {
 	case "v2n-bx":
-		initialTokensPerYear = 64283578.56 // v2n broadcaster initial annual emission
+		initialTokensPerYear = 64283578560000 // v2n broadcaster initial annual emission
 	case "runner":
-		initialTokensPerYear = 21850083.35 // v2n receiver (runner) initial annual emission
+		initialTokensPerYear = 21850083350000 // v2n receiver (runner) initial annual emission
 	default:
 		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "V2N communication mode is not supported!")
 	}

@@ -41,6 +41,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdSelectRandomChallenger())
 	cmd.AddCommand(CmdSelectRandomRunner())
 	cmd.AddCommand(CmdUpdateGuard())
+	cmd.AddCommand(CmdClaimMotusRewards())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

@@ -11,14 +11,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-//
-// Check if sender is a registered validator
-// Check the result, reward or punish
-// 		 . If reward: mint & send the rewarded coin and increase score
-//		 . If punish: decrease score
-// Updating the challengee info
-// Uptadating challenger info
-
 func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallengeService) (*types.MsgChallengeServiceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -66,7 +58,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// Calculate reward earned
 		earnedTokenRewards, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+			return nil, err
 		}
 
 		netEarnings, err := strconv.ParseFloat(client.NetEarnings, 64)
@@ -74,6 +66,10 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 		}
 		earnedRewards := netEarnings + earnedTokenRewards
+
+		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedRewards)))
+		coin := sdk.NewCoin("soar", earnedRewardsInt)
+		earnedRewardCoins := sdk.Coins{coin}
 
 		// Generate random coolDownMultiplier
 		multiplier := int(5)
@@ -101,7 +97,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			Registrant:         client.Registrant,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-			NetEarnings:        strconv.FormatFloat(earnedRewards, 'f', -1, 64),
+			NetEarnings:        earnedRewardCoins.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 		}
