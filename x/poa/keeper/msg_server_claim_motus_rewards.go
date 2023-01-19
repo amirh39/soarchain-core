@@ -33,12 +33,13 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	// Mint coins to module, then send it to claimer
 	// ToDo: supply check will be added
-	clientAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
 
 	mintErr := k.bankKeeper.MintCoins(ctx, types.ModuleName, withdrawAmount)
 	if mintErr != nil {
 		return nil, mintErr
 	}
+
+	clientAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, withdrawAmount)
 	if errTransfer != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
