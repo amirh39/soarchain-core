@@ -25,10 +25,4 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 		k.bankKeeper.MintCoins(ctx, types.ModuleName, epochSoarRewardCoins)
 	}
 
-	// clients := k.GetAllClient(ctx)
-	// amount := len(clients) * 1000000
-	// coin := sdk.NewCoin("soar", sdk.NewInt(int64(amount)))
-	// epochSoarRewardCoins := sdk.Coins{coin}
-	// k.bankKeeper.MintCoins(ctx, types.ModuleName, epochSoarRewardCoins)
-
 }

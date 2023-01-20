@@ -31,13 +31,13 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Not enough coins to claim!")
 	}
 
-	// Mint coins to module, then send it to claimer
+	// Rewarded coins are minted per epoch, just send it to claimer
 	// ToDo: supply check will be added
 
-	mintErr := k.bankKeeper.MintCoins(ctx, types.ModuleName, withdrawAmount)
-	if mintErr != nil {
-		return nil, mintErr
-	}
+	// mintErr := k.bankKeeper.MintCoins(ctx, types.ModuleName, withdrawAmount)
+	// if mintErr != nil {
+	// 	return nil, mintErr
+	// }
 
 	clientAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, withdrawAmount)
