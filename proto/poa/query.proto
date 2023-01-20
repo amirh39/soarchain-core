@@ -8,6 +8,7 @@ import "poa/params.proto";
 import "poa/guard.proto";
 import "poa/vrf_data.proto";
 import "poa/vrf_user.proto";
+import "poa/epoch_data.proto";
 // this line is used by starport scaffolding # 1
 import "poa/runner.proto";
 import "poa/challenger.proto";
@@ -101,6 +102,10 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/is_challengeable/{clientAddr}";
 	}
 
+// Queries a EpochData by index.
+	rpc EpochData(QueryGetEpochDataRequest) returns (QueryGetEpochDataResponse) {
+		option (google.api.http).get = "/soarchain/poa/epoch_data";
+	}
 // this line is used by starport scaffolding # 2
 }
 
@@ -257,4 +262,9 @@ message QueryIsChallengeableResponse {
   string challengeabilityScore = 2;
 }
 
+message QueryGetEpochDataRequest {}
+
+message QueryGetEpochDataResponse {
+	EpochData EpochData = 1 [(gogoproto.nullable) = false];
+}
 // this line is used by starport scaffolding # 3

@@ -63,6 +63,13 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		EpochData: &types.EpochData{
+			TotalEpochs: 99,
+			EpochV2VRX:  "61",
+			EpochV2VBX:  "94",
+			EpochV2NBX:  "47",
+			EpochRunner: "98",
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -80,5 +87,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.GuardList, got.GuardList)
 	require.ElementsMatch(t, genesisState.VrfDataList, got.VrfDataList)
 	require.ElementsMatch(t, genesisState.VrfUserList, got.VrfUserList)
+	require.Equal(t, genesisState.EpochData, got.EpochData)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

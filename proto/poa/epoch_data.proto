@@ -1,0 +1,13 @@
+syntax = "proto3";
+package soarchain.poa;
+
+option go_package = "soarchain/x/poa/types";
+
+message EpochData {
+  uint64 totalEpochs = 1; 
+  string epochV2VRX = 2; 
+  string epochV2VBX = 3; 
+  string epochV2NBX = 4; 
+  string epochRunner = 5; 
+  
+}

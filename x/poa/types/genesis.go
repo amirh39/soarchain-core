@@ -16,6 +16,7 @@ func DefaultGenesis() *GenesisState {
 		GuardList:      []Guard{},
 		VrfDataList:    []VrfData{},
 		VrfUserList:    []VrfUser{},
+		EpochData:      nil,
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
