@@ -56,20 +56,18 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
 		// Calculate reward earned
-		earnedTokenRewards, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
+		earnedTokenRewardsFloat, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
 		if err != nil {
 			return nil, err
 		}
+		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
+		earnedCoin := sdk.NewCoin("soar", earnedRewardsInt)
 
-		netEarnings, err := strconv.ParseFloat(client.NetEarnings, 64)
+		netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 		}
-		earnedRewards := netEarnings + earnedTokenRewards
-
-		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedRewards)))
-		coin := sdk.NewCoin("soar", earnedRewardsInt)
-		earnedRewardCoins := sdk.Coins{coin}
+		earnedRewards := netEarnings.Add(earnedCoin)
 
 		// Generate random coolDownMultiplier
 		multiplier := int(5)
@@ -97,7 +95,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			Registrant:         client.Registrant,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-			NetEarnings:        earnedRewardCoins.String(),
+			NetEarnings:        earnedRewards.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 		}
