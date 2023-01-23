@@ -21,13 +21,13 @@ func networkWithEpochDataObjects(t *testing.T) (*network.Network, types.EpochDat
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
-	epochData := &types.EpochData{}
+	epochData := types.EpochData{}
 	nullify.Fill(&epochData)
 	state.EpochData = epochData
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
 	cfg.GenesisState[types.ModuleName] = buf
-	return network.New(t, cfg), *state.EpochData
+	return network.New(t, cfg), state.EpochData
 }
 
 func TestShowEpochData(t *testing.T) {

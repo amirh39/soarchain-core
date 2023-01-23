@@ -36,9 +36,8 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetVrfUser(ctx, elem)
 	}
 	// Set if defined
-	if genState.EpochData != nil {
-		k.SetEpochData(ctx, *genState.EpochData)
-	}
+	k.SetEpochData(ctx, genState.EpochData)
+
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -58,7 +57,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	// Get all epochData
 	epochData, found := k.GetEpochData(ctx)
 	if found {
-		genesis.EpochData = &epochData
+		genesis.EpochData = epochData
 	}
 	// this line is used by starport scaffolding # genesis/module/export
 

@@ -26,11 +26,6 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 	// check if a new epoch has started
 	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
 		k.MintRewardCoins(ctx)
-	}
-
-	// check if a new epoch has started
-	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
-		k.MintRewardCoins(ctx)
 
 		// Update epochs passed
 		epoch, _ := k.GetEpochData(ctx)

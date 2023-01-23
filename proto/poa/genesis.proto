@@ -23,6 +23,6 @@ message GenesisState {
   repeated Guard guardList = 5 [(gogoproto.nullable) = false];
   repeated VrfData vrfDataList = 6 [(gogoproto.nullable) = false];
   repeated VrfUser vrfUserList = 7 [(gogoproto.nullable) = false];
-  EpochData epochData = 8;
+  EpochData epochData = 8 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

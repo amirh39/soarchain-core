@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // DefaultIndex is the default capability global index
@@ -16,7 +18,13 @@ func DefaultGenesis() *GenesisState {
 		GuardList:      []Guard{},
 		VrfDataList:    []VrfData{},
 		VrfUserList:    []VrfUser{},
-		EpochData:      nil,
+		EpochData: EpochData{
+			TotalEpochs: 0,
+			EpochV2VRX:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			EpochV2VBX:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			EpochV2NBX:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			EpochRunner: sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+		},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

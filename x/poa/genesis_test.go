@@ -63,7 +63,7 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
-		EpochData: &types.EpochData{
+		EpochData: types.EpochData{
 			TotalEpochs: 99,
 			EpochV2VRX:  "61",
 			EpochV2VBX:  "94",

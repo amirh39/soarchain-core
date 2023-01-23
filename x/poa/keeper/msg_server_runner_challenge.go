@@ -53,20 +53,26 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 
 		// Update rewardMultiplier
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
-		// Calculate reward earned
-		earnedTokenRewards, err := k.V2NRewardCalculator(ctx, rewardMultiplier, msg.V2NDeviceType)
-		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
-		}
-		netEarnings, err := strconv.ParseFloat(runner.NetEarnings, 64)
-		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
-		}
-		earnedRewards := netEarnings + earnedTokenRewards
 
-		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedRewards)))
-		coin := sdk.NewCoin("soar", earnedRewardsInt)
-		earnedRewardCoins := sdk.Coins{coin}
+		// Calculate reward earned
+		earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, msg.V2NDeviceType)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+		}
+		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
+		earnedCoin := sdk.NewCoin("soar", earnedRewardsInt)
+
+		netEarnings, err := sdk.ParseCoinNormalized(runner.NetEarnings)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+		}
+		earnedRewards := netEarnings.Add(earnedCoin)
+
+		// update epoch rewards
+		epochErr := k.UpdateEpochRewards(ctx, msg.V2NDeviceType, earnedRewards)
+		if epochErr != nil {
+			return nil, epochErr
+		}
 
 		// Generate random coolDownMultiplier
 		multiplier := int(5)
@@ -94,7 +100,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			StakedAmount:       runner.StakedAmount,
-			NetEarnings:        earnedRewardCoins.String(),
+			NetEarnings:        earnedRewards.String(),
 			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),

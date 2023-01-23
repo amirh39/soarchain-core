@@ -30627,6 +30627,50 @@ paths:
           type: string
       tags:
         - Query
+  /soarchain/poa/epoch_data:
+    get:
+      summary: Queries a EpochData by index.
+      operationId: SoarchainPoaEpochData
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              EpochData:
+                type: object
+                properties:
+                  totalEpochs:
+                    type: string
+                    format: uint64
+                  epochV2VRX:
+                    type: string
+                  epochV2VBX:
+                    type: string
+                  epochV2NBX:
+                    type: string
+                  epochRunner:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   '/soarchain/poa/get_challenger_by_address/{address}':
     get:
       summary: Queries a list of GetChallengerByAddress items.
@@ -53397,6 +53441,20 @@ definitions:
         type: string
       coolDownTolerance:
         type: string
+  soarchain.poa.EpochData:
+    type: object
+    properties:
+      totalEpochs:
+        type: string
+        format: uint64
+      epochV2VRX:
+        type: string
+      epochV2VBX:
+        type: string
+      epochV2NBX:
+        type: string
+      epochRunner:
+        type: string
   soarchain.poa.Guard:
     type: object
     properties:
@@ -53980,6 +54038,23 @@ definitions:
           lastTimeChallenged:
             type: string
           coolDownTolerance:
+            type: string
+  soarchain.poa.QueryGetEpochDataResponse:
+    type: object
+    properties:
+      EpochData:
+        type: object
+        properties:
+          totalEpochs:
+            type: string
+            format: uint64
+          epochV2VRX:
+            type: string
+          epochV2VBX:
+            type: string
+          epochV2NBX:
+            type: string
+          epochRunner:
             type: string
   soarchain.poa.QueryGetGuardResponse:
     type: object

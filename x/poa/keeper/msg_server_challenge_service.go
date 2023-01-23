@@ -69,6 +69,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 		earnedRewards := netEarnings.Add(earnedCoin)
 
+		// update epoch rewards
+		epochErr := k.UpdateEpochRewards(ctx, msg.ClientCommunicationMode, earnedRewards)
+		if epochErr != nil {
+			return nil, epochErr
+		}
+
 		// Generate random coolDownMultiplier
 		multiplier := int(5)
 
