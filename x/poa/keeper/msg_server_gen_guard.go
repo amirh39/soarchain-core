@@ -80,7 +80,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			Address:      v2xChallengerAddr.String(),
 			Score:        sdk.NewInt(50).String(), // Base Score
 			StakedAmount: v2XStake.String(),
-			NetEarnings:  "",
+			NetEarnings:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
 			Type:         "v2x",
 			IpAddr:       msg.V2XIp,
 		}
@@ -129,7 +129,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			Address:      v2nChallengerAddr.String(),
 			Score:        sdk.NewInt(50).String(), // Base Score
 			StakedAmount: v2NStake.String(),
-			NetEarnings:  "",
+			NetEarnings:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
 			Type:         "v2n",
 			IpAddr:       msg.V2NIp,
 		}
@@ -180,13 +180,14 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		newRunner = types.Runner{
 			Index:              runnerAddr.String(),
 			Address:            runnerAddr.String(),
-			Score:              sdk.NewInt(50).String(), // Base Score
+			Score:              strconv.FormatFloat(initialScore, 'f', -1, 64), // Base Score
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			StakedAmount:       runnerStake.String(),
-			NetEarnings:        sdk.ZeroInt().String(),
+			NetEarnings:        sdk.NewCoin("soar", sdk.ZeroInt()).String(),
 			IpAddr:             msg.RunnerIp,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(1, 10),
+			GuardAddress:       msg.Creator,
 		}
 
 		k.SetRunner(ctx, newRunner)

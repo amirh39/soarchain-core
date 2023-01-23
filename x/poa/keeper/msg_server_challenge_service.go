@@ -30,6 +30,11 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target client is not registered in the store!")
 	}
 
+	// Check tx input of client communication mode
+	if msg.ClientCommunicationMode != "v2v-rx" && msg.ClientCommunicationMode != "v2v-bx" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "V2V client communication mode is not supported!")
+	}
+
 	// Check challengeability
 	isChallengeable, point, err := utility.IsChallengeable(ctx, client.Score, client.LastTimeChallenged, client.CoolDownTolerance)
 	if err != nil {
@@ -109,6 +114,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		k.SetClient(ctx, updatedClient)
 
 	} else if result == "punish" {
+
 		// Update challengee score
 		scoreFloat64, err := strconv.ParseFloat(client.Score, 64)
 		if err != nil {

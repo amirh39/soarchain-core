@@ -30,6 +30,11 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target runner is not registered in the store!")
 	}
 
+	// Check tx input of v2n communication mode
+	if msg.V2NDeviceType != "v2n-bx" && msg.V2NDeviceType != "runner" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "V2N client communication mode is not supported!")
+	}
+
 	// Check runner challengeability
 	isChallengeable, point, err := utility.IsChallengeable(ctx, runner.Score, runner.LastTimeChallenged, runner.CoolDownTolerance)
 	if err != nil {
@@ -57,7 +62,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		// Calculate reward earned
 		earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, msg.V2NDeviceType)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+			return nil, err
 		}
 		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
 		earnedCoin := sdk.NewCoin("soar", earnedRewardsInt)
@@ -104,9 +109,25 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
+			GuardAddress:       runner.GuardAddress,
 		}
 
 		k.SetRunner(ctx, updatedRunner)
+
+		// Update runner obj in guard
+		guard, isFound := k.GetGuard(ctx, runner.GuardAddress)
+		if !isFound {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard not found")
+		}
+		updateGuard := types.Guard{
+			Index:         guard.Index,
+			GuardId:       guard.GuardId,
+			V2XChallenger: guard.V2XChallenger,
+			V2NChallenger: guard.V2NChallenger,
+			Runner:        &updatedRunner,
+		}
+
+		k.SetGuard(ctx, updateGuard)
 
 	} else if result == "punish" {
 		// Update runner score
@@ -149,9 +170,22 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
+			GuardAddress:       runner.GuardAddress,
 		}
 
 		k.SetRunner(ctx, updatedRunner)
+
+		// Update runner obj in guard
+		guard, _ := k.GetGuard(ctx, runner.GuardAddress)
+		updateGuard := types.Guard{
+			Index:         guard.Index,
+			GuardId:       guard.GuardId,
+			V2XChallenger: guard.V2XChallenger,
+			V2NChallenger: guard.V2NChallenger,
+			Runner:        &updatedRunner,
+		}
+
+		k.SetGuard(ctx, updateGuard)
 
 	} else {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenge result")

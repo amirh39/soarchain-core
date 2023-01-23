@@ -13,5 +13,6 @@ message Runner {
   string ipAddr = 7;
   string lastTimeChallenged = 8;
   string coolDownTolerance = 9;
+  string guardAddress = 10;
 }
 

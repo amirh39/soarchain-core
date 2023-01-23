@@ -30817,6 +30817,8 @@ paths:
                           type: string
                         coolDownTolerance:
                           type: string
+                        guardAddress:
+                          type: string
                     v2XChallenger:
                       type: object
                       properties:
@@ -30993,6 +30995,8 @@ paths:
                         type: string
                       coolDownTolerance:
                         type: string
+                      guardAddress:
+                        type: string
                   v2XChallenger:
                     type: object
                     properties:
@@ -31160,6 +31164,8 @@ paths:
                       type: string
                     coolDownTolerance:
                       type: string
+                    guardAddress:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -31294,6 +31300,8 @@ paths:
                   lastTimeChallenged:
                     type: string
                   coolDownTolerance:
+                    type: string
+                  guardAddress:
                     type: string
         default:
           description: An unexpected error response.
@@ -31443,6 +31451,8 @@ paths:
                         lastTimeChallenged:
                           type: string
                         coolDownTolerance:
+                          type: string
+                        guardAddress:
                           type: string
               pagination:
                 type: object
@@ -31620,6 +31630,8 @@ paths:
                       lastTimeChallenged:
                         type: string
                       coolDownTolerance:
+                        type: string
+                      guardAddress:
                         type: string
         default:
           description: An unexpected error response.
@@ -53483,6 +53495,8 @@ definitions:
             type: string
           coolDownTolerance:
             type: string
+          guardAddress:
+            type: string
       v2XChallenger:
         type: object
         properties:
@@ -53570,6 +53584,8 @@ definitions:
           lastTimeChallenged:
             type: string
           coolDownTolerance:
+            type: string
+          guardAddress:
             type: string
   soarchain.poa.MsgUnregisterChallengerResponse:
     type: object
@@ -53713,6 +53729,8 @@ definitions:
                   type: string
                 coolDownTolerance:
                   type: string
+                guardAddress:
+                  type: string
             v2XChallenger:
               type: object
               properties:
@@ -53797,6 +53815,8 @@ definitions:
             lastTimeChallenged:
               type: string
             coolDownTolerance:
+              type: string
+            guardAddress:
               type: string
       pagination:
         type: object
@@ -53890,6 +53910,8 @@ definitions:
                 lastTimeChallenged:
                   type: string
                 coolDownTolerance:
+                  type: string
+                guardAddress:
                   type: string
       pagination:
         type: object
@@ -54087,6 +54109,8 @@ definitions:
                 type: string
               coolDownTolerance:
                 type: string
+              guardAddress:
+                type: string
           v2XChallenger:
             type: object
             properties:
@@ -54144,6 +54168,8 @@ definitions:
           lastTimeChallenged:
             type: string
           coolDownTolerance:
+            type: string
+          guardAddress:
             type: string
   soarchain.poa.QueryGetVrfDataResponse:
     type: object
@@ -54211,6 +54237,8 @@ definitions:
                 type: string
               coolDownTolerance:
                 type: string
+              guardAddress:
+                type: string
   soarchain.poa.QueryGetVrfUserResponse:
     type: object
     properties:
@@ -54262,6 +54290,8 @@ definitions:
       lastTimeChallenged:
         type: string
       coolDownTolerance:
+        type: string
+      guardAddress:
         type: string
   soarchain.poa.VrfData:
     type: object
@@ -54325,6 +54355,8 @@ definitions:
           lastTimeChallenged:
             type: string
           coolDownTolerance:
+            type: string
+          guardAddress:
             type: string
   soarchain.poa.VrfUser:
     type: object
