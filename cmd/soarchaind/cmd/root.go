@@ -40,6 +40,8 @@ import (
 	dbm "github.com/tendermint/tm-db"
 )
 
+const prefix = "SOAR"
+
 func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 
 	encodingConfig := soar.MakeEncodingConfig()
@@ -52,11 +54,11 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 		WithAccountRetriever(types.AccountRetriever{}).
 		WithBroadcastMode(flags.BroadcastBlock).
 		WithHomeDir(soar.DefaultNodeHome).
-		WithViper("SOAR")
+		WithViper(prefix)
 
 	rootCmd := &cobra.Command{
 		Use:   "soarchaind",
-		Short: "Stargate CosmosHub App",
+		Short: "Start Soarchain",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			cmd.SetOut(cmd.OutOrStdout())
 			cmd.SetErr(cmd.ErrOrStderr())
@@ -253,7 +255,9 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 		panic(err)
 	}
 
+	// Add snapshots
 	snapshotDir := filepath.Join(cast.ToString(appOpts.Get(flags.FlagHome)), "data", "snapshots")
+	//nolint: staticcheck
 	snapshotDB, err := sdk.NewLevelDB("metadata", snapshotDir)
 	if err != nil {
 		panic(err)
