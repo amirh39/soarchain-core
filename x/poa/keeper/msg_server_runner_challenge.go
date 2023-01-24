@@ -71,10 +71,10 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 		}
-		earnedRewards := netEarnings.Add(earnedCoin)
+		totalEarnings := netEarnings.Add(earnedCoin)
 
 		// update epoch rewards
-		epochErr := k.UpdateEpochRewards(ctx, msg.V2NDeviceType, earnedRewards)
+		epochErr := k.UpdateEpochRewards(ctx, msg.V2NDeviceType, earnedCoin)
 		if epochErr != nil {
 			return nil, epochErr
 		}
@@ -105,7 +105,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			StakedAmount:       runner.StakedAmount,
-			NetEarnings:        earnedRewards.String(),
+			NetEarnings:        totalEarnings.String(),
 			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),

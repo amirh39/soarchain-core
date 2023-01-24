@@ -72,10 +72,10 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 		}
-		earnedRewards := netEarnings.Add(earnedCoin)
+		totalEarnings := netEarnings.Add(earnedCoin)
 
 		// update epoch rewards
-		epochErr := k.UpdateEpochRewards(ctx, msg.ClientCommunicationMode, earnedRewards)
+		epochErr := k.UpdateEpochRewards(ctx, msg.ClientCommunicationMode, earnedCoin)
 		if epochErr != nil {
 			return nil, epochErr
 		}
@@ -106,7 +106,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			Registrant:         client.Registrant,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-			NetEarnings:        earnedRewards.String(),
+			NetEarnings:        totalEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 		}
