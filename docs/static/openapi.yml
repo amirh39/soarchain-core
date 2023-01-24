@@ -53535,6 +53535,8 @@ definitions:
     type: object
   soarchain.poa.MsgClaimMotusRewardsResponse:
     type: object
+  soarchain.poa.MsgClaimRunnerRewardsResponse:
+    type: object
   soarchain.poa.MsgGenClientResponse:
     type: object
   soarchain.poa.MsgGenGuardResponse:

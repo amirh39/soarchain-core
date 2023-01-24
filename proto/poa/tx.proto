@@ -22,6 +22,7 @@ service Msg {
   rpc SelectRandomRunner(MsgSelectRandomRunner) returns (MsgSelectRandomRunnerResponse);
   rpc UpdateGuard(MsgUpdateGuard) returns (MsgUpdateGuardResponse);
   rpc ClaimMotusRewards(MsgClaimMotusRewards) returns (MsgClaimMotusRewardsResponse);
+  rpc ClaimRunnerRewards(MsgClaimRunnerRewards) returns (MsgClaimRunnerRewardsResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -145,6 +146,14 @@ message MsgClaimMotusRewards {
 }
 
 message MsgClaimMotusRewardsResponse {
+}
+
+message MsgClaimRunnerRewards {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgClaimRunnerRewardsResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
