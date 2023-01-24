@@ -171,6 +171,8 @@ func initRootCmd(rootCmd *cobra.Command, encodingConfig params.EncodingConfig) {
 		debugCmd,
 		config.Cmd(),
 	)
+
+	server.AddCommands(rootCmd, soar.DefaultNodeHome, newApp, createSoarchainAppAndExport, addModuleInitFlags)
 	// add keybase, auxiliary RPC, query, and tx child commands
 	rootCmd.AddCommand(
 		rpc.StatusCommand(),
@@ -297,7 +299,7 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 
 func createSoarchainAppAndExport(
 	logger log.Logger, db dbm.DB, traceStore io.Writer, height int64, forZeroHeight bool, jailWhiteList []string,
-	appOpts servertypes.AppOptions, modulesToExport []string,
+	appOpts servertypes.AppOptions,
 ) (servertypes.ExportedApp, error) {
 	encCfg := soar.MakeEncodingConfig() // Ideally, we would reuse the one created by NewRootCmd.
 	encCfg.Marshaler = codec.NewProtoCodec(encCfg.InterfaceRegistry)
@@ -311,5 +313,5 @@ func createSoarchainAppAndExport(
 		}
 	}
 
-	return app.ExportAppStateAndValidators(forZeroHeight, jailWhiteList, modulesToExport)
+	return app.ExportAppStateAndValidators(forZeroHeight, jailWhiteList)
 }
