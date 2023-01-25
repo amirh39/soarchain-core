@@ -1,8 +1,8 @@
 package keeper
 
 import (
+	"bytes"
 	"encoding/binary"
-
 	"encoding/hex"
 	"strconv"
 
@@ -30,7 +30,10 @@ func (k Keeper) CreateVRF(ctx sdk.Context, msgCreator string, multiplier int) (t
 	}
 
 	// VRF
-	sk, err := vrf.GenerateKey(nil)
+	seed := make([]byte, 64)
+	binary.LittleEndian.PutUint64(seed[:8], uint64(ctx.BlockHeight()))
+
+	sk, err := vrf.GenerateKey(bytes.NewReader(seed))
 	if err != nil {
 		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't generate VRF key!")
 	}
