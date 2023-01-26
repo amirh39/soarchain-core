@@ -40,9 +40,11 @@ import (
 	dbm "github.com/tendermint/tm-db"
 )
 
-const prefix = "SOAR"
+const prefix = "soar"
 
 func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
+
+	params.SetPrefixes(prefix)
 
 	encodingConfig := soar.MakeEncodingConfig()
 	initClientCtx := client.Context{}.
@@ -54,7 +56,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 		WithAccountRetriever(types.AccountRetriever{}).
 		WithBroadcastMode(flags.BroadcastBlock).
 		WithHomeDir(soar.DefaultNodeHome).
-		WithViper(prefix)
+		WithViper("SOAR")
 
 	rootCmd := &cobra.Command{
 		Use:   "soarchaind",
