@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"soarchain/x/poa/types"
+	"soarchain/x/poa/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	// sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -32,20 +33,37 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	}
 	k.SetEpochData(ctx, newEpochData)
 
-	// var client types.Client
-	// var totalV2VRewards sdk.Coin = sdk.NewCoin("soar", sdk.ZeroInt())
+	// Calculate leftover rewards
+	targetV2VRx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-rx")
+	targetV2VRxCoin := sdk.NewCoin("soar", sdk.NewIntFromUint64(uint64(targetV2VRx)))
 
-	// clients := k.GetAllClient(ctx)
-	// if len(clients) > 0 {
-	// 	for i := 0; i < len(clients); i++ {
-	// 		client = clients[i]
-	// 		clientReward, _ := sdk.ParseCoinNormalized(client.NetEarnings)
-	// 		totalV2VRewards = totalV2VRewards.Add(clientReward)
-	// 	}
+	targetV2VBx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-bx")
+	targetV2VBxCoin := sdk.NewCoin("soar", sdk.NewIntFromUint64(uint64(targetV2VBx)))
 
-	// 	epochSoarRewardCoins := sdk.Coins{totalV2VRewards}
+	targetV2NBx, _ := utility.V2NRewardEmissionPerEpoch(ctx, "v2n-bx")
+	targetV2NBxCoin := sdk.NewCoin("soar", sdk.NewIntFromUint64(uint64(targetV2NBx)))
 
-	// 	k.bankKeeper.MintCoins(ctx, types.ModuleName, epochSoarRewardCoins)
-	// }
+	targetRunner, _ := utility.V2NRewardEmissionPerEpoch(ctx, "runner")
+	targetRunnerCoin := sdk.NewCoin("soar", sdk.NewIntFromUint64(uint64(targetRunner)))
+
+	//
+	v2vRxReward, _ := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
+	v2vBxReward, _ := sdk.ParseCoinNormalized(epochData.EpochV2VBX)
+	v2nBxReward, _ := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
+	runnerReward, _ := sdk.ParseCoinNormalized(epochData.EpochRunner)
+
+	leftOverV2VRx := targetV2VRxCoin.Sub(v2vRxReward)
+	leftOverV2VBx := targetV2VBxCoin.Sub(v2vBxReward)
+	leftOverV2NBx := targetV2NBxCoin.Sub(v2nBxReward)
+	leftOverRunner := targetRunnerCoin.Sub(runnerReward)
+
+	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverV2VRx})
+	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2VRx})
+	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverV2VBx})
+	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2VBx})
+	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverV2NBx})
+	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2NBx})
+	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverRunner})
+	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverRunner})
 
 }
