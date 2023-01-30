@@ -38,6 +38,11 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 
 	// Calculate new net earnings
 	newNetEarnings := earnedAmount.Sub(withdrawAmount)
+	netEarnings := sdk.NewCoin("soar", newNetEarnings.AmountOf("soar"))
+
+	if newNetEarnings.IsZero() {
+		netEarnings = sdk.NewCoin("soar", sdk.ZeroInt())
+	}
 
 	updatedRunner := types.Runner{
 		Index:              runner.Index,
@@ -45,7 +50,7 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 		Score:              runner.Score,
 		RewardMultiplier:   runner.RewardMultiplier,
 		StakedAmount:       runner.StakedAmount,
-		NetEarnings:        newNetEarnings.String(),
+		NetEarnings:        netEarnings.String(),
 		IpAddr:             runner.IpAddr,
 		LastTimeChallenged: runner.LastTimeChallenged,
 		CoolDownTolerance:  runner.CoolDownTolerance,
