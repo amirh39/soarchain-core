@@ -39,6 +39,11 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	// Calculate new net earnings
 	newNetEarnings := earnedAmount.Sub(withdrawAmount)
+	netEarnings := sdk.NewCoin("soar", newNetEarnings.AmountOf("soar"))
+
+	if newNetEarnings.IsZero() {
+		netEarnings = sdk.NewCoin("soar", sdk.ZeroInt())
+	}
 
 	updatedClient := types.Client{
 		Index:              client.Index,
@@ -46,7 +51,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		Registrant:         client.Registrant,
 		Score:              client.Score,
 		RewardMultiplier:   client.RewardMultiplier,
-		NetEarnings:        newNetEarnings.String(),
+		NetEarnings:        netEarnings.String(),
 		LastTimeChallenged: client.LastTimeChallenged,
 		CoolDownTolerance:  client.CoolDownTolerance,
 	}

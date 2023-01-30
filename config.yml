@@ -1,50 +1,71 @@
+version: 1
+build:
+  proto:
+    path: proto
+    third_party_paths:
+    - third_party/proto
+    - proto_vendor
 accounts:
-  - name: investorWallet
-    coins: ["77425000000000soar"]
-  - name: airdropWallet
-    coins: ["47500000000000soar"]
-  - name: strategicWallet
-    coins: ["180500000000000soar"]
-  - name: communityWallet
-    coins: ["100700000000000soar"]
-  - name: soarValidator
-    coins: ["10000000soar"]
-  - name: soarFacuet
-    coins: ["100000000000000000000000000soar"]
-  - name: v2xDevice1
-    coins: ["0soar"]
-  - name: v2nDevice1
-    coins: ["0soar"]
-  - name: runnerDevice1
-    coins: ["0soar"]
-  - name: v2xDevice2
-    coins: ["0soar"]
-  - name: v2nDevice2
-    coins: ["0soar"]
-  - name: runnerDevice2
-    coins: ["0soar"]
-validator:
-  name: soarValidator
-  staked: "10000000soar"
-client:
-  openapi:
-    path: "docs/static/openapi.yml"
-  vuex:
-    path: "vue/src/store"
+- name: investorWallet
+  coins:
+  - 77425000000000soar
+- name: airdropWallet
+  coins:
+  - 47500000000000soar
+- name: strategicWallet
+  coins:
+  - 180500000000000soar
+- name: communityWallet
+  coins:
+  - 100700000000000soar
+- name: soarValidator
+  coins:
+  - 10000000soar
+- name: soarFacuet
+  coins:
+  - 100000000000000000000000000soar
+- name: v2xDevice1
+  coins:
+  - 0soar
+- name: v2nDevice1
+  coins:
+  - 0soar
+- name: runnerDevice1
+  coins:
+  - 0soar
+- name: v2xDevice2
+  coins:
+  - 0soar
+- name: v2nDevice2
+  coins:
+  - 0soar
+- name: runnerDevice2
+  coins:
+  - 0soar
 faucet:
   name: soarFacuet
-  coins: ["10000000000soar"]
+  coins:
+  - 10000000000soar
+  host: 0.0.0.0:4500
+client:
+  vuex:
+    path: vue/src/store
+  openapi:
+    path: docs/static/openapi.yml
 genesis:
   app_state:
-    staking:
-      params:
-        bond_denom: "soar"
     mint:
+      minter:
+        inflation: "0.080000000000000000"
       params:
-        mint_denom: "soar"
         goal_bonded: "0.670000000000000000"
         inflation_max: "0.200000000000000000"
         inflation_min: "0.120000000000000000"
         inflation_rate_change: "0.080000000000000000"
-      minter:
-        inflation: "0.080000000000000000"
+        mint_denom: soar
+    staking:
+      params:
+        bond_denom: soar
+validators:
+- name: soarValidator
+  bonded: 10000000soar
