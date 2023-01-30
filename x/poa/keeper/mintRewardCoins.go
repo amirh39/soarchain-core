@@ -52,18 +52,34 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	v2nBxReward, _ := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
 	runnerReward, _ := sdk.ParseCoinNormalized(epochData.EpochRunner)
 
-	leftOverV2VRx := targetV2VRxCoin.Sub(v2vRxReward)
-	leftOverV2VBx := targetV2VBxCoin.Sub(v2vBxReward)
-	leftOverV2NBx := targetV2NBxCoin.Sub(v2nBxReward)
-	leftOverRunner := targetRunnerCoin.Sub(runnerReward)
+	var leftOverV2VRx sdk.Coin
+	var leftOverV2VBx sdk.Coin
+	var leftOverV2NBx sdk.Coin
+	var leftOverRunner sdk.Coin
 
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverV2VRx})
-	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2VRx})
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverV2VBx})
-	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2VBx})
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverV2NBx})
-	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2NBx})
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverRunner})
-	k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverRunner})
+	// v2vrx
+	if v2vRxReward.IsLT(targetV2VRxCoin) {
+		leftOverV2VRx = targetV2VRxCoin.Sub(v2vRxReward)
+		k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverV2VRx})
+		k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2VRx})
+	}
+	// v2vbx
+	if v2vBxReward.IsLT(targetV2VBxCoin) {
+		leftOverV2VBx = targetV2VBxCoin.Sub(v2vBxReward)
+		k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverV2VBx})
+		k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2VBx})
+	}
+	//v2nbx
+	if v2nBxReward.IsLT(targetV2NBxCoin) {
+		leftOverV2NBx = targetV2NBxCoin.Sub(v2nBxReward)
+		k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverV2NBx})
+		k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2NBx})
+	}
+	// runner
+	if runnerReward.IsLT(targetRunnerCoin) {
+		leftOverRunner = targetRunnerCoin.Sub(runnerReward)
+		k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverRunner})
+		k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverRunner})
+	}
 
 }
