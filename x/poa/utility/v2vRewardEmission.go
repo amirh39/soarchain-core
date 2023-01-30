@@ -55,8 +55,7 @@ func V2VRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) 
 	var initialTokensPerYear int
 	switch clientCommunicationMode {
 	case "v2v-rx":
-		initialTokensPerYear = 1268286400 // TESTING!
-		// initialTokensPerYear = 37366809210000 // v2v receiver initial annual emission
+		initialTokensPerYear = 37366809210000 // v2v receiver initial annual emission
 	case "v2v-bx":
 		initialTokensPerYear = 17416733110000 // v2v broadcaster initial annual emission
 	default:
