@@ -60,24 +60,52 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// Update rewardMultiplier
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
-		// Calculate reward earned
-		earnedTokenRewardsFloat, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
-		if err != nil {
+		// reward cap check for current epoch
+		targetEpochRewardInt, targetEpochErr := utility.V2VRewardEmissionPerEpoch(ctx, msg.ClientCommunicationMode)
+		if targetEpochErr != nil {
 			return nil, err
 		}
-		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
-		earnedCoin := sdk.NewCoin("soar", earnedRewardsInt)
+		targetEpochReward := sdk.NewCoin("soar", sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
 
-		netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
-		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+		epochData, _ := k.GetEpochData(ctx)
+		var epochRewards sdk.Coin
+
+		if msg.ClientCommunicationMode == "v2v-rx" {
+			epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochV2VRX)
+		} else if msg.ClientCommunicationMode == "v2v-bx" {
+			epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochV2VBX)
+		} else {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "epoch rewards can't be computed because of invalid v2v type!")
 		}
-		totalEarnings := netEarnings.Add(earnedCoin)
 
-		// update epoch rewards
-		epochErr := k.UpdateEpochRewards(ctx, msg.ClientCommunicationMode, earnedCoin)
-		if epochErr != nil {
-			return nil, epochErr
+		// check reward cap inside the epoch
+		var totalEarnings sdk.Coin
+		if epochRewards.IsLT(targetEpochReward) {
+			// Calculate reward earned
+			earnedTokenRewardsFloat, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
+			if err != nil {
+				return nil, err
+			}
+			earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
+			earnedCoin := sdk.NewCoin("soar", earnedRewardsInt)
+
+			netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+			}
+			totalEarnings = netEarnings.Add(earnedCoin)
+
+			// update epoch rewards
+			epochErr := k.UpdateEpochRewards(ctx, msg.ClientCommunicationMode, earnedCoin)
+			if epochErr != nil {
+				return nil, epochErr
+			}
+		} else {
+			netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+			}
+			totalEarnings = netEarnings
 		}
 
 		// Generate random coolDownMultiplier
