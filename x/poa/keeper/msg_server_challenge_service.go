@@ -131,7 +131,6 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
-			Registrant:         client.Registrant,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			NetEarnings:        totalEarnings.String(),
@@ -177,7 +176,6 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		updatedClient := types.Client{
 			Index:              client.Index,
 			Address:            client.Address,
-			Registrant:         client.Registrant,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			NetEarnings:        client.NetEarnings,

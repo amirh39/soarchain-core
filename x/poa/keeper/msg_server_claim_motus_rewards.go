@@ -48,7 +48,6 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	updatedClient := types.Client{
 		Index:              client.Index,
 		Address:            client.Address,
-		Registrant:         client.Registrant,
 		Score:              client.Score,
 		RewardMultiplier:   client.RewardMultiplier,
 		NetEarnings:        netEarnings.String(),

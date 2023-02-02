@@ -30447,8 +30447,6 @@ paths:
                       type: string
                     address:
                       type: string
-                    registrant:
-                      type: string
                     score:
                       type: string
                     rewardMultiplier:
@@ -30569,8 +30567,6 @@ paths:
                   index:
                     type: string
                   address:
-                    type: string
-                  registrant:
                     type: string
                   score:
                     type: string
@@ -30719,8 +30715,6 @@ paths:
                   index:
                     type: string
                   address:
-                    type: string
-                  registrant:
                     type: string
                   score:
                     type: string
@@ -53417,8 +53411,6 @@ definitions:
         type: string
       address:
         type: string
-      registrant:
-        type: string
       score:
         type: string
       rewardMultiplier:
@@ -53636,8 +53628,6 @@ definitions:
             index:
               type: string
             address:
-              type: string
-            registrant:
               type: string
             score:
               type: string
@@ -54005,8 +53995,6 @@ definitions:
             type: string
           address:
             type: string
-          registrant:
-            type: string
           score:
             type: string
           rewardMultiplier:
@@ -54026,8 +54014,6 @@ definitions:
           index:
             type: string
           address:
-            type: string
-          registrant:
             type: string
           score:
             type: string

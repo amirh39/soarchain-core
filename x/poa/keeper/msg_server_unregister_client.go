@@ -19,7 +19,7 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	}
 
 	// Check if authorized
-	if client.Registrant != msg.Creator {
+	if client.Address != msg.Creator {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Registrant is not recognized!")
 	}
 
