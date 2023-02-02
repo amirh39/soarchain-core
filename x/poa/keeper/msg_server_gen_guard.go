@@ -42,9 +42,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	if msg.V2XAddr != "" { // means v2x addr is provided
 		// Check if challenger address already exists
 		_, isFound := k.GetChallenger(ctx, msg.V2XAddr)
-		_, isFoundAsClient := k.GetClient(ctx, msg.V2XAddr)
+		_, isFoundAsMotusWallet := k.GetMotusWallet(ctx, msg.V2XAddr)
 		_, isFoundAsRunner := k.GetRunner(ctx, msg.V2XAddr)
-		if isFound || isFoundAsClient || isFoundAsRunner {
+		if isFound || isFoundAsMotusWallet || isFoundAsRunner {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "V2X challenger is already registered in storage.")
 		}
 
@@ -97,9 +97,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	if msg.V2NAddr != "" { // means v2n addr is provided
 		// Check if challenger already exists
 		_, isFound := k.GetChallenger(ctx, msg.V2NAddr)
-		_, isFoundAsClient := k.GetClient(ctx, msg.V2NAddr)
+		_, isFoundAsMotusWallet := k.GetMotusWallet(ctx, msg.V2NAddr)
 		_, isFoundAsRunner := k.GetRunner(ctx, msg.V2NAddr)
-		if isFound || isFoundAsClient || isFoundAsRunner {
+		if isFound || isFoundAsMotusWallet || isFoundAsRunner {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "V2N challenger is already registered in storage.")
 		}
 
@@ -146,8 +146,8 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		// Check if runner already exists
 		_, isFound := k.GetRunner(ctx, msg.RunnerAddr)
 		_, isFoundAsChallenger := k.GetChallenger(ctx, msg.RunnerAddr)
-		_, isFoundAsClient := k.GetClient(ctx, msg.RunnerAddr)
-		if isFound || isFoundAsChallenger || isFoundAsClient {
+		_, isFoundAsMotusWallet := k.GetMotusWallet(ctx, msg.RunnerAddr)
+		if isFound || isFoundAsChallenger || isFoundAsMotusWallet {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "Runner is already registered in storage.")
 		}
 
