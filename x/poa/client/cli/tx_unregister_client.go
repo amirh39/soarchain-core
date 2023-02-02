@@ -15,12 +15,11 @@ var _ = strconv.Itoa(0)
 
 func CmdUnregisterClient() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "unregister-client [pubkey] [fee]",
+		Use:   "unregister-client [pubkey]",
 		Short: "Broadcast message unregister-client",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argPubkey := args[0]
-			argFee := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,7 +29,6 @@ func CmdUnregisterClient() *cobra.Command {
 			msg := types.NewMsgUnregisterClient(
 				clientCtx.GetFromAddress().String(),
 				argPubkey,
-				argFee,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

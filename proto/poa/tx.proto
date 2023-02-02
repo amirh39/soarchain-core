@@ -48,7 +48,6 @@ message MsgChallengeServiceResponse {
 message MsgUnregisterClient {
   string creator = 1;
   string pubkey = 2;
-  string fee = 3;
 }
 
 message MsgUnregisterClientResponse {
