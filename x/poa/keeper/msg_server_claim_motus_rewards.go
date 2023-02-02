@@ -12,7 +12,7 @@ import (
 func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimMotusRewards) (*types.MsgClaimMotusRewardsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	client, isFound := k.GetClient(ctx, msg.Creator)
+	motusWallet, isFound := k.GetMotusWallet(ctx, msg.Creator)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target client is not registered in the store!")
 	}
@@ -22,7 +22,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
 	}
 
-	earnedAmount, err := sdk.ParseCoinsNormalized(client.NetEarnings)
+	earnedAmount, err := sdk.ParseCoinsNormalized(motusWallet.Client.NetEarnings)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
 	}
@@ -46,16 +46,23 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	}
 
 	updatedClient := types.Client{
-		Index:              client.Index,
-		Address:            client.Address,
-		Score:              client.Score,
-		RewardMultiplier:   client.RewardMultiplier,
+		Index:              motusWallet.Client.Index,
+		Address:            motusWallet.Client.Address,
+		Score:              motusWallet.Client.Score,
+		RewardMultiplier:   motusWallet.Client.RewardMultiplier,
 		NetEarnings:        netEarnings.String(),
-		LastTimeChallenged: client.LastTimeChallenged,
-		CoolDownTolerance:  client.CoolDownTolerance,
+		LastTimeChallenged: motusWallet.Client.LastTimeChallenged,
+		CoolDownTolerance:  motusWallet.Client.CoolDownTolerance,
 	}
 
 	k.SetClient(ctx, updatedClient)
+
+	// Update Motus wallet
+	newMotusWallet := types.MotusWallet{
+		Index:  motusWallet.Index,
+		Client: &updatedClient,
+	}
+	k.SetMotusWallet(ctx, newMotusWallet)
 
 	return &types.MsgClaimMotusRewardsResponse{}, nil
 }
