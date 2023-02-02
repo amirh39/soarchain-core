@@ -13,7 +13,7 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the client exists
-	client, isFound := k.GetClient(ctx, msg.Address)
+	client, isFound := k.GetClient(ctx, msg.Pubkey)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Client is not registered.")
 	}
@@ -43,7 +43,7 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	k.bankKeeper.BurnCoins(ctx, types.ModuleName, removalFee)
 
 	// Remove client
-	k.RemoveClient(ctx, msg.Address)
+	k.RemoveClient(ctx, msg.Pubkey)
 
 	return &types.MsgUnregisterClientResponse{}, nil
 }

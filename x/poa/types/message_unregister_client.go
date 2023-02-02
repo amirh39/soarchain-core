@@ -9,10 +9,10 @@ const TypeMsgUnregisterClient = "unregister_client"
 
 var _ sdk.Msg = &MsgUnregisterClient{}
 
-func NewMsgUnregisterClient(creator string, address string, fee string) *MsgUnregisterClient {
+func NewMsgUnregisterClient(creator string, pubkey string, fee string) *MsgUnregisterClient {
 	return &MsgUnregisterClient{
 		Creator: creator,
-		Address: address,
+		Pubkey:  pubkey,
 		Fee:     fee,
 	}
 }
