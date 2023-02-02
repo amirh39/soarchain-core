@@ -25,7 +25,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 
 	// Fetch client from the store
-	client, isFound := k.GetClient(ctx, msg.ClientAddress)
+	client, isFound := k.GetClient(ctx, msg.ClientPubkey)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target client is not registered in the store!")
 	}

@@ -36,7 +36,7 @@ message MsgGenClientResponse {
 
 message MsgChallengeService {
   string creator = 1;
-  string clientAddress = 2;
+  string clientPubkey = 2;
   string clientCommunicationMode = 3;
   string challengeResult = 4;
 

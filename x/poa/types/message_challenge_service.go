@@ -9,10 +9,10 @@ const TypeMsgChallengeService = "challenge_service"
 
 var _ sdk.Msg = &MsgChallengeService{}
 
-func NewMsgChallengeService(creator string, clientAddress string, clientCommunicationMode string, challengeResult string) *MsgChallengeService {
+func NewMsgChallengeService(creator string, clientPubkey string, clientCommunicationMode string, challengeResult string) *MsgChallengeService {
 	return &MsgChallengeService{
 		Creator:                 creator,
-		ClientAddress:           clientAddress,
+		ClientPubkey:            clientPubkey,
 		ClientCommunicationMode: clientCommunicationMode,
 		ChallengeResult:         challengeResult,
 	}
