@@ -14,9 +14,9 @@ import (
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	_, isFound := k.GetClient(ctx, msg.Address)
-	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Address)
-	_, isFoundAsRunner := k.GetRunner(ctx, msg.Address)
+	_, isFound := k.GetClient(ctx, msg.Pubkey)
+	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Creator)
+	_, isFoundAsRunner := k.GetRunner(ctx, msg.Creator)
 
 	if isFound || isFoundAsChallenger || isFoundAsRunner {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
@@ -28,8 +28,8 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// Save client into storage
 	newClient := types.Client{
-		Index:              msg.Address,
-		Address:            msg.Address,
+		Index:              msg.Pubkey,
+		Address:            msg.Creator,
 		Registrant:         msg.Creator,
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),

@@ -28,7 +28,7 @@ service Msg {
 
 message MsgGenClient {
   string creator = 1;
-  string address = 2;
+  string pubkey = 2;
 }
 
 message MsgGenClientResponse {
