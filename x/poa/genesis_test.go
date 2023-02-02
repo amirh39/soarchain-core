@@ -70,6 +70,14 @@ func TestGenesis(t *testing.T) {
 			EpochV2NBX:  "47",
 			EpochRunner: "98",
 		},
+		MotusWalletList: []types.MotusWallet{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -88,5 +96,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.VrfDataList, got.VrfDataList)
 	require.ElementsMatch(t, genesisState.VrfUserList, got.VrfUserList)
 	require.Equal(t, genesisState.EpochData, got.EpochData)
+	require.ElementsMatch(t, genesisState.MotusWalletList, got.MotusWalletList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

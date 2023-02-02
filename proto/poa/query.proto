@@ -9,10 +9,11 @@ import "poa/guard.proto";
 import "poa/vrf_data.proto";
 import "poa/vrf_user.proto";
 import "poa/epoch_data.proto";
+import "poa/motus_wallet.proto";
 // this line is used by starport scaffolding # 1
+import "poa/client.proto";
 import "poa/runner.proto";
 import "poa/challenger.proto";
-import "poa/client.proto";
 
 option go_package = "soarchain/x/poa/types";
 
@@ -106,6 +107,16 @@ service Query {
 	rpc EpochData(QueryGetEpochDataRequest) returns (QueryGetEpochDataResponse) {
 		option (google.api.http).get = "/soarchain/poa/epoch_data";
 	}
+// Queries a MotusWallet by index.
+	rpc MotusWallet(QueryGetMotusWalletRequest) returns (QueryGetMotusWalletResponse) {
+		option (google.api.http).get = "/soarchain/poa/motus_wallet/{index}";
+	}
+
+	// Queries a list of MotusWallet items.
+	rpc MotusWalletAll(QueryAllMotusWalletRequest) returns (QueryAllMotusWalletResponse) {
+		option (google.api.http).get = "/soarchain/poa/motus_wallet";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -267,4 +278,22 @@ message QueryGetEpochDataRequest {}
 message QueryGetEpochDataResponse {
 	EpochData EpochData = 1 [(gogoproto.nullable) = false];
 }
+message QueryGetMotusWalletRequest {
+	  string index = 1;
+
+}
+
+message QueryGetMotusWalletResponse {
+	MotusWallet motusWallet = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllMotusWalletRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllMotusWalletResponse {
+	repeated MotusWallet motusWallet = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
 // this line is used by starport scaffolding # 3

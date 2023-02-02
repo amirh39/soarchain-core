@@ -79,6 +79,14 @@ func TestGenesisState_Validate(t *testing.T) {
 					EpochV2NBX:  "99",
 					EpochRunner: "26",
 				},
+				MotusWalletList: []types.MotusWallet{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -158,6 +166,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated vrfUser",
 			genState: &types.GenesisState{
 				VrfUserList: []types.VrfUser{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated motusWallet",
+			genState: &types.GenesisState{
+				MotusWalletList: []types.MotusWallet{
 					{
 						Index: "0",
 					},

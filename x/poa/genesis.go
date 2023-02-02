@@ -38,6 +38,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// Set if defined
 	k.SetEpochData(ctx, genState.EpochData)
 
+	// Set all the motusWallet
+	for _, elem := range genState.MotusWalletList {
+		k.SetMotusWallet(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -59,6 +63,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.EpochData = epochData
 	}
+	genesis.MotusWalletList = k.GetAllMotusWallet(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

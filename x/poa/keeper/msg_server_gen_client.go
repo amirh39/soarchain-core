@@ -15,11 +15,8 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	_, isFound := k.GetClient(ctx, msg.Pubkey)
-	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Creator)
-	_, isFoundAsRunner := k.GetRunner(ctx, msg.Creator)
-
-	if isFound || isFoundAsChallenger || isFoundAsRunner {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
+	if isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client pubkey is already registered.")
 	}
 
 	// rewardMultiplier
@@ -38,6 +35,21 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	}
 
 	k.SetClient(ctx, newClient)
+
+	// Register Motus client into Motus Wallet object
+	_, isFoundWallet := k.GetMotusWallet(ctx, msg.Creator)
+	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Creator)
+	_, isFoundAsRunner := k.GetRunner(ctx, msg.Creator)
+
+	if isFoundWallet || isFoundAsChallenger || isFoundAsRunner {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
+	}
+
+	newMotusWallet := types.MotusWallet{
+		Index:  msg.Creator,
+		Client: &newClient,
+	}
+	k.SetMotusWallet(ctx, newMotusWallet)
 
 	return &types.MsgGenClientResponse{}, nil
 }
