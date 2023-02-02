@@ -140,6 +140,17 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 		k.SetClient(ctx, updatedClient)
 
+		// Update Motus wallet
+		motusWallet, isFoundWallet := k.GetMotusWallet(ctx, client.Address)
+		if !isFoundWallet {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Motus client obj not found!")
+		}
+		newMotusWallet := types.MotusWallet{
+			Index:  motusWallet.Index,
+			Client: &updatedClient,
+		}
+		k.SetMotusWallet(ctx, newMotusWallet)
+
 	} else if result == "punish" {
 
 		// Update challengee score
@@ -184,6 +195,17 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 
 		k.SetClient(ctx, updatedClient)
+
+		// Update Motus wallet
+		motusWallet, isFoundWallet := k.GetMotusWallet(ctx, client.Address)
+		if !isFoundWallet {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Motus client obj not found!")
+		}
+		newMotusWallet := types.MotusWallet{
+			Index:  motusWallet.Index,
+			Client: &updatedClient,
+		}
+		k.SetMotusWallet(ctx, newMotusWallet)
 
 	} else {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenge result")
