@@ -17,10 +17,9 @@ func CmdUnregisterRunner() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "unregister-runner [runner-address] [fee]",
 		Short: "Broadcast message unregister-runner",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAddress := args[0]
-			argFee := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,7 +29,6 @@ func CmdUnregisterRunner() *cobra.Command {
 			msg := types.NewMsgUnregisterRunner(
 				clientCtx.GetFromAddress().String(),
 				argAddress,
-				argFee,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -82,7 +82,6 @@ message MsgGenGuardResponse {
 message MsgUnregisterRunner {
   string creator = 1;
   string runnerAddress = 2;
-  string fee = 3;
 }
 
 message MsgUnregisterRunnerResponse {

@@ -9,11 +9,10 @@ const TypeMsgUnregisterRunner = "unregister_runner"
 
 var _ sdk.Msg = &MsgUnregisterRunner{}
 
-func NewMsgUnregisterRunner(creator string, runnerAddress string, fee string) *MsgUnregisterRunner {
+func NewMsgUnregisterRunner(creator string, runnerAddress string) *MsgUnregisterRunner {
 	return &MsgUnregisterRunner{
 		Creator:       creator,
 		RunnerAddress: runnerAddress,
-		Fee:           fee,
 	}
 }
 
