@@ -35,22 +35,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Guard does not exist. Can't update.")
 	}
 
-	// Check update fee
-	updateFee, _ := sdk.ParseCoinsNormalized("50000000soar")
-	msgFee, err := sdk.ParseCoinsNormalized(msg.Fee)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
-	}
-	if msgFee.IsAllLT(updateFee) || !msgFee.DenomsSubsetOf(updateFee) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for update operation.")
-	}
-	// Transfer fee to the protocol, then burn it
 	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, updateFee)
-	if transferErr != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins from account to POA module!")
-	}
-	k.bankKeeper.BurnCoins(ctx, types.ModuleName, updateFee)
 
 	// UPDATE V2X CHALLENGER
 	var newV2XChallenger types.Challenger

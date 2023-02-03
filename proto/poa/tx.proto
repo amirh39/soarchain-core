@@ -121,7 +121,6 @@ message MsgSelectRandomRunnerResponse {
 
 message MsgUpdateGuard {
   string creator = 1;
-  string fee = 2;
   string v2XAddr = 3;
   string v2XStake = 4;
   string v2XIp = 5;
