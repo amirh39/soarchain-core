@@ -18,22 +18,7 @@ func (k msgServer) UnregisterGuard(goCtx context.Context, msg *types.MsgUnregist
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard is not registered, Not authorized!")
 	}
 
-	// Check removal fee
-	removalFee, _ := sdk.ParseCoinsNormalized("50000000soar")
-	msgFee, err := sdk.ParseCoinsNormalized(msg.Fee)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
-	}
-	if msgFee.IsAllLT(removalFee) || !msgFee.DenomsSubsetOf(removalFee) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for removal.")
-	}
-	// Transfer fee to the protocol, then burn it
 	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
-	if transferErr != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins from account to POA module!")
-	}
-	k.bankKeeper.BurnCoins(ctx, types.ModuleName, removalFee)
 
 	// check v2x challenger
 	v2xChallenger, isFoundV2XChallenger := k.GetChallenger(ctx, guard.V2XChallenger.Address)

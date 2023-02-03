@@ -99,7 +99,6 @@ message MsgRunnerChallengeResponse {
 
 message MsgUnregisterGuard {
   string creator = 1;
-  string fee = 2;
 }
 
 message MsgUnregisterGuardResponse {
