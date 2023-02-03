@@ -26,6 +26,9 @@ accounts:
 validator:
   name: soarValidator
   staked: "10000000soar"
+  config:
+      consensus:
+        timeout_commit: '15s'
 client:
   openapi:
     path: "docs/static/openapi.yml"

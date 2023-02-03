@@ -22,6 +22,10 @@ func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregis
 	if !isFoundRunner {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Runner is not registered.")
 	}
+	// Check runner belongs to msg.Creator's guard
+	if guard.Runner.Address != msg.RunnerAddress {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Runner doesn't belong to msg.Creator's guard!")
+	}
 
 	// Query the staked amount and refund
 	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
