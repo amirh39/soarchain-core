@@ -24,23 +24,12 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Challenger is not registered.")
 	}
 
-	// Check removal fee
-	removalFee, _ := sdk.ParseCoinsNormalized("25000000soar")
-	msgFee, err := sdk.ParseCoinsNormalized(msg.Fee)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
-	}
-	if msgFee.IsAllLT(removalFee) || !msgFee.DenomsSubsetOf(removalFee) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for removal.")
+	// Check challenger is belong to msg.Creator's guard
+	if guard.V2NChallenger.Address != msg.ChallengerAddress || guard.V2XChallenger.Address != msg.ChallengerAddress {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Challenger is not belong to msg.Creator's guard!")
 	}
 
-	// Transfer fee to the protocol, then burn it
 	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
-	if transferErr != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins from account to POA module!")
-	}
-	k.bankKeeper.BurnCoins(ctx, types.ModuleName, removalFee)
 
 	// Query the staked amount and refund
 	stakedAmountStr := challenger.StakedAmount

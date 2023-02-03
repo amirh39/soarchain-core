@@ -15,12 +15,11 @@ var _ = strconv.Itoa(0)
 
 func CmdUnregisterChallenger() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "unregister-challenger [challenger-addr] [fee]",
+		Use:   "unregister-challenger [challenger-addr]",
 		Short: "Broadcast message unregister-challenger",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAddress := args[0]
-			argFee := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,7 +29,6 @@ func CmdUnregisterChallenger() *cobra.Command {
 			msg := types.NewMsgUnregisterChallenger(
 				clientCtx.GetFromAddress().String(),
 				argAddress,
-				argFee,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

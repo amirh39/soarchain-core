@@ -56,7 +56,6 @@ message MsgUnregisterClientResponse {
 message MsgUnregisterChallenger {
   string creator = 1;
   string challengerAddress = 2;
-  string fee = 3;
 }
 
 message MsgUnregisterChallengerResponse {
