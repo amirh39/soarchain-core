@@ -29,11 +29,6 @@ func SetPrefixes(accountAddressPrefix string) {
 			return sdkerrors.Wrapf(sdkerrors.ErrUnknownAddress, "address max length is %d, got %d", address.MaxAddrLen, len(bytes))
 		}
 
-		// TODO: only 32? ask Can or Amir
-		if len(bytes) != 32 {
-			return sdkerrors.Wrapf(sdkerrors.ErrUnknownAddress, "address length must 32 bytes, got %d", len(bytes))
-		}
-
 		return nil
 	})
 
