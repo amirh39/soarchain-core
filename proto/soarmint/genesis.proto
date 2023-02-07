@@ -1,0 +1,14 @@
+syntax = "proto3";
+package soarchain.soarmint;
+
+import "gogoproto/gogo.proto";
+import "soarmint/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "soarchain/x/soarmint/types";
+
+// GenesisState defines the soarmint module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

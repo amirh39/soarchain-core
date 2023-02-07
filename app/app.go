@@ -105,6 +105,9 @@ import (
 	rewardcapmodule "soarchain/x/rewardcap"
 	rewardcapmodulekeeper "soarchain/x/rewardcap/keeper"
 	rewardcapmoduletypes "soarchain/x/rewardcap/types"
+	soarmintmodule "soarchain/x/soarmint"
+	soarmintmodulekeeper "soarchain/x/soarmint/keeper"
+	soarmintmoduletypes "soarchain/x/soarmint/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -161,6 +164,7 @@ var (
 		monitoringp.AppModuleBasic{},
 		poamodule.AppModuleBasic{},
 		rewardcapmodule.AppModuleBasic{},
+		soarmintmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -175,6 +179,7 @@ var (
 		ibctransfertypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
 		poamoduletypes.ModuleName:       {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		rewardcapmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		soarmintmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -238,6 +243,8 @@ type App struct {
 	PoaKeeper poamodulekeeper.Keeper
 
 	RewardcapKeeper rewardcapmodulekeeper.Keeper
+
+	SoarmintKeeper soarmintmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -276,6 +283,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		poamoduletypes.StoreKey,
 		rewardcapmoduletypes.StoreKey,
+		soarmintmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -417,6 +425,16 @@ func New(
 	)
 	rewardcapModule := rewardcapmodule.NewAppModule(appCodec, app.RewardcapKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.SoarmintKeeper = *soarmintmodulekeeper.NewKeeper(
+		appCodec,
+		keys[soarmintmoduletypes.StoreKey],
+		keys[soarmintmoduletypes.MemStoreKey],
+		app.GetSubspace(soarmintmoduletypes.ModuleName),
+
+		app.BankKeeper,
+	)
+	soarmintModule := soarmintmodule.NewAppModule(appCodec, app.SoarmintKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -460,6 +478,7 @@ func New(
 		monitoringModule,
 		poaModule,
 		rewardcapModule,
+		soarmintModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -489,6 +508,7 @@ func New(
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
 		rewardcapmoduletypes.ModuleName,
+		soarmintmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -514,6 +534,7 @@ func New(
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
 		rewardcapmoduletypes.ModuleName,
+		soarmintmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -544,6 +565,7 @@ func New(
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
 		rewardcapmoduletypes.ModuleName,
+		soarmintmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -570,6 +592,7 @@ func New(
 		monitoringModule,
 		poaModule,
 		rewardcapModule,
+		soarmintModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -761,6 +784,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(poamoduletypes.ModuleName)
 	paramsKeeper.Subspace(rewardcapmoduletypes.ModuleName)
+	paramsKeeper.Subspace(soarmintmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
