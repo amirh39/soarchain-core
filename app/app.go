@@ -431,7 +431,10 @@ func New(
 		keys[soarmintmoduletypes.MemStoreKey],
 		app.GetSubspace(soarmintmoduletypes.ModuleName),
 
+		app.StakingKeeper,
+		app.AccountKeeper,
 		app.BankKeeper,
+		authtypes.FeeCollectorName,
 	)
 	soarmintModule := soarmintmodule.NewAppModule(appCodec, app.SoarmintKeeper, app.AccountKeeper, app.BankKeeper)
 

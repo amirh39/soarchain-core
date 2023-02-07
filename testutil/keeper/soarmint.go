@@ -3,6 +3,9 @@ package keeper
 import (
 	"testing"
 
+	"soarchain/x/soarmint/keeper"
+	"soarchain/x/soarmint/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -13,8 +16,6 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
-	"soarchain/x/soarmint/keeper"
-	"soarchain/x/soarmint/types"
 )
 
 func SoarmintKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
@@ -42,6 +43,9 @@ func SoarmintKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		paramsSubspace,
 		nil,
+		nil,
+		nil,
+		"",
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

@@ -1,0 +1,24 @@
+syntax = "proto3";
+package soarchain.soarmint;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "soarchain/x/soarmint/types";
+
+message Minter {
+  string inflation = 1 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  uint64 phase = 2; 
+  uint64 startPhaseBlock = 3; 
+  string annualProvisions = 4 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.nullable) = false
+  ];
+  string targetSupply = 5 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.nullable) = false
+  ];
+  
+}
