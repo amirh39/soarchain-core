@@ -28,7 +28,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 	currentBlock := uint64(ctx.BlockHeight())
 
 	// fetch current token supply
-	totalSupply := k.TokenSupply(ctx, params.MintDenom)
+	totalSupply := k.TokenSupply(ctx, "soar")
 
 	// check if we need to change phase
 	nextPhase := minter.NextPhase(params, totalSupply)

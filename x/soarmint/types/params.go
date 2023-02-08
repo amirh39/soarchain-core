@@ -35,7 +35,7 @@ func NewParams(mintDenom string, blocksPerYear uint64) Params {
 // default minting module parameters
 func DefaultParams() Params {
 	return Params{
-		MintDenom:     sdk.DefaultBondDenom,
+		MintDenom:     "soar",
 		BlocksPerYear: uint64(525600), // assuming 60 second block times
 	}
 }
