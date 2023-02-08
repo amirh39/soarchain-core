@@ -99,8 +99,8 @@ func (m Minter) BlockProvision(params Params, totalSupply sdk.Int) sdk.Coin {
 	// Because of rounding, we might mint too many tokens in this phase, let's limit it
 	futureSupply := totalSupply.Add(provisionAmt.TruncateInt())
 	if futureSupply.GT(m.TargetSupply) {
-		return sdk.NewCoin(params.MintDenom, m.TargetSupply.Sub(totalSupply))
+		return sdk.NewCoin("soar", m.TargetSupply.Sub(totalSupply))
 	}
 
-	return sdk.NewCoin(params.MintDenom, provisionAmt.TruncateInt())
+	return sdk.NewCoin("soar", provisionAmt.TruncateInt())
 }

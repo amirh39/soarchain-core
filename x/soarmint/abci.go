@@ -25,54 +25,76 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 
 	// fetch stored params
 	params := k.GetParams(ctx)
+	if params.MintDenom != "soar" { // debug
+		return
+	}
+
 	currentBlock := uint64(ctx.BlockHeight())
+	if currentBlock == 0 { // debug
+		return
+	}
 
 	// fetch current token supply
 	totalSupply := k.TokenSupply(ctx, "soar")
-
-	// check if we need to change phase
-	nextPhase := minter.NextPhase(params, totalSupply)
-
-	if nextPhase != minter.Phase {
-		// store new inflation rate by phase
-		newInflation := minter.PhaseInflationRate(nextPhase)
-
-		newMinter := types.Minter{
-			Inflation:        newInflation,
-			Phase:            nextPhase,
-			StartPhaseBlock:  currentBlock,
-			AnnualProvisions: minter.NextAnnualProvisions(params, totalSupply),
-			TargetSupply:     totalSupply.Add(minter.AnnualProvisions.TruncateInt()),
-		}
-		k.SetMinter(ctx, newMinter)
+	if totalSupply == sdk.ZeroInt() { // debug
+		return
 	}
 
-	// mint coins, update supply
-	mintedCoin := minter.BlockProvision(params, totalSupply)
-	mintedCoins := sdk.NewCoins(mintedCoin)
+	nextInf := minter.Inflation.Add(sdk.NewDec(1))
+	nextPhase := minter.Phase + 1
 
-	err := k.MintCoins(ctx, mintedCoins)
-	if err != nil {
-		panic(err)
+	newMinter := types.Minter{
+		Inflation:        nextInf,
+		Phase:            nextPhase,
+		StartPhaseBlock:  currentBlock,
+		AnnualProvisions: minter.NextAnnualProvisions(params, totalSupply),
+		TargetSupply:     totalSupply.Add(minter.AnnualProvisions.TruncateInt()),
 	}
+	k.SetMinter(ctx, newMinter)
 
-	// send the minted coins to the fee collector account
-	err = k.AddCollectedFees(ctx, mintedCoins)
-	if err != nil {
-		panic(err)
-	}
+	// // check if we need to change phase
+	// nextPhase := minter.NextPhase(params, totalSupply)
 
-	if mintedCoin.Amount.IsInt64() {
-		defer telemetry.ModuleSetGauge(types.ModuleName, float32(mintedCoin.Amount.Int64()), "minted_tokens")
-	}
+	// if nextPhase != minter.Phase {
+	// 	// store new inflation rate by phase
+	// 	newInflation := minter.PhaseInflationRate(nextPhase)
 
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			types.EventTypeMint,
-			sdk.NewAttribute(types.AttributeKeyInflation, minter.Inflation.String()),
-			sdk.NewAttribute(types.AttributeKeyAnnualProvisions, minter.AnnualProvisions.String()),
-			sdk.NewAttribute(sdk.AttributeKeyAmount, mintedCoin.Amount.String()),
-		),
-	)
+	// 	newMinter := types.Minter{
+	// 		Inflation:        newInflation,
+	// 		Phase:            nextPhase,
+	// 		StartPhaseBlock:  currentBlock,
+	// 		AnnualProvisions: minter.NextAnnualProvisions(params, totalSupply),
+	// 		TargetSupply:     totalSupply.Add(minter.AnnualProvisions.TruncateInt()),
+	// 	}
+	// 	k.SetMinter(ctx, newMinter)
+	// }
+
+	// // mint coins, update supply
+	// mintedCoin := minter.BlockProvision(params, totalSupply)
+	// mintedCoins := sdk.NewCoins(mintedCoin)
+
+	// err := k.MintCoins(ctx, mintedCoins)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// // send the minted coins to the fee collector account
+	// err = k.AddCollectedFees(ctx, mintedCoins)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// if mintedCoin.Amount.IsInt64() {
+	// 	defer telemetry.ModuleSetGauge(types.ModuleName, float32(mintedCoin.Amount.Int64()), "minted_tokens")
+	// }
+
+	// ctx.EventManager().EmitEvent(
+	// 	sdk.NewEvent(
+	// 		types.EventTypeMint,
+	// 		sdk.NewAttribute(types.AttributeKeyInflation, minter.Inflation.String()),
+	// 		sdk.NewAttribute(types.AttributeKeyAnnualProvisions, minter.AnnualProvisions.String()),
+	// 		sdk.NewAttribute(sdk.AttributeKeyAmount, mintedCoin.Amount.String()),
+	// 	),
+	// )
 
 }
