@@ -104,3 +104,30 @@ func (m Minter) BlockProvision(params Params, totalSupply sdk.Int) sdk.Coin {
 
 	return sdk.NewCoin("soar", provisionAmt.TruncateInt())
 }
+
+func (m Minter) StakingRewardsPerBlock(ctx sdk.Context, params Params) sdk.Coins {
+
+	// Calculates reward coin emissions for each reward type
+
+	blocksPerYear := params.BlocksPerYear
+	currentBlockNumber := uint64(ctx.BlockHeight())
+
+	initialTokensPerYear := uint64(21850083350000) // staking rewards initial annual emission
+
+	// Number of tokens issued per year by the total number of blocks produced per year
+	tokensPerBlock := initialTokensPerYear / blocksPerYear
+
+	// Calculate the number of years that have passed since the start of the token issuance
+	yearsSinceStart := (currentBlockNumber) / blocksPerYear
+
+	// Calculate the number of times the token issuance rate has been halved
+	halvings := (yearsSinceStart) / 3
+
+	// Update the token issuance rate for each halving that has occurred
+	for i := uint64(0); i < halvings; i++ {
+		initialTokensPerYear /= 2
+		tokensPerBlock = initialTokensPerYear / blocksPerYear
+	}
+
+	return sdk.Coins{sdk.NewCoin("soar", sdk.NewIntFromUint64(tokensPerBlock))}
+}

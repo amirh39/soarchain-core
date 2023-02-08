@@ -73,9 +73,9 @@ func (k Keeper) BondedRatio(ctx sdk.Context) sdk.Dec {
 }
 
 // alias call to the underlying bank keeper's MintCoins to be used in BeginBlocker.
-func (k Keeper) MintCoins(ctx sdk.Context) error {
-	coin := sdk.NewCoin("soar", sdk.NewInt(1))
-	return k.bankKeeper.MintCoins(ctx, "soarmint", sdk.Coins{coin})
+func (k Keeper) MintCoins(ctx sdk.Context, mintAmount sdk.Coins) error {
+	// coin := sdk.NewCoin("soar", sdk.NewInt(1))
+	return k.bankKeeper.MintCoins(ctx, "soarmint", mintAmount)
 }
 
 // alias call to the underlying bank keeper's SendCoinsFromModuleToModule to be used in BeginBlocker.

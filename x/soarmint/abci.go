@@ -25,14 +25,8 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 
 	// fetch stored params
 	params := k.GetParams(ctx)
-	if params.MintDenom != "soar" { // debug
-		return
-	}
 
 	currentBlock := uint64(ctx.BlockHeight())
-	if currentBlock == 0 { // debug
-		return
-	}
 
 	// fetch current token supply
 	totalSupply := k.TokenSupply(ctx, "soar")
@@ -43,37 +37,18 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 	nextInf := minter.Inflation.Add(sdk.NewDec(1))
 	nextPhase := minter.Phase + 1
 
+	mintedCoins := minter.StakingRewardsPerBlock(ctx, params)
+
 	newMinter := types.Minter{
 		Inflation:        nextInf,
 		Phase:            nextPhase,
 		StartPhaseBlock:  currentBlock,
 		AnnualProvisions: minter.NextAnnualProvisions(params, totalSupply),
-		TargetSupply:     totalSupply.Add(minter.AnnualProvisions.TruncateInt()),
+		TargetSupply:     mintedCoins.AmountOf("soar"),
 	}
 	k.SetMinter(ctx, newMinter)
 
-	// // check if we need to change phase
-	// nextPhase := minter.NextPhase(params, totalSupply)
-
-	// if nextPhase != minter.Phase {
-	// 	// store new inflation rate by phase
-	// 	newInflation := minter.PhaseInflationRate(nextPhase)
-
-	// 	newMinter := types.Minter{
-	// 		Inflation:        newInflation,
-	// 		Phase:            nextPhase,
-	// 		StartPhaseBlock:  currentBlock,
-	// 		AnnualProvisions: minter.NextAnnualProvisions(params, totalSupply),
-	// 		TargetSupply:     totalSupply.Add(minter.AnnualProvisions.TruncateInt()),
-	// 	}
-	// 	k.SetMinter(ctx, newMinter)
-	// }
-
-	// mint coins, update supply
-	// mintedCoin := minter.BlockProvision(params, totalSupply)
-	// mintedCoins := sdk.NewCoins(mintedCoin)
-
-	err := k.MintCoins(ctx)
+	err := k.MintCoins(ctx, mintedCoins)
 	if err != nil {
 		panic(err)
 	}
