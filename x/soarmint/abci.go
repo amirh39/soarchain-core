@@ -69,14 +69,14 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 	// 	k.SetMinter(ctx, newMinter)
 	// }
 
-	// // mint coins, update supply
+	// mint coins, update supply
 	// mintedCoin := minter.BlockProvision(params, totalSupply)
 	// mintedCoins := sdk.NewCoins(mintedCoin)
 
-	// err := k.MintCoins(ctx, mintedCoins)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	err := k.MintCoins(ctx)
+	if err != nil {
+		panic(err)
+	}
 
 	// // send the minted coins to the fee collector account
 	// err = k.AddCollectedFees(ctx, mintedCoins)
