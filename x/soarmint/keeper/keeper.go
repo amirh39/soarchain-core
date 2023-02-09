@@ -36,6 +36,10 @@ func NewKeeper(
 	bankKeeper types.BankKeeper,
 	feeCollectorName string,
 ) Keeper {
+	// ensure mint module account is set
+	if addr := accountKeeper.GetModuleAddress(types.ModuleName); addr == nil {
+		panic("the mint module account has not been set")
+	}
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
 		ps = ps.WithKeyTable(types.ParamKeyTable())
@@ -43,11 +47,13 @@ func NewKeeper(
 
 	return Keeper{
 
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
-		bankKeeper: bankKeeper,
+		cdc:              cdc,
+		storeKey:         storeKey,
+		memKey:           memKey,
+		paramstore:       ps,
+		stakingKeeper:    stakingKeeper,
+		bankKeeper:       bankKeeper,
+		feeCollectorName: feeCollectorName,
 	}
 }
 
@@ -81,4 +87,6 @@ func (k Keeper) MintCoins(ctx sdk.Context, mintAmount sdk.Coins) error {
 // alias call to the underlying bank keeper's SendCoinsFromModuleToModule to be used in BeginBlocker.
 func (k Keeper) AddCollectedFees(ctx sdk.Context, fees sdk.Coins) error {
 	return k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, k.feeCollectorName, fees)
+	// return k.bankKeeper.SendCoinsFromModuleToModule(ctx, "soarmint", "rewardcap", fees)
+
 }
