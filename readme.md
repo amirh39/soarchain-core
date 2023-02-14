@@ -13,14 +13,14 @@ Car miners - MOTUS - produce and are compensated in $MOTUS, the native cryptocur
 - [Soarchain Explorer](https://explorer.soarchain.com/soar)
 
 ## Get started
+cd soarchain-core <br />
+Ignite chain build <br />
+./run_makefile.sh  <br />
+soarchaind start 
 
-You can start a local copy of Soarchain via Ignite CLI:
-
-```
-ignite chain serve
-```
-
-`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+if soarchand command is not available; <br />
+export GOPATH=$HOME/go <br />
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 ### Configure
 
