@@ -30,11 +30,6 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target runner is not registered in the store!")
 	}
 
-	// Check tx input of v2n communication mode
-	if msg.V2NDeviceType != "v2n-bx" && msg.V2NDeviceType != "runner" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "V2N client communication mode is not supported!")
-	}
-
 	// Check runner challengeability
 	isChallengeable, point, err := utility.IsChallengeable(ctx, runner.Score, runner.LastTimeChallenged, runner.CoolDownTolerance)
 	if err != nil {
@@ -45,12 +40,123 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Runner is not challengeable at the moment! Point is: "+pointString+" with multiplier: "+runner.CoolDownTolerance)
 	}
 
-	// Check the challenge result
-	result := msg.ChallengeResult
+	// Update runner score
+	scoreFloat64, err := strconv.ParseFloat(runner.Score, 64)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
+	}
+	newScore := utility.CalculateScore(scoreFloat64, true)
 
-	if result == "reward" {
-		// Update runner score
-		scoreFloat64, err := strconv.ParseFloat(runner.Score, 64)
+	// Update rewardMultiplier
+	rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
+
+	// reward cap check for current epoch
+	targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, "runner")
+	if targetEpochErr != nil {
+		return nil, err
+	}
+	targetEpochReward := sdk.NewCoin("soar", sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
+
+	epochData, _ := k.GetEpochData(ctx)
+	var epochRewards sdk.Coin
+
+	epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochRunner)
+
+	// check reward cap inside the epoch
+	var totalEarnings sdk.Coin
+	if epochRewards.IsLT(targetEpochReward) {
+		// Calculate reward earned
+		earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, "runner")
+		if err != nil {
+			return nil, err
+		}
+		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
+		earnedCoin := sdk.NewCoin("soar", earnedRewardsInt)
+
+		netEarnings, err := sdk.ParseCoinNormalized(runner.NetEarnings)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+		}
+		totalEarnings = netEarnings.Add(earnedCoin)
+
+		// update epoch rewards
+		epochErr := k.UpdateEpochRewards(ctx, "runner", earnedCoin)
+		if epochErr != nil {
+			return nil, epochErr
+		}
+	} else {
+		netEarnings, err := sdk.ParseCoinNormalized(runner.NetEarnings)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
+		}
+		totalEarnings = netEarnings
+	}
+
+	// Generate random coolDownMultiplier
+	multiplier := int(5)
+
+	vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
+	if vrfErr != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "VRF error!")
+	}
+
+	generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "vrfData.FinalVrv parse error!")
+	}
+
+	var coolDownMultiplier uint64
+	if generatedNumber > 0 {
+		coolDownMultiplier = generatedNumber
+	} else {
+		coolDownMultiplier = 1
+	}
+
+	updatedRunner := types.Runner{
+		Index:              runner.Index,
+		Address:            runner.Address,
+		Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
+		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
+		StakedAmount:       runner.StakedAmount,
+		NetEarnings:        totalEarnings.String(),
+		IpAddr:             runner.IpAddr,
+		LastTimeChallenged: ctx.BlockTime().String(),
+		CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
+		GuardAddress:       runner.GuardAddress,
+	}
+
+	k.SetRunner(ctx, updatedRunner)
+
+	// Update runner obj in guard
+	guard, isFound := k.GetGuard(ctx, runner.GuardAddress)
+	if !isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard not found")
+	}
+	updateGuard := types.Guard{
+		Index:         guard.Index,
+		GuardId:       guard.GuardId,
+		V2XChallenger: guard.V2XChallenger,
+		V2NChallenger: guard.V2NChallenger,
+		Runner:        &updatedRunner,
+	}
+
+	k.SetGuard(ctx, updateGuard)
+
+	// ToDo: Set MOTUS mini rewards
+	v2nBxAddrCount := len(msg.ClientPubkeys)
+
+	if v2nBxAddrCount < 1 {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "No client pubkeys found in the tx body!")
+	}
+
+	// All MOTUS mini devices will be rewarded
+	for i := 0; i < v2nBxAddrCount; i++ {
+		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
+		if !isFound {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "v2n-bx client with index: "+strconv.Itoa(i)+" is not registered in the store!")
+		}
+		// Update challengee score
+		scoreFloat64, err := strconv.ParseFloat(v2nBxClient.Score, 64)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
 		}
@@ -60,47 +166,39 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
 		// reward cap check for current epoch
-		targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, msg.V2NDeviceType)
+		targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, "v2n-bx")
 		if targetEpochErr != nil {
 			return nil, err
 		}
 		targetEpochReward := sdk.NewCoin("soar", sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
 
 		epochData, _ := k.GetEpochData(ctx)
-		var epochRewards sdk.Coin
-
-		if msg.V2NDeviceType == "runner" {
-			epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochRunner)
-		} else if msg.V2NDeviceType == "v2n-bx" {
-			epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochV2NBX)
-		} else {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "epoch rewards can't be computed because of invalid v2n type!")
-		}
+		epochRewards, _ := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
 
 		// check reward cap inside the epoch
 		var totalEarnings sdk.Coin
 		if epochRewards.IsLT(targetEpochReward) {
 			// Calculate reward earned
-			earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, msg.V2NDeviceType)
+			earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, "v2n-bx")
 			if err != nil {
 				return nil, err
 			}
 			earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
 			earnedCoin := sdk.NewCoin("soar", earnedRewardsInt)
 
-			netEarnings, err := sdk.ParseCoinNormalized(runner.NetEarnings)
+			netEarnings, err := sdk.ParseCoinNormalized(v2nBxClient.NetEarnings)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 			}
 			totalEarnings = netEarnings.Add(earnedCoin)
 
 			// update epoch rewards
-			epochErr := k.UpdateEpochRewards(ctx, msg.V2NDeviceType, earnedCoin)
+			epochErr := k.UpdateEpochRewards(ctx, "v2n-bx", earnedCoin)
 			if epochErr != nil {
 				return nil, epochErr
 			}
 		} else {
-			netEarnings, err := sdk.ParseCoinNormalized(runner.NetEarnings)
+			netEarnings, err := sdk.ParseCoinNormalized(v2nBxClient.NetEarnings)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot calculate earned rewards!")
 			}
@@ -127,96 +225,29 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			coolDownMultiplier = 1
 		}
 
-		updatedRunner := types.Runner{
-			Index:              runner.Index,
-			Address:            runner.Address,
+		updatedClient := types.Client{
+			Index:              v2nBxClient.Index,
+			Address:            v2nBxClient.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-			StakedAmount:       runner.StakedAmount,
 			NetEarnings:        totalEarnings.String(),
-			IpAddr:             runner.IpAddr,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
-			GuardAddress:       runner.GuardAddress,
 		}
 
-		k.SetRunner(ctx, updatedRunner)
+		k.SetClient(ctx, updatedClient)
 
-		// Update runner obj in guard
-		guard, isFound := k.GetGuard(ctx, runner.GuardAddress)
-		if !isFound {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard not found")
+		// Update Motus wallet
+		motusWallet, isFoundWallet := k.GetMotusWallet(ctx, v2nBxClient.Address)
+		if !isFoundWallet {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Motus client wallet with index: "+strconv.Itoa(i)+" not found!")
 		}
-		updateGuard := types.Guard{
-			Index:         guard.Index,
-			GuardId:       guard.GuardId,
-			V2XChallenger: guard.V2XChallenger,
-			V2NChallenger: guard.V2NChallenger,
-			Runner:        &updatedRunner,
+		newMotusWallet := types.MotusWallet{
+			Index:  motusWallet.Index,
+			Client: &updatedClient,
 		}
+		k.SetMotusWallet(ctx, newMotusWallet)
 
-		k.SetGuard(ctx, updateGuard)
-
-	} else if result == "punish" {
-		// Update runner score
-		scoreFloat64, err := strconv.ParseFloat(runner.Score, 64)
-		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
-		}
-		newScore := utility.CalculateScore(scoreFloat64, false)
-
-		// Update rewardMultiplier
-		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
-
-		// Generate random coolDownMultiplier
-		multiplier := int(5)
-
-		vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
-		if vrfErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "VRF error!")
-		}
-
-		generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
-		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "vrfData.FinalVrv parse error!")
-		}
-
-		var coolDownMultiplier uint64
-		if generatedNumber > 0 {
-			coolDownMultiplier = generatedNumber
-		} else {
-			coolDownMultiplier = 1
-		}
-
-		updatedRunner := types.Runner{
-			Index:              runner.Index,
-			Address:            runner.Address,
-			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
-			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-			StakedAmount:       runner.StakedAmount,
-			NetEarnings:        runner.NetEarnings,
-			IpAddr:             runner.IpAddr,
-			LastTimeChallenged: ctx.BlockTime().String(),
-			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
-			GuardAddress:       runner.GuardAddress,
-		}
-
-		k.SetRunner(ctx, updatedRunner)
-
-		// Update runner obj in guard
-		guard, _ := k.GetGuard(ctx, runner.GuardAddress)
-		updateGuard := types.Guard{
-			Index:         guard.Index,
-			GuardId:       guard.GuardId,
-			V2XChallenger: guard.V2XChallenger,
-			V2NChallenger: guard.V2NChallenger,
-			Runner:        &updatedRunner,
-		}
-
-		k.SetGuard(ctx, updateGuard)
-
-	} else {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenge result")
 	}
 
 	// Update challenger info after the successfull reward session
