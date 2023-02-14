@@ -19,6 +19,8 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSelectRandomChallenger{}, "poa/SelectRandomChallenger", nil)
 	cdc.RegisterConcrete(&MsgSelectRandomRunner{}, "poa/SelectRandomRunner", nil)
 	cdc.RegisterConcrete(&MsgUpdateGuard{}, "poa/UpdateGuard", nil)
+	cdc.RegisterConcrete(&MsgClaimMotusRewards{}, "poa/ClaimMotusRewards", nil)
+	cdc.RegisterConcrete(&MsgClaimRunnerRewards{}, "poa/ClaimRunnerRewards", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -56,6 +58,12 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateGuard{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgClaimMotusRewards{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgClaimRunnerRewards{},
 	)
 	// this line is used by starport scaffolding # 3
 

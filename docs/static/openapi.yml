@@ -31292,7 +31292,13 @@ paths:
                 items:
                   type: object
                   properties:
-                    id:
+                    index:
+                      type: string
+                    address:
+                      type: string
+                    score:
+                      type: string
+                    rewardMultiplier:
                       type: string
                       description: connection identifier.
                     client_id:
@@ -33195,8 +33201,6 @@ paths:
                     type: string
                   address:
                     type: string
-                  registrant:
-                    type: string
                   score:
                     type: string
                   rewardMultiplier:
@@ -33232,7 +33236,51 @@ paths:
           type: string
       tags:
         - Query
-  /soarchain/poa/get_challenger_by_address/{address}:
+  /soarchain/poa/epoch_data:
+    get:
+      summary: Queries a EpochData by index.
+      operationId: SoarchainPoaEpochData
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              EpochData:
+                type: object
+                properties:
+                  totalEpochs:
+                    type: string
+                    format: uint64
+                  epochV2VRX:
+                    type: string
+                  epochV2VBX:
+                    type: string
+                  epochV2NBX:
+                    type: string
+                  epochRunner:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/soarchain/poa/get_challenger_by_address/{address}':
     get:
       summary: Queries a list of GetChallengerByAddress items.
       operationId: SoarchainPoaGetChallengerByAddress
@@ -33300,8 +33348,6 @@ paths:
                   index:
                     type: string
                   address:
-                    type: string
-                  registrant:
                     type: string
                   score:
                     type: string
@@ -33377,6 +33423,8 @@ paths:
                         lastTimeChallenged:
                           type: string
                         coolDownTolerance:
+                          type: string
+                        guardAddress:
                           type: string
                     v2XChallenger:
                       type: object
@@ -33504,19 +33552,9 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
-  /soarchain/poa/guard/{index}:
+  '/soarchain/poa/guard/{index}':
     get:
       summary: Queries a Guard by index.
       operationId: SoarchainPoaGuard
@@ -33553,6 +33591,8 @@ paths:
                       lastTimeChallenged:
                         type: string
                       coolDownTolerance:
+                        type: string
+                      guardAddress:
                         type: string
                   v2XChallenger:
                     type: object
@@ -33613,7 +33653,7 @@ paths:
           type: string
       tags:
         - Query
-  /soarchain/poa/is_challengeable/{clientAddr}:
+  '/soarchain/poa/is_challengeable/{clientAddr}':
     get:
       summary: Queries a list of IsChallengeable items.
       operationId: SoarchainPoaIsChallengeable
@@ -33652,75 +33692,40 @@ paths:
           type: string
       tags:
         - Query
-  /soarchain/poa/params:
+  /soarchain/poa/motus_wallet:
     get:
-      summary: Parameters queries the parameters of the module.
-      operationId: SoarchainPoaParams
+      summary: Queries a list of MotusWallet items.
+      operationId: SoarchainPoaMotusWalletAll
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              params:
-                description: params holds all the parameters of this module.
-                type: object
-            description: >-
-              QueryParamsResponse is response type for the Query/Params RPC
-              method.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  /soarchain/poa/runner:
-    get:
-      summary: Queries a list of Runner items.
-      operationId: SoarchainPoaRunnerAll
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              runner:
+              motusWallet:
                 type: array
                 items:
                   type: object
                   properties:
                     index:
                       type: string
-                    address:
-                      type: string
-                    score:
-                      type: string
-                    rewardMultiplier:
-                      type: string
-                    stakedAmount:
-                      type: string
-                    netEarnings:
-                      type: string
-                    ipAddr:
-                      type: string
-                    lastTimeChallenged:
-                      type: string
-                    coolDownTolerance:
-                      type: string
+                    client:
+                      type: object
+                      properties:
+                        index:
+                          type: string
+                        address:
+                          type: string
+                        score:
+                          type: string
+                        rewardMultiplier:
+                          type: string
+                        netEarnings:
+                          type: string
+                        lastTimeChallenged:
+                          type: string
+                        coolDownTolerance:
+                          type: string
               pagination:
                 type: object
                 properties:
@@ -33813,7 +33818,214 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
+      tags:
+        - Query
+  '/soarchain/poa/motus_wallet/{index}':
+    get:
+      summary: Queries a MotusWallet by index.
+      operationId: SoarchainPoaMotusWallet
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              motusWallet:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  client:
+                    type: object
+                    properties:
+                      index:
+                        type: string
+                      address:
+                        type: string
+                      score:
+                        type: string
+                      rewardMultiplier:
+                        type: string
+                      netEarnings:
+                        type: string
+                      lastTimeChallenged:
+                        type: string
+                      coolDownTolerance:
+                        type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/poa/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: SoarchainPoaParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/poa/runner:
+    get:
+      summary: Queries a list of Runner items.
+      operationId: SoarchainPoaRunnerAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              runner:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    address:
+                      type: string
+                    score:
+                      type: string
+                    rewardMultiplier:
+                      type: string
+                    stakedAmount:
+                      type: string
+                    netEarnings:
+                      type: string
+                    ipAddr:
+                      type: string
+                    lastTimeChallenged:
+                      type: string
+                    coolDownTolerance:
+                      type: string
+                    guardAddress:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
           description: >-
             reverse is set to true if results are to be returned in the
             descending order.
@@ -33855,6 +34067,8 @@ paths:
                   lastTimeChallenged:
                     type: string
                   coolDownTolerance:
+                    type: string
+                  guardAddress:
                     type: string
         default:
           description: An unexpected error response.
@@ -34004,6 +34218,8 @@ paths:
                         lastTimeChallenged:
                           type: string
                         coolDownTolerance:
+                          type: string
+                        guardAddress:
                           type: string
               pagination:
                 type: object
@@ -34182,6 +34398,8 @@ paths:
                         type: string
                       coolDownTolerance:
                         type: string
+                      guardAddress:
+                        type: string
         default:
           description: An unexpected error response.
           schema:
@@ -34320,19 +34538,9 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
-  /soarchain/poa/vrf_user/{index}:
+  '/soarchain/poa/vrf_user/{index}':
     get:
       summary: Queries a VrfUser by index.
       operationId: SoarchainPoaVrfUser
@@ -34374,6 +34582,131 @@ paths:
           in: path
           required: true
           type: string
+      tags:
+        - Query
+  /soarchain/rewardcap/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: SoarchainRewardcapParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/soarmint/minter:
+    get:
+      summary: Queries a Minter by index.
+      operationId: SoarchainSoarmintMinter
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Minter:
+                type: object
+                properties:
+                  inflation:
+                    type: string
+                  phase:
+                    type: string
+                    format: uint64
+                  startPhaseBlock:
+                    type: string
+                    format: uint64
+                  annualProvisions:
+                    type: string
+                  targetSupply:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/soarmint/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: SoarchainSoarmintParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  mint_denom:
+                    type: string
+                    title: type of coin to mint
+                  blocks_per_year:
+                    type: string
+                    format: uint64
+                    title: expected blocks per year
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
       tags:
         - Query
   /tendermint/spn/monitoringp/connection_channel_id:
@@ -56900,8 +57233,6 @@ definitions:
         type: string
       address:
         type: string
-      registrant:
-        type: string
       score:
         type: string
       rewardMultiplier:
@@ -56911,6 +57242,20 @@ definitions:
       lastTimeChallenged:
         type: string
       coolDownTolerance:
+        type: string
+  soarchain.poa.EpochData:
+    type: object
+    properties:
+      totalEpochs:
+        type: string
+        format: uint64
+      epochV2VRX:
+        type: string
+      epochV2VBX:
+        type: string
+      epochV2NBX:
+        type: string
+      epochRunner:
         type: string
   soarchain.poa.Guard:
     type: object
@@ -56939,6 +57284,8 @@ definitions:
           lastTimeChallenged:
             type: string
           coolDownTolerance:
+            type: string
+          guardAddress:
             type: string
       v2XChallenger:
         type: object
@@ -56974,7 +57321,33 @@ definitions:
             type: string
           ipAddr:
             type: string
+  soarchain.poa.MotusWallet:
+    type: object
+    properties:
+      index:
+        type: string
+      client:
+        type: object
+        properties:
+          index:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          rewardMultiplier:
+            type: string
+          netEarnings:
+            type: string
+          lastTimeChallenged:
+            type: string
+          coolDownTolerance:
+            type: string
   soarchain.poa.MsgChallengeServiceResponse:
+    type: object
+  soarchain.poa.MsgClaimMotusRewardsResponse:
+    type: object
+  soarchain.poa.MsgClaimRunnerRewardsResponse:
     type: object
   soarchain.poa.MsgGenClientResponse:
     type: object
@@ -57025,6 +57398,8 @@ definitions:
           lastTimeChallenged:
             type: string
           coolDownTolerance:
+            type: string
+          guardAddress:
             type: string
   soarchain.poa.MsgUnregisterChallengerResponse:
     type: object
@@ -57098,8 +57473,6 @@ definitions:
               type: string
             address:
               type: string
-            registrant:
-              type: string
             score:
               type: string
             rewardMultiplier:
@@ -57168,6 +57541,8 @@ definitions:
                   type: string
                 coolDownTolerance:
                   type: string
+                guardAddress:
+                  type: string
             v2XChallenger:
               type: object
               properties:
@@ -57227,6 +57602,58 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  soarchain.poa.QueryAllMotusWalletResponse:
+    type: object
+    properties:
+      motusWallet:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            client:
+              type: object
+              properties:
+                index:
+                  type: string
+                address:
+                  type: string
+                score:
+                  type: string
+                rewardMultiplier:
+                  type: string
+                netEarnings:
+                  type: string
+                lastTimeChallenged:
+                  type: string
+                coolDownTolerance:
+                  type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   soarchain.poa.QueryAllRunnerResponse:
     type: object
     properties:
@@ -57252,6 +57679,8 @@ definitions:
             lastTimeChallenged:
               type: string
             coolDownTolerance:
+              type: string
+            guardAddress:
               type: string
       pagination:
         type: object
@@ -57345,6 +57774,8 @@ definitions:
                 lastTimeChallenged:
                   type: string
                 coolDownTolerance:
+                  type: string
+                guardAddress:
                   type: string
       pagination:
         type: object
@@ -57460,8 +57891,6 @@ definitions:
             type: string
           address:
             type: string
-          registrant:
-            type: string
           score:
             type: string
           rewardMultiplier:
@@ -57482,8 +57911,6 @@ definitions:
             type: string
           address:
             type: string
-          registrant:
-            type: string
           score:
             type: string
           rewardMultiplier:
@@ -57493,6 +57920,23 @@ definitions:
           lastTimeChallenged:
             type: string
           coolDownTolerance:
+            type: string
+  soarchain.poa.QueryGetEpochDataResponse:
+    type: object
+    properties:
+      EpochData:
+        type: object
+        properties:
+          totalEpochs:
+            type: string
+            format: uint64
+          epochV2VRX:
+            type: string
+          epochV2VBX:
+            type: string
+          epochV2NBX:
+            type: string
+          epochRunner:
             type: string
   soarchain.poa.QueryGetGuardResponse:
     type: object
@@ -57524,6 +57968,8 @@ definitions:
               lastTimeChallenged:
                 type: string
               coolDownTolerance:
+                type: string
+              guardAddress:
                 type: string
           v2XChallenger:
             type: object
@@ -57559,6 +58005,31 @@ definitions:
                 type: string
               ipAddr:
                 type: string
+  soarchain.poa.QueryGetMotusWalletResponse:
+    type: object
+    properties:
+      motusWallet:
+        type: object
+        properties:
+          index:
+            type: string
+          client:
+            type: object
+            properties:
+              index:
+                type: string
+              address:
+                type: string
+              score:
+                type: string
+              rewardMultiplier:
+                type: string
+              netEarnings:
+                type: string
+              lastTimeChallenged:
+                type: string
+              coolDownTolerance:
+                type: string
   soarchain.poa.QueryGetRunnerResponse:
     type: object
     properties:
@@ -57582,6 +58053,8 @@ definitions:
           lastTimeChallenged:
             type: string
           coolDownTolerance:
+            type: string
+          guardAddress:
             type: string
   soarchain.poa.QueryGetVrfDataResponse:
     type: object
@@ -57649,6 +58122,8 @@ definitions:
                 type: string
               coolDownTolerance:
                 type: string
+              guardAddress:
+                type: string
   soarchain.poa.QueryGetVrfUserResponse:
     type: object
     properties:
@@ -57700,6 +58175,8 @@ definitions:
       lastTimeChallenged:
         type: string
       coolDownTolerance:
+        type: string
+      guardAddress:
         type: string
   soarchain.poa.VrfData:
     type: object
@@ -57764,6 +58241,8 @@ definitions:
             type: string
           coolDownTolerance:
             type: string
+          guardAddress:
+            type: string
   soarchain.poa.VrfUser:
     type: object
     properties:
@@ -57773,6 +58252,75 @@ definitions:
         type: string
       count:
         type: string
+  soarchain.rewardcap.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  soarchain.rewardcap.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  soarchain.soarmint.Minter:
+    type: object
+    properties:
+      inflation:
+        type: string
+      phase:
+        type: string
+        format: uint64
+      startPhaseBlock:
+        type: string
+        format: uint64
+      annualProvisions:
+        type: string
+      targetSupply:
+        type: string
+  soarchain.soarmint.Params:
+    type: object
+    properties:
+      mint_denom:
+        type: string
+        title: type of coin to mint
+      blocks_per_year:
+        type: string
+        format: uint64
+        title: expected blocks per year
+    description: Params defines the parameters for the module.
+  soarchain.soarmint.QueryGetMinterResponse:
+    type: object
+    properties:
+      Minter:
+        type: object
+        properties:
+          inflation:
+            type: string
+          phase:
+            type: string
+            format: uint64
+          startPhaseBlock:
+            type: string
+            format: uint64
+          annualProvisions:
+            type: string
+          targetSupply:
+            type: string
+  soarchain.soarmint.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+        properties:
+          mint_denom:
+            type: string
+            title: type of coin to mint
+          blocks_per_year:
+            type: string
+            format: uint64
+            title: expected blocks per year
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
   tendermint.spn.monitoringp.ConnectionChannelID:
     type: object
     properties:

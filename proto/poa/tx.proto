@@ -21,12 +21,14 @@ service Msg {
   rpc SelectRandomChallenger(MsgSelectRandomChallenger) returns (MsgSelectRandomChallengerResponse);
   rpc SelectRandomRunner(MsgSelectRandomRunner) returns (MsgSelectRandomRunnerResponse);
   rpc UpdateGuard(MsgUpdateGuard) returns (MsgUpdateGuardResponse);
+  rpc ClaimMotusRewards(MsgClaimMotusRewards) returns (MsgClaimMotusRewardsResponse);
+  rpc ClaimRunnerRewards(MsgClaimRunnerRewards) returns (MsgClaimRunnerRewardsResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgGenClient {
   string creator = 1;
-  string address = 2;
+  string pubkey = 2;
 }
 
 message MsgGenClientResponse {
@@ -34,7 +36,7 @@ message MsgGenClientResponse {
 
 message MsgChallengeService {
   string creator = 1;
-  string clientAddress = 2;
+  string clientPubkey = 2;
   string clientCommunicationMode = 3;
   string challengeResult = 4;
 
@@ -45,8 +47,7 @@ message MsgChallengeServiceResponse {
 
 message MsgUnregisterClient {
   string creator = 1;
-  string address = 2;
-  string fee = 3;
+  string pubkey = 2;
 }
 
 message MsgUnregisterClientResponse {
@@ -55,7 +56,6 @@ message MsgUnregisterClientResponse {
 message MsgUnregisterChallenger {
   string creator = 1;
   string challengerAddress = 2;
-  string fee = 3;
 }
 
 message MsgUnregisterChallengerResponse {
@@ -81,7 +81,6 @@ message MsgGenGuardResponse {
 message MsgUnregisterRunner {
   string creator = 1;
   string runnerAddress = 2;
-  string fee = 3;
 }
 
 message MsgUnregisterRunnerResponse {
@@ -90,8 +89,7 @@ message MsgUnregisterRunnerResponse {
 message MsgRunnerChallenge {
   string creator = 1;
   string runnerAddress = 2;
-  string v2nDeviceType = 3;
-  string challengeResult = 4;
+  repeated string clientPubkeys = 3;
 }
 
 message MsgRunnerChallengeResponse {
@@ -99,7 +97,6 @@ message MsgRunnerChallengeResponse {
 
 message MsgUnregisterGuard {
   string creator = 1;
-  string fee = 2;
 }
 
 message MsgUnregisterGuardResponse {
@@ -123,7 +120,6 @@ message MsgSelectRandomRunnerResponse {
 
 message MsgUpdateGuard {
   string creator = 1;
-  string fee = 2;
   string v2XAddr = 3;
   string v2XStake = 4;
   string v2XIp = 5;
@@ -136,6 +132,22 @@ message MsgUpdateGuard {
 }
 
 message MsgUpdateGuardResponse {
+}
+
+message MsgClaimMotusRewards {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgClaimMotusRewardsResponse {
+}
+
+message MsgClaimRunnerRewards {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgClaimRunnerRewardsResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

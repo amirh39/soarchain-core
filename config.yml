@@ -6,42 +6,41 @@ build:
     - third_party/proto
     - proto_vendor
 accounts:
-- name: investorWallet
-  coins:
-  - 77425000000000soar
-- name: airdropWallet
-  coins:
-  - 47500000000000soar
-- name: strategicWallet
-  coins:
-  - 180500000000000soar
-- name: communityWallet
-  coins:
-  - 100700000000000soar
-- name: soarValidator
-  coins:
-  - 10000000soar
-- name: soarFacuet
-  coins:
-  - 100000000000000000000000000soar
-- name: v2xDevice1
-  coins:
-  - 0soar
-- name: v2nDevice1
-  coins:
-  - 0soar
-- name: runnerDevice1
-  coins:
-  - 0soar
-- name: v2xDevice2
-  coins:
-  - 0soar
-- name: v2nDevice2
-  coins:
-  - 0soar
-- name: runnerDevice2
-  coins:
-  - 0soar
+  - name: investorWallet
+    coins: ["77425000000000soar"]
+  - name: airdropWallet
+    coins: ["47500000000000soar"]
+  - name: strategicWallet
+    coins: ["180500000000000soar"]
+  - name: communityWallet
+    coins: ["100700000000000soar"]
+  - name: soarValidator
+    coins: ["10000000soar"]
+  - name: soarFacuet
+    coins: ["100000000000000000000000000soar"]
+  - name: v2xDevice1
+    coins: ["0soar"]
+  - name: v2nDevice1
+    coins: ["0soar"]
+  - name: runnerDevice1
+    coins: ["0soar"]
+  - name: v2xDevice2
+    coins: ["0soar"]
+  - name: v2nDevice2
+    coins: ["0soar"]
+  - name: runnerDevice2
+    coins: ["0soar"]
+validator:
+  name: soarValidator
+  staked: "10000000soar"
+  config:
+      consensus:
+        timeout_commit: '15s'
+client:
+  openapi:
+    path: "docs/static/openapi.yml"
+  vuex:
+    path: "vue/src/store"
 faucet:
   name: soarFacuet
   coins:

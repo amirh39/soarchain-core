@@ -35,6 +35,13 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.VrfUserList {
 		k.SetVrfUser(ctx, elem)
 	}
+	// Set if defined
+	k.SetEpochData(ctx, genState.EpochData)
+
+	// Set all the motusWallet
+	for _, elem := range genState.MotusWalletList {
+		k.SetMotusWallet(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -51,6 +58,12 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.VrfDataList = k.GetAllVrfData(ctx)
 	genesis.VrfUserList = k.GetAllVrfUser(ctx)
+	// Get all epochData
+	epochData, found := k.GetEpochData(ctx)
+	if found {
+		genesis.EpochData = epochData
+	}
+	genesis.MotusWalletList = k.GetAllMotusWallet(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

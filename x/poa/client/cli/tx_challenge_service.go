@@ -15,11 +15,11 @@ var _ = strconv.Itoa(0)
 
 func CmdChallengeService() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "challenge-service [challengee-address] [client-communication-mode] [challenge-result]",
+		Use:   "challenge-service [client-pubkey] [client-communication-mode] [challenge-result]",
 		Short: "Broadcast message challenge-service",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argClientAddress := args[0]
+			argClientPubkey := args[0]
 			argClientCommunicationMode := args[1]
 			argChallengeResult := args[2]
 
@@ -30,7 +30,7 @@ func CmdChallengeService() *cobra.Command {
 
 			msg := types.NewMsgChallengeService(
 				clientCtx.GetFromAddress().String(),
-				argClientAddress,
+				argClientPubkey,
 				argClientCommunicationMode,
 				argChallengeResult,
 			)

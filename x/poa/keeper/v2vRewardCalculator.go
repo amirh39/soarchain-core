@@ -33,7 +33,7 @@ func (k msgServer) V2VRewardCalculator(ctx sdk.Context, rewardMultiplier float64
 
 	// Protection against +Inf netEarnings calculation
 	if totalMultipliers > 0 {
-		return (rewardMultiplier / totalMultipliers) * rewardPerBlock, nil
+		return (rewardMultiplier / totalMultipliers) * float64(rewardPerBlock), nil
 	} else {
 		return 0, nil
 	}

@@ -5,6 +5,8 @@ import (
 
 	"soarchain/x/poa/types"
 
+	"strings"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -17,11 +19,10 @@ func CmdRunnerChallenge() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "runner-challenge [runner-address] [v2n-device-type] [challenge-result]",
 		Short: "Broadcast message runner-challenge",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argRunnerAddress := args[0]
-			argV2NDeviceType := args[1]
-			argChallengeResult := args[2]
+			argClientPubkeys := strings.Split(args[1], listSeparator)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -31,8 +32,7 @@ func CmdRunnerChallenge() *cobra.Command {
 			msg := types.NewMsgRunnerChallenge(
 				clientCtx.GetFromAddress().String(),
 				argRunnerAddress,
-				argV2NDeviceType,
-				argChallengeResult,
+				argClientPubkeys,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

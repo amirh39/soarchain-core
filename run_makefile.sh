@@ -2,6 +2,7 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 make remove
+make build
 make reset
 make init
 make config

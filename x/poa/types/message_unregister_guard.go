@@ -9,10 +9,9 @@ const TypeMsgUnregisterGuard = "unregister_guard"
 
 var _ sdk.Msg = &MsgUnregisterGuard{}
 
-func NewMsgUnregisterGuard(creator string, fee string) *MsgUnregisterGuard {
+func NewMsgUnregisterGuard(creator string) *MsgUnregisterGuard {
 	return &MsgUnregisterGuard{
 		Creator: creator,
-		Fee:     fee,
 	}
 }
 

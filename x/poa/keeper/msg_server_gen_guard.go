@@ -42,9 +42,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	if msg.V2XAddr != "" { // means v2x addr is provided
 		// Check if challenger address already exists
 		_, isFound := k.GetChallenger(ctx, msg.V2XAddr)
-		_, isFoundAsClient := k.GetClient(ctx, msg.V2XAddr)
+		_, isFoundAsMotusWallet := k.GetMotusWallet(ctx, msg.V2XAddr)
 		_, isFoundAsRunner := k.GetRunner(ctx, msg.V2XAddr)
-		if isFound || isFoundAsClient || isFoundAsRunner {
+		if isFound || isFoundAsMotusWallet || isFoundAsRunner {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "V2X challenger is already registered in storage.")
 		}
 
@@ -54,7 +54,8 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Check v2x stake amount
-		requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
+		// requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
+		requiredStake := sdk.Coins{sdk.NewInt64Coin("soar", 2000000000)}
 		v2XStake, err := sdk.ParseCoinsNormalized(msg.V2XStake)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
@@ -64,6 +65,11 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Transfer stakedAmount to contract:
+		balance := sdk.Coins{k.bankKeeper.GetBalance(ctx, msgSenderAddress, "soar")}
+		if balance.IsAllLT(requiredStake) {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
+		}
+
 		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 		if transferErr != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds couldn't be transferred to POA module!")
@@ -74,7 +80,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			Address:      v2xChallengerAddr.String(),
 			Score:        sdk.NewInt(50).String(), // Base Score
 			StakedAmount: v2XStake.String(),
-			NetEarnings:  "",
+			NetEarnings:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
 			Type:         "v2x",
 			IpAddr:       msg.V2XIp,
 		}
@@ -91,9 +97,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 	if msg.V2NAddr != "" { // means v2n addr is provided
 		// Check if challenger already exists
 		_, isFound := k.GetChallenger(ctx, msg.V2NAddr)
-		_, isFoundAsClient := k.GetClient(ctx, msg.V2NAddr)
+		_, isFoundAsMotusWallet := k.GetMotusWallet(ctx, msg.V2NAddr)
 		_, isFoundAsRunner := k.GetRunner(ctx, msg.V2NAddr)
-		if isFound || isFoundAsClient || isFoundAsRunner {
+		if isFound || isFoundAsMotusWallet || isFoundAsRunner {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "V2N challenger is already registered in storage.")
 		}
 
@@ -123,7 +129,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			Address:      v2nChallengerAddr.String(),
 			Score:        sdk.NewInt(50).String(), // Base Score
 			StakedAmount: v2NStake.String(),
-			NetEarnings:  "",
+			NetEarnings:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
 			Type:         "v2n",
 			IpAddr:       msg.V2NIp,
 		}
@@ -140,8 +146,8 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		// Check if runner already exists
 		_, isFound := k.GetRunner(ctx, msg.RunnerAddr)
 		_, isFoundAsChallenger := k.GetChallenger(ctx, msg.RunnerAddr)
-		_, isFoundAsClient := k.GetClient(ctx, msg.RunnerAddr)
-		if isFound || isFoundAsChallenger || isFoundAsClient {
+		_, isFoundAsMotusWallet := k.GetMotusWallet(ctx, msg.RunnerAddr)
+		if isFound || isFoundAsChallenger || isFoundAsMotusWallet {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "Runner is already registered in storage.")
 		}
 
@@ -174,13 +180,14 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		newRunner = types.Runner{
 			Index:              runnerAddr.String(),
 			Address:            runnerAddr.String(),
-			Score:              sdk.NewInt(50).String(), // Base Score
+			Score:              strconv.FormatFloat(initialScore, 'f', -1, 64), // Base Score
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			StakedAmount:       runnerStake.String(),
-			NetEarnings:        sdk.ZeroInt().String(),
+			NetEarnings:        sdk.NewCoin("soar", sdk.ZeroInt()).String(),
 			IpAddr:             msg.RunnerIp,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(1, 10),
+			GuardAddress:       msg.Creator,
 		}
 
 		k.SetRunner(ctx, newRunner)

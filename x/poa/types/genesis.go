@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // DefaultIndex is the default capability global index
@@ -16,6 +18,14 @@ func DefaultGenesis() *GenesisState {
 		GuardList:      []Guard{},
 		VrfDataList:    []VrfData{},
 		VrfUserList:    []VrfUser{},
+		EpochData: EpochData{
+			TotalEpochs: 0,
+			EpochV2VRX:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			EpochV2VBX:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			EpochV2NBX:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			EpochRunner: sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+		},
+		MotusWalletList: []MotusWallet{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -84,6 +94,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for vrfUser")
 		}
 		vrfUserIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in motusWallet
+	motusWalletIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.MotusWalletList {
+		index := string(MotusWalletKey(elem.Index))
+		if _, ok := motusWalletIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for motusWallet")
+		}
+		motusWalletIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

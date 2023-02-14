@@ -15,11 +15,11 @@ var _ = strconv.Itoa(0)
 
 func CmdGenClient() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "gen-client [address] [fee]",
+		Use:   "gen-client [pubkey] [fee]",
 		Short: "Broadcast message gen-client",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAddress := args[0]
+			argPubkey := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -28,7 +28,7 @@ func CmdGenClient() *cobra.Command {
 
 			msg := types.NewMsgGenClient(
 				clientCtx.GetFromAddress().String(),
-				argAddress,
+				argPubkey,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
