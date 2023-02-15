@@ -13,6 +13,7 @@ export interface Runner {
   ipAddr: string;
   lastTimeChallenged: string;
   coolDownTolerance: string;
+  guardAddress: string;
 }
 
 function createBaseRunner(): Runner {
@@ -26,6 +27,7 @@ function createBaseRunner(): Runner {
     ipAddr: "",
     lastTimeChallenged: "",
     coolDownTolerance: "",
+    guardAddress: "",
   };
 }
 
@@ -57,6 +59,9 @@ export const Runner = {
     }
     if (message.coolDownTolerance !== "") {
       writer.uint32(74).string(message.coolDownTolerance);
+    }
+    if (message.guardAddress !== "") {
+      writer.uint32(82).string(message.guardAddress);
     }
     return writer;
   },
@@ -95,6 +100,9 @@ export const Runner = {
         case 9:
           message.coolDownTolerance = reader.string();
           break;
+        case 10:
+          message.guardAddress = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -114,6 +122,7 @@ export const Runner = {
       ipAddr: isSet(object.ipAddr) ? String(object.ipAddr) : "",
       lastTimeChallenged: isSet(object.lastTimeChallenged) ? String(object.lastTimeChallenged) : "",
       coolDownTolerance: isSet(object.coolDownTolerance) ? String(object.coolDownTolerance) : "",
+      guardAddress: isSet(object.guardAddress) ? String(object.guardAddress) : "",
     };
   },
 
@@ -128,6 +137,7 @@ export const Runner = {
     message.ipAddr !== undefined && (obj.ipAddr = message.ipAddr);
     message.lastTimeChallenged !== undefined && (obj.lastTimeChallenged = message.lastTimeChallenged);
     message.coolDownTolerance !== undefined && (obj.coolDownTolerance = message.coolDownTolerance);
+    message.guardAddress !== undefined && (obj.guardAddress = message.guardAddress);
     return obj;
   },
 
@@ -142,6 +152,7 @@ export const Runner = {
     message.ipAddr = object.ipAddr ?? "";
     message.lastTimeChallenged = object.lastTimeChallenged ?? "";
     message.coolDownTolerance = object.coolDownTolerance ?? "";
+    message.guardAddress = object.guardAddress ?? "";
     return message;
   },
 };

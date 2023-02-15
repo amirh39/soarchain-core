@@ -22,12 +22,20 @@ export interface PoaChallenger {
 export interface PoaClient {
   index?: string;
   address?: string;
-  registrant?: string;
   score?: string;
   rewardMultiplier?: string;
   netEarnings?: string;
   lastTimeChallenged?: string;
   coolDownTolerance?: string;
+}
+
+export interface PoaEpochData {
+  /** @format uint64 */
+  totalEpochs?: string;
+  epochV2VRX?: string;
+  epochV2VBX?: string;
+  epochV2NBX?: string;
+  epochRunner?: string;
 }
 
 export interface PoaGuard {
@@ -38,7 +46,16 @@ export interface PoaGuard {
   v2NChallenger?: PoaChallenger;
 }
 
+export interface PoaMotusWallet {
+  index?: string;
+  client?: PoaClient;
+}
+
 export type PoaMsgChallengeServiceResponse = object;
+
+export type PoaMsgClaimMotusRewardsResponse = object;
+
+export type PoaMsgClaimRunnerRewardsResponse = object;
 
 export type PoaMsgGenClientResponse = object;
 
@@ -114,6 +131,21 @@ export interface PoaQueryAllGuardResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface PoaQueryAllMotusWalletResponse {
+  motusWallet?: PoaMotusWallet[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface PoaQueryAllRunnerResponse {
   runner?: PoaRunner[];
 
@@ -175,8 +207,16 @@ export interface PoaQueryGetClientResponse {
   client?: PoaClient;
 }
 
+export interface PoaQueryGetEpochDataResponse {
+  EpochData?: PoaEpochData;
+}
+
 export interface PoaQueryGetGuardResponse {
   guard?: PoaGuard;
+}
+
+export interface PoaQueryGetMotusWalletResponse {
+  motusWallet?: PoaMotusWallet;
 }
 
 export interface PoaQueryGetRunnerResponse {
@@ -218,6 +258,7 @@ export interface PoaRunner {
   ipAddr?: string;
   lastTimeChallenged?: string;
   coolDownTolerance?: string;
+  guardAddress?: string;
 }
 
 export interface PoaVrfData {
@@ -537,6 +578,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryEpochData
+   * @summary Queries a EpochData by index.
+   * @request GET:/soarchain/poa/epoch_data
+   */
+  queryEpochData = (params: RequestParams = {}) =>
+    this.request<PoaQueryGetEpochDataResponse, RpcStatus>({
+      path: `/soarchain/poa/epoch_data`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryGetChallengerByAddress
    * @summary Queries a list of GetChallengerByAddress items.
    * @request GET:/soarchain/poa/get_challenger_by_address/{address}
@@ -618,6 +675,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryIsChallengeable = (clientAddr: string, params: RequestParams = {}) =>
     this.request<PoaQueryIsChallengeableResponse, RpcStatus>({
       path: `/soarchain/poa/is_challengeable/${clientAddr}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryMotusWalletAll
+   * @summary Queries a list of MotusWallet items.
+   * @request GET:/soarchain/poa/motus_wallet
+   */
+  queryMotusWalletAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PoaQueryAllMotusWalletResponse, RpcStatus>({
+      path: `/soarchain/poa/motus_wallet`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryMotusWallet
+   * @summary Queries a MotusWallet by index.
+   * @request GET:/soarchain/poa/motus_wallet/{index}
+   */
+  queryMotusWallet = (index: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetMotusWalletResponse, RpcStatus>({
+      path: `/soarchain/poa/motus_wallet/${index}`,
       method: "GET",
       format: "json",
       ...params,

@@ -2,7 +2,9 @@
 import _m0 from "protobufjs/minimal";
 import { Challenger } from "./challenger";
 import { Client } from "./client";
+import { EpochData } from "./epoch_data";
 import { Guard } from "./guard";
+import { MotusWallet } from "./motus_wallet";
 import { Params } from "./params";
 import { Runner } from "./runner";
 import { VrfData } from "./vrf_data";
@@ -18,8 +20,12 @@ export interface GenesisState {
   runnerList: Runner[];
   guardList: Guard[];
   vrfDataList: VrfData[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   vrfUserList: VrfUser[];
+  epochData:
+    | EpochData
+    | undefined;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  motusWalletList: MotusWallet[];
 }
 
 function createBaseGenesisState(): GenesisState {
@@ -31,6 +37,8 @@ function createBaseGenesisState(): GenesisState {
     guardList: [],
     vrfDataList: [],
     vrfUserList: [],
+    epochData: undefined,
+    motusWalletList: [],
   };
 }
 
@@ -56,6 +64,12 @@ export const GenesisState = {
     }
     for (const v of message.vrfUserList) {
       VrfUser.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.epochData !== undefined) {
+      EpochData.encode(message.epochData, writer.uint32(66).fork()).ldelim();
+    }
+    for (const v of message.motusWalletList) {
+      MotusWallet.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -88,6 +102,12 @@ export const GenesisState = {
         case 7:
           message.vrfUserList.push(VrfUser.decode(reader, reader.uint32()));
           break;
+        case 8:
+          message.epochData = EpochData.decode(reader, reader.uint32());
+          break;
+        case 9:
+          message.motusWalletList.push(MotusWallet.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -107,6 +127,10 @@ export const GenesisState = {
       guardList: Array.isArray(object?.guardList) ? object.guardList.map((e: any) => Guard.fromJSON(e)) : [],
       vrfDataList: Array.isArray(object?.vrfDataList) ? object.vrfDataList.map((e: any) => VrfData.fromJSON(e)) : [],
       vrfUserList: Array.isArray(object?.vrfUserList) ? object.vrfUserList.map((e: any) => VrfUser.fromJSON(e)) : [],
+      epochData: isSet(object.epochData) ? EpochData.fromJSON(object.epochData) : undefined,
+      motusWalletList: Array.isArray(object?.motusWalletList)
+        ? object.motusWalletList.map((e: any) => MotusWallet.fromJSON(e))
+        : [],
     };
   },
 
@@ -143,6 +167,13 @@ export const GenesisState = {
     } else {
       obj.vrfUserList = [];
     }
+    message.epochData !== undefined
+      && (obj.epochData = message.epochData ? EpochData.toJSON(message.epochData) : undefined);
+    if (message.motusWalletList) {
+      obj.motusWalletList = message.motusWalletList.map((e) => e ? MotusWallet.toJSON(e) : undefined);
+    } else {
+      obj.motusWalletList = [];
+    }
     return obj;
   },
 
@@ -157,6 +188,10 @@ export const GenesisState = {
     message.guardList = object.guardList?.map((e) => Guard.fromPartial(e)) || [];
     message.vrfDataList = object.vrfDataList?.map((e) => VrfData.fromPartial(e)) || [];
     message.vrfUserList = object.vrfUserList?.map((e) => VrfUser.fromPartial(e)) || [];
+    message.epochData = (object.epochData !== undefined && object.epochData !== null)
+      ? EpochData.fromPartial(object.epochData)
+      : undefined;
+    message.motusWalletList = object.motusWalletList?.map((e) => MotusWallet.fromPartial(e)) || [];
     return message;
   },
 };

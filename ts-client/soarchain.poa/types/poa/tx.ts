@@ -7,7 +7,7 @@ export const protobufPackage = "soarchain.poa";
 
 export interface MsgGenClient {
   creator: string;
-  address: string;
+  pubkey: string;
 }
 
 export interface MsgGenClientResponse {
@@ -15,7 +15,7 @@ export interface MsgGenClientResponse {
 
 export interface MsgChallengeService {
   creator: string;
-  clientAddress: string;
+  clientPubkey: string;
   clientCommunicationMode: string;
   challengeResult: string;
 }
@@ -25,8 +25,7 @@ export interface MsgChallengeServiceResponse {
 
 export interface MsgUnregisterClient {
   creator: string;
-  address: string;
-  fee: string;
+  pubkey: string;
 }
 
 export interface MsgUnregisterClientResponse {
@@ -35,7 +34,6 @@ export interface MsgUnregisterClientResponse {
 export interface MsgUnregisterChallenger {
   creator: string;
   challengerAddress: string;
-  fee: string;
 }
 
 export interface MsgUnregisterChallengerResponse {
@@ -61,7 +59,6 @@ export interface MsgGenGuardResponse {
 export interface MsgUnregisterRunner {
   creator: string;
   runnerAddress: string;
-  fee: string;
 }
 
 export interface MsgUnregisterRunnerResponse {
@@ -70,8 +67,7 @@ export interface MsgUnregisterRunnerResponse {
 export interface MsgRunnerChallenge {
   creator: string;
   runnerAddress: string;
-  v2nDeviceType: string;
-  challengeResult: string;
+  clientPubkeys: string[];
 }
 
 export interface MsgRunnerChallengeResponse {
@@ -79,7 +75,6 @@ export interface MsgRunnerChallengeResponse {
 
 export interface MsgUnregisterGuard {
   creator: string;
-  fee: string;
 }
 
 export interface MsgUnregisterGuardResponse {
@@ -103,7 +98,6 @@ export interface MsgSelectRandomRunnerResponse {
 
 export interface MsgUpdateGuard {
   creator: string;
-  fee: string;
   v2XAddr: string;
   v2XStake: string;
   v2XIp: string;
@@ -118,8 +112,24 @@ export interface MsgUpdateGuard {
 export interface MsgUpdateGuardResponse {
 }
 
+export interface MsgClaimMotusRewards {
+  creator: string;
+  amount: string;
+}
+
+export interface MsgClaimMotusRewardsResponse {
+}
+
+export interface MsgClaimRunnerRewards {
+  creator: string;
+  amount: string;
+}
+
+export interface MsgClaimRunnerRewardsResponse {
+}
+
 function createBaseMsgGenClient(): MsgGenClient {
-  return { creator: "", address: "" };
+  return { creator: "", pubkey: "" };
 }
 
 export const MsgGenClient = {
@@ -127,8 +137,8 @@ export const MsgGenClient = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.address !== "") {
-      writer.uint32(18).string(message.address);
+    if (message.pubkey !== "") {
+      writer.uint32(18).string(message.pubkey);
     }
     return writer;
   },
@@ -144,7 +154,7 @@ export const MsgGenClient = {
           message.creator = reader.string();
           break;
         case 2:
-          message.address = reader.string();
+          message.pubkey = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -157,21 +167,21 @@ export const MsgGenClient = {
   fromJSON(object: any): MsgGenClient {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      address: isSet(object.address) ? String(object.address) : "",
+      pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
     };
   },
 
   toJSON(message: MsgGenClient): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.address !== undefined && (obj.address = message.address);
+    message.pubkey !== undefined && (obj.pubkey = message.pubkey);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgGenClient>, I>>(object: I): MsgGenClient {
     const message = createBaseMsgGenClient();
     message.creator = object.creator ?? "";
-    message.address = object.address ?? "";
+    message.pubkey = object.pubkey ?? "";
     return message;
   },
 };
@@ -216,7 +226,7 @@ export const MsgGenClientResponse = {
 };
 
 function createBaseMsgChallengeService(): MsgChallengeService {
-  return { creator: "", clientAddress: "", clientCommunicationMode: "", challengeResult: "" };
+  return { creator: "", clientPubkey: "", clientCommunicationMode: "", challengeResult: "" };
 }
 
 export const MsgChallengeService = {
@@ -224,8 +234,8 @@ export const MsgChallengeService = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.clientAddress !== "") {
-      writer.uint32(18).string(message.clientAddress);
+    if (message.clientPubkey !== "") {
+      writer.uint32(18).string(message.clientPubkey);
     }
     if (message.clientCommunicationMode !== "") {
       writer.uint32(26).string(message.clientCommunicationMode);
@@ -247,7 +257,7 @@ export const MsgChallengeService = {
           message.creator = reader.string();
           break;
         case 2:
-          message.clientAddress = reader.string();
+          message.clientPubkey = reader.string();
           break;
         case 3:
           message.clientCommunicationMode = reader.string();
@@ -266,7 +276,7 @@ export const MsgChallengeService = {
   fromJSON(object: any): MsgChallengeService {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      clientAddress: isSet(object.clientAddress) ? String(object.clientAddress) : "",
+      clientPubkey: isSet(object.clientPubkey) ? String(object.clientPubkey) : "",
       clientCommunicationMode: isSet(object.clientCommunicationMode) ? String(object.clientCommunicationMode) : "",
       challengeResult: isSet(object.challengeResult) ? String(object.challengeResult) : "",
     };
@@ -275,7 +285,7 @@ export const MsgChallengeService = {
   toJSON(message: MsgChallengeService): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.clientAddress !== undefined && (obj.clientAddress = message.clientAddress);
+    message.clientPubkey !== undefined && (obj.clientPubkey = message.clientPubkey);
     message.clientCommunicationMode !== undefined && (obj.clientCommunicationMode = message.clientCommunicationMode);
     message.challengeResult !== undefined && (obj.challengeResult = message.challengeResult);
     return obj;
@@ -284,7 +294,7 @@ export const MsgChallengeService = {
   fromPartial<I extends Exact<DeepPartial<MsgChallengeService>, I>>(object: I): MsgChallengeService {
     const message = createBaseMsgChallengeService();
     message.creator = object.creator ?? "";
-    message.clientAddress = object.clientAddress ?? "";
+    message.clientPubkey = object.clientPubkey ?? "";
     message.clientCommunicationMode = object.clientCommunicationMode ?? "";
     message.challengeResult = object.challengeResult ?? "";
     return message;
@@ -331,7 +341,7 @@ export const MsgChallengeServiceResponse = {
 };
 
 function createBaseMsgUnregisterClient(): MsgUnregisterClient {
-  return { creator: "", address: "", fee: "" };
+  return { creator: "", pubkey: "" };
 }
 
 export const MsgUnregisterClient = {
@@ -339,11 +349,8 @@ export const MsgUnregisterClient = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.address !== "") {
-      writer.uint32(18).string(message.address);
-    }
-    if (message.fee !== "") {
-      writer.uint32(26).string(message.fee);
+    if (message.pubkey !== "") {
+      writer.uint32(18).string(message.pubkey);
     }
     return writer;
   },
@@ -359,10 +366,7 @@ export const MsgUnregisterClient = {
           message.creator = reader.string();
           break;
         case 2:
-          message.address = reader.string();
-          break;
-        case 3:
-          message.fee = reader.string();
+          message.pubkey = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -375,24 +379,21 @@ export const MsgUnregisterClient = {
   fromJSON(object: any): MsgUnregisterClient {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      address: isSet(object.address) ? String(object.address) : "",
-      fee: isSet(object.fee) ? String(object.fee) : "",
+      pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
     };
   },
 
   toJSON(message: MsgUnregisterClient): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.address !== undefined && (obj.address = message.address);
-    message.fee !== undefined && (obj.fee = message.fee);
+    message.pubkey !== undefined && (obj.pubkey = message.pubkey);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgUnregisterClient>, I>>(object: I): MsgUnregisterClient {
     const message = createBaseMsgUnregisterClient();
     message.creator = object.creator ?? "";
-    message.address = object.address ?? "";
-    message.fee = object.fee ?? "";
+    message.pubkey = object.pubkey ?? "";
     return message;
   },
 };
@@ -437,7 +438,7 @@ export const MsgUnregisterClientResponse = {
 };
 
 function createBaseMsgUnregisterChallenger(): MsgUnregisterChallenger {
-  return { creator: "", challengerAddress: "", fee: "" };
+  return { creator: "", challengerAddress: "" };
 }
 
 export const MsgUnregisterChallenger = {
@@ -447,9 +448,6 @@ export const MsgUnregisterChallenger = {
     }
     if (message.challengerAddress !== "") {
       writer.uint32(18).string(message.challengerAddress);
-    }
-    if (message.fee !== "") {
-      writer.uint32(26).string(message.fee);
     }
     return writer;
   },
@@ -467,9 +465,6 @@ export const MsgUnregisterChallenger = {
         case 2:
           message.challengerAddress = reader.string();
           break;
-        case 3:
-          message.fee = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -482,7 +477,6 @@ export const MsgUnregisterChallenger = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
-      fee: isSet(object.fee) ? String(object.fee) : "",
     };
   },
 
@@ -490,7 +484,6 @@ export const MsgUnregisterChallenger = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
-    message.fee !== undefined && (obj.fee = message.fee);
     return obj;
   },
 
@@ -498,7 +491,6 @@ export const MsgUnregisterChallenger = {
     const message = createBaseMsgUnregisterChallenger();
     message.creator = object.creator ?? "";
     message.challengerAddress = object.challengerAddress ?? "";
-    message.fee = object.fee ?? "";
     return message;
   },
 };
@@ -733,7 +725,7 @@ export const MsgGenGuardResponse = {
 };
 
 function createBaseMsgUnregisterRunner(): MsgUnregisterRunner {
-  return { creator: "", runnerAddress: "", fee: "" };
+  return { creator: "", runnerAddress: "" };
 }
 
 export const MsgUnregisterRunner = {
@@ -743,9 +735,6 @@ export const MsgUnregisterRunner = {
     }
     if (message.runnerAddress !== "") {
       writer.uint32(18).string(message.runnerAddress);
-    }
-    if (message.fee !== "") {
-      writer.uint32(26).string(message.fee);
     }
     return writer;
   },
@@ -763,9 +752,6 @@ export const MsgUnregisterRunner = {
         case 2:
           message.runnerAddress = reader.string();
           break;
-        case 3:
-          message.fee = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -778,7 +764,6 @@ export const MsgUnregisterRunner = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       runnerAddress: isSet(object.runnerAddress) ? String(object.runnerAddress) : "",
-      fee: isSet(object.fee) ? String(object.fee) : "",
     };
   },
 
@@ -786,7 +771,6 @@ export const MsgUnregisterRunner = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.runnerAddress !== undefined && (obj.runnerAddress = message.runnerAddress);
-    message.fee !== undefined && (obj.fee = message.fee);
     return obj;
   },
 
@@ -794,7 +778,6 @@ export const MsgUnregisterRunner = {
     const message = createBaseMsgUnregisterRunner();
     message.creator = object.creator ?? "";
     message.runnerAddress = object.runnerAddress ?? "";
-    message.fee = object.fee ?? "";
     return message;
   },
 };
@@ -839,7 +822,7 @@ export const MsgUnregisterRunnerResponse = {
 };
 
 function createBaseMsgRunnerChallenge(): MsgRunnerChallenge {
-  return { creator: "", runnerAddress: "", v2nDeviceType: "", challengeResult: "" };
+  return { creator: "", runnerAddress: "", clientPubkeys: [] };
 }
 
 export const MsgRunnerChallenge = {
@@ -850,11 +833,8 @@ export const MsgRunnerChallenge = {
     if (message.runnerAddress !== "") {
       writer.uint32(18).string(message.runnerAddress);
     }
-    if (message.v2nDeviceType !== "") {
-      writer.uint32(26).string(message.v2nDeviceType);
-    }
-    if (message.challengeResult !== "") {
-      writer.uint32(34).string(message.challengeResult);
+    for (const v of message.clientPubkeys) {
+      writer.uint32(26).string(v!);
     }
     return writer;
   },
@@ -873,10 +853,7 @@ export const MsgRunnerChallenge = {
           message.runnerAddress = reader.string();
           break;
         case 3:
-          message.v2nDeviceType = reader.string();
-          break;
-        case 4:
-          message.challengeResult = reader.string();
+          message.clientPubkeys.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -890,8 +867,7 @@ export const MsgRunnerChallenge = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       runnerAddress: isSet(object.runnerAddress) ? String(object.runnerAddress) : "",
-      v2nDeviceType: isSet(object.v2nDeviceType) ? String(object.v2nDeviceType) : "",
-      challengeResult: isSet(object.challengeResult) ? String(object.challengeResult) : "",
+      clientPubkeys: Array.isArray(object?.clientPubkeys) ? object.clientPubkeys.map((e: any) => String(e)) : [],
     };
   },
 
@@ -899,8 +875,11 @@ export const MsgRunnerChallenge = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.runnerAddress !== undefined && (obj.runnerAddress = message.runnerAddress);
-    message.v2nDeviceType !== undefined && (obj.v2nDeviceType = message.v2nDeviceType);
-    message.challengeResult !== undefined && (obj.challengeResult = message.challengeResult);
+    if (message.clientPubkeys) {
+      obj.clientPubkeys = message.clientPubkeys.map((e) => e);
+    } else {
+      obj.clientPubkeys = [];
+    }
     return obj;
   },
 
@@ -908,8 +887,7 @@ export const MsgRunnerChallenge = {
     const message = createBaseMsgRunnerChallenge();
     message.creator = object.creator ?? "";
     message.runnerAddress = object.runnerAddress ?? "";
-    message.v2nDeviceType = object.v2nDeviceType ?? "";
-    message.challengeResult = object.challengeResult ?? "";
+    message.clientPubkeys = object.clientPubkeys?.map((e) => e) || [];
     return message;
   },
 };
@@ -954,16 +932,13 @@ export const MsgRunnerChallengeResponse = {
 };
 
 function createBaseMsgUnregisterGuard(): MsgUnregisterGuard {
-  return { creator: "", fee: "" };
+  return { creator: "" };
 }
 
 export const MsgUnregisterGuard = {
   encode(message: MsgUnregisterGuard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
-    }
-    if (message.fee !== "") {
-      writer.uint32(18).string(message.fee);
     }
     return writer;
   },
@@ -978,9 +953,6 @@ export const MsgUnregisterGuard = {
         case 1:
           message.creator = reader.string();
           break;
-        case 2:
-          message.fee = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -990,23 +962,18 @@ export const MsgUnregisterGuard = {
   },
 
   fromJSON(object: any): MsgUnregisterGuard {
-    return {
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      fee: isSet(object.fee) ? String(object.fee) : "",
-    };
+    return { creator: isSet(object.creator) ? String(object.creator) : "" };
   },
 
   toJSON(message: MsgUnregisterGuard): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.fee !== undefined && (obj.fee = message.fee);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgUnregisterGuard>, I>>(object: I): MsgUnregisterGuard {
     const message = createBaseMsgUnregisterGuard();
     message.creator = object.creator ?? "";
-    message.fee = object.fee ?? "";
     return message;
   },
 };
@@ -1253,7 +1220,6 @@ export const MsgSelectRandomRunnerResponse = {
 function createBaseMsgUpdateGuard(): MsgUpdateGuard {
   return {
     creator: "",
-    fee: "",
     v2XAddr: "",
     v2XStake: "",
     v2XIp: "",
@@ -1270,9 +1236,6 @@ export const MsgUpdateGuard = {
   encode(message: MsgUpdateGuard, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
-    }
-    if (message.fee !== "") {
-      writer.uint32(18).string(message.fee);
     }
     if (message.v2XAddr !== "") {
       writer.uint32(26).string(message.v2XAddr);
@@ -1314,9 +1277,6 @@ export const MsgUpdateGuard = {
         case 1:
           message.creator = reader.string();
           break;
-        case 2:
-          message.fee = reader.string();
-          break;
         case 3:
           message.v2XAddr = reader.string();
           break;
@@ -1355,7 +1315,6 @@ export const MsgUpdateGuard = {
   fromJSON(object: any): MsgUpdateGuard {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      fee: isSet(object.fee) ? String(object.fee) : "",
       v2XAddr: isSet(object.v2XAddr) ? String(object.v2XAddr) : "",
       v2XStake: isSet(object.v2XStake) ? String(object.v2XStake) : "",
       v2XIp: isSet(object.v2XIp) ? String(object.v2XIp) : "",
@@ -1371,7 +1330,6 @@ export const MsgUpdateGuard = {
   toJSON(message: MsgUpdateGuard): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.fee !== undefined && (obj.fee = message.fee);
     message.v2XAddr !== undefined && (obj.v2XAddr = message.v2XAddr);
     message.v2XStake !== undefined && (obj.v2XStake = message.v2XStake);
     message.v2XIp !== undefined && (obj.v2XIp = message.v2XIp);
@@ -1387,7 +1345,6 @@ export const MsgUpdateGuard = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateGuard>, I>>(object: I): MsgUpdateGuard {
     const message = createBaseMsgUpdateGuard();
     message.creator = object.creator ?? "";
-    message.fee = object.fee ?? "";
     message.v2XAddr = object.v2XAddr ?? "";
     message.v2XStake = object.v2XStake ?? "";
     message.v2XIp = object.v2XIp ?? "";
@@ -1440,6 +1397,200 @@ export const MsgUpdateGuardResponse = {
   },
 };
 
+function createBaseMsgClaimMotusRewards(): MsgClaimMotusRewards {
+  return { creator: "", amount: "" };
+}
+
+export const MsgClaimMotusRewards = {
+  encode(message: MsgClaimMotusRewards, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.amount !== "") {
+      writer.uint32(18).string(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgClaimMotusRewards {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgClaimMotusRewards();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.amount = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgClaimMotusRewards {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      amount: isSet(object.amount) ? String(object.amount) : "",
+    };
+  },
+
+  toJSON(message: MsgClaimMotusRewards): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgClaimMotusRewards>, I>>(object: I): MsgClaimMotusRewards {
+    const message = createBaseMsgClaimMotusRewards();
+    message.creator = object.creator ?? "";
+    message.amount = object.amount ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgClaimMotusRewardsResponse(): MsgClaimMotusRewardsResponse {
+  return {};
+}
+
+export const MsgClaimMotusRewardsResponse = {
+  encode(_: MsgClaimMotusRewardsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgClaimMotusRewardsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgClaimMotusRewardsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgClaimMotusRewardsResponse {
+    return {};
+  },
+
+  toJSON(_: MsgClaimMotusRewardsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgClaimMotusRewardsResponse>, I>>(_: I): MsgClaimMotusRewardsResponse {
+    const message = createBaseMsgClaimMotusRewardsResponse();
+    return message;
+  },
+};
+
+function createBaseMsgClaimRunnerRewards(): MsgClaimRunnerRewards {
+  return { creator: "", amount: "" };
+}
+
+export const MsgClaimRunnerRewards = {
+  encode(message: MsgClaimRunnerRewards, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.amount !== "") {
+      writer.uint32(18).string(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgClaimRunnerRewards {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgClaimRunnerRewards();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.amount = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgClaimRunnerRewards {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      amount: isSet(object.amount) ? String(object.amount) : "",
+    };
+  },
+
+  toJSON(message: MsgClaimRunnerRewards): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgClaimRunnerRewards>, I>>(object: I): MsgClaimRunnerRewards {
+    const message = createBaseMsgClaimRunnerRewards();
+    message.creator = object.creator ?? "";
+    message.amount = object.amount ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgClaimRunnerRewardsResponse(): MsgClaimRunnerRewardsResponse {
+  return {};
+}
+
+export const MsgClaimRunnerRewardsResponse = {
+  encode(_: MsgClaimRunnerRewardsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgClaimRunnerRewardsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgClaimRunnerRewardsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgClaimRunnerRewardsResponse {
+    return {};
+  },
+
+  toJSON(_: MsgClaimRunnerRewardsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgClaimRunnerRewardsResponse>, I>>(_: I): MsgClaimRunnerRewardsResponse {
+    const message = createBaseMsgClaimRunnerRewardsResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -1452,8 +1603,10 @@ export interface Msg {
   UnregisterGuard(request: MsgUnregisterGuard): Promise<MsgUnregisterGuardResponse>;
   SelectRandomChallenger(request: MsgSelectRandomChallenger): Promise<MsgSelectRandomChallengerResponse>;
   SelectRandomRunner(request: MsgSelectRandomRunner): Promise<MsgSelectRandomRunnerResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   UpdateGuard(request: MsgUpdateGuard): Promise<MsgUpdateGuardResponse>;
+  ClaimMotusRewards(request: MsgClaimMotusRewards): Promise<MsgClaimMotusRewardsResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  ClaimRunnerRewards(request: MsgClaimRunnerRewards): Promise<MsgClaimRunnerRewardsResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1471,6 +1624,8 @@ export class MsgClientImpl implements Msg {
     this.SelectRandomChallenger = this.SelectRandomChallenger.bind(this);
     this.SelectRandomRunner = this.SelectRandomRunner.bind(this);
     this.UpdateGuard = this.UpdateGuard.bind(this);
+    this.ClaimMotusRewards = this.ClaimMotusRewards.bind(this);
+    this.ClaimRunnerRewards = this.ClaimRunnerRewards.bind(this);
   }
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse> {
     const data = MsgGenClient.encode(request).finish();
@@ -1536,6 +1691,18 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdateGuard.encode(request).finish();
     const promise = this.rpc.request("soarchain.poa.Msg", "UpdateGuard", data);
     return promise.then((data) => MsgUpdateGuardResponse.decode(new _m0.Reader(data)));
+  }
+
+  ClaimMotusRewards(request: MsgClaimMotusRewards): Promise<MsgClaimMotusRewardsResponse> {
+    const data = MsgClaimMotusRewards.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Msg", "ClaimMotusRewards", data);
+    return promise.then((data) => MsgClaimMotusRewardsResponse.decode(new _m0.Reader(data)));
+  }
+
+  ClaimRunnerRewards(request: MsgClaimRunnerRewards): Promise<MsgClaimRunnerRewardsResponse> {
+    const data = MsgClaimRunnerRewards.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Msg", "ClaimRunnerRewards", data);
+    return promise.then((data) => MsgClaimRunnerRewardsResponse.decode(new _m0.Reader(data)));
   }
 }
 

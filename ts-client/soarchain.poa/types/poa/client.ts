@@ -6,7 +6,6 @@ export const protobufPackage = "soarchain.poa";
 export interface Client {
   index: string;
   address: string;
-  registrant: string;
   score: string;
   rewardMultiplier: string;
   netEarnings: string;
@@ -18,7 +17,6 @@ function createBaseClient(): Client {
   return {
     index: "",
     address: "",
-    registrant: "",
     score: "",
     rewardMultiplier: "",
     netEarnings: "",
@@ -34,9 +32,6 @@ export const Client = {
     }
     if (message.address !== "") {
       writer.uint32(18).string(message.address);
-    }
-    if (message.registrant !== "") {
-      writer.uint32(26).string(message.registrant);
     }
     if (message.score !== "") {
       writer.uint32(34).string(message.score);
@@ -69,9 +64,6 @@ export const Client = {
         case 2:
           message.address = reader.string();
           break;
-        case 3:
-          message.registrant = reader.string();
-          break;
         case 4:
           message.score = reader.string();
           break;
@@ -99,7 +91,6 @@ export const Client = {
     return {
       index: isSet(object.index) ? String(object.index) : "",
       address: isSet(object.address) ? String(object.address) : "",
-      registrant: isSet(object.registrant) ? String(object.registrant) : "",
       score: isSet(object.score) ? String(object.score) : "",
       rewardMultiplier: isSet(object.rewardMultiplier) ? String(object.rewardMultiplier) : "",
       netEarnings: isSet(object.netEarnings) ? String(object.netEarnings) : "",
@@ -112,7 +103,6 @@ export const Client = {
     const obj: any = {};
     message.index !== undefined && (obj.index = message.index);
     message.address !== undefined && (obj.address = message.address);
-    message.registrant !== undefined && (obj.registrant = message.registrant);
     message.score !== undefined && (obj.score = message.score);
     message.rewardMultiplier !== undefined && (obj.rewardMultiplier = message.rewardMultiplier);
     message.netEarnings !== undefined && (obj.netEarnings = message.netEarnings);
@@ -125,7 +115,6 @@ export const Client = {
     const message = createBaseClient();
     message.index = object.index ?? "";
     message.address = object.address ?? "";
-    message.registrant = object.registrant ?? "";
     message.score = object.score ?? "";
     message.rewardMultiplier = object.rewardMultiplier ?? "";
     message.netEarnings = object.netEarnings ?? "";

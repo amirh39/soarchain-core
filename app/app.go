@@ -197,6 +197,7 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		monitoringp.AppModuleBasic{},
+		wasm.AppModuleBasic{},
 		poamodule.AppModuleBasic{},
 		rewardcapmodule.AppModuleBasic{},
 		// soarmintmodule.AppModuleBasic{},
@@ -214,6 +215,7 @@ var (
 		ibctransfertypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
 		poamoduletypes.ModuleName:       {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		rewardcapmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		wasm.ModuleName:                 {authtypes.Burner},
 		// soarmintmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
@@ -315,6 +317,7 @@ func NewsoarchainApp(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		poamoduletypes.StoreKey,
 		rewardcapmoduletypes.StoreKey,
+		wasm.StoreKey,
 		// soarmintmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
@@ -343,7 +346,7 @@ func NewsoarchainApp(
 	// grant capabilities for the ibc and ibc-transfer modules
 	scopedIBCKeeper := app.CapabilityKeeper.ScopeToModule(ibchost.ModuleName)
 	scopedTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
-	// scopedWasmKeeper := app.CapabilityKeeper.ScopeToModule(wasm.ModuleName)
+	scopedWasmKeeper := app.CapabilityKeeper.ScopeToModule(wasm.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/scopedKeeper
 
 	// add keepers
@@ -459,11 +462,34 @@ func NewsoarchainApp(
 	)
 	poaModule := poamodule.NewAppModule(appCodec, app.PoaKeeper, app.AccountKeeper, app.BankKeeper)
 
-	// wasmDir := filepath.Join(homePath, "wasm")
+	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
 	if err != nil {
 		panic(fmt.Sprintf("error while reading wasm config: %s", err))
 	}
+
+	// The last arguments can contain custom message handlers, and custom query handlers,
+	// if we want to allow any custom callbacks
+	availableCapabilities := "iterator,staking,stargate,cosmwasm_1_1"
+	app.WasmKeeper = wasm.NewKeeper(
+		appCodec,
+		keys[wasm.StoreKey],
+		app.GetSubspace(wasm.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.StakingKeeper,
+		app.DistrKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedWasmKeeper,
+		app.TransferKeeper,
+		app.MsgServiceRouter(),
+		app.GRPCQueryRouter(),
+		wasmDir,
+		wasmConfig,
+		availableCapabilities,
+		wasmOpts...,
+	)
 
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks

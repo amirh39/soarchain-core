@@ -3,7 +3,9 @@ import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../cosmos/base/query/v1beta1/pagination";
 import { Challenger } from "./challenger";
 import { Client } from "./client";
+import { EpochData } from "./epoch_data";
 import { Guard } from "./guard";
+import { MotusWallet } from "./motus_wallet";
 import { Params } from "./params";
 import { Runner } from "./runner";
 import { VrfData } from "./vrf_data";
@@ -157,6 +159,30 @@ export interface QueryIsChallengeableRequest {
 export interface QueryIsChallengeableResponse {
   resultBool: string;
   challengeabilityScore: string;
+}
+
+export interface QueryGetEpochDataRequest {
+}
+
+export interface QueryGetEpochDataResponse {
+  EpochData: EpochData | undefined;
+}
+
+export interface QueryGetMotusWalletRequest {
+  index: string;
+}
+
+export interface QueryGetMotusWalletResponse {
+  motusWallet: MotusWallet | undefined;
+}
+
+export interface QueryAllMotusWalletRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllMotusWalletResponse {
+  motusWallet: MotusWallet[];
+  pagination: PageResponse | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -1945,6 +1971,309 @@ export const QueryIsChallengeableResponse = {
   },
 };
 
+function createBaseQueryGetEpochDataRequest(): QueryGetEpochDataRequest {
+  return {};
+}
+
+export const QueryGetEpochDataRequest = {
+  encode(_: QueryGetEpochDataRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetEpochDataRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetEpochDataRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetEpochDataRequest {
+    return {};
+  },
+
+  toJSON(_: QueryGetEpochDataRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetEpochDataRequest>, I>>(_: I): QueryGetEpochDataRequest {
+    const message = createBaseQueryGetEpochDataRequest();
+    return message;
+  },
+};
+
+function createBaseQueryGetEpochDataResponse(): QueryGetEpochDataResponse {
+  return { EpochData: undefined };
+}
+
+export const QueryGetEpochDataResponse = {
+  encode(message: QueryGetEpochDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.EpochData !== undefined) {
+      EpochData.encode(message.EpochData, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetEpochDataResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetEpochDataResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.EpochData = EpochData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetEpochDataResponse {
+    return { EpochData: isSet(object.EpochData) ? EpochData.fromJSON(object.EpochData) : undefined };
+  },
+
+  toJSON(message: QueryGetEpochDataResponse): unknown {
+    const obj: any = {};
+    message.EpochData !== undefined
+      && (obj.EpochData = message.EpochData ? EpochData.toJSON(message.EpochData) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetEpochDataResponse>, I>>(object: I): QueryGetEpochDataResponse {
+    const message = createBaseQueryGetEpochDataResponse();
+    message.EpochData = (object.EpochData !== undefined && object.EpochData !== null)
+      ? EpochData.fromPartial(object.EpochData)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryGetMotusWalletRequest(): QueryGetMotusWalletRequest {
+  return { index: "" };
+}
+
+export const QueryGetMotusWalletRequest = {
+  encode(message: QueryGetMotusWalletRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetMotusWalletRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetMotusWalletRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetMotusWalletRequest {
+    return { index: isSet(object.index) ? String(object.index) : "" };
+  },
+
+  toJSON(message: QueryGetMotusWalletRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetMotusWalletRequest>, I>>(object: I): QueryGetMotusWalletRequest {
+    const message = createBaseQueryGetMotusWalletRequest();
+    message.index = object.index ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryGetMotusWalletResponse(): QueryGetMotusWalletResponse {
+  return { motusWallet: undefined };
+}
+
+export const QueryGetMotusWalletResponse = {
+  encode(message: QueryGetMotusWalletResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.motusWallet !== undefined) {
+      MotusWallet.encode(message.motusWallet, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetMotusWalletResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetMotusWalletResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.motusWallet = MotusWallet.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetMotusWalletResponse {
+    return { motusWallet: isSet(object.motusWallet) ? MotusWallet.fromJSON(object.motusWallet) : undefined };
+  },
+
+  toJSON(message: QueryGetMotusWalletResponse): unknown {
+    const obj: any = {};
+    message.motusWallet !== undefined
+      && (obj.motusWallet = message.motusWallet ? MotusWallet.toJSON(message.motusWallet) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetMotusWalletResponse>, I>>(object: I): QueryGetMotusWalletResponse {
+    const message = createBaseQueryGetMotusWalletResponse();
+    message.motusWallet = (object.motusWallet !== undefined && object.motusWallet !== null)
+      ? MotusWallet.fromPartial(object.motusWallet)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllMotusWalletRequest(): QueryAllMotusWalletRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllMotusWalletRequest = {
+  encode(message: QueryAllMotusWalletRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllMotusWalletRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllMotusWalletRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllMotusWalletRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllMotusWalletRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllMotusWalletRequest>, I>>(object: I): QueryAllMotusWalletRequest {
+    const message = createBaseQueryAllMotusWalletRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllMotusWalletResponse(): QueryAllMotusWalletResponse {
+  return { motusWallet: [], pagination: undefined };
+}
+
+export const QueryAllMotusWalletResponse = {
+  encode(message: QueryAllMotusWalletResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.motusWallet) {
+      MotusWallet.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllMotusWalletResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllMotusWalletResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.motusWallet.push(MotusWallet.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllMotusWalletResponse {
+    return {
+      motusWallet: Array.isArray(object?.motusWallet)
+        ? object.motusWallet.map((e: any) => MotusWallet.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllMotusWalletResponse): unknown {
+    const obj: any = {};
+    if (message.motusWallet) {
+      obj.motusWallet = message.motusWallet.map((e) => e ? MotusWallet.toJSON(e) : undefined);
+    } else {
+      obj.motusWallet = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllMotusWalletResponse>, I>>(object: I): QueryAllMotusWalletResponse {
+    const message = createBaseQueryAllMotusWalletResponse();
+    message.motusWallet = object.motusWallet?.map((e) => MotusWallet.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1981,6 +2310,12 @@ export interface Query {
   VerifyRandomNumber(request: QueryVerifyRandomNumberRequest): Promise<QueryVerifyRandomNumberResponse>;
   /** Queries a list of IsChallengeable items. */
   IsChallengeable(request: QueryIsChallengeableRequest): Promise<QueryIsChallengeableResponse>;
+  /** Queries a EpochData by index. */
+  EpochData(request: QueryGetEpochDataRequest): Promise<QueryGetEpochDataResponse>;
+  /** Queries a MotusWallet by index. */
+  MotusWallet(request: QueryGetMotusWalletRequest): Promise<QueryGetMotusWalletResponse>;
+  /** Queries a list of MotusWallet items. */
+  MotusWalletAll(request: QueryAllMotusWalletRequest): Promise<QueryAllMotusWalletResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -2004,6 +2339,9 @@ export class QueryClientImpl implements Query {
     this.VrfUserAll = this.VrfUserAll.bind(this);
     this.VerifyRandomNumber = this.VerifyRandomNumber.bind(this);
     this.IsChallengeable = this.IsChallengeable.bind(this);
+    this.EpochData = this.EpochData.bind(this);
+    this.MotusWallet = this.MotusWallet.bind(this);
+    this.MotusWalletAll = this.MotusWalletAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -2105,6 +2443,24 @@ export class QueryClientImpl implements Query {
     const data = QueryIsChallengeableRequest.encode(request).finish();
     const promise = this.rpc.request("soarchain.poa.Query", "IsChallengeable", data);
     return promise.then((data) => QueryIsChallengeableResponse.decode(new _m0.Reader(data)));
+  }
+
+  EpochData(request: QueryGetEpochDataRequest): Promise<QueryGetEpochDataResponse> {
+    const data = QueryGetEpochDataRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "EpochData", data);
+    return promise.then((data) => QueryGetEpochDataResponse.decode(new _m0.Reader(data)));
+  }
+
+  MotusWallet(request: QueryGetMotusWalletRequest): Promise<QueryGetMotusWalletResponse> {
+    const data = QueryGetMotusWalletRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "MotusWallet", data);
+    return promise.then((data) => QueryGetMotusWalletResponse.decode(new _m0.Reader(data)));
+  }
+
+  MotusWalletAll(request: QueryAllMotusWalletRequest): Promise<QueryAllMotusWalletResponse> {
+    const data = QueryAllMotusWalletRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "MotusWalletAll", data);
+    return promise.then((data) => QueryAllMotusWalletResponse.decode(new _m0.Reader(data)));
   }
 }
 
