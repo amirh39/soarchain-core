@@ -87,6 +87,10 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				MasterKey: types.MasterKey{
+					MasterPubkey:  "26",
+					MasterAccount: "70",
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,

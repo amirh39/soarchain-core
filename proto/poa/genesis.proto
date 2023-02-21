@@ -11,6 +11,7 @@ import "poa/vrf_data.proto";
 import "poa/vrf_user.proto";
 import "poa/epoch_data.proto";
 import "poa/motus_wallet.proto";
+import "poa/master_key.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "soarchain/x/poa/types";
@@ -26,5 +27,6 @@ message GenesisState {
   repeated VrfUser vrfUserList = 7 [(gogoproto.nullable) = false];
   EpochData epochData = 8 [(gogoproto.nullable) = false];
   repeated MotusWallet motusWalletList = 9 [(gogoproto.nullable) = false];
+  MasterKey masterKey = 10 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

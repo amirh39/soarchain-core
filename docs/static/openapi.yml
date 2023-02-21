@@ -30374,6 +30374,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/soarchain/poa/challenger/{index}':
@@ -30546,6 +30556,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -30919,6 +30939,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/soarchain/poa/guard/{index}':
@@ -31059,6 +31089,43 @@ paths:
           type: string
       tags:
         - Query
+  /soarchain/poa/master_key:
+    get:
+      summary: Queries a MasterKey by index.
+      operationId: SoarchainPoaMasterKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              MasterKey:
+                type: object
+                properties:
+                  masterPubkey:
+                    type: string
+                  masterAccount:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /soarchain/poa/motus_wallet:
     get:
       summary: Queries a list of MotusWallet items.
@@ -31182,6 +31249,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -31404,6 +31481,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -31685,6 +31772,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/soarchain/poa/vrf_data/{index}':
@@ -31897,6 +31994,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -53773,6 +53880,13 @@ definitions:
             type: string
           ipAddr:
             type: string
+  soarchain.poa.MasterKey:
+    type: object
+    properties:
+      masterPubkey:
+        type: string
+      masterAccount:
+        type: string
   soarchain.poa.MotusWallet:
     type: object
     properties:
@@ -54457,6 +54571,16 @@ definitions:
                 type: string
               ipAddr:
                 type: string
+  soarchain.poa.QueryGetMasterKeyResponse:
+    type: object
+    properties:
+      MasterKey:
+        type: object
+        properties:
+          masterPubkey:
+            type: string
+          masterAccount:
+            type: string
   soarchain.poa.QueryGetMotusWalletResponse:
     type: object
     properties:

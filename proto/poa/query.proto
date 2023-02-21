@@ -10,6 +10,7 @@ import "poa/vrf_data.proto";
 import "poa/vrf_user.proto";
 import "poa/epoch_data.proto";
 import "poa/motus_wallet.proto";
+import "poa/master_key.proto";
 // this line is used by starport scaffolding # 1
 import "poa/client.proto";
 import "poa/runner.proto";
@@ -117,6 +118,10 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/motus_wallet";
 	}
 
+// Queries a MasterKey by index.
+	rpc MasterKey(QueryGetMasterKeyRequest) returns (QueryGetMasterKeyResponse) {
+		option (google.api.http).get = "/soarchain/poa/master_key";
+	}
 // this line is used by starport scaffolding # 2
 }
 
@@ -296,4 +301,9 @@ message QueryAllMotusWalletResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
+message QueryGetMasterKeyRequest {}
+
+message QueryGetMasterKeyResponse {
+	MasterKey MasterKey = 1 [(gogoproto.nullable) = false];
+}
 // this line is used by starport scaffolding # 3

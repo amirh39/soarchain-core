@@ -78,6 +78,10 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		MasterKey: types.MasterKey{
+			MasterPubkey:  "39",
+			MasterAccount: "62",
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -97,5 +101,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.VrfUserList, got.VrfUserList)
 	require.Equal(t, genesisState.EpochData, got.EpochData)
 	require.ElementsMatch(t, genesisState.MotusWalletList, got.MotusWalletList)
+	require.Equal(t, genesisState.MasterKey, got.MasterKey)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

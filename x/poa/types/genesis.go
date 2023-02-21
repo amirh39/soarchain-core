@@ -26,6 +26,10 @@ func DefaultGenesis() *GenesisState {
 			EpochRunner: sdk.NewCoin("soar", sdk.ZeroInt()).String(),
 		},
 		MotusWalletList: []MotusWallet{},
+		MasterKey: MasterKey{
+			MasterPubkey:  "3056301006072a8648ce3d020106052b8104000a034200040349a2dde2c994f767f595b6b497c0f2a24bde0731a60a20765e4742e1349c04480634a7858d01413e7c360c544d4e57d857b008bee5b54f319897ff727c2271",
+			MasterAccount: "soar156lpg0fu2gtsqmmzy4e4d04k4nvakanxasjfys",
+		},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+package soarchain.poa;
+
+option go_package = "soarchain/x/poa/types";
+
+message MasterKey {
+  string masterPubkey = 1; 
+  string masterAccount = 2; 
+  
+}
