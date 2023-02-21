@@ -82,6 +82,15 @@ func TestGenesis(t *testing.T) {
 			MasterPubkey:  "39",
 			MasterAccount: "62",
 		},
+		FactoryKeysList: []types.FactoryKeys{
+			{
+				Id: 0,
+			},
+			{
+				Id: 1,
+			},
+		},
+		FactoryKeysCount: 2,
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -102,5 +111,7 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.EpochData, got.EpochData)
 	require.ElementsMatch(t, genesisState.MotusWalletList, got.MotusWalletList)
 	require.Equal(t, genesisState.MasterKey, got.MasterKey)
+	require.ElementsMatch(t, genesisState.FactoryKeysList, got.FactoryKeysList)
+	require.Equal(t, genesisState.FactoryKeysCount, got.FactoryKeysCount)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

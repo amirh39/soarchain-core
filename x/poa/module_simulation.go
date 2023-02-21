@@ -89,6 +89,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgClaimRunnerRewards int = 100
 
+	opWeightMsgRegisterFactoryKey = "op_weight_msg_register_factory_key"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRegisterFactoryKey int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -264,6 +268,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgClaimRunnerRewards,
 		poasimulation.SimulateMsgClaimRunnerRewards(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRegisterFactoryKey int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRegisterFactoryKey, &weightMsgRegisterFactoryKey, nil,
+		func(_ *rand.Rand) {
+			weightMsgRegisterFactoryKey = defaultWeightMsgRegisterFactoryKey
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRegisterFactoryKey,
+		poasimulation.SimulateMsgRegisterFactoryKey(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

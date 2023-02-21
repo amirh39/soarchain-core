@@ -91,6 +91,15 @@ func TestGenesisState_Validate(t *testing.T) {
 					MasterPubkey:  "26",
 					MasterAccount: "70",
 				},
+				FactoryKeysList: []types.FactoryKeys{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				FactoryKeysCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -191,6 +200,32 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "0",
 					},
 				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated factoryKeys",
+			genState: &types.GenesisState{
+				FactoryKeysList: []types.FactoryKeys{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid factoryKeys count",
+			genState: &types.GenesisState{
+				FactoryKeysList: []types.FactoryKeys{
+					{
+						Id: 1,
+					},
+				},
+				FactoryKeysCount: 0,
 			},
 			valid: false,
 		},

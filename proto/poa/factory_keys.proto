@@ -1,0 +1,10 @@
+syntax = "proto3";
+package soarchain.poa;
+
+option go_package = "soarchain/x/poa/types";
+
+message FactoryKeys {
+  uint64 id = 1;
+  string factoryKey = 2; 
+  
+}

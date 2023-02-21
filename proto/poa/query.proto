@@ -11,6 +11,7 @@ import "poa/vrf_user.proto";
 import "poa/epoch_data.proto";
 import "poa/motus_wallet.proto";
 import "poa/master_key.proto";
+import "poa/factory_keys.proto";
 // this line is used by starport scaffolding # 1
 import "poa/client.proto";
 import "poa/runner.proto";
@@ -122,6 +123,16 @@ service Query {
 	rpc MasterKey(QueryGetMasterKeyRequest) returns (QueryGetMasterKeyResponse) {
 		option (google.api.http).get = "/soarchain/poa/master_key";
 	}
+// Queries a FactoryKeys by id.
+	rpc FactoryKeys(QueryGetFactoryKeysRequest) returns (QueryGetFactoryKeysResponse) {
+		option (google.api.http).get = "/soarchain/poa/factory_keys/{id}";
+	}
+
+	// Queries a list of FactoryKeys items.
+	rpc FactoryKeysAll(QueryAllFactoryKeysRequest) returns (QueryAllFactoryKeysResponse) {
+		option (google.api.http).get = "/soarchain/poa/factory_keys";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -306,4 +317,21 @@ message QueryGetMasterKeyRequest {}
 message QueryGetMasterKeyResponse {
 	MasterKey MasterKey = 1 [(gogoproto.nullable) = false];
 }
+message QueryGetFactoryKeysRequest {
+	uint64 id = 1;
+}
+
+message QueryGetFactoryKeysResponse {
+	FactoryKeys FactoryKeys = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllFactoryKeysRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllFactoryKeysResponse {
+	repeated FactoryKeys FactoryKeys = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
 // this line is used by starport scaffolding # 3

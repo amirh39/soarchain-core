@@ -44,6 +44,13 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	}
 	// Set if defined
 	k.SetMasterKey(ctx, genState.MasterKey)
+	// Set all the factoryKeys
+	for _, elem := range genState.FactoryKeysList {
+		k.SetFactoryKeys(ctx, elem)
+	}
+
+	// Set factoryKeys count
+	k.SetFactoryKeysCount(ctx, genState.FactoryKeysCount)
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -71,6 +78,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.MasterKey = masterKey
 	}
+	genesis.FactoryKeysList = k.GetAllFactoryKeys(ctx)
+	genesis.FactoryKeysCount = k.GetFactoryKeysCount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

@@ -23,6 +23,7 @@ service Msg {
   rpc UpdateGuard(MsgUpdateGuard) returns (MsgUpdateGuardResponse);
   rpc ClaimMotusRewards(MsgClaimMotusRewards) returns (MsgClaimMotusRewardsResponse);
   rpc ClaimRunnerRewards(MsgClaimRunnerRewards) returns (MsgClaimRunnerRewardsResponse);
+  rpc RegisterFactoryKey(MsgRegisterFactoryKey) returns (MsgRegisterFactoryKeyResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -148,6 +149,14 @@ message MsgClaimRunnerRewards {
 }
 
 message MsgClaimRunnerRewardsResponse {
+}
+
+message MsgRegisterFactoryKey {
+  string creator = 1;
+  string factoryKey = 2;
+}
+
+message MsgRegisterFactoryKeyResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

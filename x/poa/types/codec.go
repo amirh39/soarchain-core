@@ -21,6 +21,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUpdateGuard{}, "poa/UpdateGuard", nil)
 	cdc.RegisterConcrete(&MsgClaimMotusRewards{}, "poa/ClaimMotusRewards", nil)
 	cdc.RegisterConcrete(&MsgClaimRunnerRewards{}, "poa/ClaimRunnerRewards", nil)
+	cdc.RegisterConcrete(&MsgRegisterFactoryKey{}, "poa/RegisterFactoryKey", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -64,6 +65,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgClaimRunnerRewards{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRegisterFactoryKey{},
 	)
 	// this line is used by starport scaffolding # 3
 

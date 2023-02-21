@@ -28,3 +28,8 @@ const (
 const (
 	MasterKeyKey = "MasterKey-value-"
 )
+
+const (
+	FactoryKeysKey      = "FactoryKeys-value-"
+	FactoryKeysCountKey = "FactoryKeys-count-"
+)
