@@ -2,19 +2,35 @@ package keeper
 
 import (
 	"context"
-	"strconv"
-
+	"crypto/x509"
+	"encoding/pem"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+const deviceCertFile string = "/Users/candostyavuz/Projects/repo/soarchain-core/x/poa/cert/device_cert.pem"
+
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	_, isFound := k.GetClient(ctx, msg.Pubkey)
+	// ToDo: change pubkey field as device cert
+	deviceCert, err := k.CreateX509CertFromFile(deviceCertFile)
+	if err != nil {
+		return nil, err
+	}
+
+	pubKeyDer, _ := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
+	pubKeyBlock := pem.Block{
+		Type:  "PUBLIC_KEY",
+		Bytes: pubKeyDer,
+	}
+	publicKeyPem := string(pem.EncodeToMemory(&pubKeyBlock))
+
+	_, isFound := k.GetClient(ctx, publicKeyPem)
 	if isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client pubkey is already registered.")
 	}
@@ -25,7 +41,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// Save client into storage
 	newClient := types.Client{
-		Index:              msg.Pubkey,
+		Index:              publicKeyPem,
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
