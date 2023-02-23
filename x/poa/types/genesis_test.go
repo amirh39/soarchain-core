@@ -88,8 +88,8 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				MasterKey: types.MasterKey{
-					MasterPubkey:  "26",
-					MasterAccount: "70",
+					MasterCertificate: "26",
+					MasterAccount:     "70",
 				},
 				FactoryKeysList: []types.FactoryKeys{
 					{

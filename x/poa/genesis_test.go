@@ -79,8 +79,8 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		MasterKey: types.MasterKey{
-			MasterPubkey:  "39",
-			MasterAccount: "62",
+			MasterCertificate: "39",
+			MasterAccount:     "62",
 		},
 		FactoryKeysList: []types.FactoryKeys{
 			{

@@ -28,7 +28,7 @@ func TestV2VRewardEmissionPerBlock(t *testing.T) {
 		require.NoError(t, err)
 
 		if actualTokensPerBlock != test.expectedTokensPerBlock {
-			t.Errorf("Test failed: expected tokens per block of %f, got %f", test.expectedTokensPerBlock, actualTokensPerBlock)
+			t.Error("Test failed: expected tokens per block of, got", test.expectedTokensPerBlock, actualTokensPerBlock)
 		}
 	}
 }

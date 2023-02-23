@@ -31230,7 +31230,7 @@ paths:
               MasterKey:
                 type: object
                 properties:
-                  masterPubkey:
+                  masterCertificate:
                     type: string
                   masterAccount:
                     type: string
@@ -53979,7 +53979,7 @@ definitions:
   soarchain.poa.MasterKey:
     type: object
     properties:
-      masterPubkey:
+      masterCertificate:
         type: string
       masterAccount:
         type: string
@@ -54014,6 +54014,8 @@ definitions:
   soarchain.poa.MsgGenClientResponse:
     type: object
   soarchain.poa.MsgGenGuardResponse:
+    type: object
+  soarchain.poa.MsgRegisterFactoryKeyResponse:
     type: object
   soarchain.poa.MsgRunnerChallengeResponse:
     type: object
@@ -54722,7 +54724,7 @@ definitions:
       MasterKey:
         type: object
         properties:
-          masterPubkey:
+          masterCertificate:
             type: string
           masterAccount:
             type: string
