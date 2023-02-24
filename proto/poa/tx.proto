@@ -29,7 +29,7 @@ service Msg {
 
 message MsgGenClient {
   string creator = 1;
-  string pubkey = 2;
+  string certificate = 2;
 }
 
 message MsgGenClientResponse {
@@ -153,7 +153,7 @@ message MsgClaimRunnerRewardsResponse {
 
 message MsgRegisterFactoryKey {
   string creator = 1;
-  string factoryKey = 2;
+  string factoryCert = 2;
 }
 
 message MsgRegisterFactoryKeyResponse {

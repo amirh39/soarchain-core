@@ -9,10 +9,10 @@ const TypeMsgRegisterFactoryKey = "register_factory_key"
 
 var _ sdk.Msg = &MsgRegisterFactoryKey{}
 
-func NewMsgRegisterFactoryKey(creator string, factoryKey string) *MsgRegisterFactoryKey {
+func NewMsgRegisterFactoryKey(creator string, factoryCert string) *MsgRegisterFactoryKey {
 	return &MsgRegisterFactoryKey{
-		Creator:    creator,
-		FactoryKey: factoryKey,
+		Creator:     creator,
+		FactoryCert: factoryCert,
 	}
 }
 

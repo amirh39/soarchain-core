@@ -30665,7 +30665,7 @@ paths:
                     id:
                       type: string
                       format: uint64
-                    factoryKey:
+                    factoryCert:
                       type: string
               pagination:
                 type: object
@@ -30777,7 +30777,7 @@ paths:
                   id:
                     type: string
                     format: uint64
-                  factoryKey:
+                  factoryCert:
                     type: string
         default:
           description: An unexpected error response.
@@ -53910,7 +53910,7 @@ definitions:
       id:
         type: string
         format: uint64
-      factoryKey:
+      factoryCert:
         type: string
   soarchain.poa.Guard:
     type: object
@@ -54183,7 +54183,7 @@ definitions:
             id:
               type: string
               format: uint64
-            factoryKey:
+            factoryCert:
               type: string
       pagination:
         type: object
@@ -54649,7 +54649,7 @@ definitions:
           id:
             type: string
             format: uint64
-          factoryKey:
+          factoryCert:
             type: string
   soarchain.poa.QueryGetGuardResponse:
     type: object

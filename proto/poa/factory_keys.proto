@@ -5,6 +5,6 @@ option go_package = "soarchain/x/poa/types";
 
 message FactoryKeys {
   uint64 id = 1;
-  string factoryKey = 2; 
+  string factoryCert = 2; 
   
 }

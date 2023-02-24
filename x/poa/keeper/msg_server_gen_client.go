@@ -3,7 +3,9 @@ package keeper
 import (
 	"context"
 	"crypto/x509"
-	"encoding/pem"
+	"encoding/hex"
+
+	// "encoding/pem"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 	"strconv"
@@ -24,15 +26,37 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	}
 
 	pubKeyDer, _ := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
-	pubKeyBlock := pem.Block{
-		Type:  "PUBLIC_KEY",
-		Bytes: pubKeyDer,
-	}
-	publicKeyPem := string(pem.EncodeToMemory(&pubKeyBlock))
 
-	_, isFound := k.GetClient(ctx, publicKeyPem)
+	pubKeyHex := hex.EncodeToString(pubKeyDer)
+
+	_, isFound := k.GetClient(ctx, pubKeyHex)
 	if isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client pubkey is already registered.")
+	}
+
+	// Check validity of certificate
+	totalKeys := k.GetAllFactoryKeys(ctx)
+	var validated bool = false
+	for i := uint64(0); i <= uint64(len(totalKeys)); i++ {
+		factoryKey, isFound := k.GetFactoryKeys(ctx, i)
+		if isFound {
+			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
+			if err != nil {
+				return nil, err
+			}
+
+			validated, err = k.ValidateX509Cert(deviceCert, factoryCert)
+			if err != nil {
+				return nil, err
+			}
+			if validated {
+				break
+			}
+		}
+	}
+
+	if !validated {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cert verification error")
 	}
 
 	// rewardMultiplier
@@ -41,7 +65,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// Save client into storage
 	newClient := types.Client{
-		Index:              publicKeyPem,
+		Index:              pubKeyHex,
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),

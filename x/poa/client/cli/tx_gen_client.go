@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdGenClient() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "gen-client [pubkey] [fee]",
+		Use:   "gen-client [certificate]",
 		Short: "Broadcast message gen-client",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

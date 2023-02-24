@@ -3,18 +3,19 @@ package cli
 import (
 	"strconv"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
 var _ = strconv.Itoa(0)
 
 func CmdRegisterFactoryKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "register-factory-key [factory-key]",
+		Use:   "register-factory-key [factory-cert]",
 		Short: "Broadcast message registerFactoryKey",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
