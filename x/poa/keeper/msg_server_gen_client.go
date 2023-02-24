@@ -14,13 +14,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const deviceCertFile string = "/Users/candostyavuz/Projects/repo/soarchain-core/x/poa/cert/device_cert.pem"
-
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// ToDo: change pubkey field as device cert
-	deviceCert, err := k.CreateX509CertFromFile(deviceCertFile)
+	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
 	if err != nil {
 		return nil, err
 	}
