@@ -12,6 +12,7 @@ import (
 func (bank *MockBankKeeper) ExpectAny(context context.Context) {
 	bank.EXPECT().SendCoinsFromAccountToModule(sdk.UnwrapSDKContext(context), gomock.Any(), gomock.Any(), gomock.Any()).AnyTimes()
 	bank.EXPECT().SendCoinsFromModuleToAccount(sdk.UnwrapSDKContext(context), gomock.Any(), gomock.Any(), gomock.Any()).AnyTimes()
+	bank.EXPECT().GetBalance(sdk.UnwrapSDKContext(context), gomock.Any(), gomock.Any())
 }
 
 func coinsOf(amount uint64) sdk.Coins {

@@ -65,10 +65,10 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Transfer stakedAmount to contract:
-		balance := sdk.Coins{k.bankKeeper.GetBalance(ctx, msgSenderAddress, "soar")}
-		if balance.IsAllLT(requiredStake) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
-		}
+		// balance := sdk.Coins{k.bankKeeper.GetBalance(ctx, msgSenderAddress, "soar")}
+		// if balance.IsAllLT(requiredStake) {
+		// 	return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
+		// }
 
 		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 		if transferErr != nil {
