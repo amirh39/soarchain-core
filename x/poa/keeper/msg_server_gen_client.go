@@ -40,12 +40,12 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		if isFound {
 			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
 			if err != nil {
-				return nil, err
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Factory certificate couldn't be created from the storage!")
 			}
 
 			validated, err = k.ValidateX509Cert(deviceCert, factoryCert)
 			if err != nil {
-				return nil, err
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Device certificate couldn't be verified!")
 			}
 			if validated {
 				break
