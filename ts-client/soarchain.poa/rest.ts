@@ -38,12 +38,23 @@ export interface PoaEpochData {
   epochRunner?: string;
 }
 
+export interface PoaFactoryKeys {
+  /** @format uint64 */
+  id?: string;
+  factoryCert?: string;
+}
+
 export interface PoaGuard {
   index?: string;
   guardId?: string;
   runner?: PoaRunner;
   v2XChallenger?: PoaChallenger;
   v2NChallenger?: PoaChallenger;
+}
+
+export interface PoaMasterKey {
+  masterCertificate?: string;
+  masterAccount?: string;
 }
 
 export interface PoaMotusWallet {
@@ -60,6 +71,8 @@ export type PoaMsgClaimRunnerRewardsResponse = object;
 export type PoaMsgGenClientResponse = object;
 
 export type PoaMsgGenGuardResponse = object;
+
+export type PoaMsgRegisterFactoryKeyResponse = object;
 
 export type PoaMsgRunnerChallengeResponse = object;
 
@@ -103,6 +116,21 @@ export interface PoaQueryAllChallengerResponse {
 
 export interface PoaQueryAllClientResponse {
   client?: PoaClient[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface PoaQueryAllFactoryKeysResponse {
+  FactoryKeys?: PoaFactoryKeys[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -211,8 +239,16 @@ export interface PoaQueryGetEpochDataResponse {
   EpochData?: PoaEpochData;
 }
 
+export interface PoaQueryGetFactoryKeysResponse {
+  FactoryKeys?: PoaFactoryKeys;
+}
+
 export interface PoaQueryGetGuardResponse {
   guard?: PoaGuard;
+}
+
+export interface PoaQueryGetMasterKeyResponse {
+  MasterKey?: PoaMasterKey;
 }
 
 export interface PoaQueryGetMotusWalletResponse {
@@ -331,13 +367,6 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
 }
 
 /**
@@ -504,7 +533,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -546,7 +574,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -585,6 +612,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryEpochData = (params: RequestParams = {}) =>
     this.request<PoaQueryGetEpochDataResponse, RpcStatus>({
       path: `/soarchain/poa/epoch_data`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryFactoryKeysAll
+   * @summary Queries a list of FactoryKeys items.
+   * @request GET:/soarchain/poa/factory_keys
+   */
+  queryFactoryKeysAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PoaQueryAllFactoryKeysResponse, RpcStatus>({
+      path: `/soarchain/poa/factory_keys`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryFactoryKeys
+   * @summary Queries a FactoryKeys by id.
+   * @request GET:/soarchain/poa/factory_keys/{id}
+   */
+  queryFactoryKeys = (id: string, params: RequestParams = {}) =>
+    this.request<PoaQueryGetFactoryKeysResponse, RpcStatus>({
+      path: `/soarchain/poa/factory_keys/${id}`,
       method: "GET",
       format: "json",
       ...params,
@@ -636,7 +704,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -684,6 +751,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryMasterKey
+   * @summary Queries a MasterKey by index.
+   * @request GET:/soarchain/poa/master_key
+   */
+  queryMasterKey = (params: RequestParams = {}) =>
+    this.request<PoaQueryGetMasterKeyResponse, RpcStatus>({
+      path: `/soarchain/poa/master_key`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryMotusWalletAll
    * @summary Queries a list of MotusWallet items.
    * @request GET:/soarchain/poa/motus_wallet
@@ -694,7 +777,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -752,7 +834,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -810,7 +891,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -852,7 +932,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

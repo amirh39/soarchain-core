@@ -1,10 +1,13 @@
 /* eslint-disable */
+import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../cosmos/base/query/v1beta1/pagination";
 import { Challenger } from "./challenger";
 import { Client } from "./client";
 import { EpochData } from "./epoch_data";
+import { FactoryKeys } from "./factory_keys";
 import { Guard } from "./guard";
+import { MasterKey } from "./master_key";
 import { MotusWallet } from "./motus_wallet";
 import { Params } from "./params";
 import { Runner } from "./runner";
@@ -182,6 +185,30 @@ export interface QueryAllMotusWalletRequest {
 
 export interface QueryAllMotusWalletResponse {
   motusWallet: MotusWallet[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetMasterKeyRequest {
+}
+
+export interface QueryGetMasterKeyResponse {
+  MasterKey: MasterKey | undefined;
+}
+
+export interface QueryGetFactoryKeysRequest {
+  id: number;
+}
+
+export interface QueryGetFactoryKeysResponse {
+  FactoryKeys: FactoryKeys | undefined;
+}
+
+export interface QueryAllFactoryKeysRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllFactoryKeysResponse {
+  FactoryKeys: FactoryKeys[];
   pagination: PageResponse | undefined;
 }
 
@@ -2274,6 +2301,309 @@ export const QueryAllMotusWalletResponse = {
   },
 };
 
+function createBaseQueryGetMasterKeyRequest(): QueryGetMasterKeyRequest {
+  return {};
+}
+
+export const QueryGetMasterKeyRequest = {
+  encode(_: QueryGetMasterKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetMasterKeyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetMasterKeyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetMasterKeyRequest {
+    return {};
+  },
+
+  toJSON(_: QueryGetMasterKeyRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetMasterKeyRequest>, I>>(_: I): QueryGetMasterKeyRequest {
+    const message = createBaseQueryGetMasterKeyRequest();
+    return message;
+  },
+};
+
+function createBaseQueryGetMasterKeyResponse(): QueryGetMasterKeyResponse {
+  return { MasterKey: undefined };
+}
+
+export const QueryGetMasterKeyResponse = {
+  encode(message: QueryGetMasterKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.MasterKey !== undefined) {
+      MasterKey.encode(message.MasterKey, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetMasterKeyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetMasterKeyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.MasterKey = MasterKey.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetMasterKeyResponse {
+    return { MasterKey: isSet(object.MasterKey) ? MasterKey.fromJSON(object.MasterKey) : undefined };
+  },
+
+  toJSON(message: QueryGetMasterKeyResponse): unknown {
+    const obj: any = {};
+    message.MasterKey !== undefined
+      && (obj.MasterKey = message.MasterKey ? MasterKey.toJSON(message.MasterKey) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetMasterKeyResponse>, I>>(object: I): QueryGetMasterKeyResponse {
+    const message = createBaseQueryGetMasterKeyResponse();
+    message.MasterKey = (object.MasterKey !== undefined && object.MasterKey !== null)
+      ? MasterKey.fromPartial(object.MasterKey)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryGetFactoryKeysRequest(): QueryGetFactoryKeysRequest {
+  return { id: 0 };
+}
+
+export const QueryGetFactoryKeysRequest = {
+  encode(message: QueryGetFactoryKeysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetFactoryKeysRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetFactoryKeysRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetFactoryKeysRequest {
+    return { id: isSet(object.id) ? Number(object.id) : 0 };
+  },
+
+  toJSON(message: QueryGetFactoryKeysRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetFactoryKeysRequest>, I>>(object: I): QueryGetFactoryKeysRequest {
+    const message = createBaseQueryGetFactoryKeysRequest();
+    message.id = object.id ?? 0;
+    return message;
+  },
+};
+
+function createBaseQueryGetFactoryKeysResponse(): QueryGetFactoryKeysResponse {
+  return { FactoryKeys: undefined };
+}
+
+export const QueryGetFactoryKeysResponse = {
+  encode(message: QueryGetFactoryKeysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.FactoryKeys !== undefined) {
+      FactoryKeys.encode(message.FactoryKeys, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetFactoryKeysResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetFactoryKeysResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.FactoryKeys = FactoryKeys.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetFactoryKeysResponse {
+    return { FactoryKeys: isSet(object.FactoryKeys) ? FactoryKeys.fromJSON(object.FactoryKeys) : undefined };
+  },
+
+  toJSON(message: QueryGetFactoryKeysResponse): unknown {
+    const obj: any = {};
+    message.FactoryKeys !== undefined
+      && (obj.FactoryKeys = message.FactoryKeys ? FactoryKeys.toJSON(message.FactoryKeys) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetFactoryKeysResponse>, I>>(object: I): QueryGetFactoryKeysResponse {
+    const message = createBaseQueryGetFactoryKeysResponse();
+    message.FactoryKeys = (object.FactoryKeys !== undefined && object.FactoryKeys !== null)
+      ? FactoryKeys.fromPartial(object.FactoryKeys)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllFactoryKeysRequest(): QueryAllFactoryKeysRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllFactoryKeysRequest = {
+  encode(message: QueryAllFactoryKeysRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllFactoryKeysRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllFactoryKeysRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllFactoryKeysRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllFactoryKeysRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllFactoryKeysRequest>, I>>(object: I): QueryAllFactoryKeysRequest {
+    const message = createBaseQueryAllFactoryKeysRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllFactoryKeysResponse(): QueryAllFactoryKeysResponse {
+  return { FactoryKeys: [], pagination: undefined };
+}
+
+export const QueryAllFactoryKeysResponse = {
+  encode(message: QueryAllFactoryKeysResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.FactoryKeys) {
+      FactoryKeys.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllFactoryKeysResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllFactoryKeysResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.FactoryKeys.push(FactoryKeys.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllFactoryKeysResponse {
+    return {
+      FactoryKeys: Array.isArray(object?.FactoryKeys)
+        ? object.FactoryKeys.map((e: any) => FactoryKeys.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllFactoryKeysResponse): unknown {
+    const obj: any = {};
+    if (message.FactoryKeys) {
+      obj.FactoryKeys = message.FactoryKeys.map((e) => e ? FactoryKeys.toJSON(e) : undefined);
+    } else {
+      obj.FactoryKeys = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllFactoryKeysResponse>, I>>(object: I): QueryAllFactoryKeysResponse {
+    const message = createBaseQueryAllFactoryKeysResponse();
+    message.FactoryKeys = object.FactoryKeys?.map((e) => FactoryKeys.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -2316,6 +2646,12 @@ export interface Query {
   MotusWallet(request: QueryGetMotusWalletRequest): Promise<QueryGetMotusWalletResponse>;
   /** Queries a list of MotusWallet items. */
   MotusWalletAll(request: QueryAllMotusWalletRequest): Promise<QueryAllMotusWalletResponse>;
+  /** Queries a MasterKey by index. */
+  MasterKey(request: QueryGetMasterKeyRequest): Promise<QueryGetMasterKeyResponse>;
+  /** Queries a FactoryKeys by id. */
+  FactoryKeys(request: QueryGetFactoryKeysRequest): Promise<QueryGetFactoryKeysResponse>;
+  /** Queries a list of FactoryKeys items. */
+  FactoryKeysAll(request: QueryAllFactoryKeysRequest): Promise<QueryAllFactoryKeysResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -2342,6 +2678,9 @@ export class QueryClientImpl implements Query {
     this.EpochData = this.EpochData.bind(this);
     this.MotusWallet = this.MotusWallet.bind(this);
     this.MotusWalletAll = this.MotusWalletAll.bind(this);
+    this.MasterKey = this.MasterKey.bind(this);
+    this.FactoryKeys = this.FactoryKeys.bind(this);
+    this.FactoryKeysAll = this.FactoryKeysAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -2462,11 +2801,48 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("soarchain.poa.Query", "MotusWalletAll", data);
     return promise.then((data) => QueryAllMotusWalletResponse.decode(new _m0.Reader(data)));
   }
+
+  MasterKey(request: QueryGetMasterKeyRequest): Promise<QueryGetMasterKeyResponse> {
+    const data = QueryGetMasterKeyRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "MasterKey", data);
+    return promise.then((data) => QueryGetMasterKeyResponse.decode(new _m0.Reader(data)));
+  }
+
+  FactoryKeys(request: QueryGetFactoryKeysRequest): Promise<QueryGetFactoryKeysResponse> {
+    const data = QueryGetFactoryKeysRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "FactoryKeys", data);
+    return promise.then((data) => QueryGetFactoryKeysResponse.decode(new _m0.Reader(data)));
+  }
+
+  FactoryKeysAll(request: QueryAllFactoryKeysRequest): Promise<QueryAllFactoryKeysResponse> {
+    const data = QueryAllFactoryKeysRequest.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Query", "FactoryKeysAll", data);
+    return promise.then((data) => QueryAllFactoryKeysResponse.decode(new _m0.Reader(data)));
+  }
 }
 
 interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -2478,6 +2854,18 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

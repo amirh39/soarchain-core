@@ -7,7 +7,7 @@ export const protobufPackage = "soarchain.poa";
 
 export interface MsgGenClient {
   creator: string;
-  pubkey: string;
+  certificate: string;
 }
 
 export interface MsgGenClientResponse {
@@ -128,8 +128,16 @@ export interface MsgClaimRunnerRewards {
 export interface MsgClaimRunnerRewardsResponse {
 }
 
+export interface MsgRegisterFactoryKey {
+  creator: string;
+  factoryCert: string;
+}
+
+export interface MsgRegisterFactoryKeyResponse {
+}
+
 function createBaseMsgGenClient(): MsgGenClient {
-  return { creator: "", pubkey: "" };
+  return { creator: "", certificate: "" };
 }
 
 export const MsgGenClient = {
@@ -137,8 +145,8 @@ export const MsgGenClient = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.pubkey !== "") {
-      writer.uint32(18).string(message.pubkey);
+    if (message.certificate !== "") {
+      writer.uint32(18).string(message.certificate);
     }
     return writer;
   },
@@ -154,7 +162,7 @@ export const MsgGenClient = {
           message.creator = reader.string();
           break;
         case 2:
-          message.pubkey = reader.string();
+          message.certificate = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -167,21 +175,21 @@ export const MsgGenClient = {
   fromJSON(object: any): MsgGenClient {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
+      certificate: isSet(object.certificate) ? String(object.certificate) : "",
     };
   },
 
   toJSON(message: MsgGenClient): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.pubkey !== undefined && (obj.pubkey = message.pubkey);
+    message.certificate !== undefined && (obj.certificate = message.certificate);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgGenClient>, I>>(object: I): MsgGenClient {
     const message = createBaseMsgGenClient();
     message.creator = object.creator ?? "";
-    message.pubkey = object.pubkey ?? "";
+    message.certificate = object.certificate ?? "";
     return message;
   },
 };
@@ -1591,6 +1599,103 @@ export const MsgClaimRunnerRewardsResponse = {
   },
 };
 
+function createBaseMsgRegisterFactoryKey(): MsgRegisterFactoryKey {
+  return { creator: "", factoryCert: "" };
+}
+
+export const MsgRegisterFactoryKey = {
+  encode(message: MsgRegisterFactoryKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.factoryCert !== "") {
+      writer.uint32(18).string(message.factoryCert);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterFactoryKey {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRegisterFactoryKey();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.factoryCert = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRegisterFactoryKey {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      factoryCert: isSet(object.factoryCert) ? String(object.factoryCert) : "",
+    };
+  },
+
+  toJSON(message: MsgRegisterFactoryKey): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.factoryCert !== undefined && (obj.factoryCert = message.factoryCert);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterFactoryKey>, I>>(object: I): MsgRegisterFactoryKey {
+    const message = createBaseMsgRegisterFactoryKey();
+    message.creator = object.creator ?? "";
+    message.factoryCert = object.factoryCert ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgRegisterFactoryKeyResponse(): MsgRegisterFactoryKeyResponse {
+  return {};
+}
+
+export const MsgRegisterFactoryKeyResponse = {
+  encode(_: MsgRegisterFactoryKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterFactoryKeyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRegisterFactoryKeyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgRegisterFactoryKeyResponse {
+    return {};
+  },
+
+  toJSON(_: MsgRegisterFactoryKeyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterFactoryKeyResponse>, I>>(_: I): MsgRegisterFactoryKeyResponse {
+    const message = createBaseMsgRegisterFactoryKeyResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse>;
@@ -1605,8 +1710,9 @@ export interface Msg {
   SelectRandomRunner(request: MsgSelectRandomRunner): Promise<MsgSelectRandomRunnerResponse>;
   UpdateGuard(request: MsgUpdateGuard): Promise<MsgUpdateGuardResponse>;
   ClaimMotusRewards(request: MsgClaimMotusRewards): Promise<MsgClaimMotusRewardsResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   ClaimRunnerRewards(request: MsgClaimRunnerRewards): Promise<MsgClaimRunnerRewardsResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  RegisterFactoryKey(request: MsgRegisterFactoryKey): Promise<MsgRegisterFactoryKeyResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1626,6 +1732,7 @@ export class MsgClientImpl implements Msg {
     this.UpdateGuard = this.UpdateGuard.bind(this);
     this.ClaimMotusRewards = this.ClaimMotusRewards.bind(this);
     this.ClaimRunnerRewards = this.ClaimRunnerRewards.bind(this);
+    this.RegisterFactoryKey = this.RegisterFactoryKey.bind(this);
   }
   GenClient(request: MsgGenClient): Promise<MsgGenClientResponse> {
     const data = MsgGenClient.encode(request).finish();
@@ -1703,6 +1810,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgClaimRunnerRewards.encode(request).finish();
     const promise = this.rpc.request("soarchain.poa.Msg", "ClaimRunnerRewards", data);
     return promise.then((data) => MsgClaimRunnerRewardsResponse.decode(new _m0.Reader(data)));
+  }
+
+  RegisterFactoryKey(request: MsgRegisterFactoryKey): Promise<MsgRegisterFactoryKeyResponse> {
+    const data = MsgRegisterFactoryKey.encode(request).finish();
+    const promise = this.rpc.request("soarchain.poa.Msg", "RegisterFactoryKey", data);
+    return promise.then((data) => MsgRegisterFactoryKeyResponse.decode(new _m0.Reader(data)));
   }
 }
 

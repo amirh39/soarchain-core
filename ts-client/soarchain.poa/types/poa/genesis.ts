@@ -1,9 +1,12 @@
 /* eslint-disable */
+import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Challenger } from "./challenger";
 import { Client } from "./client";
 import { EpochData } from "./epoch_data";
+import { FactoryKeys } from "./factory_keys";
 import { Guard } from "./guard";
+import { MasterKey } from "./master_key";
 import { MotusWallet } from "./motus_wallet";
 import { Params } from "./params";
 import { Runner } from "./runner";
@@ -21,11 +24,12 @@ export interface GenesisState {
   guardList: Guard[];
   vrfDataList: VrfData[];
   vrfUserList: VrfUser[];
-  epochData:
-    | EpochData
-    | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
+  epochData: EpochData | undefined;
   motusWalletList: MotusWallet[];
+  masterKey: MasterKey | undefined;
+  factoryKeysList: FactoryKeys[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  factoryKeysCount: number;
 }
 
 function createBaseGenesisState(): GenesisState {
@@ -39,6 +43,9 @@ function createBaseGenesisState(): GenesisState {
     vrfUserList: [],
     epochData: undefined,
     motusWalletList: [],
+    masterKey: undefined,
+    factoryKeysList: [],
+    factoryKeysCount: 0,
   };
 }
 
@@ -70,6 +77,15 @@ export const GenesisState = {
     }
     for (const v of message.motusWalletList) {
       MotusWallet.encode(v!, writer.uint32(74).fork()).ldelim();
+    }
+    if (message.masterKey !== undefined) {
+      MasterKey.encode(message.masterKey, writer.uint32(82).fork()).ldelim();
+    }
+    for (const v of message.factoryKeysList) {
+      FactoryKeys.encode(v!, writer.uint32(90).fork()).ldelim();
+    }
+    if (message.factoryKeysCount !== 0) {
+      writer.uint32(96).uint64(message.factoryKeysCount);
     }
     return writer;
   },
@@ -108,6 +124,15 @@ export const GenesisState = {
         case 9:
           message.motusWalletList.push(MotusWallet.decode(reader, reader.uint32()));
           break;
+        case 10:
+          message.masterKey = MasterKey.decode(reader, reader.uint32());
+          break;
+        case 11:
+          message.factoryKeysList.push(FactoryKeys.decode(reader, reader.uint32()));
+          break;
+        case 12:
+          message.factoryKeysCount = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -131,6 +156,11 @@ export const GenesisState = {
       motusWalletList: Array.isArray(object?.motusWalletList)
         ? object.motusWalletList.map((e: any) => MotusWallet.fromJSON(e))
         : [],
+      masterKey: isSet(object.masterKey) ? MasterKey.fromJSON(object.masterKey) : undefined,
+      factoryKeysList: Array.isArray(object?.factoryKeysList)
+        ? object.factoryKeysList.map((e: any) => FactoryKeys.fromJSON(e))
+        : [],
+      factoryKeysCount: isSet(object.factoryKeysCount) ? Number(object.factoryKeysCount) : 0,
     };
   },
 
@@ -174,6 +204,14 @@ export const GenesisState = {
     } else {
       obj.motusWalletList = [];
     }
+    message.masterKey !== undefined
+      && (obj.masterKey = message.masterKey ? MasterKey.toJSON(message.masterKey) : undefined);
+    if (message.factoryKeysList) {
+      obj.factoryKeysList = message.factoryKeysList.map((e) => e ? FactoryKeys.toJSON(e) : undefined);
+    } else {
+      obj.factoryKeysList = [];
+    }
+    message.factoryKeysCount !== undefined && (obj.factoryKeysCount = Math.round(message.factoryKeysCount));
     return obj;
   },
 
@@ -192,9 +230,33 @@ export const GenesisState = {
       ? EpochData.fromPartial(object.epochData)
       : undefined;
     message.motusWalletList = object.motusWalletList?.map((e) => MotusWallet.fromPartial(e)) || [];
+    message.masterKey = (object.masterKey !== undefined && object.masterKey !== null)
+      ? MasterKey.fromPartial(object.masterKey)
+      : undefined;
+    message.factoryKeysList = object.factoryKeysList?.map((e) => FactoryKeys.fromPartial(e)) || [];
+    message.factoryKeysCount = object.factoryKeysCount ?? 0;
     return message;
   },
 };
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -206,6 +268,18 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
