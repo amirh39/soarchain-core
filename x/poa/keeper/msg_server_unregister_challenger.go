@@ -25,7 +25,7 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 	}
 
 	// Check challenger is belong to msg.Creator's guard
-	if guard.V2NChallenger.Address != msg.ChallengerAddress || guard.V2XChallenger.Address != msg.ChallengerAddress {
+	if guard.V2NChallenger.Address != msg.ChallengerAddress && guard.V2XChallenger.Address != msg.ChallengerAddress {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Challenger is not belong to msg.Creator's guard!")
 	}
 
