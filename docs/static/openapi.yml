@@ -34691,15 +34691,9 @@ paths:
                 properties:
                   inflation:
                     type: string
-                  phase:
-                    type: string
-                    format: uint64
-                  startPhaseBlock:
-                    type: string
-                    format: uint64
                   annualProvisions:
                     type: string
-                  targetSupply:
+                  totalStakeRewardsPerBlock:
                     type: string
         default:
           description: An unexpected error response.
@@ -58202,15 +58196,9 @@ definitions:
     properties:
       inflation:
         type: string
-      phase:
-        type: string
-        format: uint64
-      startPhaseBlock:
-        type: string
-        format: uint64
       annualProvisions:
         type: string
-      targetSupply:
+      totalStakeRewardsPerBlock:
         type: string
   soarchain.soarmint.Params:
     type: object
@@ -58231,15 +58219,9 @@ definitions:
         properties:
           inflation:
             type: string
-          phase:
-            type: string
-            format: uint64
-          startPhaseBlock:
-            type: string
-            format: uint64
           annualProvisions:
             type: string
-          targetSupply:
+          totalStakeRewardsPerBlock:
             type: string
   soarchain.soarmint.QueryParamsResponse:
     type: object
