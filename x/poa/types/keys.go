@@ -22,13 +22,14 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	TotalClientsKey = "TotalClients-value-"
+	EpochDataKey = "EpochData-value-"
 )
 
 const (
-	TotalChallengersKey = "TotalChallengers-value-"
+	MasterKeyKey = "MasterKey-value-"
 )
 
 const (
-	TotalRunnersKey = "TotalRunners-value-"
+	FactoryKeysKey      = "FactoryKeys-value-"
+	FactoryKeysCountKey = "FactoryKeys-count-"
 )

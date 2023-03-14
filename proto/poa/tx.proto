@@ -1,8 +1,10 @@
 syntax = "proto3";
 package soarchain.poa;
 
-import "poa/total_clients.proto";
+import "poa/challenger.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
+import "poa/runner.proto";
 
 option go_package = "soarchain/x/poa/types";
 
@@ -13,18 +15,21 @@ service Msg {
   rpc UnregisterClient(MsgUnregisterClient) returns (MsgUnregisterClientResponse);
   rpc UnregisterChallenger(MsgUnregisterChallenger) returns (MsgUnregisterChallengerResponse);
   rpc GenGuard(MsgGenGuard) returns (MsgGenGuardResponse);
-  rpc CreateTotalClients(MsgCreateTotalClients) returns (MsgCreateTotalClientsResponse);
-  rpc UpdateTotalClients(MsgUpdateTotalClients) returns (MsgUpdateTotalClientsResponse);
-  rpc DeleteTotalClients(MsgDeleteTotalClients) returns (MsgDeleteTotalClientsResponse);
   rpc UnregisterRunner(MsgUnregisterRunner) returns (MsgUnregisterRunnerResponse);
   rpc RunnerChallenge(MsgRunnerChallenge) returns (MsgRunnerChallengeResponse);
+  rpc UnregisterGuard(MsgUnregisterGuard) returns (MsgUnregisterGuardResponse);
+  rpc SelectRandomChallenger(MsgSelectRandomChallenger) returns (MsgSelectRandomChallengerResponse);
+  rpc SelectRandomRunner(MsgSelectRandomRunner) returns (MsgSelectRandomRunnerResponse);
+  rpc UpdateGuard(MsgUpdateGuard) returns (MsgUpdateGuardResponse);
+  rpc ClaimMotusRewards(MsgClaimMotusRewards) returns (MsgClaimMotusRewardsResponse);
+  rpc ClaimRunnerRewards(MsgClaimRunnerRewards) returns (MsgClaimRunnerRewardsResponse);
+  rpc RegisterFactoryKey(MsgRegisterFactoryKey) returns (MsgRegisterFactoryKeyResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgGenClient {
   string creator = 1;
-  string address = 2;
-  string fee = 3;
+  string certificate = 2;
 }
 
 message MsgGenClientResponse {
@@ -32,8 +37,10 @@ message MsgGenClientResponse {
 
 message MsgChallengeService {
   string creator = 1;
-  string challengeeAddress = 2;
-  string challengeResult = 3;
+  string clientPubkey = 2;
+  string clientCommunicationMode = 3;
+  string challengeResult = 4;
+
 }
 
 message MsgChallengeServiceResponse {
@@ -41,8 +48,7 @@ message MsgChallengeServiceResponse {
 
 message MsgUnregisterClient {
   string creator = 1;
-  string address = 2;
-  string fee = 3;
+  string pubkey = 2;
 }
 
 message MsgUnregisterClientResponse {
@@ -50,7 +56,7 @@ message MsgUnregisterClientResponse {
 
 message MsgUnregisterChallenger {
   string creator = 1;
-  string fee = 2;
+  string challengerAddress = 2;
 }
 
 message MsgUnregisterChallengerResponse {
@@ -73,25 +79,9 @@ message MsgGenGuard {
 message MsgGenGuardResponse {
 }
 
-message MsgCreateTotalClients {
-  string creator = 1;
-  uint64 count = 3;
-}
-message MsgCreateTotalClientsResponse {}
-
-message MsgUpdateTotalClients {
-  string creator = 1;
-  uint64 count = 3;
-}
-message MsgUpdateTotalClientsResponse {}
-
-message MsgDeleteTotalClients {
-  string creator = 1;
-}
-message MsgDeleteTotalClientsResponse {}
 message MsgUnregisterRunner {
   string creator = 1;
-  string fee = 2;
+  string runnerAddress = 2;
 }
 
 message MsgUnregisterRunnerResponse {
@@ -100,10 +90,73 @@ message MsgUnregisterRunnerResponse {
 message MsgRunnerChallenge {
   string creator = 1;
   string runnerAddress = 2;
-  string challengeResult = 3;
+  repeated string clientPubkeys = 3;
 }
 
 message MsgRunnerChallengeResponse {
+}
+
+message MsgUnregisterGuard {
+  string creator = 1;
+}
+
+message MsgUnregisterGuardResponse {
+}
+
+message MsgSelectRandomChallenger {
+  string creator = 1;
+}
+
+message MsgSelectRandomChallengerResponse {
+  Challenger randomChallenger = 1;
+}
+
+message MsgSelectRandomRunner {
+  string creator = 1;
+}
+
+message MsgSelectRandomRunnerResponse {
+  Runner randomRunner = 1;
+}
+
+message MsgUpdateGuard {
+  string creator = 1;
+  string v2XAddr = 3;
+  string v2XStake = 4;
+  string v2XIp = 5;
+  string v2NAddr = 6;
+  string v2NStake = 7;
+  string v2NIp = 8;
+  string runnerAddr = 9;
+  string runnerStake = 10;
+  string runnerIp = 11;
+}
+
+message MsgUpdateGuardResponse {
+}
+
+message MsgClaimMotusRewards {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgClaimMotusRewardsResponse {
+}
+
+message MsgClaimRunnerRewards {
+  string creator = 1;
+  string amount = 2;
+}
+
+message MsgClaimRunnerRewardsResponse {
+}
+
+message MsgRegisterFactoryKey {
+  string creator = 1;
+  string factoryCert = 2;
+}
+
+message MsgRegisterFactoryKeyResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

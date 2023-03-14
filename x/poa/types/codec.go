@@ -13,11 +13,15 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUnregisterClient{}, "poa/UnregisterClient", nil)
 	cdc.RegisterConcrete(&MsgUnregisterChallenger{}, "poa/UnregisterChallenger", nil)
 	cdc.RegisterConcrete(&MsgGenGuard{}, "poa/GenGuard", nil)
-	cdc.RegisterConcrete(&MsgCreateTotalClients{}, "poa/CreateTotalClients", nil)
-	cdc.RegisterConcrete(&MsgUpdateTotalClients{}, "poa/UpdateTotalClients", nil)
-	cdc.RegisterConcrete(&MsgDeleteTotalClients{}, "poa/DeleteTotalClients", nil)
 	cdc.RegisterConcrete(&MsgUnregisterRunner{}, "poa/UnregisterRunner", nil)
 	cdc.RegisterConcrete(&MsgRunnerChallenge{}, "poa/RunnerChallenge", nil)
+	cdc.RegisterConcrete(&MsgUnregisterGuard{}, "poa/UnregisterGuard", nil)
+	cdc.RegisterConcrete(&MsgSelectRandomChallenger{}, "poa/SelectRandomChallenger", nil)
+	cdc.RegisterConcrete(&MsgSelectRandomRunner{}, "poa/SelectRandomRunner", nil)
+	cdc.RegisterConcrete(&MsgUpdateGuard{}, "poa/UpdateGuard", nil)
+	cdc.RegisterConcrete(&MsgClaimMotusRewards{}, "poa/ClaimMotusRewards", nil)
+	cdc.RegisterConcrete(&MsgClaimRunnerRewards{}, "poa/ClaimRunnerRewards", nil)
+	cdc.RegisterConcrete(&MsgRegisterFactoryKey{}, "poa/RegisterFactoryKey", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -38,15 +42,32 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgGenGuard{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateTotalClients{},
-		&MsgUpdateTotalClients{},
-		&MsgDeleteTotalClients{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUnregisterRunner{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRunnerChallenge{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUnregisterGuard{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSelectRandomChallenger{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSelectRandomRunner{},
+	)
+
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUpdateGuard{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgClaimMotusRewards{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgClaimRunnerRewards{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRegisterFactoryKey{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -26,21 +26,31 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.GuardList {
 		k.SetGuard(ctx, elem)
 	}
-	// Set if defined
-	k.SetTotalClients(ctx, genState.TotalClients)
-	// Set if defined
-	k.SetTotalChallengers(ctx, genState.TotalChallengers)
-	// Set if defined
-	k.SetTotalRunners(ctx, genState.TotalRunners)
 
-	// Set all the challengerByIndex
-	for _, elem := range genState.ChallengerByIndexList {
-		k.SetChallengerByIndex(ctx, elem)
+	// Set all the vrfData
+	for _, elem := range genState.VrfDataList {
+		k.SetVrfData(ctx, elem)
 	}
-	// Set all the runnerByIndex
-	for _, elem := range genState.RunnerByIndexList {
-		k.SetRunnerByIndex(ctx, elem)
+	// Set all the vrfUser
+	for _, elem := range genState.VrfUserList {
+		k.SetVrfUser(ctx, elem)
 	}
+	// Set if defined
+	k.SetEpochData(ctx, genState.EpochData)
+
+	// Set all the motusWallet
+	for _, elem := range genState.MotusWalletList {
+		k.SetMotusWallet(ctx, elem)
+	}
+	// Set if defined
+	k.SetMasterKey(ctx, genState.MasterKey)
+	// Set all the factoryKeys
+	for _, elem := range genState.FactoryKeysList {
+		k.SetFactoryKeys(ctx, elem)
+	}
+
+	// Set factoryKeys count
+	k.SetFactoryKeysCount(ctx, genState.FactoryKeysCount)
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -54,23 +64,22 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.ChallengerList = k.GetAllChallenger(ctx)
 	genesis.RunnerList = k.GetAllRunner(ctx)
 	genesis.GuardList = k.GetAllGuard(ctx)
-	// Get all totalClients
-	totalClients, found := k.GetTotalClients(ctx)
+
+	genesis.VrfDataList = k.GetAllVrfData(ctx)
+	genesis.VrfUserList = k.GetAllVrfUser(ctx)
+	// Get all epochData
+	epochData, found := k.GetEpochData(ctx)
 	if found {
-		genesis.TotalClients = totalClients
+		genesis.EpochData = epochData
 	}
-	// Get all totalChallengers
-	totalChallengers, found := k.GetTotalChallengers(ctx)
+	genesis.MotusWalletList = k.GetAllMotusWallet(ctx)
+	// Get all masterKey
+	masterKey, found := k.GetMasterKey(ctx)
 	if found {
-		genesis.TotalChallengers = totalChallengers
+		genesis.MasterKey = masterKey
 	}
-	// Get all totalRunners
-	totalRunners, found := k.GetTotalRunners(ctx)
-	if found {
-		genesis.TotalRunners = totalRunners
-	}
-	genesis.ChallengerByIndexList = k.GetAllChallengerByIndex(ctx)
-	genesis.RunnerByIndexList = k.GetAllRunnerByIndex(ctx)
+	genesis.FactoryKeysList = k.GetAllFactoryKeys(ctx)
+	genesis.FactoryKeysCount = k.GetFactoryKeysCount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

@@ -13,42 +13,38 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the client exists
-	_, isFound := k.GetClient(ctx, msg.Address)
+	client, isFound := k.GetClient(ctx, msg.Pubkey)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Client is not registered.")
 	}
 
-	// Check msg sender is the client, only owner of MOTUS can remove itself
-	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	clientAddr, _ := sdk.AccAddressFromBech32(msg.Address)
-	if !(msgSenderAddress.Equals(clientAddr)) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Client signature is required!")
+	// Check if authorized
+	if client.Address != msg.Creator {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Registrant is not recognized!")
 	}
 
-	// Check removal fee
-	removalFee, _ := sdk.ParseCoinsNormalized("25000000soar")
-	msgFee, _ := sdk.ParseCoinsNormalized(msg.Fee)
-	if removalFee.GetDenomByIndex(0) != "soar" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
-	}
-	if msgFee.IsAllLT(removalFee) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for removal.")
+	// Get Motus Wallet
+	motusWallet, isFoundMotusWallet := k.GetMotusWallet(ctx, client.Address)
+	if !isFoundMotusWallet {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Motus wallet is not registered")
 	}
 
-	// Transfer fee to the protocol, then burn it
-	k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, removalFee)
-	k.bankKeeper.BurnCoins(ctx, types.ModuleName, removalFee)
+	// Transfer claimmable rewards
+	earnedAmount, err := sdk.ParseCoinsNormalized(client.NetEarnings)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
+	}
+	clientAccount, _ := sdk.AccAddressFromBech32(client.Address)
+	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, earnedAmount)
+	if errTransfer != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
+	}
 
 	// Remove client
-	k.RemoveClient(ctx, msg.Address)
+	k.RemoveClient(ctx, msg.Pubkey)
 
-	// Update Client Count
-	clientCount, isFound := k.Keeper.GetTotalClients(ctx)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Client count couldn't be fetched!")
-	}
-	clientCount.Count--
-	k.SetTotalClients(ctx, clientCount)
+	// Remove motus wallet
+	k.RemoveMotusWallet(ctx, motusWallet.Index)
 
 	return &types.MsgUnregisterClientResponse{}, nil
 }

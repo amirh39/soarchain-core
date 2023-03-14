@@ -3,22 +3,23 @@ package cli
 import (
 	"strconv"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
 var _ = strconv.Itoa(0)
 
 func CmdUnregisterRunner() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "unregister-runner [fee]",
+		Use:   "unregister-runner [runner-address]",
 		Short: "Broadcast message unregister-runner",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argFee := args[0]
+			argAddress := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -27,7 +28,7 @@ func CmdUnregisterRunner() *cobra.Command {
 
 			msg := types.NewMsgUnregisterRunner(
 				clientCtx.GetFromAddress().String(),
-				argFee,
+				argAddress,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

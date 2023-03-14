@@ -6,10 +6,13 @@ option go_package = "soarchain/x/poa/types";
 message Runner {
   string index = 1; 
   string address = 2; 
-  string score = 3; 
-  string stakedAmount = 4; 
-  string netEarnings = 5; 
-  string ipAddr = 6;
-  string lastTimeChallenged = 7;
+  string score = 3;
+  string rewardMultiplier = 4;
+  string stakedAmount = 5; 
+  string netEarnings = 6; 
+  string ipAddr = 7;
+  string lastTimeChallenged = 8;
+  string coolDownTolerance = 9;
+  string guardAddress = 10;
 }
 

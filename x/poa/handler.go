@@ -33,20 +33,32 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgGenGuard:
 			res, err := msgServer.GenGuard(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreateTotalClients:
-			res, err := msgServer.CreateTotalClients(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateTotalClients:
-			res, err := msgServer.UpdateTotalClients(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeleteTotalClients:
-			res, err := msgServer.DeleteTotalClients(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUnregisterRunner:
 			res, err := msgServer.UnregisterRunner(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRunnerChallenge:
 			res, err := msgServer.RunnerChallenge(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUnregisterGuard:
+			res, err := msgServer.UnregisterGuard(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgSelectRandomChallenger:
+			res, err := msgServer.SelectRandomChallenger(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgSelectRandomRunner:
+			res, err := msgServer.SelectRandomRunner(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateGuard:
+			res, err := msgServer.UpdateGuard(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgClaimMotusRewards:
+			res, err := msgServer.ClaimMotusRewards(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgClaimRunnerRewards:
+			res, err := msgServer.ClaimRunnerRewards(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRegisterFactoryKey:
+			res, err := msgServer.RegisterFactoryKey(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

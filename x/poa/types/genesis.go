@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // DefaultIndex is the default capability global index
@@ -10,15 +12,25 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		ClientList:            []Client{},
-		ChallengerList:        []Challenger{},
-		RunnerList:            []Runner{},
-		GuardList:             []Guard{},
-		TotalClients:          TotalClients{Count: uint64(0)},
-		TotalChallengers:      TotalChallengers{Count: uint64(0)},
-		TotalRunners:          TotalRunners{Count: uint64(0)},
-		ChallengerByIndexList: []ChallengerByIndex{},
-		RunnerByIndexList:     []RunnerByIndex{},
+		ClientList:     []Client{},
+		ChallengerList: []Challenger{},
+		RunnerList:     []Runner{},
+		GuardList:      []Guard{},
+		VrfDataList:    []VrfData{},
+		VrfUserList:    []VrfUser{},
+		EpochData: EpochData{
+			TotalEpochs: 0,
+			EpochV2VRX:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			EpochV2VBX:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			EpochV2NBX:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			EpochRunner: sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+		},
+		MotusWalletList: []MotusWallet{},
+		MasterKey: MasterKey{
+			MasterCertificate: "",
+			MasterAccount:     "",
+		},
+		FactoryKeysList: []FactoryKeys{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -67,25 +79,48 @@ func (gs GenesisState) Validate() error {
 		}
 		guardIndexMap[index] = struct{}{}
 	}
-	// Check for duplicated index in challengerByIndex
-	challengerByIndexIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.ChallengerByIndexList {
-		index := string(ChallengerByIndexKey(elem.Index))
-		if _, ok := challengerByIndexIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for challengerByIndex")
+	// Check for duplicated index in vrfData
+	vrfDataIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.VrfDataList {
+		index := string(VrfDataKey(elem.Index))
+		if _, ok := vrfDataIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for vrfData")
 		}
-		challengerByIndexIndexMap[index] = struct{}{}
+		vrfDataIndexMap[index] = struct{}{}
 	}
-	// Check for duplicated index in runnerByIndex
-	runnerByIndexIndexMap := make(map[string]struct{})
+	// Check for duplicated index in vrfUser
+	vrfUserIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.RunnerByIndexList {
-		index := string(RunnerByIndexKey(elem.Index))
-		if _, ok := runnerByIndexIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for runnerByIndex")
+	for _, elem := range gs.VrfUserList {
+		index := string(VrfUserKey(elem.Index))
+		if _, ok := vrfUserIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for vrfUser")
 		}
-		runnerByIndexIndexMap[index] = struct{}{}
+		vrfUserIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in motusWallet
+	motusWalletIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.MotusWalletList {
+		index := string(MotusWalletKey(elem.Index))
+		if _, ok := motusWalletIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for motusWallet")
+		}
+		motusWalletIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated ID in factoryKeys
+	factoryKeysIdMap := make(map[uint64]bool)
+	factoryKeysCount := gs.GetFactoryKeysCount()
+	for _, elem := range gs.FactoryKeysList {
+		if _, ok := factoryKeysIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for factoryKeys")
+		}
+		if elem.Id >= factoryKeysCount {
+			return fmt.Errorf("factoryKeys id should be lower or equal than the last id")
+		}
+		factoryKeysIdMap[elem.Id] = true
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

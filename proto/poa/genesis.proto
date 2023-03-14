@@ -7,11 +7,12 @@ import "poa/client.proto";
 import "poa/challenger.proto";
 import "poa/runner.proto";
 import "poa/guard.proto";
-import "poa/total_clients.proto";
-import "poa/total_challengers.proto";
-import "poa/total_runners.proto";
-import "poa/challenger_by_index.proto";
-import "poa/runner_by_index.proto";
+import "poa/vrf_data.proto";
+import "poa/vrf_user.proto";
+import "poa/epoch_data.proto";
+import "poa/motus_wallet.proto";
+import "poa/master_key.proto";
+import "poa/factory_keys.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "soarchain/x/poa/types";
@@ -23,10 +24,12 @@ message GenesisState {
   repeated Challenger challengerList = 3 [(gogoproto.nullable) = false];
   repeated Runner runnerList = 4 [(gogoproto.nullable) = false];
   repeated Guard guardList = 5 [(gogoproto.nullable) = false];
-  TotalClients totalClients = 6 [(gogoproto.nullable) = false];
-  TotalChallengers totalChallengers = 7 [(gogoproto.nullable) = false];
-  TotalRunners totalRunners = 8 [(gogoproto.nullable) = false];
-  repeated ChallengerByIndex challengerByIndexList = 9 [(gogoproto.nullable) = false];
-  repeated RunnerByIndex runnerByIndexList = 10 [(gogoproto.nullable) = false];
+  repeated VrfData vrfDataList = 6 [(gogoproto.nullable) = false];
+  repeated VrfUser vrfUserList = 7 [(gogoproto.nullable) = false];
+  EpochData epochData = 8 [(gogoproto.nullable) = false];
+  repeated MotusWallet motusWalletList = 9 [(gogoproto.nullable) = false];
+  MasterKey masterKey = 10 [(gogoproto.nullable) = false];
+  repeated FactoryKeys factoryKeysList = 11 [(gogoproto.nullable) = false];
+  uint64 factoryKeysCount = 12;
   // this line is used by starport scaffolding # genesis/proto/state
 }

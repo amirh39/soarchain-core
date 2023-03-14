@@ -6,15 +6,16 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
 import "poa/guard.proto";
-import "poa/total_clients.proto";
-import "poa/total_challengers.proto";
-import "poa/total_runners.proto";
-import "poa/challenger_by_index.proto";
-import "poa/runner_by_index.proto";
+import "poa/vrf_data.proto";
+import "poa/vrf_user.proto";
+import "poa/epoch_data.proto";
+import "poa/motus_wallet.proto";
+import "poa/master_key.proto";
+import "poa/factory_keys.proto";
 // this line is used by starport scaffolding # 1
+import "poa/client.proto";
 import "poa/runner.proto";
 import "poa/challenger.proto";
-import "poa/client.proto";
 
 option go_package = "soarchain/x/poa/types";
 
@@ -74,46 +75,62 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/get_challenger_by_address/{address}";
 	}
 
-// Queries a TotalClients by index.
-	rpc TotalClients(QueryGetTotalClientsRequest) returns (QueryGetTotalClientsResponse) {
-		option (google.api.http).get = "/soarchain/poa/total_clients";
-	}
-// Queries a TotalChallengers by index.
-	rpc TotalChallengers(QueryGetTotalChallengersRequest) returns (QueryGetTotalChallengersResponse) {
-		option (google.api.http).get = "/soarchain/poa/total_challengers";
-	}
-// Queries a TotalRunners by index.
-	rpc TotalRunners(QueryGetTotalRunnersRequest) returns (QueryGetTotalRunnersResponse) {
-		option (google.api.http).get = "/soarchain/poa/total_runners";
-	}
-// Queries a ChallengerByIndex by index.
-	rpc ChallengerByIndex(QueryGetChallengerByIndexRequest) returns (QueryGetChallengerByIndexResponse) {
-		option (google.api.http).get = "/soarchain/poa/challenger_by_index/{index}";
+// Queries a VrfData by index.
+	rpc VrfData(QueryGetVrfDataRequest) returns (QueryGetVrfDataResponse) {
+		option (google.api.http).get = "/soarchain/poa/vrf_data/{index}";
 	}
 
-	// Queries a list of ChallengerByIndex items.
-	rpc ChallengerByIndexAll(QueryAllChallengerByIndexRequest) returns (QueryAllChallengerByIndexResponse) {
-		option (google.api.http).get = "/soarchain/poa/challenger_by_index";
+	// Queries a list of VrfData items.
+	rpc VrfDataAll(QueryAllVrfDataRequest) returns (QueryAllVrfDataResponse) {
+		option (google.api.http).get = "/soarchain/poa/vrf_data";
 	}
 
-// Queries a list of GetRandomChallenger items.
-	rpc GetRandomChallenger(QueryGetRandomChallengerRequest) returns (QueryGetRandomChallengerResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_random_challenger";
+// Queries a VrfUser by index.
+	rpc VrfUser(QueryGetVrfUserRequest) returns (QueryGetVrfUserResponse) {
+		option (google.api.http).get = "/soarchain/poa/vrf_user/{index}";
 	}
 
-// Queries a RunnerByIndex by index.
-	rpc RunnerByIndex(QueryGetRunnerByIndexRequest) returns (QueryGetRunnerByIndexResponse) {
-		option (google.api.http).get = "/soarchain/poa/runner_by_index/{index}";
+	// Queries a list of VrfUser items.
+	rpc VrfUserAll(QueryAllVrfUserRequest) returns (QueryAllVrfUserResponse) {
+		option (google.api.http).get = "/soarchain/poa/vrf_user";
 	}
 
-	// Queries a list of RunnerByIndex items.
-	rpc RunnerByIndexAll(QueryAllRunnerByIndexRequest) returns (QueryAllRunnerByIndexResponse) {
-		option (google.api.http).get = "/soarchain/poa/runner_by_index";
+// Queries a list of VerifyRandomNumber items.
+	rpc VerifyRandomNumber(QueryVerifyRandomNumberRequest) returns (QueryVerifyRandomNumberResponse) {
+		option (google.api.http).get = "/soarchain/poa/verify_random_number/{pubkey}/{message}/{vrv}/{proof}";
 	}
 
-// Queries a list of GetRandomRunner items.
-	rpc GetRandomRunner(QueryGetRandomRunnerRequest) returns (QueryGetRandomRunnerResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_random_runner";
+// Queries a list of IsChallengeable items.
+	rpc IsChallengeable(QueryIsChallengeableRequest) returns (QueryIsChallengeableResponse) {
+		option (google.api.http).get = "/soarchain/poa/is_challengeable/{clientAddr}";
+	}
+
+// Queries a EpochData by index.
+	rpc EpochData(QueryGetEpochDataRequest) returns (QueryGetEpochDataResponse) {
+		option (google.api.http).get = "/soarchain/poa/epoch_data";
+	}
+// Queries a MotusWallet by index.
+	rpc MotusWallet(QueryGetMotusWalletRequest) returns (QueryGetMotusWalletResponse) {
+		option (google.api.http).get = "/soarchain/poa/motus_wallet/{index}";
+	}
+
+	// Queries a list of MotusWallet items.
+	rpc MotusWalletAll(QueryAllMotusWalletRequest) returns (QueryAllMotusWalletResponse) {
+		option (google.api.http).get = "/soarchain/poa/motus_wallet";
+	}
+
+// Queries a MasterKey by index.
+	rpc MasterKey(QueryGetMasterKeyRequest) returns (QueryGetMasterKeyResponse) {
+		option (google.api.http).get = "/soarchain/poa/master_key";
+	}
+// Queries a FactoryKeys by id.
+	rpc FactoryKeys(QueryGetFactoryKeysRequest) returns (QueryGetFactoryKeysResponse) {
+		option (google.api.http).get = "/soarchain/poa/factory_keys/{id}";
+	}
+
+	// Queries a list of FactoryKeys items.
+	rpc FactoryKeysAll(QueryAllFactoryKeysRequest) returns (QueryAllFactoryKeysResponse) {
+		option (google.api.http).get = "/soarchain/poa/factory_keys";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -216,69 +233,105 @@ message QueryGetChallengerByAddressResponse {
   Challenger challenger = 1;
 }
 
-message QueryGetTotalClientsRequest {}
-
-message QueryGetTotalClientsResponse {
-	TotalClients TotalClients = 1 [(gogoproto.nullable) = false];
-}
-message QueryGetTotalChallengersRequest {}
-
-message QueryGetTotalChallengersResponse {
-	TotalChallengers TotalChallengers = 1 [(gogoproto.nullable) = false];
-}
-message QueryGetTotalRunnersRequest {}
-
-message QueryGetTotalRunnersResponse {
-	TotalRunners TotalRunners = 1 [(gogoproto.nullable) = false];
-}
-message QueryGetChallengerByIndexRequest {
+message QueryGetVrfDataRequest {
 	  string index = 1;
 
 }
 
-message QueryGetChallengerByIndexResponse {
-	ChallengerByIndex challengerByIndex = 1 [(gogoproto.nullable) = false];
+message QueryGetVrfDataResponse {
+	VrfData vrfData = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllChallengerByIndexRequest {
+message QueryAllVrfDataRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllChallengerByIndexResponse {
-	repeated ChallengerByIndex challengerByIndex = 1 [(gogoproto.nullable) = false];
+message QueryAllVrfDataResponse {
+	repeated VrfData vrfData = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryGetRandomChallengerRequest {
-}
-
-message QueryGetRandomChallengerResponse {
-  Challenger challenger = 1;
-}
-
-message QueryGetRunnerByIndexRequest {
+message QueryGetVrfUserRequest {
 	  string index = 1;
 
 }
 
-message QueryGetRunnerByIndexResponse {
-	RunnerByIndex runnerByIndex = 1 [(gogoproto.nullable) = false];
+message QueryGetVrfUserResponse {
+	VrfUser vrfUser = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllRunnerByIndexRequest {
+message QueryAllVrfUserRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllRunnerByIndexResponse {
-	repeated RunnerByIndex runnerByIndex = 1 [(gogoproto.nullable) = false];
+message QueryAllVrfUserResponse {
+	repeated VrfUser vrfUser = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryGetRandomRunnerRequest {
+message QueryVerifyRandomNumberRequest {
+  string pubkey = 1;
+  string message = 2;
+  string vrv = 3;
+  string proof = 4;
 }
 
-message QueryGetRandomRunnerResponse {
-  Runner runner = 1;
+message QueryVerifyRandomNumberResponse {
+  bool result = 1;
+}
+
+message QueryIsChallengeableRequest {
+  string clientAddr = 1;
+}
+
+message QueryIsChallengeableResponse {
+  string resultBool = 1;
+  string challengeabilityScore = 2;
+}
+
+message QueryGetEpochDataRequest {}
+
+message QueryGetEpochDataResponse {
+	EpochData EpochData = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetMotusWalletRequest {
+	  string index = 1;
+
+}
+
+message QueryGetMotusWalletResponse {
+	MotusWallet motusWallet = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllMotusWalletRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllMotusWalletResponse {
+	repeated MotusWallet motusWallet = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetMasterKeyRequest {}
+
+message QueryGetMasterKeyResponse {
+	MasterKey MasterKey = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetFactoryKeysRequest {
+	uint64 id = 1;
+}
+
+message QueryGetFactoryKeysResponse {
+	FactoryKeys FactoryKeys = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllFactoryKeysRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllFactoryKeysResponse {
+	repeated FactoryKeys FactoryKeys = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

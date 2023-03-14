@@ -49,18 +49,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgGenGuard int = 100
 
-	opWeightMsgCreateTotalClients = "op_weight_msg_total_clients"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreateTotalClients int = 100
-
-	opWeightMsgUpdateTotalClients = "op_weight_msg_total_clients"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgUpdateTotalClients int = 100
-
-	opWeightMsgDeleteTotalClients = "op_weight_msg_total_clients"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgDeleteTotalClients int = 100
-
 	opWeightMsgUnregisterRunner = "op_weight_msg_unregister_runner"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUnregisterRunner int = 100
@@ -68,6 +56,42 @@ const (
 	opWeightMsgRunnerChallenge = "op_weight_msg_runner_challenge"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgRunnerChallenge int = 100
+
+	opWeightMsgUnregisterGuard = "op_weight_msg_unregister_guard"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUnregisterGuard int = 100
+
+	opWeightMsgSelectRandomChallenger = "op_weight_msg_select_random_challenger"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSelectRandomChallenger int = 100
+
+	opWeightMsgSelectRandomRunner = "op_weight_msg_select_random_runner"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSelectRandomRunner int = 100
+
+	opWeightMsgV2VChallenge = "op_weight_msg_v_2_v_challenge"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgV2VChallenge int = 100
+
+	opWeightMsgV2NChallenge = "op_weight_msg_v_2_n_challenge"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgV2NChallenge int = 100
+
+	opWeightMsgUpdateGuard = "op_weight_msg_update_guard"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateGuard int = 100
+
+	opWeightMsgClaimMotusRewards = "op_weight_msg_claim_motus_rewards"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgClaimMotusRewards int = 100
+
+	opWeightMsgClaimRunnerRewards = "op_weight_msg_claim_runner_rewards"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgClaimRunnerRewards int = 100
+
+	opWeightMsgRegisterFactoryKey = "op_weight_msg_register_factory_key"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRegisterFactoryKey int = 100
 
 	// this line is used by starport scaffolding # simapp/module/const
 )
@@ -158,39 +182,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		poasimulation.SimulateMsgGenGuard(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgCreateTotalClients int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateTotalClients, &weightMsgCreateTotalClients, nil,
-		func(_ *rand.Rand) {
-			weightMsgCreateTotalClients = defaultWeightMsgCreateTotalClients
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreateTotalClients,
-		poasimulation.SimulateMsgCreateTotalClients(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgUpdateTotalClients int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateTotalClients, &weightMsgUpdateTotalClients, nil,
-		func(_ *rand.Rand) {
-			weightMsgUpdateTotalClients = defaultWeightMsgUpdateTotalClients
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdateTotalClients,
-		poasimulation.SimulateMsgUpdateTotalClients(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgDeleteTotalClients int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteTotalClients, &weightMsgDeleteTotalClients, nil,
-		func(_ *rand.Rand) {
-			weightMsgDeleteTotalClients = defaultWeightMsgDeleteTotalClients
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgDeleteTotalClients,
-		poasimulation.SimulateMsgDeleteTotalClients(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
 	var weightMsgUnregisterRunner int
 	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUnregisterRunner, &weightMsgUnregisterRunner, nil,
 		func(_ *rand.Rand) {
@@ -211,6 +202,83 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgRunnerChallenge,
 		poasimulation.SimulateMsgRunnerChallenge(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUnregisterGuard int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUnregisterGuard, &weightMsgUnregisterGuard, nil,
+		func(_ *rand.Rand) {
+			weightMsgUnregisterGuard = defaultWeightMsgUnregisterGuard
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUnregisterGuard,
+		poasimulation.SimulateMsgUnregisterGuard(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSelectRandomChallenger int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSelectRandomChallenger, &weightMsgSelectRandomChallenger, nil,
+		func(_ *rand.Rand) {
+			weightMsgSelectRandomChallenger = defaultWeightMsgSelectRandomChallenger
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSelectRandomChallenger,
+		poasimulation.SimulateMsgSelectRandomChallenger(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSelectRandomRunner int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSelectRandomRunner, &weightMsgSelectRandomRunner, nil,
+		func(_ *rand.Rand) {
+			weightMsgSelectRandomRunner = defaultWeightMsgSelectRandomRunner
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSelectRandomRunner,
+		poasimulation.SimulateMsgSelectRandomRunner(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateGuard int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateGuard, &weightMsgUpdateGuard, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateGuard = defaultWeightMsgUpdateGuard
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateGuard,
+		poasimulation.SimulateMsgUpdateGuard(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgClaimMotusRewards int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgClaimMotusRewards, &weightMsgClaimMotusRewards, nil,
+		func(_ *rand.Rand) {
+			weightMsgClaimMotusRewards = defaultWeightMsgClaimMotusRewards
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgClaimMotusRewards,
+		poasimulation.SimulateMsgClaimMotusRewards(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgClaimRunnerRewards int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgClaimRunnerRewards, &weightMsgClaimRunnerRewards, nil,
+		func(_ *rand.Rand) {
+			weightMsgClaimRunnerRewards = defaultWeightMsgClaimRunnerRewards
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgClaimRunnerRewards,
+		poasimulation.SimulateMsgClaimRunnerRewards(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRegisterFactoryKey int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRegisterFactoryKey, &weightMsgRegisterFactoryKey, nil,
+		func(_ *rand.Rand) {
+			weightMsgRegisterFactoryKey = defaultWeightMsgRegisterFactoryKey
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRegisterFactoryKey,
+		poasimulation.SimulateMsgRegisterFactoryKey(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

@@ -26,10 +26,13 @@ type Runner struct {
 	Index              string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
 	Address            string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	Score              string `protobuf:"bytes,3,opt,name=score,proto3" json:"score,omitempty"`
-	StakedAmount       string `protobuf:"bytes,4,opt,name=stakedAmount,proto3" json:"stakedAmount,omitempty"`
-	NetEarnings        string `protobuf:"bytes,5,opt,name=netEarnings,proto3" json:"netEarnings,omitempty"`
-	IpAddr             string `protobuf:"bytes,6,opt,name=ipAddr,proto3" json:"ipAddr,omitempty"`
-	LastTimeChallenged string `protobuf:"bytes,7,opt,name=lastTimeChallenged,proto3" json:"lastTimeChallenged,omitempty"`
+	RewardMultiplier   string `protobuf:"bytes,4,opt,name=rewardMultiplier,proto3" json:"rewardMultiplier,omitempty"`
+	StakedAmount       string `protobuf:"bytes,5,opt,name=stakedAmount,proto3" json:"stakedAmount,omitempty"`
+	NetEarnings        string `protobuf:"bytes,6,opt,name=netEarnings,proto3" json:"netEarnings,omitempty"`
+	IpAddr             string `protobuf:"bytes,7,opt,name=ipAddr,proto3" json:"ipAddr,omitempty"`
+	LastTimeChallenged string `protobuf:"bytes,8,opt,name=lastTimeChallenged,proto3" json:"lastTimeChallenged,omitempty"`
+	CoolDownTolerance  string `protobuf:"bytes,9,opt,name=coolDownTolerance,proto3" json:"coolDownTolerance,omitempty"`
+	GuardAddress       string `protobuf:"bytes,10,opt,name=guardAddress,proto3" json:"guardAddress,omitempty"`
 }
 
 func (m *Runner) Reset()         { *m = Runner{} }
@@ -86,6 +89,13 @@ func (m *Runner) GetScore() string {
 	return ""
 }
 
+func (m *Runner) GetRewardMultiplier() string {
+	if m != nil {
+		return m.RewardMultiplier
+	}
+	return ""
+}
+
 func (m *Runner) GetStakedAmount() string {
 	if m != nil {
 		return m.StakedAmount
@@ -114,6 +124,20 @@ func (m *Runner) GetLastTimeChallenged() string {
 	return ""
 }
 
+func (m *Runner) GetCoolDownTolerance() string {
+	if m != nil {
+		return m.CoolDownTolerance
+	}
+	return ""
+}
+
+func (m *Runner) GetGuardAddress() string {
+	if m != nil {
+		return m.GuardAddress
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*Runner)(nil), "soarchain.poa.Runner")
 }
@@ -121,22 +145,26 @@ func init() {
 func init() { proto.RegisterFile("poa/runner.proto", fileDescriptor_54a904d1c202788c) }
 
 var fileDescriptor_54a904d1c202788c = []byte{
-	// 240 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0xb1, 0x4a, 0x43, 0x31,
-	0x14, 0x86, 0x6f, 0xd4, 0xde, 0x62, 0x54, 0x90, 0xa0, 0x92, 0x29, 0x94, 0x4e, 0x4e, 0x37, 0x83,
-	0x4f, 0x50, 0xc5, 0x17, 0x28, 0x4e, 0x6e, 0xc7, 0xe6, 0xd0, 0x06, 0x6f, 0x4f, 0x42, 0x92, 0x42,
-	0x7d, 0x0b, 0x1f, 0xcb, 0xb1, 0xa3, 0x83, 0x83, 0xdc, 0xfb, 0x22, 0xd2, 0x53, 0x15, 0x85, 0x8e,
-	0xdf, 0xff, 0x7d, 0xd3, 0x2f, 0xcf, 0x63, 0x00, 0x9b, 0x56, 0x44, 0x98, 0x9a, 0x98, 0x42, 0x09,
-	0xea, 0x2c, 0x07, 0x48, 0xb3, 0x05, 0x78, 0x6a, 0x62, 0x80, 0xf1, 0x87, 0x90, 0xf5, 0x94, 0xbd,
-	0xba, 0x90, 0x03, 0x4f, 0x0e, 0xd7, 0x5a, 0x8c, 0xc4, 0xf5, 0xf1, 0x74, 0x07, 0x4a, 0xcb, 0x21,
-	0x38, 0x97, 0x30, 0x67, 0x7d, 0xc0, 0xfb, 0x0f, 0x6e, 0xfb, 0x3c, 0x0b, 0x09, 0xf5, 0xe1, 0xae,
-	0x67, 0x50, 0x63, 0x79, 0x9a, 0x0b, 0x3c, 0xa3, 0x9b, 0x2c, 0xc3, 0x8a, 0x8a, 0x3e, 0x62, 0xf9,
-	0x6f, 0x53, 0x23, 0x79, 0x42, 0x58, 0xee, 0x21, 0x91, 0xa7, 0x79, 0xd6, 0x03, 0x4e, 0xfe, 0x4e,
-	0xea, 0x4a, 0xd6, 0x3e, 0x4e, 0x9c, 0x4b, 0xba, 0x66, 0xf9, 0x4d, 0xaa, 0x91, 0xaa, 0x85, 0x5c,
-	0x1e, 0xfc, 0x12, 0xef, 0x16, 0xd0, 0xb6, 0x48, 0x73, 0x74, 0x7a, 0xc8, 0xcd, 0x1e, 0x73, 0x6b,
-	0xdf, 0x3a, 0x23, 0x36, 0x9d, 0x11, 0x9f, 0x9d, 0x11, 0xaf, 0xbd, 0xa9, 0x36, 0xbd, 0xa9, 0xde,
-	0x7b, 0x53, 0x3d, 0x5e, 0xfe, 0xfe, 0x60, 0xd7, 0x76, 0xfb, 0x52, 0x79, 0x89, 0x98, 0x9f, 0x6a,
-	0x7e, 0xe9, 0xe6, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xb6, 0x29, 0x04, 0x11, 0x39, 0x01, 0x00, 0x00,
+	// 297 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x91, 0xcf, 0x4e, 0x32, 0x31,
+	0x14, 0xc5, 0x19, 0xbe, 0x8f, 0x41, 0xaa, 0x26, 0xd8, 0xa8, 0xe9, 0xaa, 0x21, 0xac, 0x8c, 0x31,
+	0xcc, 0xc2, 0x27, 0xc0, 0x3f, 0x4b, 0x37, 0x84, 0x95, 0xbb, 0xeb, 0xf4, 0x06, 0x1a, 0x4b, 0xdb,
+	0xdc, 0x76, 0x02, 0xbe, 0x85, 0x8f, 0xe5, 0x92, 0xa5, 0x71, 0x65, 0xe0, 0x45, 0x0c, 0x1d, 0x34,
+	0x18, 0x5c, 0x9e, 0xdf, 0xf9, 0x2d, 0x6e, 0xee, 0x61, 0x5d, 0xef, 0xa0, 0xa0, 0xca, 0x5a, 0xa4,
+	0x81, 0x27, 0x17, 0x1d, 0x3f, 0x0e, 0x0e, 0xa8, 0x9c, 0x82, 0xb6, 0x03, 0xef, 0xa0, 0xff, 0xd1,
+	0x64, 0xf9, 0x28, 0xf5, 0xfc, 0x94, 0xb5, 0xb4, 0x55, 0xb8, 0x10, 0x59, 0x2f, 0xbb, 0xe8, 0x8c,
+	0xea, 0xc0, 0x05, 0x6b, 0x83, 0x52, 0x84, 0x21, 0x88, 0x66, 0xe2, 0xdf, 0x71, 0xe3, 0x87, 0xd2,
+	0x11, 0x8a, 0x7f, 0xb5, 0x9f, 0x02, 0xbf, 0x64, 0x5d, 0xc2, 0x39, 0x90, 0x7a, 0xa8, 0x4c, 0xd4,
+	0xde, 0x68, 0x24, 0xf1, 0x3f, 0x09, 0x7b, 0x9c, 0xf7, 0xd9, 0x51, 0x88, 0xf0, 0x8c, 0x6a, 0x38,
+	0x73, 0x95, 0x8d, 0xa2, 0x95, 0xbc, 0x5f, 0x8c, 0xf7, 0xd8, 0xa1, 0xc5, 0x78, 0x0f, 0x64, 0xb5,
+	0x9d, 0x04, 0x91, 0x27, 0x65, 0x17, 0xf1, 0x73, 0x96, 0x6b, 0x3f, 0x54, 0x8a, 0x44, 0x3b, 0x95,
+	0xdb, 0xc4, 0x07, 0x8c, 0x1b, 0x08, 0x71, 0xac, 0x67, 0x78, 0x3b, 0x05, 0x63, 0xd0, 0x4e, 0x50,
+	0x89, 0x83, 0xe4, 0xfc, 0xd1, 0xf0, 0x2b, 0x76, 0x52, 0x3a, 0x67, 0xee, 0xdc, 0xdc, 0x8e, 0x9d,
+	0x41, 0x02, 0x5b, 0xa2, 0xe8, 0x24, 0x7d, 0xbf, 0xd8, 0xdc, 0x3e, 0xa9, 0x80, 0xd4, 0x70, 0xfb,
+	0x1c, 0x56, 0xdf, 0xbe, 0xcb, 0x6e, 0x8a, 0xb7, 0x95, 0xcc, 0x96, 0x2b, 0x99, 0x7d, 0xae, 0x64,
+	0xf6, 0xba, 0x96, 0x8d, 0xe5, 0x5a, 0x36, 0xde, 0xd7, 0xb2, 0xf1, 0x78, 0xf6, 0xb3, 0x42, 0xb1,
+	0x28, 0x36, 0x1b, 0xc5, 0x17, 0x8f, 0xe1, 0x29, 0x4f, 0x1b, 0x5d, 0x7f, 0x05, 0x00, 0x00, 0xff,
+	0xff, 0xdd, 0x2a, 0xfb, 0xa4, 0xb7, 0x01, 0x00, 0x00,
 }
 
 func (m *Runner) Marshal() (dAtA []byte, err error) {
@@ -159,31 +187,52 @@ func (m *Runner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.GuardAddress) > 0 {
+		i -= len(m.GuardAddress)
+		copy(dAtA[i:], m.GuardAddress)
+		i = encodeVarintRunner(dAtA, i, uint64(len(m.GuardAddress)))
+		i--
+		dAtA[i] = 0x52
+	}
+	if len(m.CoolDownTolerance) > 0 {
+		i -= len(m.CoolDownTolerance)
+		copy(dAtA[i:], m.CoolDownTolerance)
+		i = encodeVarintRunner(dAtA, i, uint64(len(m.CoolDownTolerance)))
+		i--
+		dAtA[i] = 0x4a
+	}
 	if len(m.LastTimeChallenged) > 0 {
 		i -= len(m.LastTimeChallenged)
 		copy(dAtA[i:], m.LastTimeChallenged)
 		i = encodeVarintRunner(dAtA, i, uint64(len(m.LastTimeChallenged)))
 		i--
-		dAtA[i] = 0x3a
+		dAtA[i] = 0x42
 	}
 	if len(m.IpAddr) > 0 {
 		i -= len(m.IpAddr)
 		copy(dAtA[i:], m.IpAddr)
 		i = encodeVarintRunner(dAtA, i, uint64(len(m.IpAddr)))
 		i--
-		dAtA[i] = 0x32
+		dAtA[i] = 0x3a
 	}
 	if len(m.NetEarnings) > 0 {
 		i -= len(m.NetEarnings)
 		copy(dAtA[i:], m.NetEarnings)
 		i = encodeVarintRunner(dAtA, i, uint64(len(m.NetEarnings)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 	}
 	if len(m.StakedAmount) > 0 {
 		i -= len(m.StakedAmount)
 		copy(dAtA[i:], m.StakedAmount)
 		i = encodeVarintRunner(dAtA, i, uint64(len(m.StakedAmount)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.RewardMultiplier) > 0 {
+		i -= len(m.RewardMultiplier)
+		copy(dAtA[i:], m.RewardMultiplier)
+		i = encodeVarintRunner(dAtA, i, uint64(len(m.RewardMultiplier)))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -240,6 +289,10 @@ func (m *Runner) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovRunner(uint64(l))
 	}
+	l = len(m.RewardMultiplier)
+	if l > 0 {
+		n += 1 + l + sovRunner(uint64(l))
+	}
 	l = len(m.StakedAmount)
 	if l > 0 {
 		n += 1 + l + sovRunner(uint64(l))
@@ -253,6 +306,14 @@ func (m *Runner) Size() (n int) {
 		n += 1 + l + sovRunner(uint64(l))
 	}
 	l = len(m.LastTimeChallenged)
+	if l > 0 {
+		n += 1 + l + sovRunner(uint64(l))
+	}
+	l = len(m.CoolDownTolerance)
+	if l > 0 {
+		n += 1 + l + sovRunner(uint64(l))
+	}
+	l = len(m.GuardAddress)
 	if l > 0 {
 		n += 1 + l + sovRunner(uint64(l))
 	}
@@ -392,6 +453,38 @@ func (m *Runner) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RewardMultiplier", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowRunner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthRunner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthRunner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RewardMultiplier = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field StakedAmount", wireType)
 			}
 			var stringLen uint64
@@ -422,7 +515,7 @@ func (m *Runner) Unmarshal(dAtA []byte) error {
 			}
 			m.StakedAmount = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field NetEarnings", wireType)
 			}
@@ -454,7 +547,7 @@ func (m *Runner) Unmarshal(dAtA []byte) error {
 			}
 			m.NetEarnings = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field IpAddr", wireType)
 			}
@@ -486,7 +579,7 @@ func (m *Runner) Unmarshal(dAtA []byte) error {
 			}
 			m.IpAddr = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 7:
+		case 8:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field LastTimeChallenged", wireType)
 			}
@@ -517,6 +610,70 @@ func (m *Runner) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.LastTimeChallenged = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CoolDownTolerance", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowRunner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthRunner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthRunner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CoolDownTolerance = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field GuardAddress", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowRunner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthRunner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthRunner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.GuardAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

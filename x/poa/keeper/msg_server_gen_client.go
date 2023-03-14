@@ -2,67 +2,92 @@ package keeper
 
 import (
 	"context"
+	"crypto/x509"
+	"encoding/hex"
 
+	// "encoding/pem"
 	"soarchain/x/poa/types"
+	"soarchain/x/poa/utility"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
-	"github.com/google/uuid"
 )
 
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	_, isFound := k.GetClient(ctx, msg.Address)
-	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Address)
-	_, isFoundAsRunner := k.GetRunner(ctx, msg.Address)
-
-	if isFound || isFoundAsChallenger || isFoundAsRunner {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
+	// ToDo: change pubkey field as device cert
+	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
+	if err != nil {
+		return nil, err
 	}
 
-	// Registration fee
-	registrationFee, _ := sdk.ParseCoinsNormalized("25000000soar")
-	msgFee, _ := sdk.ParseCoinsNormalized(msg.Fee)
+	pubKeyDer, _ := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
 
-	if msgFee.GetDenomByIndex(0) != "soar" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid coin denominator")
-	}
-	if msgFee.IsAllLT(registrationFee) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Insufficient funds for registration.")
+	pubKeyHex := hex.EncodeToString(pubKeyDer)
+
+	_, isFound := k.GetClient(ctx, pubKeyHex)
+	if isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client pubkey is already registered.")
 	}
 
-	// Transfer fee to the protocol, then burn it
-	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, registrationFee)
-	k.bankKeeper.BurnCoins(ctx, types.ModuleName, registrationFee)
+	// Check validity of certificate
+	totalKeys := k.GetAllFactoryKeys(ctx)
+	var validated bool = false
+	for i := uint64(0); i <= uint64(len(totalKeys)); i++ {
+		factoryKey, isFound := k.GetFactoryKeys(ctx, i)
+		if isFound {
+			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Factory certificate couldn't be created from the storage!")
+			}
 
-	//
-	clientAddr, _ := sdk.AccAddressFromBech32(msg.Address)
+			validated, err = k.ValidateX509Cert(deviceCert, factoryCert)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Device certificate couldn't be verified!")
+			}
+			if validated {
+				break
+			}
+		}
+	}
 
-	// uuid
-	newUUID := uuid.Must(uuid.NewRandom()).String()
+	if !validated {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cert verification error")
+	}
+
+	// rewardMultiplier
+	var initialScore float64 = 50
+	rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
 
 	// Save client into storage
 	newClient := types.Client{
-		Index:              clientAddr.String(),
-		Address:            clientAddr.String(),
-		UniqueId:           newUUID,
-		Score:              sdk.NewInt(50).String(), // Base Score
-		NetEarnings:        sdk.ZeroInt().String(),
-		LastTimeChallenged: sdk.ZeroInt().String(),
+		Index:              pubKeyHex,
+		Address:            msg.Creator,
+		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
+		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
+		NetEarnings:        sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+		LastTimeChallenged: ctx.BlockTime().String(),
+		CoolDownTolerance:  strconv.FormatUint(1, 10),
 	}
 
 	k.SetClient(ctx, newClient)
 
-	// Update Client Count
-	clientCount, isFound := k.Keeper.GetTotalClients(ctx)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Client count couldn't be fetched!")
+	// Register Motus client into Motus Wallet object
+	_, isFoundWallet := k.GetMotusWallet(ctx, msg.Creator)
+	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Creator)
+	_, isFoundAsRunner := k.GetRunner(ctx, msg.Creator)
+
+	if isFoundWallet || isFoundAsChallenger || isFoundAsRunner {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
 	}
-	clientCount.Count++
-	k.SetTotalClients(ctx, clientCount)
+
+	newMotusWallet := types.MotusWallet{
+		Index:  msg.Creator,
+		Client: &newClient,
+	}
+	k.SetMotusWallet(ctx, newMotusWallet)
 
 	return &types.MsgGenClientResponse{}, nil
 }
