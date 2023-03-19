@@ -13,8 +13,8 @@ import "poa/motus_wallet.proto";
 import "poa/master_key.proto";
 import "poa/factory_keys.proto";
 // this line is used by starport scaffolding # 1
-import "poa/client.proto";
 import "poa/runner.proto";
+import "poa/client.proto";
 import "poa/challenger.proto";
 
 option go_package = "soarchain/x/poa/types";
@@ -131,6 +131,11 @@ service Query {
 	// Queries a list of FactoryKeys items.
 	rpc FactoryKeysAll(QueryAllFactoryKeysRequest) returns (QueryAllFactoryKeysResponse) {
 		option (google.api.http).get = "/soarchain/poa/factory_keys";
+	}
+
+// Queries a list of GetRunnerByIp items.
+	rpc GetRunnerByIp(QueryGetRunnerByIpRequest) returns (QueryGetRunnerByIpResponse) {
+		option (google.api.http).get = "/soarchain/poa/get_runner_by_ip/{ipAddress}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -332,6 +337,14 @@ message QueryAllFactoryKeysRequest {
 message QueryAllFactoryKeysResponse {
 	repeated FactoryKeys FactoryKeys = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetRunnerByIpRequest {
+  string ipAddress = 1;
+}
+
+message QueryGetRunnerByIpResponse {
+  Runner runner = 1;
 }
 
 // this line is used by starport scaffolding # 3
