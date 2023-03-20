@@ -33,18 +33,18 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 				ChallengerList: []types.Challenger{
 					{
-						Index: "0",
+						PubKey: "0",
 					},
 					{
-						Index: "1",
+						PubKey: "1",
 					},
 				},
 				RunnerList: []types.Runner{
 					{
-						Index: "0",
+						PubKey: "0",
 					},
 					{
-						Index: "1",
+						PubKey: "1",
 					},
 				},
 				GuardList: []types.Guard{
@@ -123,10 +123,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				ChallengerList: []types.Challenger{
 					{
-						Index: "0",
+						PubKey: "0",
 					},
 					{
-						Index: "0",
+						PubKey: "0",
 					},
 				},
 			},
@@ -137,10 +137,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				RunnerList: []types.Runner{
 					{
-						Index: "0",
+						PubKey: "0",
 					},
 					{
-						Index: "0",
+						PubKey: "0",
 					},
 				},
 			},

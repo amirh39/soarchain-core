@@ -25,18 +25,18 @@ func TestGenesis(t *testing.T) {
 		},
 		ChallengerList: []types.Challenger{
 			{
-				Index: "0",
+				PubKey: "0",
 			},
 			{
-				Index: "1",
+				PubKey: "1",
 			},
 		},
 		RunnerList: []types.Runner{
 			{
-				Index: "0",
+				PubKey: "0",
 			},
 			{
-				Index: "1",
+				PubKey: "1",
 			},
 		},
 		GuardList: []types.Guard{

@@ -4,12 +4,13 @@ import (
 	"strconv"
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
 	"soarchain/x/poa/keeper"
 	"soarchain/x/poa/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 // Prevent strconv unused error
@@ -18,7 +19,7 @@ var _ = strconv.IntSize
 func createNChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
 	items := make([]types.Challenger, n)
 	for i := range items {
-		items[i].Index = strconv.Itoa(i)
+		items[i].PubKey = strconv.Itoa(i)
 
 		keeper.SetChallenger(ctx, items[i])
 	}
@@ -30,7 +31,7 @@ func TestChallengerGet(t *testing.T) {
 	items := createNChallenger(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetChallenger(ctx,
-			item.Index,
+			item.PubKey,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -44,10 +45,10 @@ func TestChallengerRemove(t *testing.T) {
 	items := createNChallenger(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveChallenger(ctx,
-			item.Index,
+			item.PubKey,
 		)
 		_, found := keeper.GetChallenger(ctx,
-			item.Index,
+			item.PubKey,
 		)
 		require.False(t, found)
 	}

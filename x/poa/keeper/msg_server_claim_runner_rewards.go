@@ -45,7 +45,7 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 	}
 
 	updatedRunner := types.Runner{
-		Index:              runner.Index,
+		PubKey:             runner.PubKey,
 		Address:            runner.Address,
 		Score:              runner.Score,
 		RewardMultiplier:   runner.RewardMultiplier,

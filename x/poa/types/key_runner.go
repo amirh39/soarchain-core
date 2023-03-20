@@ -11,11 +11,11 @@ const (
 
 // RunnerKey returns the store key to retrieve a Runner from the index fields
 func RunnerKey(
-	index string,
+	PubKey string,
 ) []byte {
 	var key []byte
 
-	indexBytes := []byte(index)
+	indexBytes := []byte(PubKey)
 	key = append(key, indexBytes...)
 	key = append(key, []byte("/")...)
 

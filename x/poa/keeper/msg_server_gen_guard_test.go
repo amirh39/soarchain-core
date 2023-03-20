@@ -48,17 +48,20 @@ func TestGenGuard(t *testing.T) {
 	// bank.EXPECT().SendCoinsFromAccountToModule(sdk.UnwrapSDKContext(context), msgSenderAddress, types.ModuleName, sdk.Coins{sdk.NewInt64Coin("soar", 2000000000)})
 
 	_, err := msgServer.GenGuard(context, &types.MsgGenGuard{
-		Creator:     strategicWallet,
-		GuardPubKey: "A6VReuNYHM8ot0kSqmjTpzNEJErsizE7i1XOIbUxHCph",
-		V2XAddr:     v2xDevice1,
-		V2XStake:    "2000000000soar",
-		V2XIp:       "104.248.142.45 ",
-		V2NAddr:     v2nDevice1,
-		V2NStake:    "2000000000soar",
-		V2NIp:       "104.248.142.45 ",
-		RunnerAddr:  runnerDevice1,
-		RunnerStake: "1000000000soar",
-		RunnerIp:    "104.248.142.45 ",
+		Creator:      strategicWallet,
+		GuardPubKey:  "A6VReuNYHM8ot0kSqmjTpzNEJErsizE7i1XOIbUxHCph",
+		V2XPubKey:    "A6VReuNYHM8ot0kSqmjTpzNEJErsizE7i1XOIbUxHCpd",
+		V2XAddr:      v2xDevice1,
+		V2XStake:     "2000000000soar",
+		V2XIp:        "104.248.142.45 ",
+		V2NAddr:      v2nDevice1,
+		V2NPubKey:    "A6VReuNYHM8ot0kSqmjTpzNEJErsizE7i1XOIbUxHCpf",
+		V2NStake:     "2000000000soar",
+		V2NIp:        "104.248.142.45 ",
+		RunnerPubKey: "A6VReuNYHM8ot0kSqmjTpzNEJErsizE7i1XOIbUxHCpg",
+		RunnerAddr:   runnerDevice1,
+		RunnerStake:  "1000000000soar",
+		RunnerIp:     "104.248.142.45 ",
 	})
 
 	require.Nil(t, err)

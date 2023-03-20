@@ -43,11 +43,6 @@ client:
     path: "docs/static/openapi.yml"
   vuex:
     path: "vue/src/store"
-faucet:
-  name: soarFacuet
-  coins:
-  - 10000000000soar
-  host: 0.0.0.0:4500
 client:
   vuex:
     path: vue/src/store

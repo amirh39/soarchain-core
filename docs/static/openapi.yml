@@ -31579,7 +31579,7 @@ paths:
                 items:
                   type: object
                   properties:
-                    index:
+                    PubKey:
                       type: string
                     address:
                       type: string
@@ -31685,16 +31685,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   /soarchain/poa/challenger/{index}:
@@ -31710,7 +31700,7 @@ paths:
               challenger:
                 type: object
                 properties:
-                  index:
+                  PubKey:
                     type: string
                   address:
                     type: string
@@ -31867,16 +31857,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -32090,16 +32070,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   /soarchain/poa/factory_keys/{id}:
@@ -32159,7 +32129,7 @@ paths:
               challenger:
                 type: object
                 properties:
-                  index:
+                  PubKey:
                     type: string
                   address:
                     type: string
@@ -32263,7 +32233,7 @@ paths:
               runner:
                 type: object
                 properties:
-                  index:
+                  pubKey:
                     type: string
                   address:
                     type: string
@@ -32330,7 +32300,7 @@ paths:
                     runner:
                       type: object
                       properties:
-                        index:
+                        pubKey:
                           type: string
                         address:
                           type: string
@@ -32353,7 +32323,7 @@ paths:
                     v2XChallenger:
                       type: object
                       properties:
-                        index:
+                        PubKey:
                           type: string
                         address:
                           type: string
@@ -32370,7 +32340,7 @@ paths:
                     v2NChallenger:
                       type: object
                       properties:
-                        index:
+                        PubKey:
                           type: string
                         address:
                           type: string
@@ -32476,16 +32446,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   /soarchain/poa/guard/{index}:
@@ -32508,7 +32468,7 @@ paths:
                   runner:
                     type: object
                     properties:
-                      index:
+                      pubKey:
                         type: string
                       address:
                         type: string
@@ -32531,7 +32491,7 @@ paths:
                   v2XChallenger:
                     type: object
                     properties:
-                      index:
+                      PubKey:
                         type: string
                       address:
                         type: string
@@ -32548,7 +32508,7 @@ paths:
                   v2NChallenger:
                     type: object
                     properties:
-                      index:
+                      PubKey:
                         type: string
                       address:
                         type: string
@@ -32789,16 +32749,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   /soarchain/poa/motus_wallet/{index}:
@@ -32909,7 +32859,7 @@ paths:
                 items:
                   type: object
                   properties:
-                    index:
+                    pubKey:
                       type: string
                     address:
                       type: string
@@ -33021,16 +32971,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   /soarchain/poa/runner/{index}:
@@ -33046,7 +32986,7 @@ paths:
               runner:
                 type: object
                 properties:
-                  index:
+                  pubKey:
                     type: string
                   address:
                     type: string
@@ -33180,7 +33120,7 @@ paths:
                     selectedChallenger:
                       type: object
                       properties:
-                        index:
+                        PubKey:
                           type: string
                         address:
                           type: string
@@ -33197,7 +33137,7 @@ paths:
                     selectedRunner:
                       type: object
                       properties:
-                        index:
+                        pubKey:
                           type: string
                         address:
                           type: string
@@ -33309,16 +33249,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   /soarchain/poa/vrf_data/{index}:
@@ -33359,7 +33289,7 @@ paths:
                   selectedChallenger:
                     type: object
                     properties:
-                      index:
+                      PubKey:
                         type: string
                       address:
                         type: string
@@ -33376,7 +33306,7 @@ paths:
                   selectedRunner:
                     type: object
                     properties:
-                      index:
+                      pubKey:
                         type: string
                       address:
                         type: string
@@ -33531,16 +33461,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -54272,7 +54192,7 @@ definitions:
   soarchain.poa.Challenger:
     type: object
     properties:
-      index:
+      PubKey:
         type: string
       address:
         type: string
@@ -54335,7 +54255,7 @@ definitions:
       runner:
         type: object
         properties:
-          index:
+          pubKey:
             type: string
           address:
             type: string
@@ -54358,7 +54278,7 @@ definitions:
       v2XChallenger:
         type: object
         properties:
-          index:
+          PubKey:
             type: string
           address:
             type: string
@@ -54375,7 +54295,7 @@ definitions:
       v2NChallenger:
         type: object
         properties:
-          index:
+          PubKey:
             type: string
           address:
             type: string
@@ -54438,7 +54358,7 @@ definitions:
       randomChallenger:
         type: object
         properties:
-          index:
+          PubKey:
             type: string
           address:
             type: string
@@ -54458,7 +54378,7 @@ definitions:
       randomRunner:
         type: object
         properties:
-          index:
+          pubKey:
             type: string
           address:
             type: string
@@ -54499,7 +54419,7 @@ definitions:
         items:
           type: object
           properties:
-            index:
+            PubKey:
               type: string
             address:
               type: string
@@ -54638,7 +54558,7 @@ definitions:
             runner:
               type: object
               properties:
-                index:
+                pubKey:
                   type: string
                 address:
                   type: string
@@ -54661,7 +54581,7 @@ definitions:
             v2XChallenger:
               type: object
               properties:
-                index:
+                PubKey:
                   type: string
                 address:
                   type: string
@@ -54678,7 +54598,7 @@ definitions:
             v2NChallenger:
               type: object
               properties:
-                index:
+                PubKey:
                   type: string
                 address:
                   type: string
@@ -54777,7 +54697,7 @@ definitions:
         items:
           type: object
           properties:
-            index:
+            pubKey:
               type: string
             address:
               type: string
@@ -54855,7 +54775,7 @@ definitions:
             selectedChallenger:
               type: object
               properties:
-                index:
+                PubKey:
                   type: string
                 address:
                   type: string
@@ -54872,7 +54792,7 @@ definitions:
             selectedRunner:
               type: object
               properties:
-                index:
+                pubKey:
                   type: string
                 address:
                   type: string
@@ -54962,7 +54882,7 @@ definitions:
       challenger:
         type: object
         properties:
-          index:
+          PubKey:
             type: string
           address:
             type: string
@@ -54982,7 +54902,7 @@ definitions:
       challenger:
         type: object
         properties:
-          index:
+          PubKey:
             type: string
           address:
             type: string
@@ -55077,7 +54997,7 @@ definitions:
           runner:
             type: object
             properties:
-              index:
+              pubKey:
                 type: string
               address:
                 type: string
@@ -55100,7 +55020,7 @@ definitions:
           v2XChallenger:
             type: object
             properties:
-              index:
+              PubKey:
                 type: string
               address:
                 type: string
@@ -55117,7 +55037,7 @@ definitions:
           v2NChallenger:
             type: object
             properties:
-              index:
+              PubKey:
                 type: string
               address:
                 type: string
@@ -55172,7 +55092,7 @@ definitions:
       runner:
         type: object
         properties:
-          index:
+          pubKey:
             type: string
           address:
             type: string
@@ -55198,7 +55118,7 @@ definitions:
       runner:
         type: object
         properties:
-          index:
+          pubKey:
             type: string
           address:
             type: string
@@ -55249,7 +55169,7 @@ definitions:
           selectedChallenger:
             type: object
             properties:
-              index:
+              PubKey:
                 type: string
               address:
                 type: string
@@ -55266,7 +55186,7 @@ definitions:
           selectedRunner:
             type: object
             properties:
-              index:
+              pubKey:
                 type: string
               address:
                 type: string
@@ -55320,7 +55240,7 @@ definitions:
   soarchain.poa.Runner:
     type: object
     properties:
-      index:
+      pubKey:
         type: string
       address:
         type: string
@@ -55368,7 +55288,7 @@ definitions:
       selectedChallenger:
         type: object
         properties:
-          index:
+          PubKey:
             type: string
           address:
             type: string
@@ -55385,7 +55305,7 @@ definitions:
       selectedRunner:
         type: object
         properties:
-          index:
+          pubKey:
             type: string
           address:
             type: string

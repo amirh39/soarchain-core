@@ -31,14 +31,14 @@ func TestRunnerQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetRunnerRequest{
-				Index: msgs[0].Index,
+				Index: msgs[0].PubKey,
 			},
 			response: &types.QueryGetRunnerResponse{Runner: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetRunnerRequest{
-				Index: msgs[1].Index,
+				Index: msgs[1].PubKey,
 			},
 			response: &types.QueryGetRunnerResponse{Runner: msgs[1]},
 		},

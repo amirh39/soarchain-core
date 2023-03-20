@@ -1,9 +1,10 @@
 package keeper
 
 import (
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"soarchain/x/poa/types"
 )
 
 // SetRunner set a specific runner in the store from its index
@@ -11,7 +12,7 @@ func (k Keeper) SetRunner(ctx sdk.Context, runner types.Runner) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RunnerKeyPrefix))
 	b := k.cdc.MustMarshal(&runner)
 	store.Set(types.RunnerKey(
-		runner.Index,
+		runner.PubKey,
 	), b)
 }
 
