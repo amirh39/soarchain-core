@@ -20,6 +20,7 @@ func CmdGenClient() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argPubkey := args[0]
+			argSignature := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -29,6 +30,7 @@ func CmdGenClient() *cobra.Command {
 			msg := types.NewMsgGenClient(
 				clientCtx.GetFromAddress().String(),
 				argPubkey,
+				argSignature,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -30,6 +30,7 @@ service Msg {
 message MsgGenClient {
   string creator = 1;
   string certificate = 2;
+  string signature = 3;
 }
 
 message MsgGenClientResponse {
