@@ -82,7 +82,7 @@ type mintModule struct {
 	mint.AppModuleBasic
 }
 
-// DefaultGenesis returns custom x/mint module genesis state.
+// DefaultGenesis returns custom x/soarmint module genesis state.
 func (mintModule) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 	genState := minttypes.DefaultGenesis()
 	genState.Params.MintDenom = param.BondDenom

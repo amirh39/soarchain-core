@@ -167,10 +167,10 @@ var (
 		auth.AppModuleBasic{},
 		authzmodule.AppModuleBasic{},
 		genutil.AppModuleBasic{},
-		bank.AppModuleBasic{},
+		bankModule{},
 		capability.AppModuleBasic{},
-		staking.AppModuleBasic{},
-		mint.AppModuleBasic{},
+		stakingModule{},
+		mintModule{},
 		distr.AppModuleBasic{},
 		gov.NewAppModuleBasic(
 			append(
@@ -184,7 +184,7 @@ var (
 			)...,
 		),
 		params.AppModuleBasic{},
-		crisis.AppModuleBasic{},
+		crisisModule{},
 		slashing.AppModuleBasic{},
 		feegrantmodule.AppModuleBasic{},
 		ibc.AppModuleBasic{},
