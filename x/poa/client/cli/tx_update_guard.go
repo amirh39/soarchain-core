@@ -15,11 +15,10 @@ var _ = strconv.Itoa(0)
 
 func CmdUpdateGuard() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-guard [guard-pub-key] [v-2-x-pub-key] [v-2-x-addr] [v-2-x-stake] [v-2-x-ip] [v-2-n-pub-key] [v-2-n-addr] [v-2-n-stake] [v-2-n-ip] [runner-pubkey] [runner-addr] [runner-stake] [runner-ip]",
+		Use:   "update-guard [v-2-x-pub-key] [v-2-x-addr] [v-2-x-stake] [v-2-x-ip] [v-2-n-pub-key] [v-2-n-addr] [v-2-n-stake] [v-2-n-ip] [runner-pubkey] [runner-addr] [runner-stake] [runner-ip]",
 		Short: "Broadcast message update-guard",
 		Args:  cobra.ExactArgs(13),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argGuardPubKey := args[0]
 			argargV2XPubKey := args[1]
 			argV2XAddr := args[2]
 			argV2XStake := args[3]
@@ -40,7 +39,6 @@ func CmdUpdateGuard() *cobra.Command {
 
 			msg := types.NewMsgUpdateGuard(
 				clientCtx.GetFromAddress().String(),
-				argGuardPubKey,
 				argargV2XPubKey,
 				argV2XAddr,
 				argV2XStake,

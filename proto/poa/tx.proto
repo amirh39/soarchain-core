@@ -125,15 +125,18 @@ message MsgSelectRandomRunnerResponse {
 
 message MsgUpdateGuard {
   string creator = 1;
-  string v2XAddr = 3;
-  string v2XStake = 4;
-  string v2XIp = 5;
-  string v2NAddr = 6;
-  string v2NStake = 7;
-  string v2NIp = 8;
-  string runnerAddr = 9;
-  string runnerStake = 10;
-  string runnerIp = 11;
+  string v2xPubKey = 3;
+  string v2XAddr = 4;
+  string v2XStake = 5;
+  string v2XIp = 6;
+  string v2NPubKey = 7;
+  string v2NAddr = 8;
+  string v2NStake = 9;
+  string v2NIp = 10;
+  string runnerPubKey = 11;
+  string runnerAddr = 12;
+  string runnerStake = 13;
+  string runnerIp = 14;
 }
 
 message MsgUpdateGuardResponse {

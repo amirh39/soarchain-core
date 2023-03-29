@@ -9,10 +9,9 @@ const TypeMsgUpdateGuard = "update_guard"
 
 var _ sdk.Msg = &MsgUpdateGuard{}
 
-func NewMsgUpdateGuard(creator string, guardPubKey string, v2XPubKey string, v2XAddr string, v2XStake string, v2XIp string, v2NPubKey string, v2NAddr string, v2NStake string, v2NIp string, runnerPubKey string, runnerAddr string, runnerStake string, runnerIp string) *MsgGenGuard {
+func NewMsgUpdateGuard(creator string, v2XPubKey string, v2XAddr string, v2XStake string, v2XIp string, v2NPubKey string, v2NAddr string, v2NStake string, v2NIp string, runnerPubKey string, runnerAddr string, runnerStake string, runnerIp string) *MsgGenGuard {
 	return &MsgGenGuard{
 		Creator:      creator,
-		GuardPubKey:  guardPubKey,
 		V2XPubKey:    v2XPubKey,
 		V2XAddr:      v2XAddr,
 		V2XStake:     v2XStake,

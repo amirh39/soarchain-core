@@ -1028,16 +1028,19 @@ func (m *MsgSelectRandomRunnerResponse) GetRandomRunner() *Runner {
 }
 
 type MsgUpdateGuard struct {
-	Creator     string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	V2XAddr     string `protobuf:"bytes,3,opt,name=v2XAddr,proto3" json:"v2XAddr,omitempty"`
-	V2XStake    string `protobuf:"bytes,4,opt,name=v2XStake,proto3" json:"v2XStake,omitempty"`
-	V2XIp       string `protobuf:"bytes,5,opt,name=v2XIp,proto3" json:"v2XIp,omitempty"`
-	V2NAddr     string `protobuf:"bytes,6,opt,name=v2NAddr,proto3" json:"v2NAddr,omitempty"`
-	V2NStake    string `protobuf:"bytes,7,opt,name=v2NStake,proto3" json:"v2NStake,omitempty"`
-	V2NIp       string `protobuf:"bytes,8,opt,name=v2NIp,proto3" json:"v2NIp,omitempty"`
-	RunnerAddr  string `protobuf:"bytes,9,opt,name=runnerAddr,proto3" json:"runnerAddr,omitempty"`
-	RunnerStake string `protobuf:"bytes,10,opt,name=runnerStake,proto3" json:"runnerStake,omitempty"`
-	RunnerIp    string `protobuf:"bytes,11,opt,name=runnerIp,proto3" json:"runnerIp,omitempty"`
+	Creator      string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	V2XPubKey    string `protobuf:"bytes,3,opt,name=v2xPubKey,proto3" json:"v2xPubKey,omitempty"`
+	V2XAddr      string `protobuf:"bytes,4,opt,name=v2XAddr,proto3" json:"v2XAddr,omitempty"`
+	V2XStake     string `protobuf:"bytes,5,opt,name=v2XStake,proto3" json:"v2XStake,omitempty"`
+	V2XIp        string `protobuf:"bytes,6,opt,name=v2XIp,proto3" json:"v2XIp,omitempty"`
+	V2NPubKey    string `protobuf:"bytes,7,opt,name=v2NPubKey,proto3" json:"v2NPubKey,omitempty"`
+	V2NAddr      string `protobuf:"bytes,8,opt,name=v2NAddr,proto3" json:"v2NAddr,omitempty"`
+	V2NStake     string `protobuf:"bytes,9,opt,name=v2NStake,proto3" json:"v2NStake,omitempty"`
+	V2NIp        string `protobuf:"bytes,10,opt,name=v2NIp,proto3" json:"v2NIp,omitempty"`
+	RunnerPubKey string `protobuf:"bytes,11,opt,name=runnerPubKey,proto3" json:"runnerPubKey,omitempty"`
+	RunnerAddr   string `protobuf:"bytes,12,opt,name=runnerAddr,proto3" json:"runnerAddr,omitempty"`
+	RunnerStake  string `protobuf:"bytes,13,opt,name=runnerStake,proto3" json:"runnerStake,omitempty"`
+	RunnerIp     string `protobuf:"bytes,14,opt,name=runnerIp,proto3" json:"runnerIp,omitempty"`
 }
 
 func (m *MsgUpdateGuard) Reset()         { *m = MsgUpdateGuard{} }
@@ -1080,6 +1083,13 @@ func (m *MsgUpdateGuard) GetCreator() string {
 	return ""
 }
 
+func (m *MsgUpdateGuard) GetV2XPubKey() string {
+	if m != nil {
+		return m.V2XPubKey
+	}
+	return ""
+}
+
 func (m *MsgUpdateGuard) GetV2XAddr() string {
 	if m != nil {
 		return m.V2XAddr
@@ -1101,6 +1111,13 @@ func (m *MsgUpdateGuard) GetV2XIp() string {
 	return ""
 }
 
+func (m *MsgUpdateGuard) GetV2NPubKey() string {
+	if m != nil {
+		return m.V2NPubKey
+	}
+	return ""
+}
+
 func (m *MsgUpdateGuard) GetV2NAddr() string {
 	if m != nil {
 		return m.V2NAddr
@@ -1118,6 +1135,13 @@ func (m *MsgUpdateGuard) GetV2NStake() string {
 func (m *MsgUpdateGuard) GetV2NIp() string {
 	if m != nil {
 		return m.V2NIp
+	}
+	return ""
+}
+
+func (m *MsgUpdateGuard) GetRunnerPubKey() string {
+	if m != nil {
+		return m.RunnerPubKey
 	}
 	return ""
 }
@@ -2835,61 +2859,82 @@ func (m *MsgUpdateGuard) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.RunnerIp)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.RunnerIp)))
 		i--
-		dAtA[i] = 0x5a
+		dAtA[i] = 0x72
 	}
 	if len(m.RunnerStake) > 0 {
 		i -= len(m.RunnerStake)
 		copy(dAtA[i:], m.RunnerStake)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.RunnerStake)))
 		i--
-		dAtA[i] = 0x52
+		dAtA[i] = 0x6a
 	}
 	if len(m.RunnerAddr) > 0 {
 		i -= len(m.RunnerAddr)
 		copy(dAtA[i:], m.RunnerAddr)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.RunnerAddr)))
 		i--
-		dAtA[i] = 0x4a
+		dAtA[i] = 0x62
+	}
+	if len(m.RunnerPubKey) > 0 {
+		i -= len(m.RunnerPubKey)
+		copy(dAtA[i:], m.RunnerPubKey)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.RunnerPubKey)))
+		i--
+		dAtA[i] = 0x5a
 	}
 	if len(m.V2NIp) > 0 {
 		i -= len(m.V2NIp)
 		copy(dAtA[i:], m.V2NIp)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.V2NIp)))
 		i--
-		dAtA[i] = 0x42
+		dAtA[i] = 0x52
 	}
 	if len(m.V2NStake) > 0 {
 		i -= len(m.V2NStake)
 		copy(dAtA[i:], m.V2NStake)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.V2NStake)))
 		i--
-		dAtA[i] = 0x3a
+		dAtA[i] = 0x4a
 	}
 	if len(m.V2NAddr) > 0 {
 		i -= len(m.V2NAddr)
 		copy(dAtA[i:], m.V2NAddr)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.V2NAddr)))
 		i--
-		dAtA[i] = 0x32
+		dAtA[i] = 0x42
+	}
+	if len(m.V2NPubKey) > 0 {
+		i -= len(m.V2NPubKey)
+		copy(dAtA[i:], m.V2NPubKey)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.V2NPubKey)))
+		i--
+		dAtA[i] = 0x3a
 	}
 	if len(m.V2XIp) > 0 {
 		i -= len(m.V2XIp)
 		copy(dAtA[i:], m.V2XIp)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.V2XIp)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 	}
 	if len(m.V2XStake) > 0 {
 		i -= len(m.V2XStake)
 		copy(dAtA[i:], m.V2XStake)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.V2XStake)))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x2a
 	}
 	if len(m.V2XAddr) > 0 {
 		i -= len(m.V2XAddr)
 		copy(dAtA[i:], m.V2XAddr)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.V2XAddr)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.V2XPubKey) > 0 {
+		i -= len(m.V2XPubKey)
+		copy(dAtA[i:], m.V2XPubKey)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.V2XPubKey)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -3449,6 +3494,10 @@ func (m *MsgUpdateGuard) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	l = len(m.V2XPubKey)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
 	l = len(m.V2XAddr)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
@@ -3461,6 +3510,10 @@ func (m *MsgUpdateGuard) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	l = len(m.V2NPubKey)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
 	l = len(m.V2NAddr)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
@@ -3470,6 +3523,10 @@ func (m *MsgUpdateGuard) Size() (n int) {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	l = len(m.V2NIp)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.RunnerPubKey)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -5772,6 +5829,38 @@ func (m *MsgUpdateGuard) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field V2XPubKey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.V2XPubKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field V2XAddr", wireType)
 			}
 			var stringLen uint64
@@ -5802,7 +5891,7 @@ func (m *MsgUpdateGuard) Unmarshal(dAtA []byte) error {
 			}
 			m.V2XAddr = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field V2XStake", wireType)
 			}
@@ -5834,7 +5923,7 @@ func (m *MsgUpdateGuard) Unmarshal(dAtA []byte) error {
 			}
 			m.V2XStake = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field V2XIp", wireType)
 			}
@@ -5866,7 +5955,39 @@ func (m *MsgUpdateGuard) Unmarshal(dAtA []byte) error {
 			}
 			m.V2XIp = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field V2NPubKey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.V2NPubKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field V2NAddr", wireType)
 			}
@@ -5898,7 +6019,7 @@ func (m *MsgUpdateGuard) Unmarshal(dAtA []byte) error {
 			}
 			m.V2NAddr = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 7:
+		case 9:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field V2NStake", wireType)
 			}
@@ -5930,7 +6051,7 @@ func (m *MsgUpdateGuard) Unmarshal(dAtA []byte) error {
 			}
 			m.V2NStake = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 8:
+		case 10:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field V2NIp", wireType)
 			}
@@ -5962,7 +6083,39 @@ func (m *MsgUpdateGuard) Unmarshal(dAtA []byte) error {
 			}
 			m.V2NIp = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 9:
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RunnerPubKey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RunnerPubKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 12:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RunnerAddr", wireType)
 			}
@@ -5994,7 +6147,7 @@ func (m *MsgUpdateGuard) Unmarshal(dAtA []byte) error {
 			}
 			m.RunnerAddr = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 10:
+		case 13:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RunnerStake", wireType)
 			}
@@ -6026,7 +6179,7 @@ func (m *MsgUpdateGuard) Unmarshal(dAtA []byte) error {
 			}
 			m.RunnerStake = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 11:
+		case 14:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RunnerIp", wireType)
 			}
