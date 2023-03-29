@@ -216,7 +216,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	scoreIntChallenger++
 
 	updatedChallenger := types.Challenger{
-		Index:        challenger.Index,
+		PubKey:       challenger.PubKey,
 		Address:      challenger.Address,
 		Score:        strconv.Itoa(scoreIntChallenger),
 		StakedAmount: challenger.StakedAmount,

@@ -9,18 +9,21 @@ const TypeMsgUpdateGuard = "update_guard"
 
 var _ sdk.Msg = &MsgUpdateGuard{}
 
-func NewMsgUpdateGuard(creator string, v2XAddr string, v2XStake string, v2XIp string, v2NAddr string, v2NStake string, v2NIp string, runnerAddr string, runnerStake string, runnerIp string) *MsgUpdateGuard {
-	return &MsgUpdateGuard{
-		Creator:     creator,
-		V2XAddr:     v2XAddr,
-		V2XStake:    v2XStake,
-		V2XIp:       v2XIp,
-		V2NAddr:     v2NAddr,
-		V2NStake:    v2NStake,
-		V2NIp:       v2NIp,
-		RunnerAddr:  runnerAddr,
-		RunnerStake: runnerStake,
-		RunnerIp:    runnerIp,
+func NewMsgUpdateGuard(creator string, v2XPubKey string, v2XAddr string, v2XStake string, v2XIp string, v2NPubKey string, v2NAddr string, v2NStake string, v2NIp string, runnerPubKey string, runnerAddr string, runnerStake string, runnerIp string) *MsgGenGuard {
+	return &MsgGenGuard{
+		Creator:      creator,
+		V2XPubKey:    v2XPubKey,
+		V2XAddr:      v2XAddr,
+		V2XStake:     v2XStake,
+		V2XIp:        v2XIp,
+		V2NPubKey:    v2NPubKey,
+		V2NAddr:      v2NAddr,
+		V2NStake:     v2NStake,
+		V2NIp:        v2NIp,
+		RunnerPubKey: runnerPubKey,
+		RunnerAddr:   runnerAddr,
+		RunnerStake:  runnerStake,
+		RunnerIp:     runnerIp,
 	}
 }
 

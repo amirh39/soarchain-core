@@ -53,7 +53,7 @@ func (gs GenesisState) Validate() error {
 	challengerIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.ChallengerList {
-		index := string(ChallengerKey(elem.Index))
+		index := string(ChallengerKey(elem.PubKey))
 		if _, ok := challengerIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for challenger")
 		}
@@ -63,7 +63,7 @@ func (gs GenesisState) Validate() error {
 	runnerIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.RunnerList {
-		index := string(RunnerKey(elem.Index))
+		index := string(RunnerKey(elem.PubKey))
 		if _, ok := runnerIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for runner")
 		}

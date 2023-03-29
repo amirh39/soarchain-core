@@ -27,16 +27,16 @@ func (k msgServer) RegisterFactoryKey(goCtx context.Context, msg *types.MsgRegis
 
 	masterCert, err := k.CreateX509CertFromString(soarMasterKey.MasterCertificate)
 	if err != nil {
-		return nil, err
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Master certificate couldn't be created from genesis!")
 	}
 	factoryCert, err := k.CreateX509CertFromString(msg.FactoryCert)
 	if err != nil {
-		return nil, err
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Factory certificate couldn't be created from the payload!")
 	}
 
 	result, err := k.ValidateX509Cert(factoryCert, masterCert)
 	if err != nil {
-		return nil, err
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Factory certificate validation error!")
 	}
 	if !result {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cert verification error")

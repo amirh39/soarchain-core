@@ -17,7 +17,7 @@ func CmdUnregisterChallenger() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "unregister-challenger [challenger-addr]",
 		Short: "Broadcast message unregister-challenger",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAddress := args[0]
 

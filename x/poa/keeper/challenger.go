@@ -1,9 +1,10 @@
 package keeper
 
 import (
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"soarchain/x/poa/types"
 )
 
 // SetChallenger set a specific challenger in the store from its index
@@ -11,20 +12,20 @@ func (k Keeper) SetChallenger(ctx sdk.Context, challenger types.Challenger) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerKeyPrefix))
 	b := k.cdc.MustMarshal(&challenger)
 	store.Set(types.ChallengerKey(
-		challenger.Index,
+		challenger.PubKey,
 	), b)
 }
 
 // GetChallenger returns a challenger from its index
 func (k Keeper) GetChallenger(
 	ctx sdk.Context,
-	index string,
+	PubKey string,
 
 ) (val types.Challenger, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerKeyPrefix))
 
 	b := store.Get(types.ChallengerKey(
-		index,
+		val.PubKey,
 	))
 	if b == nil {
 		return val, false

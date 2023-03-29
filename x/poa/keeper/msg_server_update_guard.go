@@ -57,7 +57,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 
 			if msg.V2XAddr == guard.V2XChallenger.Address { // only update the ip
 				newV2XChallenger = types.Challenger{
-					Index:        guard.V2XChallenger.Index,
+					PubKey:       guard.V2XChallenger.PubKey,
 					Address:      guard.V2XChallenger.Address,
 					Score:        guard.V2XChallenger.Score,
 					StakedAmount: guard.V2XChallenger.StakedAmount,
@@ -70,7 +70,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 
 			} else {
 				newV2XChallenger = types.Challenger{ // update address and the ip
-					Index:        guard.V2XChallenger.Index,
+					PubKey:       guard.V2XChallenger.PubKey,
 					Address:      v2xChallengerAddr.String(),
 					Score:        guard.V2XChallenger.Score,
 					StakedAmount: guard.V2XChallenger.StakedAmount,
@@ -101,7 +101,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 			}
 			//
 			newV2XChallenger = types.Challenger{
-				Index:        v2xChallengerAddr.String(),
+				PubKey:       guard.V2XChallenger.PubKey,
 				Address:      v2xChallengerAddr.String(),
 				Score:        sdk.NewInt(50).String(), // Base Score
 				StakedAmount: v2XStake.String(),
@@ -137,7 +137,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 
 			if msg.V2NAddr == guard.V2NChallenger.Address {
 				newV2NChallenger = types.Challenger{
-					Index:        guard.V2NChallenger.Index,
+					PubKey:       guard.V2NChallenger.PubKey,
 					Address:      guard.V2NChallenger.Address,
 					Score:        guard.V2NChallenger.Score,
 					StakedAmount: guard.V2NChallenger.StakedAmount,
@@ -150,7 +150,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 
 			} else {
 				newV2NChallenger = types.Challenger{
-					Index:        guard.V2NChallenger.Index,
+					PubKey:       guard.V2NChallenger.PubKey,
 					Address:      v2nChallengerAddr.String(),
 					Score:        guard.V2NChallenger.Score,
 					StakedAmount: guard.V2NChallenger.StakedAmount,
@@ -181,7 +181,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 			}
 			//
 			newV2NChallenger = types.Challenger{
-				Index:        v2nChallengerAddr.String(),
+				PubKey:       newV2NChallenger.PubKey,
 				Address:      v2nChallengerAddr.String(),
 				Score:        sdk.NewInt(50).String(), // Base Score
 				StakedAmount: v2NStake.String(),
@@ -217,7 +217,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 
 			if msg.RunnerAddr == guard.Runner.Address {
 				newRunner = types.Runner{
-					Index:              guard.Runner.Index,
+					PubKey:             guard.Runner.PubKey,
 					Address:            guard.Runner.Address,
 					Score:              guard.Runner.Score,
 					RewardMultiplier:   guard.Runner.RewardMultiplier,
@@ -233,7 +233,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 
 			} else {
 				newRunner = types.Runner{
-					Index:              guard.Runner.Index,
+					PubKey:             guard.Runner.PubKey,
 					Address:            runnerAddr.String(),
 					Score:              guard.Runner.Score,
 					RewardMultiplier:   guard.Runner.RewardMultiplier,
@@ -271,7 +271,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 			rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
 
 			newRunner = types.Runner{
-				Index:              runnerAddr.String(),
+				PubKey:             guard.Runner.PubKey,
 				Address:            runnerAddr.String(),
 				Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
 				RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),

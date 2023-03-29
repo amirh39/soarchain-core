@@ -2,7 +2,11 @@ package keeper
 
 import (
 	"context"
+	"crypto"
+	"crypto/rsa"
+	"crypto/sha256"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/hex"
 
 	// "encoding/pem"
@@ -27,6 +31,18 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	pubKeyHex := hex.EncodeToString(pubKeyDer)
 
+	// verify the msg.Creator_Signed which basically the msg.Creator signed by the privateKey of the pubKey we just extracted from the msg.Certificate  
+	signature, err := base64.StdEncoding.DecodeString(msg.Signature)
+    if err != nil {
+        return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid signature encoding")
+    }
+
+    hashedAddr := sha256.Sum256([]byte(msg.Creator))
+    err = rsa.VerifyPKCS1v15(deviceCert.PublicKey.(*rsa.PublicKey), crypto.SHA256, hashedAddr[:], signature)
+    if err != nil {
+        return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Signature verification failed")
+    }
+
 	_, isFound := k.GetClient(ctx, pubKeyHex)
 	if isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client pubkey is already registered.")
@@ -40,12 +56,12 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		if isFound {
 			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
 			if err != nil {
-				return nil, err
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Factory certificate couldn't be created from the storage!")
 			}
 
 			validated, err = k.ValidateX509Cert(deviceCert, factoryCert)
 			if err != nil {
-				return nil, err
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Device certificate couldn't be verified!")
 			}
 			if validated {
 				break

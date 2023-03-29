@@ -34,8 +34,8 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 		return
 	}
 
-	nextInf := minter.Inflation.Add(sdk.NewDec(1))
-	nextPhase := minter.Phase + 1
+	nextInf := minter.PhaseInflationRate(minter.Phase)
+	nextPhase := minter.NextPhase(ctx, params)
 
 	mintedCoins := minter.StakingRewardsPerBlock(ctx, params)
 

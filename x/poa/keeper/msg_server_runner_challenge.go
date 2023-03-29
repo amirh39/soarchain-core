@@ -113,7 +113,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	}
 
 	updatedRunner := types.Runner{
-		Index:              runner.Index,
+		PubKey:             runner.PubKey,
 		Address:            runner.Address,
 		Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
@@ -255,7 +255,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	scoreIntChallenger++
 
 	updatedChallenger := types.Challenger{
-		Index:        challenger.Index,
+		PubKey:       challenger.PubKey,
 		Address:      challenger.Address,
 		Score:        strconv.Itoa(scoreIntChallenger),
 		StakedAmount: challenger.StakedAmount,

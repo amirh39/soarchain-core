@@ -17,7 +17,7 @@ var _ = strconv.Itoa(0)
 
 func CmdRunnerChallenge() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "runner-challenge [runner-address] [v2n-device-type] [challenge-result]",
+		Use:   "runner-challenge [runner-address] [v2nbx-device-array]",
 		Short: "Broadcast message runner-challenge",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

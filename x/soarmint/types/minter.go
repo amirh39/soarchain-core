@@ -49,40 +49,50 @@ func ValidateMinter(minter Minter) error {
 // PhaseInflationRate returns the inflation rate by phase.
 func (m Minter) PhaseInflationRate(phase uint64) sdk.Dec {
 	switch {
-	case phase > 12:
+	case phase > 19:
 		return sdk.ZeroDec()
 
 	case phase == 1:
-		return sdk.NewDecWithPrec(40, 2)
+		return sdk.NewDecWithPrec(29, 2)
 
 	case phase == 2:
-		return sdk.NewDecWithPrec(20, 2)
+		return sdk.NewDecWithPrec(21, 2)
 
 	case phase == 3:
-		return sdk.NewDecWithPrec(10, 2)
+		return sdk.NewDecWithPrec(20, 2)
 
 	default:
-		// Phase4:  9%
-		// Phase5:  8%
-		// Phase6:  7%
+		// Phase4:  15%
+		// Phase5:  14%
+		// Phase6:  13%
 		// ...
-		// Phase12: 1%
-		return sdk.NewDecWithPrec(13-int64(phase), 2)
+		// Phase18: 1%
+		return sdk.NewDecWithPrec(18-int64(phase), 2)
 	}
 }
 
 // NextPhase returns the new phase.
-func (m Minter) NextPhase(params Params, currentSupply sdk.Int) uint64 {
-	nonePhase := m.Phase == 0
-	if nonePhase {
+func (m Minter) NextPhase(ctx sdk.Context, params Params) uint64 {
+
+	phase := m.Phase
+	if phase == 0 {
 		return 1
 	}
 
-	if currentSupply.LT(m.TargetSupply) {
-		return m.Phase
+	blocksPerYear := params.BlocksPerYear
+	currentBlockNumber := uint64(ctx.BlockHeight())
+
+	yearsSinceStart := (currentBlockNumber) / blocksPerYear
+
+	// Calculate the number of times the token issuance rate has been halved
+	halvings := (yearsSinceStart) / 3
+
+	// Update the token issuance rate for each halving that has occurred
+	for i := uint64(0); i < halvings; i++ {
+		phase = phase + 1
 	}
 
-	return m.Phase + 1
+	return phase
 }
 
 // NextAnnualProvisions returns the annual provisions based on current total
