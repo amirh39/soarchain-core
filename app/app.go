@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	param "soarchain/app/params"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -119,11 +120,6 @@ import (
 	wasmclient "github.com/CosmWasm/wasmd/x/wasm/client"
 )
 
-const (
-	AccountAddressPrefix = "soar"
-	Name                 = "soarchain"
-)
-
 // GetWasmEnabledProposals parses the WasmProposalsEnabled and
 // EnableSpecificWasmProposals values to produce a list of enabled proposals to
 // pass into the application.
@@ -227,7 +223,7 @@ func init() {
 		panic(err)
 	}
 
-	DefaultNodeHome = filepath.Join(userHomeDir, "."+Name)
+	DefaultNodeHome = filepath.Join(userHomeDir, "."+param.Name)
 }
 
 // App extends an ABCI application, but with most of its parameters exported.
@@ -305,7 +301,7 @@ func NewsoarchainApp(
 	cdc := encodingConfig.Amino
 	interfaceRegistry := encodingConfig.InterfaceRegistry
 
-	bApp := baseapp.NewBaseApp(Name, logger, db, encodingConfig.TxConfig.TxDecoder(), baseAppOptions...)
+	bApp := baseapp.NewBaseApp(param.Name, logger, db, encodingConfig.TxConfig.TxDecoder(), baseAppOptions...)
 	bApp.SetCommitMultiStoreTracer(traceStore)
 	bApp.SetVersion(version.Version)
 	bApp.SetInterfaceRegistry(interfaceRegistry)
@@ -840,7 +836,7 @@ func (app *soarchainApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.
 
 	// register app's OpenAPI routes.
 	apiSvr.Router.Handle("/static/openapi.yml", http.FileServer(http.FS(docs.Docs)))
-	apiSvr.Router.HandleFunc("/", openapiconsole.Handler(Name, "/static/openapi.yml"))
+	apiSvr.Router.HandleFunc("/", openapiconsole.Handler(param.Name, "/static/openapi.yml"))
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
