@@ -111,7 +111,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Check v2n stake amount
-		requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
+		requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 2000000000)}
 		v2NStake, err := sdk.ParseCoinsNormalized(msg.V2NStake)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
@@ -131,7 +131,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			Address:      v2nChallengerAddr.String(),
 			Score:        sdk.NewInt(50).String(), // Base Score
 			StakedAmount: v2NStake.String(),
-			NetEarnings:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			NetEarnings:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 			Type:         "v2n",
 			IpAddr:       msg.V2NIp,
 		}
@@ -159,7 +159,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		}
 
 		// Check runner stake amount
-		requiredStake, _ := sdk.ParseCoinsNormalized("1000000000soar")
+		requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 1000000000)}
 		runnerStake, err := sdk.ParseCoinsNormalized(msg.RunnerStake)
 
 		if err != nil {
@@ -185,7 +185,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			Score:              strconv.FormatFloat(initialScore, 'f', -1, 64), // Base Score
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			StakedAmount:       runnerStake.String(),
-			NetEarnings:        sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			NetEarnings:        sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 			IpAddr:             msg.RunnerIp,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(1, 10),
