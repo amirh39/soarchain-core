@@ -6,7 +6,14 @@ import (
 	mint "soarchain/x/soarmint"
 	minttypes "soarchain/x/soarmint/types"
 
+	wasmclient "github.com/CosmWasm/wasmd/x/wasm/client"
 	crisistypes "github.com/cosmos/cosmos-sdk/x/crisis/types"
+	distrclient "github.com/cosmos/cosmos-sdk/x/distribution/client"
+	"github.com/cosmos/cosmos-sdk/x/gov"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	paramsclient "github.com/cosmos/cosmos-sdk/x/params/client"
+	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
+	ibcclientclient "github.com/cosmos/ibc-go/v3/modules/core/02-client/client"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -86,6 +93,31 @@ type mintModule struct {
 func (mintModule) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 	genState := minttypes.DefaultGenesis()
 	genState.Params.MintDenom = param.BondDenom
+
+	return cdc.MustMarshalJSON(genState)
+}
+
+func newGovModule() govModule {
+	return govModule{gov.NewAppModuleBasic(
+		append(
+			wasmclient.ProposalHandlers,
+			paramsclient.ProposalHandler,
+			distrclient.ProposalHandler,
+			upgradeclient.ProposalHandler,
+			upgradeclient.CancelProposalHandler,
+			ibcclientclient.UpdateClientProposalHandler,
+			ibcclientclient.UpgradeProposalHandler,
+		)...,
+	)}
+}
+
+type govModule struct {
+	gov.AppModuleBasic
+}
+
+func (govModule) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
+	genState := govtypes.DefaultGenesisState()
+	genState.DepositParams.MinDeposit = sdk.NewCoins(sdk.NewCoin(param.BondDenom, sdk.NewInt(10000000)))
 
 	return cdc.MustMarshalJSON(genState)
 }

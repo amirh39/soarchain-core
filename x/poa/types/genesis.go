@@ -3,6 +3,8 @@ package types
 import (
 	"fmt"
 
+	params "soarchain/app/params"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -20,10 +22,10 @@ func DefaultGenesis() *GenesisState {
 		VrfUserList:    []VrfUser{},
 		EpochData: EpochData{
 			TotalEpochs: 0,
-			EpochV2VRX:  sdk.NewCoin("umotus", sdk.ZeroInt()).String(),
-			EpochV2VBX:  sdk.NewCoin("umotus", sdk.ZeroInt()).String(),
-			EpochV2NBX:  sdk.NewCoin("umotus", sdk.ZeroInt()).String(),
-			EpochRunner: sdk.NewCoin("umotus", sdk.ZeroInt()).String(),
+			EpochV2VRX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+			EpochV2VBX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+			EpochV2NBX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+			EpochRunner: sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 		},
 		MotusWalletList: []MotusWallet{},
 		MasterKey: MasterKey{

@@ -7,6 +7,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"soarchain/x/poa/types"
+
+	params "soarchain/app/params"
 )
 
 func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaimRunnerRewards) (*types.MsgClaimRunnerRewardsResponse, error) {
@@ -38,10 +40,10 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 
 	// Calculate new net earnings
 	newNetEarnings := earnedAmount.Sub(withdrawAmount)
-	netEarnings := sdk.NewCoin("soar", newNetEarnings.AmountOf("soar"))
+	netEarnings := sdk.NewCoin(params.BondDenom, newNetEarnings.AmountOf(params.BondDenom))
 
 	if newNetEarnings.IsZero() {
-		netEarnings = sdk.NewCoin("soar", sdk.ZeroInt())
+		netEarnings = sdk.NewCoin(params.BondDenom, sdk.ZeroInt())
 	}
 
 	updatedRunner := types.Runner{

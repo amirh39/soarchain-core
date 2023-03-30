@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
+	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 )
 
@@ -39,10 +40,10 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	// Calculate new net earnings
 	newNetEarnings := earnedAmount.Sub(withdrawAmount)
-	netEarnings := sdk.NewCoin("soar", newNetEarnings.AmountOf("soar"))
+	netEarnings := sdk.NewCoin(params.BondDenom, newNetEarnings.AmountOf(params.BondDenom))
 
 	if newNetEarnings.IsZero() {
-		netEarnings = sdk.NewCoin("soar", sdk.ZeroInt())
+		netEarnings = sdk.NewCoin(params.BondDenom, sdk.ZeroInt())
 	}
 
 	updatedClient := types.Client{

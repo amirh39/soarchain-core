@@ -43,14 +43,14 @@ func TestClaimMotusRewards(t *testing.T) {
 	// create test motus wallet and client
 	motusWallet := types.MotusWallet{
 		Index:  communityWallet,
-		Client: &types.Client{Address: communityWallet, NetEarnings: "100soar"},
+		Client: &types.Client{Address: communityWallet, NetEarnings: "100umotus"},
 	}
 	k.SetMotusWallet(ctx, motusWallet)
 
 	// test with successful claim
 	resp, err := msgServer.ClaimMotusRewards(context, &types.MsgClaimMotusRewards{
 		Creator: communityWallet,
-		Amount:  "100soar",
+		Amount:  "100umotus",
 	})
 	require.NoError(t, err)
 	require.NotNil(t, resp)

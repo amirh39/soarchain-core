@@ -10,6 +10,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"soarchain/x/poa/types"
+
+	params "soarchain/app/params"
 )
 
 func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*types.MsgGenGuardResponse, error) {
@@ -55,7 +57,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		// Check v2x stake amount
 		// requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
-		requiredStake := sdk.Coins{sdk.NewInt64Coin("soar", 2000000000)}
+		requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 2000000000)}
 		v2XStake, err := sdk.ParseCoinsNormalized(msg.V2XStake)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
@@ -80,7 +82,7 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			Address:      v2xChallengerAddr.String(),
 			Score:        sdk.NewInt(50).String(), // Base Score
 			StakedAmount: v2XStake.String(),
-			NetEarnings:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+			NetEarnings:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 			Type:         "v2x",
 			IpAddr:       msg.V2XIp,
 		}

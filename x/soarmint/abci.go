@@ -10,6 +10,8 @@ import (
 	"soarchain/x/soarmint/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
+
+
 )
 
 func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {
@@ -29,7 +31,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 	currentBlock := uint64(ctx.BlockHeight())
 
 	// fetch current token supply
-	totalSupply := k.TokenSupply(ctx, "soar")
+	totalSupply := k.TokenSupply(ctx, params.MintDenom)
 	if totalSupply == sdk.ZeroInt() { // debug
 		return
 	}
@@ -44,7 +46,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 		Phase:            nextPhase,
 		StartPhaseBlock:  currentBlock,
 		AnnualProvisions: minter.NextAnnualProvisions(params, totalSupply),
-		TargetSupply:     mintedCoins.AmountOf("soar"),
+		TargetSupply:     mintedCoins.AmountOf(params.MintDenom),
 	}
 	k.SetMinter(ctx, newMinter)
 

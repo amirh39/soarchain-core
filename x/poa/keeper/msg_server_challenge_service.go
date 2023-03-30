@@ -7,6 +7,8 @@ import (
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 
+	params "soarchain/app/params"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -65,7 +67,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		if targetEpochErr != nil {
 			return nil, err
 		}
-		targetEpochReward := sdk.NewCoin("soar", sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
+		targetEpochReward := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
 
 		epochData, _ := k.GetEpochData(ctx)
 		var epochRewards sdk.Coin
@@ -87,7 +89,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 				return nil, err
 			}
 			earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
-			earnedCoin := sdk.NewCoin("soar", earnedRewardsInt)
+			earnedCoin := sdk.NewCoin(params.BondDenom, earnedRewardsInt)
 
 			netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
 			if err != nil {

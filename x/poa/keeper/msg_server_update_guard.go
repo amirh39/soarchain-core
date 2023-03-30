@@ -7,6 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
+	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 )
@@ -85,7 +86,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 		} else { // create new v2x challenger for guard
 
 			// Check v2x stake amount
-			requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
+			requiredStake, _ := sdk.ParseCoinsNormalized("2000000000umotus")
 			v2XStake, err := sdk.ParseCoinsNormalized(msg.V2XStake)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
@@ -105,7 +106,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 				Address:      v2xChallengerAddr.String(),
 				Score:        sdk.NewInt(50).String(), // Base Score
 				StakedAmount: v2XStake.String(),
-				NetEarnings:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+				NetEarnings:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 				Type:         "v2x",
 				IpAddr:       msg.V2XIp,
 			}
@@ -165,7 +166,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 		} else { // create new v2n challenger for guard
 
 			// Check v2n stake amount
-			requiredStake, _ := sdk.ParseCoinsNormalized("2000000000soar")
+			requiredStake, _ := sdk.ParseCoinsNormalized("2000000000umotus")
 			v2NStake, err := sdk.ParseCoinsNormalized(msg.V2NStake)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
@@ -185,7 +186,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 				Address:      v2nChallengerAddr.String(),
 				Score:        sdk.NewInt(50).String(), // Base Score
 				StakedAmount: v2NStake.String(),
-				NetEarnings:  sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+				NetEarnings:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 				Type:         "v2n",
 				IpAddr:       msg.V2NIp,
 			}
@@ -250,7 +251,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 
 		} else { // create new runner for guard
 			// Check runner stake amount
-			requiredStake, _ := sdk.ParseCoinsNormalized("1000000000soar")
+			requiredStake, _ := sdk.ParseCoinsNormalized("1000000000umotus")
 			runnerStake, err := sdk.ParseCoinsNormalized(msg.RunnerStake)
 
 			if err != nil {
@@ -276,7 +277,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 				Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
 				RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 				StakedAmount:       runnerStake.String(),
-				NetEarnings:        sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+				NetEarnings:        sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 				IpAddr:             msg.RunnerIp,
 				LastTimeChallenged: ctx.BlockTime().String(),
 				CoolDownTolerance:  strconv.FormatUint(1, 10),

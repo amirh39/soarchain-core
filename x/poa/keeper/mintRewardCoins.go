@@ -4,6 +4,8 @@ import (
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 
+	params "soarchain/app/params"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	// sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -26,25 +28,25 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	// Reset Epoch Rewards
 	newEpochData := types.EpochData{
 		TotalEpochs: epochData.TotalEpochs,
-		EpochV2VRX:  sdk.NewCoin("umotus", sdk.ZeroInt()).String(),
-		EpochV2VBX:  sdk.NewCoin("umotus", sdk.ZeroInt()).String(),
-		EpochV2NBX:  sdk.NewCoin("umotus", sdk.ZeroInt()).String(),
-		EpochRunner: sdk.NewCoin("umotus", sdk.ZeroInt()).String(),
+		EpochV2VRX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochV2VBX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochV2NBX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochRunner: sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 	}
 	k.SetEpochData(ctx, newEpochData)
 
 	// Calculate leftover rewards
 	targetV2VRx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-rx")
-	targetV2VRxCoin := sdk.NewCoin("umotus", sdk.NewIntFromUint64(uint64(targetV2VRx)))
+	targetV2VRxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetV2VRx)))
 
 	targetV2VBx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-bx")
-	targetV2VBxCoin := sdk.NewCoin("umotus", sdk.NewIntFromUint64(uint64(targetV2VBx)))
+	targetV2VBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetV2VBx)))
 
 	targetV2NBx, _ := utility.V2NRewardEmissionPerEpoch(ctx, "v2n-bx")
-	targetV2NBxCoin := sdk.NewCoin("umotus", sdk.NewIntFromUint64(uint64(targetV2NBx)))
+	targetV2NBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetV2NBx)))
 
 	targetRunner, _ := utility.V2NRewardEmissionPerEpoch(ctx, "runner")
-	targetRunnerCoin := sdk.NewCoin("umotus", sdk.NewIntFromUint64(uint64(targetRunner)))
+	targetRunnerCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetRunner)))
 
 	//
 	v2vRxReward, _ := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
