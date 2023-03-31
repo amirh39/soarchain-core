@@ -8,19 +8,19 @@ reset:
 	soarchaind tendermint unsafe-reset-all
 
 init:
-	soarchaind init devnet-validator-zeus --chain-id soarchaintestnet
+	soarchaind init testnet-validator-apollo --chain-id soarchaintestnet
 
 config:
 	soarchaind config keyring-backend test
 	soarchaind config chain-id soarchaintestnet
 
 keys:
-	soarchaind keys add soarMasterAccount --keyring-backend test --algo secp256k1
+	soarchaind keys add soarMasterAccount --recover
 	soarchaind keys add investorWallet --keyring-backend test --algo secp256k1
 	soarchaind keys add airdropWallet --keyring-backend test --algo secp256k1
 	soarchaind keys add strategicWallet --keyring-backend test --algo secp256k1
 	soarchaind keys add communityWallet --keyring-backend test --algo secp256k1
-	soarchaind keys add zeus --keyring-backend test --algo secp256k1
+	soarchaind keys add apollo --keyring-backend test --algo secp256k1
 
 parameter_token_denomination:
 	cat ~/.soarchain/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="umotus"' > ~/.soarchain/config/tmp_genesis.json && mv ~/.soarchain/config/tmp_genesis.json ~/.soarchain/config/genesis.json
@@ -40,10 +40,10 @@ allocate_genesis_accounts:
 	soarchaind add-genesis-account airdropWallet 47500000000000umotus --keyring-backend test
 	soarchaind add-genesis-account strategicWallet 180500000000000umotus --keyring-backend test
 	soarchaind add-genesis-account communityWallet 100700000000000umotus --keyring-backend test
-	soarchaind add-genesis-account zeus 100000000umotus --keyring-backend test
+	soarchaind add-genesis-account apollo 100000000umotus --keyring-backend test
 
 sign_genesis_transaction:
-	soarchaind gentx zeus 10000000umotus --keyring-backend test --chain-id soarchaintestnet
+	soarchaind gentx apollo 10000000umotus --keyring-backend test --chain-id soarchaintestnet
 
 collect_genesis_tx:
 	soarchaind collect-gentxs
@@ -52,11 +52,11 @@ validate_genesis:
 	soarchaind validate-genesis
 
 upgrade_proposal:
-	soarchaind tx gov submit-proposal software-upgrade test1 --title upgrade --description upgrade --upgrade-height 35 --chain-id soarchaintestnet --from zeus --yes
+	soarchaind tx gov submit-proposal software-upgrade test1 --title upgrade --description upgrade --upgrade-height 35 --chain-id soarchaintestnet --from apollo --yes
 
 vote_proposal:	
-	soarchaind tx gov deposit 1 10000000umotus --from zeus --chain-id soarchaintestnet --yes
-	soarchaind tx gov vote 1 yes --from zeus --chain-id soarchaintestnet --yes
+	soarchaind tx gov deposit 1 10000000umotus --from apollo --chain-id soarchaintestnet --yes
+	soarchaind tx gov vote 1 yes --from apollo --chain-id soarchaintestnet --yes
 
 ifdef start
 	soarchaind start --log_level info --minimum-gas-prices=0.0001umotus

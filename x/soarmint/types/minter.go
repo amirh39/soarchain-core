@@ -109,10 +109,10 @@ func (m Minter) BlockProvision(params Params, totalSupply sdk.Int) sdk.Coin {
 	// Because of rounding, we might mint too many tokens in this phase, let's limit it
 	futureSupply := totalSupply.Add(provisionAmt.TruncateInt())
 	if futureSupply.GT(m.TargetSupply) {
-		return sdk.NewCoin("soar", m.TargetSupply.Sub(totalSupply))
+		return sdk.NewCoin(params.MintDenom, m.TargetSupply.Sub(totalSupply))
 	}
 
-	return sdk.NewCoin("soar", provisionAmt.TruncateInt())
+	return sdk.NewCoin(params.MintDenom, provisionAmt.TruncateInt())
 }
 
 func (m Minter) StakingRewardsPerBlock(ctx sdk.Context, params Params) sdk.Coins {
@@ -139,5 +139,5 @@ func (m Minter) StakingRewardsPerBlock(ctx sdk.Context, params Params) sdk.Coins
 		tokensPerBlock = initialTokensPerYear / blocksPerYear
 	}
 
-	return sdk.Coins{sdk.NewCoin("soar", sdk.NewIntFromUint64(tokensPerBlock))}
+	return sdk.Coins{sdk.NewCoin(params.MintDenom, sdk.NewIntFromUint64(tokensPerBlock))}
 }

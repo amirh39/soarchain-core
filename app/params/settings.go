@@ -11,7 +11,7 @@ const (
 	BondDenomAlias = "micromotus"
 
 	// DisplayDenom defines the name, symbol, and display value of the motus token.
-	DisplayDenom = "Motus"
+	DisplayDenom = "motus"
 
 	MotusExponent = 6
 )
