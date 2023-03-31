@@ -35,7 +35,7 @@ parameter_voting_period:
 	cat <<< $$(jq '.app_state.gov.voting_params.voting_period = "20s"' ~/.soarchain/config/genesis.json) > ~/.soarchain/config/genesis.json
 
 allocate_genesis_accounts:
-	soarchaind add-genesis-account soarMasterAccount 100000000umotus --keyring-backend test
+	soarchaind add-genesis-account soarMasterAccount 10000000000000umotus --keyring-backend test
 	soarchaind add-genesis-account investorWallet 77425000000000umotus --keyring-backend test
 	soarchaind add-genesis-account airdropWallet 47500000000000umotus --keyring-backend test
 	soarchaind add-genesis-account strategicWallet 180500000000000umotus --keyring-backend test

@@ -83,7 +83,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-		NetEarnings:        sdk.NewCoin("soar", sdk.ZeroInt()).String(),
+		NetEarnings:        sdk.NewCoin("umotus", sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 	}
