@@ -40,10 +40,10 @@ allocate_genesis_accounts:
 	soarchaind add-genesis-account airdropWallet 47500000000000umotus --keyring-backend test
 	soarchaind add-genesis-account strategicWallet 180500000000000umotus --keyring-backend test
 	soarchaind add-genesis-account communityWallet 100700000000000umotus --keyring-backend test
-	soarchaind add-genesis-account apollo 100000000umotus --keyring-backend test
+	soarchaind add-genesis-account apollo 100000000000000umotus --keyring-backend test
 
 sign_genesis_transaction:
-	soarchaind gentx apollo 10000000umotus --keyring-backend test --chain-id soarchaintestnet
+	soarchaind gentx apollo 1000000umotus --keyring-backend test --chain-id soarchaintestnet
 
 collect_genesis_tx:
 	soarchaind collect-gentxs
@@ -55,7 +55,7 @@ upgrade_proposal:
 	soarchaind tx gov submit-proposal software-upgrade test1 --title upgrade --description upgrade --upgrade-height 35 --chain-id soarchaintestnet --from apollo --yes
 
 vote_proposal:	
-	soarchaind tx gov deposit 1 10000000umotus --from apollo --chain-id soarchaintestnet --yes
+	soarchaind tx gov deposit 1 1000000umotus --from apollo --chain-id soarchaintestnet --yes
 	soarchaind tx gov vote 1 yes --from apollo --chain-id soarchaintestnet --yes
 
 ifdef start
