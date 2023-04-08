@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"log"
+	"math/big"
 	"strconv"
 
 	// "encoding/pem"
@@ -44,24 +45,23 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	log.Println("sig", signature)
 
 	hashedAddr := sha256.Sum256([]byte(msg.Creator))
+	r := new(big.Int).SetBytes(signature[:len(signature)/2])
+	s := new(big.Int).SetBytes(signature[len(signature)/2:])
 	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
-		if pub, ok := deviceCert.PublicKey.(*ecdsa.PublicKey); ok {
-			if ecdsa.VerifyASN1(pub, hashedAddr[:], signature) {
-				//signature is valid
+		pub, err := x509.ParsePKIXPublicKey(pubKeyDer)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid public key")
+		}
+
+		if ecdsaPubKey, ok := pub.(*ecdsa.PublicKey); ok {
+			if ecdsa.Verify(ecdsaPubKey, hashedAddr[:], r, s) {
+				// signature is valid
 			} else {
-				log.Println("pub:", pub)
 				return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Signature verification failed")
 			}
 		} else {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid public key type")
 		}
-	} else {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid public key algorithm")
-	}
-
-	_, isFound := k.GetClient(ctx, pubKeyHex)
-	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client pubkey is already registered.")
 	}
 
 	// Check validity of certificate
