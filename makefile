@@ -15,6 +15,7 @@ config:
 	soarchaind config chain-id soarchaintestnet
 
 keys:
+	soarchaind keys add test --recover
 	soarchaind keys add soarMasterAccount --recover
 	soarchaind keys add investorWallet --keyring-backend test --algo secp256k1
 	soarchaind keys add airdropWallet --keyring-backend test --algo secp256k1
@@ -35,6 +36,7 @@ parameter_voting_period:
 	cat <<< $$(jq '.app_state.gov.voting_params.voting_period = "20s"' ~/.soarchain/config/genesis.json) > ~/.soarchain/config/genesis.json
 
 allocate_genesis_accounts:
+	soarchaind add-genesis-account test 10000000000000umotus --keyring-backend test
 	soarchaind add-genesis-account soarMasterAccount 10000000000000umotus --keyring-backend test
 	soarchaind add-genesis-account investorWallet 77425000000000umotus --keyring-backend test
 	soarchaind add-genesis-account airdropWallet 47500000000000umotus --keyring-backend test

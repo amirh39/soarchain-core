@@ -15,12 +15,13 @@ var _ = strconv.Itoa(0)
 
 func CmdGenClient() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "gen-client [certificate]",
+		Use:   "gen-client [Certificate] [Signature]",
 		Short: "Broadcast message gen-client",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argPubkey := args[0]
-			argSignature := args[1]
+
+			argPubkey := "-----BEGIN CERTIFICATE-----\n" + args[0] + "\n-----END CERTIFICATE-----"
+			argSignature := args[1] //TODO: ----- flag change
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
