@@ -5,10 +5,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/sha256"
 	"crypto/x509"
-	"encoding/base64"
 	"encoding/hex"
-	"log"
-	"math/big"
 	"strconv"
 
 	// "encoding/pem"
@@ -29,32 +26,22 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, err
 	}
 
-	log.Println(msg.Certificate)
-	log.Println("deviceCert:", deviceCert)
 	pubKeyDer, _ := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
-	log.Println("pubkeyder", pubKeyDer)
+
 	pubKeyHex := hex.EncodeToString(pubKeyDer)
-	log.Println("pubKeyHex", pubKeyHex)
 	// verify the msg.Creator_Signed which basically the msg.Creator signed by the privateKey of the pubKey we just extracted from the msg.Certificate
-	signature, err := base64.StdEncoding.DecodeString(msg.Signature)
+	signature, err := hex.DecodeString(msg.Signature)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid signature encoding")
 	}
-	log.Println("msg.sig", msg.Signature)
-	log.Println("msg.creator", msg.Creator)
-	log.Println("sig", signature)
 
 	hashedAddr := sha256.Sum256([]byte(msg.Creator))
-	r := new(big.Int).SetBytes(signature[:len(signature)/2])
-	s := new(big.Int).SetBytes(signature[len(signature)/2:])
-	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
-		pub, err := x509.ParsePKIXPublicKey(pubKeyDer)
-		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid public key")
-		}
 
-		if ecdsaPubKey, ok := pub.(*ecdsa.PublicKey); ok {
-			if ecdsa.Verify(ecdsaPubKey, hashedAddr[:], r, s) {
+	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
+
+		if ecdsaPubKey, ok := deviceCert.PublicKey.(*ecdsa.PublicKey); ok {
+
+			if ecdsa.VerifyASN1(ecdsaPubKey, hashedAddr[:], signature) {
 				// signature is valid
 			} else {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Signature verification failed")
