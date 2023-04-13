@@ -26,8 +26,11 @@ require (
 require (
 	github.com/CosmWasm/wasmvm v1.0.0 // indirect
 	github.com/containerd/continuity v0.2.2 // indirect
+	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
+	github.com/golang/glog v1.0.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.0-beta.8 // indirect
 )
 
