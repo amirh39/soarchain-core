@@ -12,20 +12,20 @@ func (k Keeper) SetChallenger(ctx sdk.Context, challenger types.Challenger) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerKeyPrefix))
 	b := k.cdc.MustMarshal(&challenger)
 	store.Set(types.ChallengerKey(
-		challenger.PubKey,
+		challenger.Address,
 	), b)
 }
 
 // GetChallenger returns a challenger from its index
 func (k Keeper) GetChallenger(
 	ctx sdk.Context,
-	PubKey string,
+	Address string,
 
 ) (val types.Challenger, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerKeyPrefix))
 
 	b := store.Get(types.ChallengerKey(
-		val.PubKey,
+		Address,
 	))
 	if b == nil {
 		return val, false
@@ -38,12 +38,12 @@ func (k Keeper) GetChallenger(
 // RemoveChallenger removes a challenger from the store
 func (k Keeper) RemoveChallenger(
 	ctx sdk.Context,
-	index string,
+	PubKey string,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerKeyPrefix))
 	store.Delete(types.ChallengerKey(
-		index,
+		PubKey,
 	))
 }
 

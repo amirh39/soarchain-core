@@ -19,7 +19,7 @@ var _ = strconv.IntSize
 func createNRunner(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner {
 	items := make([]types.Runner, n)
 	for i := range items {
-		items[i].PubKey = strconv.Itoa(i)
+		items[i].Address = strconv.Itoa(i)
 
 		keeper.SetRunner(ctx, items[i])
 	}
@@ -31,7 +31,7 @@ func TestRunnerGet(t *testing.T) {
 	items := createNRunner(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetRunner(ctx,
-			item.PubKey,
+			item.Address,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -45,10 +45,10 @@ func TestRunnerRemove(t *testing.T) {
 	items := createNRunner(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveRunner(ctx,
-			item.PubKey,
+			item.Address,
 		)
 		_, found := keeper.GetRunner(ctx,
-			item.PubKey,
+			item.Address,
 		)
 		require.False(t, found)
 	}

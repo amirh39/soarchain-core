@@ -48,7 +48,7 @@ func (k Keeper) Challenger(c context.Context, req *types.QueryGetChallengerReque
 
 	val, found := k.GetChallenger(
 		ctx,
-		req.Index,
+		req.Address,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")

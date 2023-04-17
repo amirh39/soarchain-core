@@ -12,7 +12,7 @@ func (k Keeper) SetRunner(ctx sdk.Context, runner types.Runner) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RunnerKeyPrefix))
 	b := k.cdc.MustMarshal(&runner)
 	store.Set(types.RunnerKey(
-		runner.PubKey,
+		runner.Address,
 	), b)
 }
 

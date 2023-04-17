@@ -31,21 +31,21 @@ func TestRunnerQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetRunnerRequest{
-				Index: msgs[0].PubKey,
+				Address: msgs[0].Address,
 			},
 			response: &types.QueryGetRunnerResponse{Runner: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetRunnerRequest{
-				Index: msgs[1].PubKey,
+				Address: msgs[1].Address,
 			},
 			response: &types.QueryGetRunnerResponse{Runner: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetRunnerRequest{
-				Index: strconv.Itoa(100000),
+				Address: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

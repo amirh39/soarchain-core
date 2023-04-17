@@ -31,21 +31,21 @@ func TestChallengerQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetChallengerRequest{
-				Index: msgs[0].PubKey,
+				Address: msgs[0].Address,
 			},
 			response: &types.QueryGetChallengerResponse{Challenger: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetChallengerRequest{
-				Index: msgs[1].PubKey,
+				Address: msgs[1].Address,
 			},
 			response: &types.QueryGetChallengerResponse{Challenger: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetChallengerRequest{
-				Index: strconv.Itoa(100000),
+				Address: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

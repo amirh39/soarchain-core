@@ -37,7 +37,7 @@ service Query {
 
 // Queries a Challenger by index.
 	rpc Challenger(QueryGetChallengerRequest) returns (QueryGetChallengerResponse) {
-		option (google.api.http).get = "/soarchain/poa/challenger/{index}";
+		option (google.api.http).get = "/soarchain/poa/challenger/{address}";
 	}
 
 	// Queries a list of Challenger items.
@@ -47,7 +47,7 @@ service Query {
 
 // Queries a Runner by index.
 	rpc Runner(QueryGetRunnerRequest) returns (QueryGetRunnerResponse) {
-		option (google.api.http).get = "/soarchain/poa/runner/{index}";
+		option (google.api.http).get = "/soarchain/poa/runner/{address}";
 	}
 
 	// Queries a list of Runner items.
@@ -169,7 +169,7 @@ message QueryAllClientResponse {
 }
 
 message QueryGetChallengerRequest {
-	  string index = 1;
+	  string address = 1;
 
 }
 
@@ -187,7 +187,7 @@ message QueryAllChallengerResponse {
 }
 
 message QueryGetRunnerRequest {
-	  string index = 1;
+	  string address = 1;
 
 }
 

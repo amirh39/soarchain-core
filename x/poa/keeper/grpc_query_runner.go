@@ -3,12 +3,13 @@ package keeper
 import (
 	"context"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/poa/types"
 )
 
 func (k Keeper) RunnerAll(c context.Context, req *types.QueryAllRunnerRequest) (*types.QueryAllRunnerResponse, error) {
@@ -47,7 +48,7 @@ func (k Keeper) Runner(c context.Context, req *types.QueryGetRunnerRequest) (*ty
 
 	val, found := k.GetRunner(
 		ctx,
-		req.Index,
+		req.Address,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")

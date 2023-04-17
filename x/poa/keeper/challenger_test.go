@@ -19,7 +19,7 @@ var _ = strconv.IntSize
 func createNChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
 	items := make([]types.Challenger, n)
 	for i := range items {
-		items[i].PubKey = strconv.Itoa(i)
+		items[i].Address = strconv.Itoa(i)
 
 		keeper.SetChallenger(ctx, items[i])
 	}
@@ -31,7 +31,7 @@ func TestChallengerGet(t *testing.T) {
 	items := createNChallenger(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetChallenger(ctx,
-			item.PubKey,
+			item.Address,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -45,10 +45,10 @@ func TestChallengerRemove(t *testing.T) {
 	items := createNChallenger(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveChallenger(ctx,
-			item.PubKey,
+			item.Address,
 		)
 		_, found := keeper.GetChallenger(ctx,
-			item.PubKey,
+			item.Address,
 		)
 		require.False(t, found)
 	}

@@ -3,10 +3,11 @@ package cli
 import (
 	"context"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
 func CmdListChallenger() *cobra.Command {
@@ -44,7 +45,7 @@ func CmdListChallenger() *cobra.Command {
 
 func CmdShowChallenger() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-challenger [index]",
+		Use:   "show-challenger [PubKey]",
 		Short: "shows a challenger",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -55,7 +56,7 @@ func CmdShowChallenger() *cobra.Command {
 			argIndex := args[0]
 
 			params := &types.QueryGetChallengerRequest{
-				Index: argIndex,
+				Address: argIndex,
 			}
 
 			res, err := queryClient.Challenger(context.Background(), params)
