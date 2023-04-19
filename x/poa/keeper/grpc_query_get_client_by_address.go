@@ -17,7 +17,16 @@ func (k Keeper) GetClientByAddress(goCtx context.Context, req *types.QueryGetCli
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	client, _ := k.GetClient(ctx, req.Address)
+	clients := k.GetAllClient(ctx)
 
-	return &types.QueryGetClientByAddressResponse{Client: &client}, nil
+	targetClient := &types.Client{}
+
+	for _, client := range clients {
+		if req.Address == client.Address {
+			targetClient = &client
+			break
+		}
+	}
+
+	return &types.QueryGetClientByAddressResponse{Client: targetClient}, nil
 }
