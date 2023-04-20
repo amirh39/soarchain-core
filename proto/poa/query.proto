@@ -137,6 +137,10 @@ service Query {
 	rpc GetRunnerByIp(QueryGetRunnerByIpRequest) returns (QueryGetRunnerByIpResponse) {
 		option (google.api.http).get = "/soarchain/poa/get_runner_by_ip/{ipAddress}";
 	}
+// Queries a Challenger by pubKey 
+	rpc GetChallengerByPubKey(QueryGetChallengerByPubKeyRequest) returns (QueryGetChallengerByPubKeyResponse) {
+		option (google.api.http).get = "/soarchain/poa/get_challenger_by_PubKey/{PubKey}";
+	}
 
 // this line is used by starport scaffolding # 2
 }
@@ -347,4 +351,11 @@ message QueryGetRunnerByIpResponse {
   Runner runner = 1;
 }
 
+message QueryGetChallengerByPubKeyRequest{
+	string PubKey = 1;
+}
+
+message QueryGetChallengerByPubKeyResponse{
+	Challenger challenger = 1;
+}
 // this line is used by starport scaffolding # 3

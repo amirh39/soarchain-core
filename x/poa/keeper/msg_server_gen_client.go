@@ -23,7 +23,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	//ToDo: change pubkey field as device cert
 	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
 	if err != nil {
-		return nil, err
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid device certificate")
 	}
 
 	pubKeyDer, _ := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
