@@ -54,6 +54,8 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	// Check validity of certificate
 	totalKeys := k.GetAllFactoryKeys(ctx)
 	var validated bool = false
+	var verificationError error = nil
+
 	for i := uint64(0); i <= uint64(len(totalKeys)); i++ {
 		factoryKey, isFound := k.GetFactoryKeys(ctx, i)
 		if isFound {
@@ -68,11 +70,13 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 			}
 			if validated {
 				break
+			} else if err != nil {
+				verificationError = err
 			}
 		}
 	}
 
-	if !validated {
+	if !validated && verificationError != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cert verification error")
 	}
 
