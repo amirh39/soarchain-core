@@ -43,8 +43,16 @@ func (k msgServer) RegisterFactoryKey(goCtx context.Context, msg *types.MsgRegis
 	}
 
 	// Save factory key
-	totalKeys := k.GetAllFactoryKeys(ctx)
-	idx := uint64(len(totalKeys))
+	factoryKeys := k.GetAllFactoryKeys(ctx)
+
+	// Find the factory key with the matching certificate for detecting duplication
+	for _, key := range factoryKeys {
+		if key.FactoryCert == msg.FactoryCert {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Duplicating FactoryCerts")
+		}
+	}
+
+	idx := uint64(len(factoryKeys))
 
 	updatedFactoryKeyList := types.FactoryKeys{
 		Id:          idx,
