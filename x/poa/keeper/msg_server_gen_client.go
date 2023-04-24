@@ -56,7 +56,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	var validated bool = false
 	var verificationError error = nil
 
-	for i := uint64(0); i <= uint64(len(totalKeys)); i++ {
+	for i := uint64(0); i < uint64(len(totalKeys)); i++ {
 		factoryKey, isFound := k.GetFactoryKeys(ctx, i)
 		if isFound {
 			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
@@ -66,26 +66,29 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 			validated, err = k.ValidateX509Cert(deviceCert, factoryCert)
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Device certificate couldn't be verified!")
-			}
-			if validated {
-				break
-			} else if err != nil {
 				verificationError = err
+				continue // Try next certificate
+			}
+
+			if validated {
+				verificationError = nil
+				break
 			}
 		}
 	}
 
-	if !validated && verificationError != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cert verification error")
+	// No valid certificate found
+	if verificationError != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Device certificate couldn't be verified!")
 	}
+
 	//check if the pubKey is uniqe, also check if msg.creator address have a motus wallet
 	_, isFoundWallet := k.GetMotusWallet(ctx, msg.Creator)
 	_, isFoundAsChallenger := k.GetChallengerUsingPubKey(ctx, pubKeyHex)
 	_, isFoundAsRunner := k.GetRunnerUsingPubKey(ctx, pubKeyHex)
 	_, isFoundAsClient := k.GetClient(ctx, pubKeyHex)
 	if isFoundWallet || isFoundAsChallenger || isFoundAsRunner || isFoundAsClient {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Client PubKey is not uniqe or Client is already registered.")
 	}
 
 	// rewardMultiplier
@@ -113,4 +116,5 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	k.SetMotusWallet(ctx, newMotusWallet)
 
 	return &types.MsgGenClientResponse{}, nil
+
 }
