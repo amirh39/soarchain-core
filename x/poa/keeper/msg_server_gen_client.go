@@ -101,8 +101,8 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	_, isFoundWallet := k.GetMotusWallet(ctx, msg.Creator)
 	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Creator)
 	_, isFoundAsRunner := k.GetRunner(ctx, msg.Creator)
-
-	if isFoundWallet || isFoundAsChallenger || isFoundAsRunner {
+	_, isFoundAsClient := k.GetClient(ctx, pubKeyHex)
+	if isFoundWallet || isFoundAsChallenger || isFoundAsRunner || isFoundAsClient {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
 	}
 
