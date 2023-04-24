@@ -62,3 +62,15 @@ func (k Keeper) GetAllChallenger(ctx sdk.Context) (list []types.Challenger) {
 
 	return
 }
+
+func (k Keeper) GetChallengerUsingPubKey(ctx sdk.Context, pubKey string) (challenger types.Challenger, found bool) {
+	challengers := k.GetAllChallenger(ctx)
+
+	for _, c := range challengers {
+		if c.PubKey == pubKey {
+			return c, true
+		}
+	}
+
+	return challenger, false
+}

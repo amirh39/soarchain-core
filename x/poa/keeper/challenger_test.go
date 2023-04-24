@@ -62,3 +62,17 @@ func TestChallengerGetAll(t *testing.T) {
 		nullify.Fill(keeper.GetAllChallenger(ctx)),
 	)
 }
+
+func TestGetChallengerUsingPubKey(t *testing.T) {
+	keeper, ctx := keepertest.PoaKeeper(t)
+	challengers := createNChallenger(keeper, ctx, 10)
+
+	// Pick a random challenger and set its PubKey
+	targetChallenger := challengers[4]
+	targetChallenger.PubKey = "test-pubkey"
+	keeper.SetChallenger(ctx, targetChallenger)
+
+	// Test that GetChallengerUsingPubKey returns the correct challenger
+	result, _ := keeper.GetChallengerUsingPubKey(ctx, targetChallenger.PubKey)
+	require.Equal(t, targetChallenger, result)
+}

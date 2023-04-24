@@ -79,6 +79,14 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	if !validated && verificationError != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Cert verification error")
 	}
+	//check if the pubKey is uniqe, also check if msg.creator address have a motus wallet
+	_, isFoundWallet := k.GetMotusWallet(ctx, msg.Creator)
+	_, isFoundAsChallenger := k.GetChallengerUsingPubKey(ctx, pubKeyHex)
+	_, isFoundAsRunner := k.GetRunnerUsingPubKey(ctx, pubKeyHex)
+	_, isFoundAsClient := k.GetClient(ctx, pubKeyHex)
+	if isFoundWallet || isFoundAsChallenger || isFoundAsRunner || isFoundAsClient {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
+	}
 
 	// rewardMultiplier
 	var initialScore float64 = 50
@@ -98,14 +106,6 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	k.SetClient(ctx, newClient)
 
 	// Register Motus client into Motus Wallet object
-	_, isFoundWallet := k.GetMotusWallet(ctx, msg.Creator)
-	_, isFoundAsChallenger := k.GetChallenger(ctx, msg.Creator)
-	_, isFoundAsRunner := k.GetRunner(ctx, msg.Creator)
-	_, isFoundAsClient := k.GetClient(ctx, pubKeyHex)
-	if isFoundWallet || isFoundAsChallenger || isFoundAsRunner || isFoundAsClient {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Client address is already registered.")
-	}
-
 	newMotusWallet := types.MotusWallet{
 		Index:  msg.Creator,
 		Client: &newClient,

@@ -62,3 +62,15 @@ func (k Keeper) GetAllRunner(ctx sdk.Context) (list []types.Runner) {
 
 	return
 }
+
+func (k Keeper) GetRunnerUsingPubKey(ctx sdk.Context, pubKey string) (runner types.Runner, found bool) {
+	runners := k.GetAllRunner(ctx)
+
+	for _, c := range runners {
+		if c.PubKey == pubKey {
+			return c, true
+		}
+	}
+
+	return runner, false
+}
