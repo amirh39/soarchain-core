@@ -141,6 +141,10 @@ service Query {
 	rpc GetChallengerByPubKey(QueryGetChallengerByPubKeyRequest) returns (QueryGetChallengerByPubKeyResponse) {
 		option (google.api.http).get = "/soarchain/poa/get_challenger_by_PubKey/{PubKey}";
 	}
+// Queries a Runner by PubKey
+	rpc GetRunnerByPubKey(QueryGetRunnerByPubKeyRequest) returns (QueryGetRunnerByPubKeyResponse) {
+		option (google.api.http).get = "/soarchain/poa/get_runner_by_PubKey/{PubKey}";
+	}
 
 // this line is used by starport scaffolding # 2
 }
@@ -357,5 +361,13 @@ message QueryGetChallengerByPubKeyRequest{
 
 message QueryGetChallengerByPubKeyResponse{
 	Challenger challenger = 1;
+}
+
+message QueryGetRunnerByPubKeyRequest{
+	string PubKey = 1;
+}
+
+message QueryGetRunnerByPubKeyResponse{
+	Runner runner = 1;
 }
 // this line is used by starport scaffolding # 3

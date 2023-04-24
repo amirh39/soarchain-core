@@ -189,7 +189,6 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 			IpAddr:             msg.RunnerIp,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(1, 10),
-			GuardAddress:       msg.Creator,
 		}
 
 		k.SetRunner(ctx, newRunner)

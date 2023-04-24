@@ -227,7 +227,6 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 					IpAddr:             msg.RunnerIp,
 					LastTimeChallenged: guard.Runner.LastTimeChallenged,
 					CoolDownTolerance:  guard.Runner.CoolDownTolerance,
-					GuardAddress:       msg.Creator,
 				}
 
 				k.SetRunner(ctx, newRunner)
@@ -243,7 +242,6 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 					IpAddr:             msg.RunnerIp,
 					LastTimeChallenged: guard.Runner.LastTimeChallenged,
 					CoolDownTolerance:  guard.Runner.CoolDownTolerance,
-					GuardAddress:       msg.Creator,
 				}
 
 				k.SetRunner(ctx, newRunner)
@@ -281,7 +279,6 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 				IpAddr:             msg.RunnerIp,
 				LastTimeChallenged: ctx.BlockTime().String(),
 				CoolDownTolerance:  strconv.FormatUint(1, 10),
-				GuardAddress:       msg.Creator,
 			}
 
 			k.SetRunner(ctx, newRunner)

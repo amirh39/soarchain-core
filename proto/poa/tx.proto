@@ -24,6 +24,7 @@ service Msg {
   rpc ClaimMotusRewards(MsgClaimMotusRewards) returns (MsgClaimMotusRewardsResponse);
   rpc ClaimRunnerRewards(MsgClaimRunnerRewards) returns (MsgClaimRunnerRewardsResponse);
   rpc RegisterFactoryKey(MsgRegisterFactoryKey) returns (MsgRegisterFactoryKeyResponse);
+  rpc GenRunner(MsgGenRunner) returns (MsgGenRunnerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -78,6 +79,34 @@ message MsgGenGuard {
   string runnerAddr = 12;
   string runnerStake = 13;
   string runnerIp = 14;
+}
+
+message MsgGenRunner{
+  string creator = 1; 
+  string runnerPubKey = 2;
+  string runnerAddr = 3;
+  string runnerStake = 4;
+  string runnerIp = 5;
+}
+
+message MsgGenRunnerResponse{
+
+}
+
+message MsgGenChallenger{
+  string creator = 1;
+  string v2xPubKey = 2;
+  string v2XAddr = 3;
+  string v2XStake = 4;
+  string v2XIp = 5;
+  string v2NPubKey = 6;
+  string v2NAddr = 7;
+  string v2NStake = 8;
+  string v2NIp = 9;
+}
+
+message MsgGenChallengerResponse{
+
 }
 
 message MsgGenGuardResponse {

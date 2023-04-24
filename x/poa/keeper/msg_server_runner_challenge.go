@@ -123,25 +123,9 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		IpAddr:             runner.IpAddr,
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
-		GuardAddress:       runner.GuardAddress,
 	}
 
 	k.SetRunner(ctx, updatedRunner)
-
-	// Update runner obj in guard
-	guard, isFound := k.GetGuard(ctx, runner.GuardAddress)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard not found")
-	}
-	updateGuard := types.Guard{
-		Index:         guard.Index,
-		GuardId:       guard.GuardId,
-		V2XChallenger: guard.V2XChallenger,
-		V2NChallenger: guard.V2NChallenger,
-		Runner:        &updatedRunner,
-	}
-
-	k.SetGuard(ctx, updateGuard)
 
 	// ToDo: Set MOTUS mini rewards
 	v2nBxAddrCount := len(msg.ClientPubkeys)
