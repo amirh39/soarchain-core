@@ -4,6 +4,8 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"io/ioutil"
+
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func (k Keeper) ReadX509CertFromFile(fileName string) string {
@@ -31,9 +33,13 @@ func (k Keeper) CreateX509CertFromFile(fileName string) (*x509.Certificate, erro
 func (k Keeper) CreateX509CertFromString(certString string) (*x509.Certificate, error) {
 	deviceCertPEM := []byte(certString)
 	deviceBlock, _ := pem.Decode(deviceCertPEM)
+	if deviceBlock == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to decode certificate PEM.")
+	}
+
 	deviceCert, err := x509.ParseCertificate(deviceBlock.Bytes)
 	if err != nil {
-		return nil, err
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "failed to parse certificate: "+err.Error())
 	}
 	return deviceCert, nil
 }
