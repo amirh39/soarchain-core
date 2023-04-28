@@ -11,7 +11,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	epochData, isFound := k.GetEpochData(ctx)
 	if !isFound {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "Epoch data is not found!")
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateEpochRewards][GetEpochData] failed. Epoch data is not found!")
 	}
 
 	switch clientType {
@@ -56,7 +56,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	default:
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "Epoch reward update communication mode error!")
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[UpdateEpochRewards] failed. Client type is not valid.")
 	}
 
 	return nil
