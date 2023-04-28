@@ -15,28 +15,35 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 	// check guard
 	guard, isFound := k.GetGuard(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard is not registered, Not authorized!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UnregisterChallenger][GetGuard] failed. Guard is not registered, Not authorized.")
 	}
 
 	// check challenger
 	challenger, isFoundChallenger := k.GetChallenger(ctx, msg.ChallengerAddress)
 	if !isFoundChallenger {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Challenger is not registered.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UnregisterChallenger][GetChallenger] failed. Challenger is not registered.")
 	}
 
 	// Check challenger is belong to msg.Creator's guard
 	if guard.V2NChallenger.Address != msg.ChallengerAddress && guard.V2XChallenger.Address != msg.ChallengerAddress {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Challenger is not belong to msg.Creator's guard!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[UnregisterChallenger] failed. Challenger is not belong to msg.Creator's guard!")
 	}
 
-	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
+	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[UnregisterChallenger][AccAddressFromBech32] failed. Sender addres is not valid."+err.Error())
+	}
 
 	// Query the staked amount and refund
 	stakedAmountStr := challenger.StakedAmount
-	stakedAmount, _ := sdk.ParseCoinsNormalized(stakedAmountStr)
+	stakedAmount, err := sdk.ParseCoinsNormalized(stakedAmountStr)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UnregisterChallenger][ParseCoinsNormalized] failed. Couldn't parse the list if coins."+err.Error())
+	}
+
 	transferErr2 := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, msgSenderAddress, stakedAmount)
 	if transferErr2 != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UnregisterChallenger][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
 	}
 
 	// Remove challenger
@@ -62,7 +69,7 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 			Runner:        guard.Runner,
 		}
 	} else {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't resolve challenger type!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UnregisterChallenger] failed. Couldn't resolve challenger type.")
 	}
 	k.SetGuard(ctx, updatedGuard)
 
