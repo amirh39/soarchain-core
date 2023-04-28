@@ -15,29 +15,29 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	// Check if the client exists
 	client, isFound := k.GetClient(ctx, msg.Pubkey)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Client is not registered.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UnregisterClient][GetClient] failed. Client is not registered.")
 	}
 
 	// Check if authorized
 	if client.Address != msg.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Registrant is not recognized!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[UnregisterClient] failed. Registrant is not recognized.")
 	}
 
 	// Get Motus Wallet
 	motusWallet, isFoundMotusWallet := k.GetMotusWallet(ctx, client.Address)
 	if !isFoundMotusWallet {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Motus wallet is not registered")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UnregisterClient][GetMotusWallet] failed. Motus wallet is not registered.")
 	}
 
 	// Transfer claimmable rewards
 	earnedAmount, err := sdk.ParseCoinsNormalized(client.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UnregisterClient][ParseCoinsNormalized] failed. Withdraw amount couldn't be parsed."+err.Error())
 	}
 	clientAccount, _ := sdk.AccAddressFromBech32(client.Address)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, earnedAmount)
 	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UnregisterClient][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
 	}
 
 	// Remove client
