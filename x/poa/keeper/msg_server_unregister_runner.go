@@ -15,25 +15,33 @@ func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregis
 	// check guard
 	guard, isFound := k.GetGuard(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard is not registered, Not authorized!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UnregisterRunner][GetGuard] failed. Guard is not registered, Not authorized!")
 	}
 	// check runner
 	runner, isFoundRunner := k.GetRunner(ctx, msg.RunnerAddress)
 	if !isFoundRunner {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Runner is not registered.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UnregisterRunner][GetRunner] failed. Runner is not registered.")
 	}
 	// Check runner belongs to msg.Creator's guard
 	if guard.Runner.Address != msg.RunnerAddress {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Runner doesn't belong to msg.Creator's guard!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[UnregisterRunner] failed. Runner doesn't belong to msg.Creator's guard!")
 	}
 
 	// Query the staked amount and refund
-	msgSenderAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
+	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[UnregisterRunner][AccAddressFromBech32] failed. Sender address is not valid."+err.Error())
+	}
+
 	stakedAmountStr := runner.StakedAmount
-	stakedAmount, _ := sdk.ParseCoinsNormalized(stakedAmountStr)
+	stakedAmount, err := sdk.ParseCoinsNormalized(stakedAmountStr)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UnregisterRunner][ParseCoinsNormalized] failed. Stake amount is not valid."+err.Error())
+	}
+
 	transferErr2 := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, msgSenderAddress, stakedAmount)
 	if transferErr2 != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UnregisterRunner][SendCoinsFromModuleToAccount] failed. couldn't send coins.")
 	}
 
 	// Remove runner
