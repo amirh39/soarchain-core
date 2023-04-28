@@ -15,19 +15,27 @@ func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelec
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	allRunners := k.GetAllRunner(ctx)
+	if allRunners != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[SelectRandomRunner][GetAllRunner] failed. Couldn't get all runners list.")
+	}
+
 	multiplier := int(len(allRunners))
 
 	vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
 	if vrfErr != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "VRF error!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[SelectRandomRunner][CreateVRF] failed. VRF error!")
 	}
 
 	generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "vrfData.FinalVrv parse error!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[SelectRandomRunner][ParseUint] failed. vrfData.FinalVrv parse error!"+err.Error())
 	}
 	var selectedRunner types.Runner
 	runenrs := k.GetAllRunner(ctx)
+	if allRunners != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[SelectRandomRunner][GetAllRunner] failed. Couldn't get all runners list.")
+	}
+
 	for i := 0; i < len(runenrs); i++ {
 		if i == int(generatedNumber) {
 			selectedRunner = runenrs[i]
@@ -37,7 +45,7 @@ func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelec
 	// record selected challenger for future referenece
 	vrf, isFound := k.GetVrfData(ctx, vrfData.Index)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Vrf data can't be found!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[SelectRandomRunner][GetVrfData] failed. Vrf data couldn't found.")
 	}
 	updateVrf := types.VrfData{
 		Index:              vrf.Index,
