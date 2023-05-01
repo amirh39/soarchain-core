@@ -12,7 +12,7 @@ func (k msgServer) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64
 
 	rewardPerBlock, err := utility.V2NRewardEmissionPerBlock(ctx, clientCommunicationMode)
 	if err != nil {
-		return 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "V2V Motus Reward Emission per block couldn't be computed. Check client communication mode.")
+		return 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[V2NRewardCalculator][V2NRewardEmissionPerBlock] failed. V2V Motus Reward Emission per block couldn't be computed. Check client communication mode.")
 	}
 
 	// Score is below 50, no rewards are earned
@@ -28,7 +28,7 @@ func (k msgServer) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64
 		for i := 0; i < len(allClients); i++ {
 			currMultiplier, err := strconv.ParseFloat(allClients[i].RewardMultiplier, 64)
 			if err != nil {
-				return 0.0, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
+				return 0.0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[V2NRewardCalculator][ParseFloat] failed. Couldn't convert the string to a floating-point number for a v2n-bx."+err.Error())
 			}
 			totalMultipliers += currMultiplier
 		}
@@ -38,12 +38,12 @@ func (k msgServer) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64
 		for i := 0; i < len(allRunners); i++ {
 			currMultiplier, err := strconv.ParseFloat(allRunners[i].RewardMultiplier, 64)
 			if err != nil {
-				return 0.0, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
+				return 0.0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[V2NRewardCalculator][ParseFloat] failed. Couldn't convert the string to a floating-point number for a runner."+err.Error())
 			}
 			totalMultipliers += currMultiplier
 		}
 	} else {
-		return 0.0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "V2N communication mode is not supported!")
+		return 0.0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2NRewardCalculator][ParseFloat] failed. V2N communication mode is not supported.")
 	}
 
 	// Protection against +Inf netEarnings calculation
