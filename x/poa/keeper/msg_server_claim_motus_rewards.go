@@ -15,27 +15,27 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	motusWallet, isFound := k.GetMotusWallet(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target client is not registered in the store!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ClaimMotusRewards][GetMotusWallet] failed. Target client is not registered in the store.")
 	}
 
 	withdrawAmount, err := sdk.ParseCoinsNormalized(msg.Amount)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount."+err.Error())
 	}
 
 	earnedAmount, err := sdk.ParseCoinsNormalized(motusWallet.Client.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount."+err.Error())
 	}
 
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Not enough coins to claim!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[ClaimMotusRewards][IsAllLT][DenomsSubsetOf] failed. Not enough coins to claim.")
 	}
 
 	clientAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, withdrawAmount)
 	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ClaimMotusRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins."+errTransfer.Error())
 	}
 
 	// Calculate new net earnings
