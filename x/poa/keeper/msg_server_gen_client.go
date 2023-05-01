@@ -23,16 +23,19 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	//ToDo: change pubkey field as device cert
 	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid device certificate")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][CreateX509CertFromString] failed. Invalid device certificate."+err.Error())
 	}
 
-	pubKeyDer, _ := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
+	pubKeyDer, err := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][MarshalPKIXPublicKey] failed. Couldn't convert a public key to PKIX."+err.Error())
+	}
 
 	pubKeyHex := hex.EncodeToString(pubKeyDer)
 	// verify the msg.Creator_Signed which basically the msg.Creator signed by the privateKey of the pubKey we just extracted from the msg.Certificate
 	signature, err := hex.DecodeString(msg.Signature)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid signature encoding")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][DecodeString] failed. Invalid signature encoding."+err.Error())
 	}
 
 	hashedAddr := sha256.Sum256([]byte(msg.Creator))
@@ -44,10 +47,10 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 			if ecdsa.VerifyASN1(ecdsaPubKey, hashedAddr[:], signature) {
 				// signature is valid
 			} else {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Signature verification failed")
+				return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[GenClient][VerifyASN1] failed. Signature verification failed.")
 			}
 		} else {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid public key type")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient] failed. Invalid public key type.")
 		}
 	}
 
@@ -61,12 +64,12 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		if isFound {
 			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Factory certificate couldn't be created from the storage!")
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenClient][CreateX509CertFromString] failed. Factory certificate couldn't be created from the storage."+err.Error())
 			}
 
 			validated, err = k.ValidateX509Cert(deviceCert, factoryCert)
 			if err != nil {
-				verificationError = err
+				verificationError = sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenClient][ValidateX509Cert] failed. Couldn't validate factory certificate."+err.Error())
 				continue // Try next certificate
 			}
 
@@ -79,7 +82,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// No valid certificate found
 	if verificationError != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Device certificate couldn't be verified!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenClient][ValidateX509Cert] failed. Device certificate couldn't be verified.")
 	}
 
 	//check if the pubKey is uniqe, also check if msg.creator address have a motus wallet
@@ -88,7 +91,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	_, isFoundAsRunner := k.GetRunnerUsingPubKey(ctx, pubKeyHex)
 	_, isFoundAsClient := k.GetClient(ctx, pubKeyHex)
 	if isFoundWallet || isFoundAsChallenger || isFoundAsRunner || isFoundAsClient {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Client PubKey is not uniqe or Client is already registered.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client PubKey is not uniqe OR Client is already registered.")
 	}
 
 	// rewardMultiplier
