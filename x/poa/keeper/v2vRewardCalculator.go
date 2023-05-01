@@ -12,7 +12,7 @@ func (k msgServer) V2VRewardCalculator(ctx sdk.Context, rewardMultiplier float64
 
 	rewardPerBlock, err := utility.V2VRewardEmissionPerBlock(ctx, clientCommunicationMode)
 	if err != nil {
-		return 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "V2V Motus Reward Emission per block couldn't be computed. Check client communication mode.")
+		return 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[V2VRewardCalculator][V2VRewardEmissionPerBlock] failed. V2V Motus Reward Emission per block couldn't be calculated. Check client communication mode."+err.Error())
 	}
 
 	// Score is below 50, no rewards are earned
@@ -26,7 +26,7 @@ func (k msgServer) V2VRewardCalculator(ctx sdk.Context, rewardMultiplier float64
 	for i := 0; i < len(allClients); i++ {
 		currMultiplier, err := strconv.ParseFloat(allClients[i].RewardMultiplier, 64)
 		if err != nil {
-			return 0.0, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot convert to Float64")
+			return 0.0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[V2VRewardCalculator][V2VRewardEmissionPerBlock] failed. Couldn't convert and parse all client reward to Float64."+err.Error())
 		}
 		totalMultipliers += currMultiplier
 	}
