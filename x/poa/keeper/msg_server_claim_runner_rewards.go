@@ -16,26 +16,27 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 
 	runner, isFound := k.GetRunner(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target runner is not registered in the store!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ClaimRunnerRewards][GetRunner] failed. Target runner is not registered in the store.")
 	}
 
 	withdrawAmount, err := sdk.ParseCoinsNormalized(msg.Amount)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount couldn't be parsed."+err.Error())
 	}
+
 	earnedAmount, err := sdk.ParseCoinsNormalized(runner.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount couldn't be parsed."+err.Error())
 	}
 
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Not enough coins to claim!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[ClaimRunnerRewards][IsAllLT][DenomsSubsetOf] failed. Not enough coins to claim.")
 	}
 
 	runnerAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, runnerAccount, withdrawAmount)
 	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ClaimRunnerRewards][IsAllLT][DenomsSubsetOf] failed. Couldn't send coins.")
 	}
 
 	// Calculate new net earnings
@@ -64,7 +65,7 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 	// Update runner obj in guard
 	guard, isFound := k.GetGuard(ctx, runner.GuardAddress)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard not found")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ClaimRunnerRewards][GetGuard] failed. Guard not found.")
 	}
 	updateGuard := types.Guard{
 		Index:         guard.Index,
