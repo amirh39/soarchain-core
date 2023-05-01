@@ -3,17 +3,19 @@ package keeper
 import (
 	"context"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/poa/types"
 )
 
 func (k Keeper) MotusWalletAll(c context.Context, req *types.QueryAllMotusWalletRequest) (*types.QueryAllMotusWalletResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[MotusWalletAll] failed. Invalid request.")
 	}
 
 	var motusWallets []types.MotusWallet
@@ -25,7 +27,7 @@ func (k Keeper) MotusWalletAll(c context.Context, req *types.QueryAllMotusWallet
 	pageRes, err := query.Paginate(motusWalletStore, req.Pagination, func(key []byte, value []byte) error {
 		var motusWallet types.MotusWallet
 		if err := k.cdc.Unmarshal(value, &motusWallet); err != nil {
-			return err
+			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[MotusWalletAll][Unmarshal] failed. Couldn't parses the motus wallet data encoded."+err.Error())
 		}
 
 		motusWallets = append(motusWallets, motusWallet)
@@ -41,7 +43,7 @@ func (k Keeper) MotusWalletAll(c context.Context, req *types.QueryAllMotusWallet
 
 func (k Keeper) MotusWallet(c context.Context, req *types.QueryGetMotusWalletRequest) (*types.QueryGetMotusWalletResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[MotusWallet] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
@@ -50,7 +52,7 @@ func (k Keeper) MotusWallet(c context.Context, req *types.QueryGetMotusWalletReq
 		req.Index,
 	)
 	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
+		return nil, status.Error(codes.NotFound, "[MotusWallet][GetMotusWallet] failed. Couldn't find motus wallet.")
 	}
 
 	return &types.QueryGetMotusWalletResponse{MotusWallet: val}, nil
