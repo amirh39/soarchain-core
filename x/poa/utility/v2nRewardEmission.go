@@ -19,7 +19,7 @@ func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 	case "runner":
 		initialTokensPerYear = 21850083350000 // v2n receiver (runner) initial annual emission
 	default:
-		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "V2N communication mode is not supported!")
+		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2NRewardEmissionPerBlock] failed. V2N communication mode is not supported.")
 	}
 
 	// Number of tokens issued per year by the total number of blocks produced per year
@@ -55,7 +55,7 @@ func V2NRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) 
 	case "runner":
 		initialTokensPerYear = 21850083350000 // v2n receiver (runner) initial annual emission
 	default:
-		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "V2N communication mode is not supported!")
+		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2NRewardEmissionPerEpoch] failed. V2N communication mode is not supported.")
 	}
 
 	// Number of tokens issued per year by the total number of blocks produced per year
