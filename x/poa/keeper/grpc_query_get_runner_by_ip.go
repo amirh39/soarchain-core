@@ -12,7 +12,7 @@ import (
 
 func (k Keeper) GetRunnerByIp(goCtx context.Context, req *types.QueryGetRunnerByIpRequest) (*types.QueryGetRunnerByIpResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[GetRunnerByIp] failed. Invalid request.")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
