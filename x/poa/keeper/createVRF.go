@@ -21,9 +21,15 @@ func (k Keeper) CreateVRF(ctx sdk.Context, msgCreator string, multiplier int) (t
 	err_VrfUser := types.VrfUser{}
 
 	userval, isFound := k.GetVrfUser(ctx, msgCreator)
+	if !isFound {
+		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[CreateVRF][GetVrfUser] failed. Couldn't find a VRF user.")
+	}
 
 	var user_key_count int64 = 1
-	currentUserCount, _ := strconv.Atoi(userval.Count)
+	currentUserCount, err := strconv.Atoi(userval.Count)
+	if err != nil {
+		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[CreateVRF][Atoi] failed. Couldn't get current user count."+err.Error())
+	}
 
 	if isFound {
 		user_key_count = int64(currentUserCount) + 1
@@ -35,7 +41,7 @@ func (k Keeper) CreateVRF(ctx sdk.Context, msgCreator string, multiplier int) (t
 
 	sk, err := vrf.GenerateKey(bytes.NewReader(seed))
 	if err != nil {
-		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't generate VRF key!")
+		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "[CreateVRF][GenerateKey] failed. Couldn't generate VRF key.")
 	}
 
 	random_val_key := msgCreator + "," + strconv.FormatInt(user_key_count, 10)
@@ -43,8 +49,8 @@ func (k Keeper) CreateVRF(ctx sdk.Context, msgCreator string, multiplier int) (t
 
 	vrv, proof := sk.Prove(a_message) // Generate vrv (verifiable random value) and proof
 	pub_key, ok_bool := sk.Public()   // public key creation
-	if ok_bool == false {
-		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't generate VRF public key!")
+	if !ok_bool {
+		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "[CreateVRF][sk.Public] failed. Couldn't generate a public key.")
 	}
 
 	var max_val_uint64 uint64 = 18446744073709551615
@@ -54,7 +60,7 @@ func (k Keeper) CreateVRF(ctx sdk.Context, msgCreator string, multiplier int) (t
 	final_vrv_float := float_vrv * float64(multiplier)
 
 	if uint64(multiplier) < uint64(final_vrv) {
-		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "Generated random number is out of index!")
+		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "[CreateVRF] failed. Generated random number is out of index.")
 	}
 
 	newRandomVal := types.VrfData{
