@@ -11,7 +11,7 @@ import (
 
 func (k Keeper) GetChallengerByPubKey(goCtx context.Context, req *types.QueryGetChallengerByPubKeyRequest) (*types.QueryGetChallengerByPubKeyResponse, error) {
 	if req == nil || req.PubKey == "" {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[GetChallengerByPubKey] failed. Invalid request.")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -28,7 +28,7 @@ func (k Keeper) GetChallengerByPubKey(goCtx context.Context, req *types.QueryGet
 	}
 
 	if targetChallenger.PubKey == "" {
-		return nil, status.Error(codes.NotFound, "challenger not found")
+		return nil, status.Error(codes.NotFound, "[GetChallengerByPubKey][PubKey] failed. Couldn't find challenger public key.")
 	}
 
 	return &types.QueryGetChallengerByPubKeyResponse{Challenger: &targetChallenger}, nil
