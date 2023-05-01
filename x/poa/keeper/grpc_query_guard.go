@@ -3,17 +3,19 @@ package keeper
 import (
 	"context"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/poa/types"
 )
 
 func (k Keeper) GuardAll(c context.Context, req *types.QueryAllGuardRequest) (*types.QueryAllGuardResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[GuardAll] failed. Invalid request.")
 	}
 
 	var guards []types.Guard
@@ -25,7 +27,7 @@ func (k Keeper) GuardAll(c context.Context, req *types.QueryAllGuardRequest) (*t
 	pageRes, err := query.Paginate(guardStore, req.Pagination, func(key []byte, value []byte) error {
 		var guard types.Guard
 		if err := k.cdc.Unmarshal(value, &guard); err != nil {
-			return err
+			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[GuardAll][Unmarshal] failed. Couldn't parses the guard data encoded."+err.Error())
 		}
 
 		guards = append(guards, guard)
@@ -41,7 +43,7 @@ func (k Keeper) GuardAll(c context.Context, req *types.QueryAllGuardRequest) (*t
 
 func (k Keeper) Guard(c context.Context, req *types.QueryGetGuardRequest) (*types.QueryGetGuardResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[Guard] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
@@ -50,7 +52,7 @@ func (k Keeper) Guard(c context.Context, req *types.QueryGetGuardRequest) (*type
 		req.Index,
 	)
 	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
+		return nil, status.Error(codes.NotFound, "[Guard][GetGuard] failed. Couldn't find given guard byt the request.")
 	}
 
 	return &types.QueryGetGuardResponse{Guard: val}, nil
