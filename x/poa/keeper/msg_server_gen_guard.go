@@ -19,23 +19,23 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 	// PubKey check
 	if msg.GuardPubKey == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Guard PubKey must be declared in the tx!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GenGuard] failed. Guard PubKey must be declared in the tx.")
 	}
 
 	// Tx field check
 	if msg.V2XAddr == "" && msg.V2NAddr == "" && msg.RunnerAddr == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "At least one address field must be provided!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "[GenGuard] failed. At least one address field must be provided.")
 	}
 
 	// Check if guard already exists
 	_, isFound := k.GetGuard(ctx, msg.Creator)
 	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "Guard with given creator address is already registered in storage.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenGuard][GetGuard] failed. Guard with given creator address is already registered in storage.")
 	}
 
 	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[GenGuard][AccAddressFromBech32] failed. Couldn't parse msg.Creator."+err.Error())
 	}
 
 	// Check v2x Challenger field
@@ -47,12 +47,12 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		_, isFoundAsMotusWallet := k.GetMotusWallet(ctx, msg.V2XAddr)
 		_, isFoundAsRunner := k.GetRunner(ctx, msg.V2XPubKey)
 		if isFound || isFoundAsMotusWallet || isFoundAsRunner {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "V2X challenger is already registered in storage.")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenGuard][GetChallenger][GetMotusWallet][GetRunner] failed. V2X challenger is already registered in storage.")
 		}
 
 		v2xChallengerAddr, err := sdk.AccAddressFromBech32(msg.V2XAddr)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid v2x address!")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[GenGuard][AccAddressFromBech32] failed. Invalid v2x address!"+err.Error())
 		}
 
 		// Check v2x stake amount
@@ -60,10 +60,11 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 2000000000)}
 		v2XStake, err := sdk.ParseCoinsNormalized(msg.V2XStake)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[GenGuard][ParseCoinsNormalized] failed. Couldn't parse and normalize the coin."+err.Error())
 		}
+
 		if v2XStake.IsAllLT(requiredStake) || !v2XStake.DenomsSubsetOf(requiredStake) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount v2X: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[GenGuard][IsAllLT][DenomsSubsetOf] failed. Sent amount v2X: "+v2XStake.String()+" is below than the required stake amount: "+requiredStake.String())
 		}
 
 		// Transfer stakedAmount to contract:
@@ -74,9 +75,9 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 
 		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 		if transferErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake funds(v2X) couldn't be transferred to POA module!")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenGuard][SendCoinsFromAccountToModule] failed. Stake funds(v2X) couldn't be transferred to POA module.")
 		}
-		//
+
 		newV2XChallenger = types.Challenger{
 			PubKey:       msg.V2XPubKey,
 			Address:      v2xChallengerAddr.String(),
@@ -102,28 +103,29 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		_, isFoundAsMotusWallet := k.GetMotusWallet(ctx, msg.V2NAddr)
 		_, isFoundAsRunner := k.GetRunner(ctx, msg.V2NPubKey)
 		if isFound || isFoundAsMotusWallet || isFoundAsRunner {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "V2N challenger is already registered in storage.")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenGuard][GetChallenger][GetMotusWallet][GetRunner] failed. V2N challenger is already registered in the storage.")
 		}
 
 		v2nChallengerAddr, err := sdk.AccAddressFromBech32(msg.V2NAddr)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid v2n address!")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[GenGuard][AccAddressFromBech32] failed. Invalid v2n address."+err.Error())
 		}
 
 		// Check v2n stake amount
-		requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 2000000000)}
+		requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 2000000000)} // TODO: Make constatnt as a variable
 		v2NStake, err := sdk.ParseCoinsNormalized(msg.V2NStake)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[GenGuard][ParseCoinsNormalized] failed. Couldn't parse and normalize the coin."+err.Error())
 		}
+
 		if v2NStake.IsAllLT(requiredStake) || !v2NStake.DenomsSubsetOf(requiredStake) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount of v2N: "+v2NStake.String()+" is below the required stake amount "+requiredStake.String())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[GenGuard][IsAllLT][DenomsSubsetOf] failed. Sent amount of v2N: "+v2NStake.String()+" is below than the required stake amount: "+requiredStake.String())
 		}
 
 		// Transfer stakedAmount to contract:
 		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 		if transferErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(v2n) funds couldn't be transferred to POA module!")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenGuard][SendCoinsFromAccountToModule] failed. Stake(v2n) funds couldn't be transferred to POA module.")
 		}
 		//
 		newV2NChallenger = types.Challenger{
@@ -150,29 +152,29 @@ func (k msgServer) GenGuard(goCtx context.Context, msg *types.MsgGenGuard) (*typ
 		_, isFoundAsChallenger := k.GetChallenger(ctx, msg.RunnerPubKey)
 		_, isFoundAsMotusWallet := k.GetMotusWallet(ctx, msg.RunnerAddr)
 		if isFound || isFoundAsChallenger || isFoundAsMotusWallet {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "Runner is already registered in storage.")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenGuard][GetRunner][GetChallenger][GetMotusWallet] failed. Runner is already registered in the storage.")
 		}
 
 		runnerAddr, err := sdk.AccAddressFromBech32(msg.RunnerAddr)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid runner address!")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[GenGuard][AccAddressFromBech32] failed. Invalid runner address!"+err.Error())
 		}
 
 		// Check runner stake amount
-		requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 1000000000)}
+		requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 1000000000)} // TODO: Make constatnt as a variable
 		runnerStake, err := sdk.ParseCoinsNormalized(msg.RunnerStake)
-
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[GenGuard][ParseCoinsNormalized] failed. Coins couldn't be parsed."+err.Error())
 		}
+
 		if runnerStake.IsAllLT(requiredStake) || !runnerStake.DenomsSubsetOf(requiredStake) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount of runner: "+runnerStake.String()+" is below the required stake amount "+requiredStake.String())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[GenGuard][IsAllLT][DenomsSubsetOf] failed. Sent amount of runner: "+runnerStake.String()+" is below than the required stake amount: "+requiredStake.String())
 		}
 
 		// Transfer stakedAmount to contract:
 		transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 		if transferErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(runner) funds couldn't be transferred to POA module!")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenGuard][SendCoinsFromAccountToModule] failed. Stake(runner) funds couldn't be transferred to POA module.")
 		}
 
 		// rewardMultiplier
