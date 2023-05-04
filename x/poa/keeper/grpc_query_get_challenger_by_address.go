@@ -20,7 +20,7 @@ func (k Keeper) GetChallengerByAddress(goCtx context.Context, req *types.QueryGe
 
 	challenger, found := k.GetChallenger(ctx, req.Address)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[GetChallengerByAddress][GetChallenger] failed. Couldn't find a challenger by the address.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownAddress, "[GetChallengerByAddress][GetChallenger] failed. Couldn't find a challenger by the address.")
 	}
 
 	return &types.QueryGetChallengerByAddressResponse{Challenger: &challenger}, nil
