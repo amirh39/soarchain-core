@@ -79,14 +79,14 @@ func Test_GetChallengerByNotValidAddress(t *testing.T) {
 			response: &types.QueryGetChallengerByAddressResponse{Challenger: &items[0]},
 		},
 		{
-			desc: "KeyNotFound",
+			desc: "Address Not Found",
 			request: &types.QueryGetChallengerByAddressRequest{
 				Address: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "challenger not found"),
 		},
 		{
-			desc: "InvalidRequest",
+			desc: "Invalid Request",
 			err:  status.Error(codes.InvalidArgument, "invalid request"),
 		},
 	}{
