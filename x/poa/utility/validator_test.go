@@ -44,3 +44,21 @@ func Test_NotValidAddress(t *testing.T) {
 	firstNotEqualAddress := "doar1uajy2t7tyamnuqms7l65ka4wtwgrvey0rve34t"
 	r.Equal(ValidAddress(firstNotEqualAddress), false)
 }
+
+func Test_ValidString(t *testing.T) {
+	r := require.New(t)
+
+	stringInput := "string"
+	result := ValidString(stringInput)
+	r.Equal(result, true)
+}
+
+func Test_NotValidString(t *testing.T) {
+	r := require.New(t)
+
+	emptyString := ""
+	r.Equal(ValidString(emptyString), false)
+
+	invalidType := 1234
+	r.Equal(ValidString(invalidType), false)
+}
