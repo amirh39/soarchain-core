@@ -41,19 +41,12 @@ func Test_GetChallengerByPubKey(t *testing.T) {
 		err      error
 	}{
 		{
-			desc: "First",
+			desc: "Valid Public Key",
 			request: &types.QueryGetChallengerByPubKeyRequest{
-				PubKey: "3056301006072a8648ce3d020106052b8104000a03420004c4039cc2459a57357707620ddbbaddfeda5d4c66cc9ac9c3aac997e65f16b78253b3f9241182014246c1b945595c1ed2463e22ca59f153a74fee375e23a86561", //msgs[0].PubKey,
+				PubKey: msgs[0].PubKey,
 			},
 			response: &types.QueryGetChallengerByPubKeyResponse{Challenger: &msgs[0]},
 		},
-		// {
-		// 	desc: "Second",
-		// 	request: &types.QueryGetChallengerByPubKeyRequest{
-		// 		PubKey: msgs[1].PubKey,
-		// 	},
-		// 	response: &types.QueryGetChallengerByPubKeyResponse{Challenger: &msgs[1]},
-		// },
 	}{
 		t.Run(tc.desc, func(t *testing.T) {
 			response, err := keeper.GetChallengerByPubKey(wctx, tc.request)
