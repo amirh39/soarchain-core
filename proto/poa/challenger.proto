@@ -12,4 +12,3 @@ message Challenger {
   string type = 6;
   string ipAddr = 7;
 }
-

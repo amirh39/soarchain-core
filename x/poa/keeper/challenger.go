@@ -38,12 +38,12 @@ func (k Keeper) GetChallenger(
 // RemoveChallenger removes a challenger from the store
 func (k Keeper) RemoveChallenger(
 	ctx sdk.Context,
-	PubKey string,
+	address string,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerKeyPrefix))
 	store.Delete(types.ChallengerKey(
-		PubKey,
+		address,
 	))
 }
 

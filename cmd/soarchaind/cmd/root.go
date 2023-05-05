@@ -278,7 +278,7 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 
 	iavlCacheSize := int(cast.ToUint64(appOpts.Get("iavl-cache-size")))
 	if iavlCacheSize == 0 {
-		iavlCacheSize = 390_625 // 50mb
+		iavlCacheSize = 390_625 // 50mb ToDo = what is this?
 	}
 
 	return soar.NewsoarchainApp(
