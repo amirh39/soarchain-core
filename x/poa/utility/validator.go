@@ -9,7 +9,7 @@ func ValidPubkey(input string) bool {
 }
 
 /** IsValidAddress performs the validation of address */
-func IsValidAddress(input string) bool {
+func ValidAddress(input string) bool {
 	if len(input) > 43 || len(input) < 43 || input == "" || input[0:4] != "soar" {
 		return false
 	}
