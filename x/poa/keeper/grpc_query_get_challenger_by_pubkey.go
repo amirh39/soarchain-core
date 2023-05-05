@@ -10,7 +10,7 @@ import (
 )
 
 func (k Keeper) GetChallengerByPubKey(goCtx context.Context, req *types.QueryGetChallengerByPubKeyRequest) (*types.QueryGetChallengerByPubKeyResponse, error) {
-	if req == nil || req.PubKey == "" {
+	if req == nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "[GetChallengerByPubKey] failed. Invalid request: %T.", req)
 	}
 
