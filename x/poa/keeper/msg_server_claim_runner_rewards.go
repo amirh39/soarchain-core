@@ -16,17 +16,17 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 
 	runner, isFound := k.GetRunner(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ClaimRunnerRewards][GetRunner] failed. Target runner is not registered in the store.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimRunnerRewards][GetRunner] failed. Target runner is not registered in the store by this address: [ %T ]. Make sure the address is valid and not empty.", msg.Creator)
 	}
 
 	withdrawAmount, err := sdk.ParseCoinsNormalized(msg.Amount)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount couldn't be parsed."+err.Error())
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", msg.Amount, err)
 	}
 
 	earnedAmount, err := sdk.ParseCoinsNormalized(runner.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount couldn't be parsed."+err.Error())
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", runner.NetEarnings, err)
 	}
 
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
@@ -65,7 +65,7 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 	// Update runner obj in guard
 	guard, isFound := k.GetGuard(ctx, runner.GuardAddress)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ClaimRunnerRewards][GetGuard] failed. Guard not found.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[ClaimRunnerRewards][GetGuard] failed. Guard not found, got: [ %T ].", runner.GuardAddress)
 	}
 	updateGuard := types.Guard{
 		Index:         guard.Index,
