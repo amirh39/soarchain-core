@@ -33,12 +33,12 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 	// Check if guard already exists
 	guard, isFound := k.GetGuard(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[UpdateGuard][GetGuard] failed. Guard does not exist.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[UpdateGuard][GetGuard] failed. Couldn't find a Guard by the this address: [ %T ], Make sure address is not empty OR invalid.", msg.Creator)
 	}
 
 	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return nil, sdkerrors.ErrInvalidAddress.Wrapf("[UpdateGuard][AccAddressFromBech32] failed. Invalid depositor address" + err.Error())
+		return nil, sdkerrors.ErrInvalidAddress.Wrapf("[UpdateGuard][AccAddressFromBech32] failed. Invalid depositor address: got [ %T ]. Error: [ %T ]", msg.Creator, err)
 	}
 
 	// UPDATE V2X CHALLENGER
@@ -49,12 +49,12 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 		_, isFoundClient := k.GetClient(ctx, msg.V2XAddr)
 		_, isFoundRunner := k.GetRunner(ctx, msg.V2XAddr)
 		if isFoundClient || isFoundRunner {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[UpdateGuard][GetClient] failed. V2X challenger is already registered in storage.")
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "[UpdateGuard][GetClient] failed. V2X challenger: [ %T ] is already registered in the storage.", msg.V2XAddr)
 		}
 
 		v2xChallengerAddr, err := sdk.AccAddressFromBech32(msg.V2XAddr)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[UpdateGuard][AccAddressFromBech32] failed. Invalid v2x address!"+err.Error())
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[UpdateGuard][AccAddressFromBech32] failed. Invalid v2x address: [ %T ], Make sure address is not empty OR invalid. Error: [ %T ]", msg.V2XAddr, err)
 		}
 
 		if guard.V2XChallenger.Address != "" { // guard has already registered v2x device
@@ -91,22 +91,22 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 			// Check v2x stake amount
 			requiredStake, err := sdk.ParseCoinsNormalized("2000000000umotus") // TODO: Removing this hard code value as a constant in global place
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. couldn't parse out a list of coins!"+err.Error())
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. couldn't parse out a list of coins, got: [ %T ]. Error: [ %T ]", requiredStake, err)
 			}
 
 			v2XStake, err := sdk.ParseCoinsNormalized(msg.V2XStake)
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. Coins couldn't be parsed!"+err.Error())
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. Coins: [ %T ] couldn't be parsed. Error: [ %T ]", msg.V2XStake, err)
 			}
 
 			if v2XStake.IsAllLT(requiredStake) || !v2XStake.DenomsSubsetOf(requiredStake) {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[UpdateGuard] failed. Sent amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "[UpdateGuard] failed. Sent amount: "+v2XStake.String()+" is below the required stake amount "+requiredStake.String())
 			}
 
 			// Transfer stakedAmount to contract:
 			transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 			if transferErr != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UpdateGuard][SendCoinsFromAccountToModule] failed. Stake funds couldn't be transferred to POA module!")
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UpdateGuard][SendCoinsFromAccountToModule] failed. Stake funds couldn't be transferred to POA module.")
 			}
 			//
 			newV2XChallenger = types.Challenger{
@@ -134,12 +134,12 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 		_, isFoundClient := k.GetClient(ctx, msg.V2NAddr)
 		_, isFoundRunner := k.GetRunner(ctx, msg.V2NAddr)
 		if isFoundClient || isFoundRunner {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[UpdateGuard][GetClient] failed. V2N challenger is already registered in storage.")
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "[UpdateGuard][GetClient][GetRunner] failed. V2N challenger with this address: [ %T ] is already registered in the storage. Error: [ %T ]", msg.V2NAddr, err)
 		}
 
 		v2nChallengerAddr, err := sdk.AccAddressFromBech32(msg.V2NAddr)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[UpdateGuard][AccAddressFromBech32] failed. Invalid v2n address!"+err.Error())
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[UpdateGuard][AccAddressFromBech32] failed. Invalid v2n address, got [ %T ]. Error: [ %T ]", msg.V2NAddr, err)
 		}
 
 		if guard.V2NChallenger.Address != "" {
@@ -176,21 +176,21 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 			// Check v2n stake amount
 			requiredStake, err := sdk.ParseCoinsNormalized("2000000000umotus") // TODO: Removing this hard code value as a constant in global place
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. Coins couldn't be parsed!"+err.Error())
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. Coins couldn't be parsed, got: [ %T ]. Error: [ %T ]", requiredStake, err)
 			}
 
 			v2NStake, err := sdk.ParseCoinsNormalized(msg.V2NStake)
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. Coins couldn't be parsed!"+err.Error())
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. Coins: [ %T ] couldn't be parsed. Error: [ %T ]", msg.V2NStake, err)
 			}
 			if v2NStake.IsAllLT(requiredStake) || !v2NStake.DenomsSubsetOf(requiredStake) {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[UpdateGuard] failed. Sent amount: "+v2NStake.String()+" is below the required stake amount "+requiredStake.String())
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInsufficientFunds, "[UpdateGuard] failed. Sent amount: "+v2NStake.String()+" is below the required stake amount "+requiredStake.String())
 			}
 
 			// Transfer stakedAmount to contract:
 			transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 			if transferErr != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UpdateGuard][SendCoinsFromAccountToModule] failed. Stake funds couldn't be transferred to POA module!")
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[UpdateGuard][SendCoinsFromAccountToModule] failed. Stake funds couldn't be transferred to POA module. Error: [ %T ]", transferErr)
 			}
 			//
 			newV2NChallenger = types.Challenger{
@@ -218,12 +218,12 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 		_, isFoundClient := k.GetClient(ctx, msg.RunnerAddr)
 
 		if isFoundChallenger || isFoundClient {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[UpdateGuard] failed. Runner is already registered in storage.")
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "[UpdateGuard] failed. Runner with this address: [ %T ] is already registered in storage. Error: [ %T ]", msg.RunnerAddr, err)
 		}
 
 		runnerAddr, err := sdk.AccAddressFromBech32(msg.RunnerAddr)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[UpdateGuard][AccAddressFromBech32] failed. Invalid runner address!"+err.Error())
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[UpdateGuard][AccAddressFromBech32] failed. Invalid runner address, got [ %T ]. Error: [ %T ]", msg.RunnerAddr, err)
 		}
 
 		if guard.Runner.Address != "" {
@@ -265,10 +265,10 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 			// Check runner stake amount
 			requiredStake, _ := sdk.ParseCoinsNormalized("1000000000umotus") // TODO: Removing this hard code value as a constant in global place
 			runnerStake, err := sdk.ParseCoinsNormalized(msg.RunnerStake)
-
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. Coins couldn't be parsed!"+err.Error())
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateGuard][ParseCoinsNormalized] failed. Coins: [ %T ] couldn't be parsed. Error: [ %T ]", runnerStake, err)
 			}
+
 			if runnerStake.IsAllLT(requiredStake) || !runnerStake.DenomsSubsetOf(requiredStake) {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[UpdateGuard] failed. Sent amount: "+runnerStake.String()+" is below the required stake amount "+requiredStake.String())
 			}
@@ -276,7 +276,7 @@ func (k msgServer) UpdateGuard(goCtx context.Context, msg *types.MsgUpdateGuard)
 			// Transfer stakedAmount to contract:
 			transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
 			if transferErr != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UpdateGuard][SendCoinsFromAccountToModule] failed. Stake funds couldn't be transferred to POA module!")
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[UpdateGuard][SendCoinsFromAccountToModule] failed. Stake funds couldn't be transferred to POA module. Error: [ %T ]", transferErr)
 			}
 
 			// rewardMultiplier
