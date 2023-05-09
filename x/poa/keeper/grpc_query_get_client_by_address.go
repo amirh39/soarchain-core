@@ -19,14 +19,14 @@ func (k Keeper) GetClientByAddress(goCtx context.Context, req *types.QueryGetCli
 
 	clients := k.GetAllClient(ctx)
 
-	targetClient := &types.Client{}
+	targetClient := types.Client{}
 
 	for _, client := range clients {
 		if req.Address == client.Address {
-			targetClient = &client
+			targetClient = client
 			break
 		}
 	}
 
-	return &types.QueryGetClientByAddressResponse{Client: targetClient}, nil
+	return &types.QueryGetClientByAddressResponse{Client: &targetClient}, nil
 }
