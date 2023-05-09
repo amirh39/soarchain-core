@@ -8,7 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64, clientCommunicationMode string) (float64, error) {
+func (k Keeper) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64, clientCommunicationMode string) (float64, error) {
 
 	rewardPerBlock, err := utility.V2NRewardEmissionPerBlock(ctx, clientCommunicationMode)
 	if err != nil {
