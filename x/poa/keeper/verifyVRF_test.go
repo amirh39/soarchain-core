@@ -19,7 +19,7 @@ func Test_VerifyGeneratedNumber(t *testing.T) {
 		err     error
 	}{
 		{
-			desc: "Verify Generated Number",
+			desc: "Verify Valid Generated Number",
 			request: &types.QueryVerifyRandomNumberRequest{
 				Pubkey:  "66eea999dcfb6fa4df8a5d2b22ea5e637d65ff9525e5f58f5e27bdac457c0450",
 				Message: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y,1",
