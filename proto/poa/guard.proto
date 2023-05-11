@@ -11,6 +11,5 @@ message Guard {
   Runner runner = 3; 
   Challenger v2XChallenger = 4; 
   Challenger v2NChallenger = 5; 
-  
 }
 
