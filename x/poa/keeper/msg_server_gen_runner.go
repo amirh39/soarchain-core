@@ -14,12 +14,13 @@ import (
 func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
 
-	if msg.RunnerAddr == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Address must be declared in the tx!")
+	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
 	}
 
-	if msg.RunnerIp == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Ip-Address must be declared in the tx!")
+	if msg.RunnerAddr == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Address must be declared in the tx!")
 	}
 
 	if msg.RunnerPubKey == "" {
@@ -28,11 +29,6 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 
 	if msg.RunnerStake == "" {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Stake must be declared in the tx!")
-	}
-
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
 	}
 
 	//check runner
@@ -70,7 +66,6 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	// Check runner stake amount
 	requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 1000000000)}
 	runnerStake, err := sdk.ParseCoinsNormalized(msg.RunnerStake)
-
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
 	}
@@ -78,6 +73,11 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Sent amount of runner: "+runnerStake.String()+" is below the required stake amount "+requiredStake.String())
 	}
 
+	// Transfer stakedAmount to poa modules account:
+	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
+	if transferErr != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(runner) funds couldn't be transferred to POA module!")
+	}
 	// rewardMultiplier
 	var initialScore float64 = 50
 	rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
