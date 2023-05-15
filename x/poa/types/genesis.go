@@ -17,7 +17,6 @@ func DefaultGenesis() *GenesisState {
 		ClientList:     []Client{},
 		ChallengerList: []Challenger{},
 		RunnerList:     []Runner{},
-		GuardList:      []Guard{},
 		VrfDataList:    []VrfData{},
 		VrfUserList:    []VrfUser{},
 		EpochData: EpochData{
@@ -70,16 +69,6 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for runner")
 		}
 		runnerIndexMap[index] = struct{}{}
-	}
-	// Check for duplicated index in guard
-	guardIndexMap := make(map[string]struct{})
-
-	for _, elem := range gs.GuardList {
-		index := string(GuardKey(elem.Index))
-		if _, ok := guardIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for guard")
-		}
-		guardIndexMap[index] = struct{}{}
 	}
 
 	// Check for duplicated index in vrfData

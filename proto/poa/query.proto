@@ -5,7 +5,6 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
-import "poa/guard.proto";
 import "poa/vrf_data.proto";
 import "poa/vrf_user.proto";
 import "poa/epoch_data.proto";
@@ -55,15 +54,6 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/runner";
 	}
 
-// Queries a Guard by index.
-	rpc Guard(QueryGetGuardRequest) returns (QueryGetGuardResponse) {
-		option (google.api.http).get = "/soarchain/poa/guard/{index}";
-	}
-
-	// Queries a list of Guard items.
-	rpc GuardAll(QueryAllGuardRequest) returns (QueryAllGuardResponse) {
-		option (google.api.http).get = "/soarchain/poa/guard";
-	}
 
 // Queries a list of GetClientByAddress items.
 	rpc GetClientByAddress(QueryGetClientByAddressRequest) returns (QueryGetClientByAddressResponse) {
@@ -209,24 +199,6 @@ message QueryAllRunnerRequest {
 
 message QueryAllRunnerResponse {
 	repeated Runner runner = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetGuardRequest {
-	  string index = 1;
-
-}
-
-message QueryGetGuardResponse {
-	Guard guard = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllGuardRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllGuardResponse {
-	repeated Guard guard = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

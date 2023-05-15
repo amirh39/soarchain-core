@@ -39,14 +39,6 @@ func TestGenesis(t *testing.T) {
 				PubKey: "1",
 			},
 		},
-		GuardList: []types.Guard{
-			{
-				Index: "0",
-			},
-			{
-				Index: "1",
-			},
-		},
 		VrfDataList: []types.VrfData{
 			{
 				Index: "0",
@@ -105,7 +97,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.ClientList, got.ClientList)
 	require.ElementsMatch(t, genesisState.ChallengerList, got.ChallengerList)
 	require.ElementsMatch(t, genesisState.RunnerList, got.RunnerList)
-	require.ElementsMatch(t, genesisState.GuardList, got.GuardList)
 	require.ElementsMatch(t, genesisState.VrfDataList, got.VrfDataList)
 	require.ElementsMatch(t, genesisState.VrfUserList, got.VrfUserList)
 	require.Equal(t, genesisState.EpochData, got.EpochData)

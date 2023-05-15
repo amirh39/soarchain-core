@@ -12,19 +12,14 @@ import (
 func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregisterRunner) (*types.MsgUnregisterRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// check guard
-	guard, isFound := k.GetGuard(ctx, msg.Creator)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard is not registered, Not authorized!")
-	}
 	// check runner
 	runner, isFoundRunner := k.GetRunner(ctx, msg.RunnerAddress)
 	if !isFoundRunner {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Runner is not registered.")
 	}
-	// Check runner belongs to msg.Creator's guard
-	if guard.Runner.Address != msg.RunnerAddress {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Runner doesn't belong to msg.Creator's guard!")
+	// Check runner belongs to msg.Creator's address
+	if runner.Creator != msg.Creator {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Runner doesn't belong to msg.Creator's address!")
 	}
 
 	// Query the staked amount and refund
@@ -38,16 +33,6 @@ func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregis
 
 	// Remove runner
 	k.RemoveRunner(ctx, msg.RunnerAddress)
-
-	// Remove from guard
-	updatedGuard := types.Guard{
-		Index:         guard.Index,
-		GuardId:       guard.GuardId,
-		V2XChallenger: guard.V2XChallenger,
-		V2NChallenger: guard.V2NChallenger,
-		Runner:        &types.Runner{},
-	}
-	k.SetGuard(ctx, updatedGuard)
 
 	return &types.MsgUnregisterRunnerResponse{}, nil
 }

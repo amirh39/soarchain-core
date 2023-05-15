@@ -14,13 +14,10 @@ service Msg {
   rpc ChallengeService(MsgChallengeService) returns (MsgChallengeServiceResponse);
   rpc UnregisterClient(MsgUnregisterClient) returns (MsgUnregisterClientResponse);
   rpc UnregisterChallenger(MsgUnregisterChallenger) returns (MsgUnregisterChallengerResponse);
-  rpc GenGuard(MsgGenGuard) returns (MsgGenGuardResponse);
   rpc UnregisterRunner(MsgUnregisterRunner) returns (MsgUnregisterRunnerResponse);
   rpc RunnerChallenge(MsgRunnerChallenge) returns (MsgRunnerChallengeResponse);
-  rpc UnregisterGuard(MsgUnregisterGuard) returns (MsgUnregisterGuardResponse);
   rpc SelectRandomChallenger(MsgSelectRandomChallenger) returns (MsgSelectRandomChallengerResponse);
   rpc SelectRandomRunner(MsgSelectRandomRunner) returns (MsgSelectRandomRunnerResponse);
-  rpc UpdateGuard(MsgUpdateGuard) returns (MsgUpdateGuardResponse);
   rpc ClaimMotusRewards(MsgClaimMotusRewards) returns (MsgClaimMotusRewardsResponse);
   rpc ClaimRunnerRewards(MsgClaimRunnerRewards) returns (MsgClaimRunnerRewardsResponse);
   rpc RegisterFactoryKey(MsgRegisterFactoryKey) returns (MsgRegisterFactoryKeyResponse);
@@ -65,22 +62,6 @@ message MsgUnregisterChallenger {
 message MsgUnregisterChallengerResponse {
 }
 
-message MsgGenGuard {
-  string creator = 1;
-  string guardPubKey = 2;
-  string v2xPubKey = 3;
-  string v2XAddr = 4;
-  string v2XStake = 5;
-  string v2XIp = 6;
-  string v2NPubKey = 7;
-  string v2NAddr = 8;
-  string v2NStake = 9;
-  string v2NIp = 10;
-  string runnerPubKey = 11;
-  string runnerAddr = 12;
-  string runnerStake = 13;
-  string runnerIp = 14;
-}
 
 message MsgGenRunner{
   string creator = 1; 
@@ -107,8 +88,6 @@ message MsgGenChallengerResponse{
 
 }
 
-message MsgGenGuardResponse {
-}
 
 message MsgUnregisterRunner {
   string creator = 1;
@@ -127,12 +106,7 @@ message MsgRunnerChallenge {
 message MsgRunnerChallengeResponse {
 }
 
-message MsgUnregisterGuard {
-  string creator = 1;
-}
 
-message MsgUnregisterGuardResponse {
-}
 
 message MsgSelectRandomChallenger {
   string creator = 1;
@@ -150,24 +124,6 @@ message MsgSelectRandomRunnerResponse {
   Runner randomRunner = 1;
 }
 
-message MsgUpdateGuard {
-  string creator = 1;
-  string v2xPubKey = 3;
-  string v2XAddr = 4;
-  string v2XStake = 5;
-  string v2XIp = 6;
-  string v2NPubKey = 7;
-  string v2NAddr = 8;
-  string v2NStake = 9;
-  string v2NIp = 10;
-  string runnerPubKey = 11;
-  string runnerAddr = 12;
-  string runnerStake = 13;
-  string runnerIp = 14;
-}
-
-message MsgUpdateGuardResponse {
-}
 
 message MsgClaimMotusRewards {
   string creator = 1;

@@ -36,9 +36,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgRunnerChallenge:
 			res, err := msgServer.RunnerChallenge(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUnregisterGuard:
-			res, err := msgServer.UnregisterGuard(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSelectRandomChallenger:
 			res, err := msgServer.SelectRandomChallenger(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
