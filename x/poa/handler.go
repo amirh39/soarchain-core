@@ -30,9 +30,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgUnregisterChallenger:
 			res, err := msgServer.UnregisterChallenger(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgGenGuard:
-			res, err := msgServer.GenGuard(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUnregisterRunner:
 			res, err := msgServer.UnregisterRunner(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
@@ -47,9 +44,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSelectRandomRunner:
 			res, err := msgServer.SelectRandomRunner(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateGuard:
-			res, err := msgServer.UpdateGuard(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgClaimMotusRewards:
 			res, err := msgServer.ClaimMotusRewards(sdk.WrapSDKContext(ctx), msg)
