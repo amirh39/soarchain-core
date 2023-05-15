@@ -25,6 +25,7 @@ service Msg {
   rpc ClaimRunnerRewards(MsgClaimRunnerRewards) returns (MsgClaimRunnerRewardsResponse);
   rpc RegisterFactoryKey(MsgRegisterFactoryKey) returns (MsgRegisterFactoryKeyResponse);
   rpc GenRunner(MsgGenRunner) returns (MsgGenRunnerResponse);
+  rpc GenChallenger(MsgGenChallenger) returns (MsgGenChallengerResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -95,14 +96,11 @@ message MsgGenRunnerResponse{
 
 message MsgGenChallenger{
   string creator = 1;
-  string v2xPubKey = 2;
-  string v2XAddr = 3;
-  string v2XStake = 4;
-  string v2XIp = 5;
-  string v2NPubKey = 6;
-  string v2NAddr = 7;
-  string v2NStake = 8;
-  string v2NIp = 9;
+  string ChallengerPubKey = 2;
+  string ChallengerAddr = 3;
+  string ChallengerStake = 4;
+  string ChallengerIp = 5;
+  string Challengertype = 6;
 }
 
 message MsgGenChallengerResponse{
