@@ -2,10 +2,7 @@ package keeper
 
 import (
 	"context"
-	"crypto/ecdsa"
-	"crypto/sha256"
 	"crypto/x509"
-	"encoding/hex"
 	"fmt"
 	"strconv"
 
@@ -42,32 +39,9 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][CreateX509CertFromString] failed. Invalid device certificate."+err.Error())
 	}
 
-	pubKeyDer, err := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][MarshalPKIXPublicKey] failed. Couldn't convert a public key to PKIX."+err.Error())
-	}
-
-	pubKeyHex := hex.EncodeToString(pubKeyDer)
-	// verify the msg.Creator_Signed which basically the msg.Creator signed by the privateKey of the pubKey we just extracted from the msg.Certificate
-	signature, err := hex.DecodeString(msg.Signature)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][DecodeString] failed. Invalid signature encoding."+err.Error())
-	}
-
-	hashedAddr := sha256.Sum256([]byte(msg.Creator))
-
-	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
-
-		if ecdsaPubKey, ok := deviceCert.PublicKey.(*ecdsa.PublicKey); ok {
-
-			if ecdsa.VerifyASN1(ecdsaPubKey, hashedAddr[:], signature) {
-				// signature is valid
-			} else {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[GenClient][VerifyASN1] failed. Signature verification failed.")
-			}
-		} else {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient] failed. Invalid public key type.")
-		}
+	pubKeyHex, err := VerifyX509CertByASN1AndExtractPubkey(msg.Creator, msg.Signature, deviceCert)
+	if pubKeyHex == "" || err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][ValidateX509CertByASN1] failed. Invalid certificate validation. Error: [ %T ]", err)
 	}
 
 	// Check validity of certificate
@@ -125,9 +99,6 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 	}
-
-	fmt.Print("ggggggggggggggggggggg---newClient")
-	fmt.Print(newClient)
 
 	k.SetClient(ctx, newClient)
 
