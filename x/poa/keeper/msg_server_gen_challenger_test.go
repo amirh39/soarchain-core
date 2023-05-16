@@ -8,6 +8,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	CERTIFICATE         = "-----BEGIN CERTIFICATE-----\nMIIB1DCCAXqgAwIBAgIQarjUOnCZTyR62V1ecTpJOzAKBggqhkjOPQQDAjBaMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMTowOAYDVQQDDDFTb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IEludC4gQ0EgMHgwMDAxMDJGRkZGMB4XDTIzMDQwNjE4MDAwMFoXDTMzMDQwNjE4MDAwMFowOzEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjEbMBkGA1UEAwwSU0FNUExFX0RFVklDRV8wMDEwMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbCji79+UYAQ127pa5/GVy2GePdEot+Dih3+aHaSJAngZABw+AUHLV53D2ekTpFZEQBvSRYMT3DfRXdWK3K/xVKNBMD8wDgYDVR0PAQH/BAQDAgXgMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUy+iWrLA3K07EV3R0n/R9UYPvN1cwCgYIKoZIzj0EAwIDSAAwRQIgLNRm2jurfwQt2mAYgzxMO6r282PTB3Bil0cbbkRWCFICIQC09z8NUdddEaT3+rPovZNtL/LukupZaBl4LseTv4c74w==\n-----END CERTIFICATE-----"
+	NOTVALIDCERTIFICATE = "---------\nMIIB1DCCAXqgAwIBAgIQarjUOnCZTyR62V1ecTpJOzAKBggqhkjOPQQDAjBaMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMTowOAYDVQQDDDFTb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IEludC4gQ0EgMHgwMDAxMDJGRkZGMB4XDTIzMDQwNjE4MDAwMFoXDTMzMDQwNjE4MDAwMFowOzEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjEbMBkGA1UEAwwSU0FNUExFX0RFVklDRV8wMDEwMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbCji79+UYAQ127pa5/GVy2GePdEot+Dih3+aHaSJAngZABw+AUHLV53D2ekTpFZEQBvSRYMT3DfRXdWK3K/xVKNBMD8wDgYDVR0PAQH/BAQDAgXgMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUy+iWrLA3K07EV3R0n/R9UYPvN1cwCgYIKoZIzj0EAwIDSAAwRQIgLNRm2jurfwQt2mAYgzxMO6r282PTB3Bil0cbbkRWCFICIQC09z8NUdddEaT3+rPovZNtL/LukupZaBl4LseTv4c74w==\n-----END CERTIFICATE-----"
+	SIGNATURE           = "3046022100b3895f069c24bcc403e5c34463b3fbd88c52088e3070265c84401388d87782f9022100ca497f09fad41001bc2958006872b67767d842a77bfd2347c614b2f6a8b11cd0"
+	MASTER_ACCOUNT      = "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8"
+	CREATOR             = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
+	IP                  = "104.248.142.45"
+	TYPE                = "v2n"
+	STAKE               = "2000000000utmotus"
+	ADDRESS             = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
+	PUBLICKEY           = "3056301006072a8648ce3d020106052b8104000a034200044c1db1a1b1e19d6c423b1af88203ce79b6e4705d1dedaf65daeb0eedbe2c1fc6db010fa7f81443229d90181691df2e209be1c1278af42cc0f5ade03db549a795"
+	FACTORY_CERT        = "-----BEGIN CERTIFICATE-----\nMIIB4TCCAYegAwIBAgIQTylBUpEkZd8CaYHSaLbBHzAKBggqhkjOPQQDAjBIMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMSgwJgYDVQQDDB9Tb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IENBMB4XDTIzMDMzMDA2NTUxNVoXDTQ4MDMzMDA2NTUxNVowSDEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjEoMCYGA1UEAwwfU29hciBSb2JvdGljcyBTZWN1cmUgRWxlbWVudCBDQTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABLaCOXbFw/dRJXzXtvhSFWt92aUkdwRZPLmJWZFBFX55+XIDQsCGsQeMmU4pqsnXEB4/r842uYUinWsdzg4xUoqjUzBRMB0GA1UdDgQWBBRqxTRE6ZPuogp88TrNw1cwAYyPMjAfBgNVHSMEGDAWgBRqxTRE6ZPuogp88TrNw1cwAYyPMjAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49BAMCA0gAMEUCIAHpI8Y6zPLaitMOGNAzzDAKb0PJw2r49vjzkFl5TIGPAiEArPJTReSmEnUJWFTcEIuYoWcRIBDI+GpianTVfX4uxNI=\n-----END CERTIFICATE-----"
+)
+
 func Test_GenChallenger(t *testing.T) {
 	msgServer, k, context, ctrl, bank := setupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
@@ -21,44 +35,50 @@ func Test_GenChallenger(t *testing.T) {
 	}
 	k.SetMasterKey(ctx, item)
 
-	resp, err := msgServer.GenChallenger(context, &types.MsgGenChallenger{
+	res, err := msgServer.GenChallenger(context, &types.MsgGenChallenger{
 		Creator:          CREATOR,
-		ChallengerPubKey: "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251",
-		ChallengerAddr:   "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
-		ChallengerStake:  "2000000000utmotus",
-		ChallengerIp:     "104.248.142.45",
-		Challengertype:   "v2n",
+		ChallengerPubKey: PUBLICKEY,
+		ChallengerAddr:   ADDRESS,
+		ChallengerStake:  STAKE,
+		ChallengerIp:     IP,
+		Challengertype:   TYPE,
 		Certificate:      CERTIFICATE,
-		Signature:        "",
+		Signature:        SIGNATURE,
 	})
 
-	t.Log("response", resp)
+	t.Log("response", res)
 
 	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.NotNil(t, res)
 }
 
-/** Using not valid master certificate, response should raise proper error message*/
-// func Test_GenRunner_NotValidCertificate(t *testing.T) {
-// 	msgServer, k, context, ctrl, bank := setupMsgServerClaimMotusRewards(t)
-// 	defer ctrl.Finish()
+/** Using not valid certificate, response should raise proper error message*/
+func Test_GenChallenger_NotValidCertificate(t *testing.T) {
+	msgServer, k, context, ctrl, bank := setupMsgServerClaimMotusRewards(t)
+	defer ctrl.Finish()
 
-// 	bank.ExpectAny(context)
+	bank.ExpectAny(context)
 
-// 	ctx := sdk.UnwrapSDKContext(context)
+	ctx := sdk.UnwrapSDKContext(context)
 
-// 	item := types.MasterKey{MasterCertificate: MASTER_ACCOUNT,
-// 		MasterAccount: MASTER_ACCOUNT,
-// 	}
-// 	k.SetMasterKey(ctx, item)
+	item := types.MasterKey{MasterCertificate: MASTER_ACCOUNT,
+		MasterAccount: MASTER_ACCOUNT,
+	}
+	k.SetMasterKey(ctx, item)
 
-// 	res, err := msgServer.RegisterFactoryKey(context, &types.MsgRegisterFactoryKey{
-// 		Creator:     CREATOR,
-// 		FactoryCert: FACTORY_CERT,
-// 	})
+	res, err := msgServer.GenChallenger(context, &types.MsgGenChallenger{
+		Creator:          CREATOR,
+		ChallengerPubKey: PUBLICKEY,
+		ChallengerAddr:   ADDRESS,
+		ChallengerStake:  STAKE,
+		ChallengerIp:     IP,
+		Challengertype:   TYPE,
+		Certificate:      NOTVALIDCERTIFICATE,
+		Signature:        SIGNATURE,
+	})
 
-// 	t.Log("error message", err)
+	t.Log("error message", err)
 
-// 	require.Error(t, err)
-// 	require.Nil(t, res)
-// }
+	require.Error(t, err)
+	require.Nil(t, res)
+}
