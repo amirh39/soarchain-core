@@ -23,6 +23,8 @@ func CmdGenChallenger() *cobra.Command {
 			argChallengerStake := args[2]
 			argChallengerIp := args[3]
 			argChallengerType := args[4]
+			argChallengerCertificate := args[5]
+			argChallengerSignature := args[6]
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -35,6 +37,8 @@ func CmdGenChallenger() *cobra.Command {
 				argChallengerStake,
 				argChallengerIp,
 				argChallengerType,
+				argChallengerCertificate,
+				argChallengerSignature,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
