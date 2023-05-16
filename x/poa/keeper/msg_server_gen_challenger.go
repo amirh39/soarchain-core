@@ -2,7 +2,12 @@ package keeper
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"crypto/sha256"
+	"crypto/x509"
+	"encoding/hex"
 	"errors"
+	"fmt"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 
@@ -12,6 +17,53 @@ import (
 
 func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallenger) (*types.MsgGenChallengerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
+
+	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][CreateX509CertFromString] failed. Invalid device certificate. Error: [ %T ]", err)
+	}
+	fmt.Print("hhhhhhhhhhhhhhhh---deviceCert")
+	fmt.Print(deviceCert)
+
+	pubKeyFromCertificate, err := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][MarshalPKIXPublicKey] failed. Couldn't convert a public key to PKIX.Error: [ %T ]", err)
+	}
+
+	fmt.Print("ccccccccccccccccccccc-----pubKeyFromCertificate")
+	fmt.Print(pubKeyFromCertificate)
+
+	pubKeyHex := hex.EncodeToString(pubKeyFromCertificate)
+
+	fmt.Print("uuuuuuuuuuuuuuuuuuuu------pubKeyHex")
+	fmt.Print(pubKeyHex)
+
+	signature, err := hex.DecodeString(msg.Signature)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][DecodeString] failed. Invalid signature encoding.Error: [ %T ]", err)
+	}
+
+	fmt.Print("aaaaaaaaaaaaaaaaa----------------signature")
+	fmt.Print(signature)
+
+	hashedAddr := sha256.Sum256([]byte(msg.Creator))
+
+	fmt.Print("rrrrrrrrrrrrrrrrr--------hashedAddr")
+	fmt.Print(signature)
+
+	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
+
+		if ecdsaPubKey, ok := deviceCert.PublicKey.(*ecdsa.PublicKey); ok {
+
+			if ecdsa.VerifyASN1(ecdsaPubKey, hashedAddr[:], signature) {
+				// signature is valid
+			} else {
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[GenChallenger][VerifyASN1] failed. Signature verification failed. Error: [ %T ]", err)
+			}
+		} else {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger] failed. Invalid public key type. Error: [ %T ]", err)
+		}
+	}
 
 	msgSenderAddress, addrErr := sdk.AccAddressFromBech32(msg.Creator)
 	if addrErr != nil {
@@ -84,7 +136,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	//rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
 
 	newChallenger = types.Challenger{
-		PubKey:       msg.ChallengerPubKey,
+		PubKey:       pubKeyHex,
 		Address:      ChallengerAddr.String(),
 		Score:        sdk.NewInt(50).String(), // Base Score
 		StakedAmount: ChallengerStake.String(),
