@@ -16,17 +16,6 @@ func Test_UnregisterChallenger(t *testing.T) {
 
 	ctx := sdk.UnwrapSDKContext(context)
 
-	gaurd := types.Guard{
-		Index: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
-		V2XChallenger: &types.Challenger{
-			Address: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
-		},
-		V2NChallenger: &types.Challenger{
-			Address: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
-		},
-	}
-	k.SetGuard(ctx, gaurd)
-
 	item := types.Challenger{
 		PubKey:       "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251",
 		Address:      "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
@@ -59,17 +48,6 @@ func Test_UnregisterChallenger_NotValidGuard(t *testing.T) {
 
 	ctx := sdk.UnwrapSDKContext(context)
 
-	gaurd := types.Guard{
-		Index: "",
-		V2XChallenger: &types.Challenger{
-			Address: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
-		},
-		V2NChallenger: &types.Challenger{
-			Address: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
-		},
-	}
-	k.SetGuard(ctx, gaurd)
-
 	item := types.Challenger{
 		PubKey:       "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251",
 		Address:      "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
@@ -100,16 +78,6 @@ func Test_RegisterClaimRunnerReward_NotValidChallenger(t *testing.T) {
 	bank.ExpectAny(context)
 
 	ctx := sdk.UnwrapSDKContext(context)
-	gaurd := types.Guard{
-		Index: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
-		V2XChallenger: &types.Challenger{
-			Address: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
-		},
-		V2NChallenger: &types.Challenger{
-			Address: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y",
-		},
-	}
-	k.SetGuard(ctx, gaurd)
 
 	item := types.Challenger{
 		PubKey:       "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251",

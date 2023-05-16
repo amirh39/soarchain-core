@@ -12,8 +12,6 @@ import (
 func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnregisterChallenger) (*types.MsgUnregisterChallengerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// check guard
-
 	// check challenger
 	challenger, isFoundChallenger := k.GetChallenger(ctx, msg.ChallengerAddress)
 	if !isFoundChallenger {

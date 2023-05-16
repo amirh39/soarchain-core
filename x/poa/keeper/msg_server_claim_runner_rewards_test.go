@@ -31,15 +31,8 @@ func Test_ClaimRunnerRewards(t *testing.T) {
 		IpAddr:             "",
 		LastTimeChallenged: "2023-05-08 14:33:56.656465058 +0000 UTC",
 		CoolDownTolerance:  "2",
-		GuardAddress:       "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
 	}
 	k.SetRunner(ctx, item)
-
-	gaurd := types.Guard{
-		Index:   "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
-		GuardId: "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
-	}
-	k.SetGuard(ctx, gaurd)
 
 	res, err := msgServer.ClaimRunnerRewards(context, &types.MsgClaimRunnerRewards{
 		Creator: CREATOR,
@@ -69,15 +62,8 @@ func Test_RegisterNotValidClaimRunnerReward_KeyNotFound(t *testing.T) {
 		IpAddr:             "",
 		LastTimeChallenged: "2023-05-08 14:33:56.656465058 +0000 UTC",
 		CoolDownTolerance:  "2",
-		GuardAddress:       "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
 	}
 	k.SetRunner(ctx, item)
-
-	gaurd := types.Guard{
-		Index:   "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
-		GuardId: "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
-	}
-	k.SetGuard(ctx, gaurd)
 
 	res, err := msgServer.ClaimRunnerRewards(context, &types.MsgClaimRunnerRewards{
 		Creator: CREATOR,
@@ -109,15 +95,8 @@ func Test_RegisterClaimRunnerReward_InsufficientFound(t *testing.T) {
 		IpAddr:             "",
 		LastTimeChallenged: "2023-05-08 14:33:56.656465058 +0000 UTC",
 		CoolDownTolerance:  "2",
-		GuardAddress:       "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
 	}
 	k.SetRunner(ctx, item)
-
-	gaurd := types.Guard{
-		Index:   "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
-		GuardId: "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
-	}
-	k.SetGuard(ctx, gaurd)
 
 	res, err := msgServer.ClaimRunnerRewards(context, &types.MsgClaimRunnerRewards{
 		Creator: CREATOR,
@@ -149,15 +128,8 @@ func Test_RegisterClaimRunnerReward_NotValidGuard(t *testing.T) {
 		IpAddr:             "",
 		LastTimeChallenged: "2023-05-08 14:33:56.656465058 +0000 UTC",
 		CoolDownTolerance:  "2",
-		GuardAddress:       "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
 	}
 	k.SetRunner(ctx, item)
-
-	gaurd := types.Guard{
-		Index:   "",
-		GuardId: "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
-	}
-	k.SetGuard(ctx, gaurd)
 
 	res, err := msgServer.ClaimRunnerRewards(context, &types.MsgClaimRunnerRewards{
 		Creator: CREATOR,

@@ -59,6 +59,6 @@ func Test_NotValidString(t *testing.T) {
 	emptyString := ""
 	r.Equal(ValidString(emptyString), false)
 
-	invalidType := 1234
+	invalidType := "1234"
 	r.Equal(ValidString(invalidType), false)
 }
