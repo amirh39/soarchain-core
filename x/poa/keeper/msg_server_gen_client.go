@@ -39,7 +39,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][CreateX509CertFromString] failed. Invalid device certificate."+err.Error())
 	}
 
-	pubKeyHex, err := VerifyX509CertByASN1AndExtractPubkey(msg.Creator, msg.Signature, deviceCert)
+	pubKeyHex, err := k.VerifyX509CertByASN1AndExtractPubkey(msg.Creator, msg.Signature, deviceCert)
 	if pubKeyHex == "" || err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][ValidateX509CertByASN1] failed. Invalid certificate validation. Error: [ %T ]", err)
 	}
