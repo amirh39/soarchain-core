@@ -23,7 +23,7 @@ func V2VRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 	case "v2v-bx":
 		initialTokensPerYear = 17416733110000 // v2v broadcaster initial annual emission
 	default:
-		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "V2V client communication mode is not supported!")
+		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2VRewardEmissionPerBlock] failed. V2V client communication mode is not supported.")
 	}
 
 	// Number of tokens issued per year by the total number of blocks produced per year
@@ -59,7 +59,7 @@ func V2VRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) 
 	case "v2v-bx":
 		initialTokensPerYear = 17416733110000 // v2v broadcaster initial annual emission
 	default:
-		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "V2V client communication mode is not supported!")
+		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2VRewardEmissionPerEpoch] failed. V2V client communication mode is not supported.")
 	}
 
 	// Number of tokens issued per year by the total number of blocks produced per year

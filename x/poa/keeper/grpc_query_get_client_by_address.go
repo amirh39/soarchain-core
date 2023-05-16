@@ -12,7 +12,7 @@ import (
 
 func (k Keeper) GetClientByAddress(goCtx context.Context, req *types.QueryGetClientByAddressRequest) (*types.QueryGetClientByAddressResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[GetClientByAddress] failed. Invalid request.")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)

@@ -7,6 +7,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -14,7 +15,7 @@ import (
 
 func (k Keeper) RunnerAll(c context.Context, req *types.QueryAllRunnerRequest) (*types.QueryAllRunnerResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[RunnerAll] failed. Invalid request.")
 	}
 
 	var runners []types.Runner
@@ -26,7 +27,7 @@ func (k Keeper) RunnerAll(c context.Context, req *types.QueryAllRunnerRequest) (
 	pageRes, err := query.Paginate(runnerStore, req.Pagination, func(key []byte, value []byte) error {
 		var runner types.Runner
 		if err := k.cdc.Unmarshal(value, &runner); err != nil {
-			return err
+			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[RunnerAll][Unmarshal] failed. Couldn't parses the data encoded."+err.Error())
 		}
 
 		runners = append(runners, runner)
@@ -42,7 +43,7 @@ func (k Keeper) RunnerAll(c context.Context, req *types.QueryAllRunnerRequest) (
 
 func (k Keeper) Runner(c context.Context, req *types.QueryGetRunnerRequest) (*types.QueryGetRunnerResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[Runner] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
@@ -51,7 +52,7 @@ func (k Keeper) Runner(c context.Context, req *types.QueryGetRunnerRequest) (*ty
 		req.Address,
 	)
 	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
+		return nil, status.Error(codes.NotFound, "[Runner] failed. Couldn't find a runner.")
 	}
 
 	return &types.QueryGetRunnerResponse{Runner: val}, nil

@@ -3,15 +3,16 @@ package keeper
 import (
 	"context"
 
+	"soarchain/x/poa/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/poa/types"
 )
 
 func (k Keeper) Params(c context.Context, req *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[Params] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 

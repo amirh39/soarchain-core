@@ -16,26 +16,27 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 
 	runner, isFound := k.GetRunner(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Target runner is not registered in the store!")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimRunnerRewards][GetRunner] failed. Target runner is not registered in the store by this address: [ %T ]. Make sure the address is valid and not empty.", msg.Creator)
 	}
 
 	withdrawAmount, err := sdk.ParseCoinsNormalized(msg.Amount)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", msg.Amount, err)
 	}
+
 	earnedAmount, err := sdk.ParseCoinsNormalized(runner.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Withdraw amount couldn't be parsed!")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", runner.NetEarnings, err)
 	}
 
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "Not enough coins to claim!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[ClaimRunnerRewards][IsAllLT][DenomsSubsetOf] failed. Not enough coins to claim.")
 	}
 
 	runnerAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, runnerAccount, withdrawAmount)
 	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Cannot send coins")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ClaimRunnerRewards][IsAllLT][DenomsSubsetOf] failed. Couldn't send coins.")
 	}
 
 	// Calculate new net earnings

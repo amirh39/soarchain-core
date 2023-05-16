@@ -2,9 +2,12 @@ package keeper
 
 import (
 	"soarchain/x/poa/types"
+	"soarchain/x/poa/utility"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 // SetRunner set a specific runner in the store from its index
@@ -41,6 +44,11 @@ func (k Keeper) RemoveRunner(
 	index string,
 
 ) {
+
+	if !utility.ValidPubkey(index) {
+		sdkerrors.Wrap(sdkerrors.ErrInvalidPubKey, "[RemoveRunner][ValidPubkey] failed. Not valid runner pubkey.")
+		return
+	}
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RunnerKeyPrefix))
 	store.Delete(types.RunnerKey(
 		index,
@@ -65,6 +73,11 @@ func (k Keeper) GetAllRunner(ctx sdk.Context) (list []types.Runner) {
 
 func (k Keeper) GetRunnerUsingPubKey(ctx sdk.Context, pubKey string) (runner types.Runner, found bool) {
 	runners := k.GetAllRunner(ctx)
+
+	if !utility.ValidPubkey(pubKey) {
+		sdkerrors.Wrap(sdkerrors.ErrInvalidPubKey, "[GetRunnerUsingPubKey][ValidPubkey] failed. Not valid runner pubkey.")
+		return
+	}
 
 	for _, c := range runners {
 		if c.PubKey == pubKey {

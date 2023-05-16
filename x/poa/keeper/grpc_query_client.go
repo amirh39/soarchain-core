@@ -3,17 +3,19 @@ package keeper
 import (
 	"context"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/poa/types"
 )
 
 func (k Keeper) ClientAll(c context.Context, req *types.QueryAllClientRequest) (*types.QueryAllClientResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[ClientAll] failed. Invalid request.")
 	}
 
 	var clients []types.Client
@@ -25,7 +27,7 @@ func (k Keeper) ClientAll(c context.Context, req *types.QueryAllClientRequest) (
 	pageRes, err := query.Paginate(clientStore, req.Pagination, func(key []byte, value []byte) error {
 		var client types.Client
 		if err := k.cdc.Unmarshal(value, &client); err != nil {
-			return err
+			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ClientAll][Unmarshal] failed. Couldn't parse the client data encoded."+err.Error())
 		}
 
 		clients = append(clients, client)
@@ -41,7 +43,7 @@ func (k Keeper) ClientAll(c context.Context, req *types.QueryAllClientRequest) (
 
 func (k Keeper) Client(c context.Context, req *types.QueryGetClientRequest) (*types.QueryGetClientResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, "[Client] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
@@ -50,7 +52,7 @@ func (k Keeper) Client(c context.Context, req *types.QueryGetClientRequest) (*ty
 		req.Index,
 	)
 	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
+		return nil, status.Error(codes.NotFound, "[Client][GetClient] failed. Couldn't find a client from the request.")
 	}
 
 	return &types.QueryGetClientResponse{Client: val}, nil
