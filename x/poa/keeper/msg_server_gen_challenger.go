@@ -7,7 +7,6 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"errors"
-	"fmt"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 
@@ -22,34 +21,23 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][CreateX509CertFromString] failed. Invalid device certificate. Error: [ %T ]", err)
 	}
-	fmt.Print("hhhhhhhhhhhhhhhh---deviceCert")
-	fmt.Print(deviceCert)
 
 	pubKeyFromCertificate, err := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][MarshalPKIXPublicKey] failed. Couldn't convert a public key to PKIX.Error: [ %T ]", err)
 	}
 
-	fmt.Print("ccccccccccccccccccccc-----pubKeyFromCertificate")
-	fmt.Print(pubKeyFromCertificate)
-
 	pubKeyHex := hex.EncodeToString(pubKeyFromCertificate)
-
-	fmt.Print("uuuuuuuuuuuuuuuuuuuu------pubKeyHex")
-	fmt.Print(pubKeyHex)
+	if pubKeyHex == "" {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[GenChallenger][EncodeToString] failed. Couldn't encode pubkey to hex string. Error: [ %T ]", err)
+	}
 
 	signature, err := hex.DecodeString(msg.Signature)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][DecodeString] failed. Invalid signature encoding.Error: [ %T ]", err)
 	}
 
-	fmt.Print("aaaaaaaaaaaaaaaaa----------------signature")
-	fmt.Print(signature)
-
 	hashedAddr := sha256.Sum256([]byte(msg.Creator))
-
-	fmt.Print("rrrrrrrrrrrrrrrrr--------hashedAddr")
-	fmt.Print(signature)
 
 	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
 
