@@ -22,10 +22,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.RunnerList {
 		k.SetRunner(ctx, elem)
 	}
-	// Set all the guard
-	for _, elem := range genState.GuardList {
-		k.SetGuard(ctx, elem)
-	}
 
 	// Set all the vrfData
 	for _, elem := range genState.VrfDataList {
@@ -63,7 +59,6 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.ClientList = k.GetAllClient(ctx)
 	genesis.ChallengerList = k.GetAllChallenger(ctx)
 	genesis.RunnerList = k.GetAllRunner(ctx)
-	genesis.GuardList = k.GetAllGuard(ctx)
 
 	genesis.VrfDataList = k.GetAllVrfData(ctx)
 	genesis.VrfUserList = k.GetAllVrfUser(ctx)

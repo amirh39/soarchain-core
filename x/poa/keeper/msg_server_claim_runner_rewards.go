@@ -56,25 +56,9 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 		IpAddr:             runner.IpAddr,
 		LastTimeChallenged: runner.LastTimeChallenged,
 		CoolDownTolerance:  runner.CoolDownTolerance,
-		GuardAddress:       runner.GuardAddress,
 	}
 
 	k.SetRunner(ctx, updatedRunner)
-
-	// Update runner obj in guard
-	guard, isFound := k.GetGuard(ctx, runner.GuardAddress)
-	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "Guard not found")
-	}
-	updateGuard := types.Guard{
-		Index:         guard.Index,
-		GuardId:       guard.GuardId,
-		V2XChallenger: guard.V2XChallenger,
-		V2NChallenger: guard.V2NChallenger,
-		Runner:        &updatedRunner,
-	}
-
-	k.SetGuard(ctx, updateGuard)
 
 	return &types.MsgClaimRunnerRewardsResponse{}, nil
 }

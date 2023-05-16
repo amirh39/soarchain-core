@@ -30,26 +30,17 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgUnregisterChallenger:
 			res, err := msgServer.UnregisterChallenger(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgGenGuard:
-			res, err := msgServer.GenGuard(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUnregisterRunner:
 			res, err := msgServer.UnregisterRunner(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRunnerChallenge:
 			res, err := msgServer.RunnerChallenge(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUnregisterGuard:
-			res, err := msgServer.UnregisterGuard(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSelectRandomChallenger:
 			res, err := msgServer.SelectRandomChallenger(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSelectRandomRunner:
 			res, err := msgServer.SelectRandomRunner(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateGuard:
-			res, err := msgServer.UpdateGuard(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgClaimMotusRewards:
 			res, err := msgServer.ClaimMotusRewards(sdk.WrapSDKContext(ctx), msg)
@@ -59,6 +50,12 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRegisterFactoryKey:
 			res, err := msgServer.RegisterFactoryKey(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgGenRunner:
+			res, err := msgServer.GenRunner(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgGenChallenger:
+			res, err := msgServer.GenChallenger(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

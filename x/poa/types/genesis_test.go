@@ -47,15 +47,6 @@ func TestGenesisState_Validate(t *testing.T) {
 						PubKey: "1",
 					},
 				},
-				GuardList: []types.Guard{
-					{
-						Index: "0",
-					},
-					{
-						Index: "1",
-					},
-				},
-
 				VrfDataList: []types.VrfData{
 					{
 						Index: "0",
@@ -146,21 +137,6 @@ func TestGenesisState_Validate(t *testing.T) {
 			},
 			valid: false,
 		},
-		{
-			desc: "duplicated guard",
-			genState: &types.GenesisState{
-				GuardList: []types.Guard{
-					{
-						Index: "0",
-					},
-					{
-						Index: "0",
-					},
-				},
-			},
-			valid: false,
-		},
-
 		{
 			desc: "duplicated vrfData",
 			genState: &types.GenesisState{

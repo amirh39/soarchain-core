@@ -45,10 +45,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUnregisterChallenger int = 100
 
-	opWeightMsgGenGuard = "op_weight_msg_gen_guard"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgGenGuard int = 100
-
 	opWeightMsgUnregisterRunner = "op_weight_msg_unregister_runner"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUnregisterRunner int = 100
@@ -56,10 +52,6 @@ const (
 	opWeightMsgRunnerChallenge = "op_weight_msg_runner_challenge"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgRunnerChallenge int = 100
-
-	opWeightMsgUnregisterGuard = "op_weight_msg_unregister_guard"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgUnregisterGuard int = 100
 
 	opWeightMsgSelectRandomChallenger = "op_weight_msg_select_random_challenger"
 	// TODO: Determine the simulation weight value
@@ -76,10 +68,6 @@ const (
 	opWeightMsgV2NChallenge = "op_weight_msg_v_2_n_challenge"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgV2NChallenge int = 100
-
-	opWeightMsgUpdateGuard = "op_weight_msg_update_guard"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgUpdateGuard int = 100
 
 	opWeightMsgClaimMotusRewards = "op_weight_msg_claim_motus_rewards"
 	// TODO: Determine the simulation weight value
@@ -171,17 +159,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		poasimulation.SimulateMsgUnregisterChallenger(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgGenGuard int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgGenGuard, &weightMsgGenGuard, nil,
-		func(_ *rand.Rand) {
-			weightMsgGenGuard = defaultWeightMsgGenGuard
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgGenGuard,
-		poasimulation.SimulateMsgGenGuard(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
 	var weightMsgUnregisterRunner int
 	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUnregisterRunner, &weightMsgUnregisterRunner, nil,
 		func(_ *rand.Rand) {
@@ -204,17 +181,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		poasimulation.SimulateMsgRunnerChallenge(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgUnregisterGuard int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUnregisterGuard, &weightMsgUnregisterGuard, nil,
-		func(_ *rand.Rand) {
-			weightMsgUnregisterGuard = defaultWeightMsgUnregisterGuard
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUnregisterGuard,
-		poasimulation.SimulateMsgUnregisterGuard(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
 	var weightMsgSelectRandomChallenger int
 	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSelectRandomChallenger, &weightMsgSelectRandomChallenger, nil,
 		func(_ *rand.Rand) {
@@ -235,17 +201,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgSelectRandomRunner,
 		poasimulation.SimulateMsgSelectRandomRunner(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgUpdateGuard int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateGuard, &weightMsgUpdateGuard, nil,
-		func(_ *rand.Rand) {
-			weightMsgUpdateGuard = defaultWeightMsgUpdateGuard
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdateGuard,
-		poasimulation.SimulateMsgUpdateGuard(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgClaimMotusRewards int

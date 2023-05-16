@@ -1,9 +1,8 @@
 package cli
 
 import (
-	"strconv"
-
 	"soarchain/x/poa/types"
+	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -13,19 +12,27 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdUnregisterGuard() *cobra.Command {
+func CmdGenRunner() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "unregister-guard",
-		Short: "Broadcast message unregister-guard",
-		Args:  cobra.ExactArgs(0),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
+		Use:   "gen-runner [RunnerPubKey] [RunnerAddr] [RunnerStake] [RunnerIp]",
+		Short: "Broadcast message gen-runner",
+		Args:  cobra.ExactArgs(4),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			argRunnerPubKey := args[0]
+			argRunnerAddr := args[1]
+			argRunnerStake := args[2]
+			argRunnerIp := args[3]
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgUnregisterGuard(
+			msg := types.NewMsgGenRunner(
 				clientCtx.GetFromAddress().String(),
+				argRunnerPubKey,
+				argRunnerAddr,
+				argRunnerStake,
+				argRunnerIp,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -33,8 +40,8 @@ func CmdUnregisterGuard() *cobra.Command {
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
-
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
+
 }
