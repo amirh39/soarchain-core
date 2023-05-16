@@ -9,7 +9,7 @@ const TypeMsgGenChallenger = "gen_challenger"
 
 var _ sdk.Msg = &MsgGenChallenger{}
 
-func NewMsgGenChallenger(creator string, challengerPubKey string, challengerAddr string, challengerStake string, challengerIp string, challengerType string) *MsgGenChallenger {
+func NewMsgGenChallenger(creator string, challengerPubKey string, challengerAddr string, challengerStake string, challengerIp string, challengerType string, certificate string, signature string) *MsgGenChallenger {
 	return &MsgGenChallenger{
 		Creator:          creator,
 		ChallengerPubKey: challengerPubKey,
@@ -17,6 +17,8 @@ func NewMsgGenChallenger(creator string, challengerPubKey string, challengerAddr
 		ChallengerStake:  challengerStake,
 		ChallengerIp:     challengerIp,
 		Challengertype:   challengerType,
+		Certificate:      certificate,
+		Signature:        signature,
 	}
 }
 
