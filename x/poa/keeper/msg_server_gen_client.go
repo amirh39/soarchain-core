@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"crypto/x509"
 	"encoding/hex"
+	"fmt"
 	"strconv"
 
 	// "encoding/pem"
@@ -17,10 +18,25 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+func clientType(deviceCert *x509.Certificate) string {
+	if deviceCert.Issuer.Names[1].Value == nil {
+		return "No Type"
+	}
+	results := fmt.Sprintf("%v", deviceCert.Issuer.Names[1].Value)
+	if results[41:43] == "01" {
+		return "mini"
+	} else {
+		return "pro"
+	}
+}
+
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	//ToDo: change pubkey field as device cert
+	if msg.Creator == "" || msg.Certificate == "" {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient] failed. Couldn't find valid msg.creator OR msg.Certificate. got: msg.Creator [ %T ] msg.Certificate [ %T ]. Make sure you they are valid and not empty.", msg.Creator, msg.Certificate)
+	}
+
 	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][CreateX509CertFromString] failed. Invalid device certificate."+err.Error())
@@ -101,6 +117,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	// Save client into storage
 	newClient := types.Client{
 		Index:              pubKeyHex,
+		Type:               clientType(deviceCert),
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
@@ -108,6 +125,9 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 	}
+
+	fmt.Print("ggggggggggggggggggggg---newClient")
+	fmt.Print(newClient)
 
 	k.SetClient(ctx, newClient)
 
