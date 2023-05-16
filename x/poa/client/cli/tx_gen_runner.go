@@ -22,6 +22,8 @@ func CmdGenRunner() *cobra.Command {
 			argRunnerAddr := args[1]
 			argRunnerStake := args[2]
 			argRunnerIp := args[3]
+			argRunnerCertificate := args[4]
+			argRunnerSignature := args[5]
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -33,6 +35,8 @@ func CmdGenRunner() *cobra.Command {
 				argRunnerAddr,
 				argRunnerStake,
 				argRunnerIp,
+				argRunnerCertificate,
+				argRunnerSignature,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
