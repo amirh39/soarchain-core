@@ -17,7 +17,6 @@ func (k Keeper) ReadX509CertFromFile(fileName string) string {
 	return fileContent
 }
 
-// This function is only for testing purposes
 func (k Keeper) CreateX509CertFromFile(fileName string) (*x509.Certificate, error) {
 
 	deviceCertPEM, err := ioutil.ReadFile(fileName)
@@ -56,21 +55,25 @@ func (k Keeper) ValidateX509Cert(derivedCert *x509.Certificate, signerCert *x509
 	}
 }
 
-func VerifyX509CertByASN1AndExtractPubkey(creatorInput string, signatureInput string, deviceCert *x509.Certificate) (string, error) {
+func (k Keeper) VerifyX509CertByASN1AndExtractPubkey(creatorInput string, signatureInput string, deviceCert *x509.Certificate) (string, error) {
+
+	if deviceCert == nil || creatorInput == "" {
+		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[VerifyX509CertByASN1AndExtractPubkey] failed. Couldn't find valid creatorInput OR signatureInput. got: creatorInput [ %T ] signatureInput [ %T ]. Make sure you they are valid and not empty.", creatorInput, signatureInput)
+	}
 
 	pubKeyFromCertificate, err := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
 	if err != nil {
-		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[CertificateVerificationByASN1][MarshalPKIXPublicKey] failed. Couldn't extract a public key from device certificate. Error: [ %T ]", err)
+		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[VerifyX509CertByASN1AndExtractPubkey][MarshalPKIXPublicKey] failed. Couldn't extract a public key from device certificate. Error: [ %T ]", err)
 	}
 
 	pubKeyHex := hex.EncodeToString(pubKeyFromCertificate)
 	if pubKeyHex == "" {
-		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[CertificateVerificationByASN1][EncodeToString] failed. Couldn't encode public Key to hex string. Error: [ %T ]", err)
+		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[VerifyX509CertByASN1AndExtractPubkey][EncodeToString] failed. Couldn't encode public Key to hex string. Error: [ %T ]", err)
 	}
 
 	signature, err := hex.DecodeString(signatureInput)
 	if err != nil {
-		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[CertificateVerificationByASN1][DecodeString] failed. Couldn't decode the signature. got: [ %T ]. Error: [ %T ]", signature, err)
+		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[VerifyX509CertByASN1AndExtractPubkey][DecodeString] failed. Couldn't decode the signature. got: [ %T ]. Error: [ %T ]", signature, err)
 	}
 
 	hashedAddr := sha256.Sum256([]byte(creatorInput))
@@ -82,10 +85,10 @@ func VerifyX509CertByASN1AndExtractPubkey(creatorInput string, signatureInput st
 			if ecdsa.VerifyASN1(ecdsaPubKey, hashedAddr[:], signature) {
 				// signature is valid
 			} else {
-				return "", sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[CertificateVerificationByASN1][VerifyASN1] failed. Certificate verification failed for extracted public Key: [ %T ] and Hash Address: [ %T ] and Signature: [ %T ]. Error: [ %T ]", ecdsaPubKey, hashedAddr, signature, err)
+				return "", sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[VerifyX509CertByASN1AndExtractPubkey][VerifyASN1] failed. Certificate verification failed for extracted public Key: [ %T ] and Hash Address: [ %T ] and Signature: [ %T ]. Error: [ %T ]", ecdsaPubKey, hashedAddr, signature, err)
 			}
 		} else {
-			return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[CertificateVerificationByASN1] failed. Invalid public key type. Error: [ %T ]", err)
+			return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[VerifyX509CertByASN1AndExtractPubkey] failed. Invalid public key type. Error: [ %T ]", err)
 		}
 	}
 	return pubKeyHex, nil
