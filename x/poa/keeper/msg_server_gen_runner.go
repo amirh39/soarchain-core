@@ -14,6 +14,16 @@ import (
 func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
 
+	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][CreateX509CertFromString] failed. Invalid device certificate. Error: [ %T ]", err)
+	}
+
+	result, err := CertificateVerification(msg.Creator, msg.Signature, deviceCert)
+	if !result {
+		return nil, err
+	}
+
 	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
