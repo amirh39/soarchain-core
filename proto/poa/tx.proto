@@ -69,6 +69,8 @@ message MsgGenRunner{
   string runnerAddr = 3;
   string runnerStake = 4;
   string runnerIp = 5;
+  string certificate = 6;
+  string signature = 7;
 }
 
 message MsgGenRunnerResponse{
@@ -82,6 +84,8 @@ message MsgGenChallenger{
   string ChallengerStake = 4;
   string ChallengerIp = 5;
   string Challengertype = 6;
+  string certificate = 7;
+  string signature = 8;
 }
 
 message MsgGenChallengerResponse{
