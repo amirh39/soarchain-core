@@ -14,30 +14,24 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallenger) (*types.MsgGenChallengerResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goctx)
-
-	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
-	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][CreateX509CertFromString] failed. Invalid device certificate. Error: [ %T ]", err)
-	}
+func CertificateVerification(creatorInput string, signatureInput string, deviceCert *x509.Certificate) (bool, error) {
 
 	pubKeyFromCertificate, err := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][MarshalPKIXPublicKey] failed. Couldn't convert a public key to PKIX.Error: [ %T ]", err)
+		return false, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][MarshalPKIXPublicKey] failed. Couldn't convert a public key to PKIX.Error: [ %T ]", err)
 	}
 
 	pubKeyHex := hex.EncodeToString(pubKeyFromCertificate)
 	if pubKeyHex == "" {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[GenChallenger][EncodeToString] failed. Couldn't encode pubkey to hex string. Error: [ %T ]", err)
+		return false, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[GenChallenger][EncodeToString] failed. Couldn't encode pubkey to hex string. Error: [ %T ]", err)
 	}
 
-	signature, err := hex.DecodeString(msg.Signature)
+	signature, err := hex.DecodeString(signatureInput)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][DecodeString] failed. Invalid signature encoding.Error: [ %T ]", err)
+		return false, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][DecodeString] failed. Invalid signature encoding.Error: [ %T ]", err)
 	}
 
-	hashedAddr := sha256.Sum256([]byte(msg.Creator))
+	hashedAddr := sha256.Sum256([]byte(creatorInput))
 
 	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
 
@@ -46,11 +40,26 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 			if ecdsa.VerifyASN1(ecdsaPubKey, hashedAddr[:], signature) {
 				// signature is valid
 			} else {
-				return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[GenChallenger][VerifyASN1] failed. Signature verification failed. Error: [ %T ]", err)
+				return false, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[GenChallenger][VerifyASN1] failed. Signature verification failed. Error: [ %T ]", err)
 			}
 		} else {
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger] failed. Invalid public key type. Error: [ %T ]", err)
+			return false, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger] failed. Invalid public key type. Error: [ %T ]", err)
 		}
+	}
+	return true, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[GenChallenger][VerifyASN1] failed. Signature verification failed. Error: [ %T ]", err)
+}
+
+func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallenger) (*types.MsgGenChallengerResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goctx)
+
+	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][CreateX509CertFromString] failed. Invalid device certificate. Error: [ %T ]", err)
+	}
+
+	result, err := CertificateVerification(msg.Creator, msg.Signature, deviceCert)
+	if !result {
+		return nil, err
 	}
 
 	msgSenderAddress, addrErr := sdk.AccAddressFromBech32(msg.Creator)
@@ -124,7 +133,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	//rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
 
 	newChallenger = types.Challenger{
-		PubKey:       pubKeyHex,
+		PubKey:       msg.ChallengerPubKey,
 		Address:      ChallengerAddr.String(),
 		Score:        sdk.NewInt(50).String(), // Base Score
 		StakedAmount: ChallengerStake.String(),
