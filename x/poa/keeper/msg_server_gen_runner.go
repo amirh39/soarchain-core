@@ -2,6 +2,11 @@ package keeper
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"crypto/sha256"
+	"crypto/x509"
+	"encoding/hex"
+	"fmt"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
@@ -13,6 +18,57 @@ import (
 
 func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
+
+	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][CreateX509CertFromString] failed. Invalid device certificate. Error: [ %T ]", err)
+	}
+
+	fmt.Print("hhhhhhhhhhhhhhhh---deviceCert")
+	fmt.Print(deviceCert)
+
+	pubKeyFromCertificate, err := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][MarshalPKIXPublicKey] failed. Couldn't convert a public key to PKIX. Error: [ %T ]", err)
+	}
+
+	fmt.Print("ccccccccccccccccccccc-----pubKeyFromCertificate")
+	fmt.Print(pubKeyFromCertificate)
+
+	pubKeyHex := hex.EncodeToString(pubKeyFromCertificate)
+	if pubKeyHex == "" {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[GenRunner][EncodeToString] failed. Invalid the hexadecimal encoding of publick key that extracted from certificate. Error: [ %T ]", err)
+	}
+
+	fmt.Print("uuuuuuuuuuuuuuuuuuuu------pubKeyHex")
+	fmt.Print(pubKeyHex)
+
+	signature, err := hex.DecodeString(msg.Signature)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][DecodeString] failed. Invalid signature encoding.Error: [ %T ]", err)
+	}
+
+	fmt.Print("aaaaaaaaaaaaaaaaa----------------signature")
+	fmt.Print(signature)
+
+	hashedAddr := sha256.Sum256([]byte(msg.Creator))
+
+	fmt.Print("rrrrrrrrrrrrrrrrr--------hashedAddr")
+	fmt.Print(signature)
+
+	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
+
+		if ecdsaPubKey, ok := deviceCert.PublicKey.(*ecdsa.PublicKey); ok {
+
+			if ecdsa.VerifyASN1(ecdsaPubKey, hashedAddr[:], signature) {
+				// signature is valid
+			} else {
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[GenRunner][VerifyASN1] failed. Signature verification failed. Error: [ %T ]", err)
+			}
+		} else {
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner] failed. Invalid public key type. Error: [ %T ]", err)
+		}
+	}
 
 	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
