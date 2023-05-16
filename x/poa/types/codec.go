@@ -14,10 +14,8 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUnregisterChallenger{}, "poa/UnregisterChallenger", nil)
 	cdc.RegisterConcrete(&MsgUnregisterRunner{}, "poa/UnregisterRunner", nil)
 	cdc.RegisterConcrete(&MsgRunnerChallenge{}, "poa/RunnerChallenge", nil)
-
 	cdc.RegisterConcrete(&MsgSelectRandomChallenger{}, "poa/SelectRandomChallenger", nil)
 	cdc.RegisterConcrete(&MsgSelectRandomRunner{}, "poa/SelectRandomRunner", nil)
-
 	cdc.RegisterConcrete(&MsgClaimMotusRewards{}, "poa/ClaimMotusRewards", nil)
 	cdc.RegisterConcrete(&MsgClaimRunnerRewards{}, "poa/ClaimRunnerRewards", nil)
 	cdc.RegisterConcrete(&MsgRegisterFactoryKey{}, "poa/RegisterFactoryKey", nil)

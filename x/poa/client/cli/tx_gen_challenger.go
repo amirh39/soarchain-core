@@ -16,7 +16,7 @@ func CmdGenChallenger() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "gen-challenger [ChallengerPubKey] [ChallengerAddr] [ChallengerStake] [ChallengerIp] [ChallengerType]",
 		Short: "Broadcast message gen-challenger",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argChallengerPubKey := args[0]
 			argChallengerAddr := args[1]
