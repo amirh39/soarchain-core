@@ -34,14 +34,13 @@ func (k Keeper) CreateX509CertFromFile(fileName string) (*x509.Certificate, erro
 
 func (k Keeper) CreateX509CertFromString(certString string) (*x509.Certificate, error) {
 	deviceCertPEM := []byte(certString)
-	deviceBlock, _ := pem.Decode(deviceCertPEM)
-	if deviceBlock == nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[CreateX509CertFromString][Decode] failed. Can't decode certificate PEM from Not valid string. Make sure you are decoding from a valid and not empty certification string. got: [ %T ]", certString)
+	deviceBlock, rest := pem.Decode(deviceCertPEM)
+	if deviceBlock == nil && rest != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[CreateX509CertFromString][pem.Decode] failed. Invalid device certificate.")
 	}
-
 	deviceCert, err := x509.ParseCertificate(deviceBlock.Bytes)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[CreateX509CertFromString][ParseCertificate] failed. Can't parse certificate from the given string. Error: [ %T ]", err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[CreateX509CertFromString][ParseCertificate] failed. Invalid parsing certificate. Error: [ %T ]", err)
 	}
 	return deviceCert, nil
 }
