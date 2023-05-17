@@ -57,7 +57,6 @@ func Test_SelectRandomChallenger_NotValidCreator(t *testing.T) {
 		IpAddr:             "",
 		LastTimeChallenged: "2023-05-08 14:33:56.656465058 +0000 UTC",
 		CoolDownTolerance:  "2",
-		GuardAddress:       "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
 	}
 	k.SetRunner(ctx, runner)
 

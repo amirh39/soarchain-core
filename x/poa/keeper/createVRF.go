@@ -43,7 +43,7 @@ func (k Keeper) CreateVRF(ctx sdk.Context, msgCreator string, multiplier int) (t
 
 	vrv, proof := sk.Prove(a_message) // Generate vrv (verifiable random value) and proof
 	pub_key, ok_bool := sk.Public()   // public key creation
-	if ok_bool == false {
+	if !ok_bool {
 		return err_VrfData, err_VrfUser, sdkerrors.Wrap(sdkerrors.ErrPanic, "Couldn't generate VRF public key!")
 	}
 

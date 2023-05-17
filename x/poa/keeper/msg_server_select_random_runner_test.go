@@ -26,7 +26,6 @@ func Test_SelectRandomRunner(t *testing.T) {
 		IpAddr:             "",
 		LastTimeChallenged: "2023-05-08 14:33:56.656465058 +0000 UTC",
 		CoolDownTolerance:  "2",
-		GuardAddress:       "soar1k9ee7xx2mqzehrt56y7ezyqnegzfy8afrs754n",
 	}
 	k.SetRunner(ctx, runner)
 
@@ -60,11 +59,10 @@ func Test_SelectRandomRunner_NotValidCreator(t *testing.T) {
 		IpAddr:             "",
 		LastTimeChallenged: "2023-05-08 14:33:56.656465058 +0000 UTC",
 		CoolDownTolerance:  "2",
-		GuardAddress:       "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
 	}
 	k.SetRunner(ctx, runner)
 
-	res, err := msgServer.UnregisterGuard(context, &types.MsgUnregisterGuard{
+	res, err := msgServer.SelectRandomRunner(context, &types.MsgSelectRandomRunner{
 		Creator: "",
 	})
 
