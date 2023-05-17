@@ -2,10 +2,6 @@ package keeper
 
 import (
 	"context"
-	"crypto/ecdsa"
-	"crypto/sha256"
-	"crypto/x509"
-	"encoding/hex"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
@@ -23,32 +19,9 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][CreateX509CertFromString] failed. Invalid device certificate. Error: [ %T ]", err)
 	}
 
-	pubKeyDer, err := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenRunner][MarshalPKIXPublicKey] failed. Couldn't convert a public key to PKIX."+err.Error())
-	}
-
-	pubKeyHex := hex.EncodeToString(pubKeyDer)
-	// verify the msg.Creator_Signed which basically the msg.Creator signed by the privateKey of the pubKey we just extracted from the msg.Certificate
-	signature, err := hex.DecodeString(msg.Signature)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenRunner][DecodeString] failed. Invalid signature encoding."+err.Error())
-	}
-
-	hashedAddr := sha256.Sum256([]byte(msg.Creator))
-
-	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
-
-		if ecdsaPubKey, ok := deviceCert.PublicKey.(*ecdsa.PublicKey); ok {
-
-			if ecdsa.VerifyASN1(ecdsaPubKey, hashedAddr[:], signature) {
-				// signature is valid
-			} else {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[GenRunner][VerifyASN1] failed. Signature verification failed.")
-			}
-		} else {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenRunner] failed. Invalid public key type.")
-		}
+	pubKeyHex, err := k.VerifyX509CertByASN1AndExtractPubkey(msg.Creator, msg.Signature, deviceCert)
+	if pubKeyHex == "" || err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][VerifyX509CertByASN1AndExtractPubkey] failed. Invalid certificate validation. Error: [ %T ]", err)
 	}
 
 	// Check validity of certificate
