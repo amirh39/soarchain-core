@@ -14,17 +14,15 @@ var _ = strconv.Itoa(0)
 
 func CmdGenChallenger() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "gen-challenger [ChallengerPubKey] [ChallengerAddr] [ChallengerStake] [ChallengerIp] [ChallengerType] [ChallengerCertificate] [ChallengerSignature]",
+		Use:   "gen-challenger [ChallengerStake] [ChallengerIp] [ChallengerType] [ChallengerCertificate] [ChallengerSignature]",
 		Short: "Broadcast message gen-challenger",
 		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			argChallengerPubKey := args[0]
-			argChallengerAddr := args[1]
-			argChallengerStake := args[2]
-			argChallengerIp := args[3]
-			argChallengerType := args[4]
-			argChallengerCertificate := "-----BEGIN CERTIFICATE-----\n" + args[5] + "\n-----END CERTIFICATE-----"
-			argChallengerSignature := args[6]
+			argChallengerStake := args[0]
+			argChallengerIp := args[1]
+			argChallengerType := args[2]
+			argChallengerCertificate := "-----BEGIN CERTIFICATE-----\n" + args[3] + "\n-----END CERTIFICATE-----"
+			argChallengerSignature := args[4]
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -32,8 +30,6 @@ func CmdGenChallenger() *cobra.Command {
 
 			msg := types.NewMsgGenChallenger(
 				clientCtx.GetFromAddress().String(),
-				argChallengerPubKey,
-				argChallengerAddr,
 				argChallengerStake,
 				argChallengerIp,
 				argChallengerType,
