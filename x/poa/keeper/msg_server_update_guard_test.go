@@ -38,6 +38,7 @@ func Test_UpdateGuard(t *testing.T) {
 		NetEarnings:        "107755123utmotus",
 		LastTimeChallenged: "2023-05-08 19:14:55.666272303 +0000 UTC",
 		CoolDownTolerance:  "1",
+		Type:               "mini",
 	}
 	k.SetClient(ctx, item)
 
@@ -99,6 +100,7 @@ func Test_UpdateGuard_Challenger_Conflicts(t *testing.T) {
 		NetEarnings:        "107755123utmotus",
 		LastTimeChallenged: "2023-05-08 19:14:55.666272303 +0000 UTC",
 		CoolDownTolerance:  "1",
+		Type:               "mini",
 	}
 	k.SetClient(ctx, item)
 
@@ -159,6 +161,7 @@ func Test_UpdateGuard_NotValidGaurd(t *testing.T) {
 		NetEarnings:        "107755123utmotus",
 		LastTimeChallenged: "2023-05-08 19:14:55.666272303 +0000 UTC",
 		CoolDownTolerance:  "1",
+		Type:               "mini",
 	}
 	k.SetClient(ctx, item)
 

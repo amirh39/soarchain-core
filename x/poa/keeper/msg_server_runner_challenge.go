@@ -250,6 +250,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			NetEarnings:        totalEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
+			Type:               v2nBxClient.Type,
 		}
 
 		k.SetClient(ctx, updatedClient)

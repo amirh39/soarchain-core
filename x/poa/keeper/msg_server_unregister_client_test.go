@@ -24,6 +24,7 @@ func Test_UnregisterClient(t *testing.T) {
 		NetEarnings:        "107755123utmotus",
 		LastTimeChallenged: "2023-05-08 19:14:55.666272303 +0000 UTC",
 		CoolDownTolerance:  "1",
+		Type:               "mini",
 	}
 	k.SetClient(ctx, item)
 
@@ -70,6 +71,7 @@ func Test_UnregisterChallenger_NotValidClient(t *testing.T) {
 		NetEarnings:        "107755123utmotus",
 		LastTimeChallenged: "2023-05-08 19:14:55.666272303 +0000 UTC",
 		CoolDownTolerance:  "1",
+		Type:               "mini",
 	}
 	k.SetClient(ctx, item)
 
@@ -115,6 +117,7 @@ func Test_RegisterClaimRunnerReward_NotValidMotusWallet(t *testing.T) {
 		NetEarnings:        "107755123utmotus",
 		LastTimeChallenged: "2023-05-08 19:14:55.666272303 +0000 UTC",
 		CoolDownTolerance:  "1",
+		Type:               "mini",
 	}
 	k.SetClient(ctx, item)
 
