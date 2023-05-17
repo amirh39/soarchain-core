@@ -17,6 +17,7 @@ config:
 keys:
 	soarchaind keys add apollo --keyring-backend test --algo secp256k1
 	soarchaind keys add client --recover
+	soarchaind keys add soarMasterAccount --recover
 
 parameter_token_denomination:
 	cat ~/.soarchain/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="umotus"' > ~/.soarchain/config/tmp_genesis.json && mv ~/.soarchain/config/tmp_genesis.json ~/.soarchain/config/genesis.json
@@ -31,6 +32,7 @@ parameter_voting_period:
 	cat <<< $$(jq '.app_state.gov.voting_params.voting_period = "20s"' ~/.soarchain/config/genesis.json) > ~/.soarchain/config/genesis.json
 
 allocate_genesis_accounts:
+	soarchaind add-genesis-account soarMasterAccount 10000000000umotus --keyring-backend test
 	soarchaind add-genesis-account client 10000000000umotus --keyring-backend test
 	soarchaind add-genesis-account apollo 10000000000umotus --keyring-backend test
 	soarchaind add-genesis-account soar1qyhtcgw54973l3tz7fag27480q5qzt7cmsv9th 47500000umotus #airdrop

@@ -14,13 +14,21 @@ import (
 func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
 
-	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
+	runnerAddr, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
 	}
 
 	if msg.RunnerStake == "" {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Stake must be declared in the tx!")
+	}
+
+	if msg.Certificate == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Certificate must be declared in the tx!")
+	}
+
+	if msg.Signature == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Signature must be declared in the tx!")
 	}
 
 	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
@@ -74,11 +82,6 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Runner PubKey is not uniqe OR Runner is already registered.")
 	}
 
-	runnerAddr, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid runner address!")
-	}
-
 	// Check runner stake amount
 	requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 1000000000)}
 	runnerStake, err := sdk.ParseCoinsNormalized(msg.RunnerStake)
@@ -90,7 +93,7 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	}
 
 	// Transfer stakedAmount to poa modules account:
-	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
+	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
 	if transferErr != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(runner) funds couldn't be transferred to POA module!")
 	}
