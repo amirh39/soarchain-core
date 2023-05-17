@@ -22,13 +22,11 @@ func Test_GenRunner(t *testing.T) {
 	k.SetMasterKey(ctx, item)
 
 	res, err := msgServer.GenRunner(context, &types.MsgGenRunner{
-		Creator:      CREATOR,
-		RunnerPubKey: PUBLICKEY,
-		RunnerAddr:   ADDRESS,
-		RunnerStake:  STAKE,
-		RunnerIp:     IP,
-		Certificate:  CERTIFICATE,
-		Signature:    SIGNATURE,
+		Creator:     CREATOR,
+		RunnerStake: STAKE,
+		RunnerIp:    IP,
+		Certificate: CERTIFICATE,
+		Signature:   SIGNATURE,
 	})
 
 	t.Log("response", res)
@@ -52,13 +50,11 @@ func Test_GenRunner_NotValidCertificate(t *testing.T) {
 	k.SetMasterKey(ctx, item)
 
 	res, err := msgServer.GenRunner(context, &types.MsgGenRunner{
-		Creator:      CREATOR,
-		RunnerPubKey: PUBLICKEY,
-		RunnerAddr:   ADDRESS,
-		RunnerStake:  STAKE,
-		RunnerIp:     IP,
-		Certificate:  NOTVALIDCERTIFICATE,
-		Signature:    SIGNATURE,
+		Creator:     CREATOR,
+		RunnerStake: STAKE,
+		RunnerIp:    IP,
+		Certificate: NOTVALIDCERTIFICATE,
+		Signature:   SIGNATURE,
 	})
 
 	t.Log("error message", err)

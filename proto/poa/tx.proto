@@ -65,12 +65,10 @@ message MsgUnregisterChallengerResponse {
 
 message MsgGenRunner{
   string creator = 1; 
-  string runnerPubKey = 2;
-  string runnerAddr = 3;
-  string runnerStake = 4;
-  string runnerIp = 5;
-  string certificate = 6;
-  string signature = 7;
+  string runnerStake = 2;
+  string runnerIp = 3;
+  string certificate = 4;
+  string signature = 5;
 }
 
 message MsgGenRunnerResponse{

@@ -9,15 +9,13 @@ const TypeMsgGenrunner = "gen_runner"
 
 var _ sdk.Msg = &MsgGenRunner{}
 
-func NewMsgGenRunner(creator string, runnerPubKey string, runnerAddress string, runnerStake string, runnerIpaddress string, certificate string, signature string) *MsgGenRunner {
+func NewMsgGenRunner(creator string, runnerStake string, runnerIpaddress string, certificate string, signature string) *MsgGenRunner {
 	return &MsgGenRunner{
-		Creator:      creator,
-		RunnerPubKey: runnerPubKey,
-		RunnerAddr:   runnerAddress,
-		RunnerStake:  runnerStake,
-		RunnerIp:     runnerIpaddress,
-		Certificate:  certificate,
-		Signature:    signature,
+		Creator:     creator,
+		RunnerStake: runnerStake,
+		RunnerIp:    runnerIpaddress,
+		Certificate: certificate,
+		Signature:   signature,
 	}
 }
 

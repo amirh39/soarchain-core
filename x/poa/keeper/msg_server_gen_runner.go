@@ -2,6 +2,10 @@ package keeper
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"crypto/sha256"
+	"crypto/x509"
+	"encoding/hex"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
@@ -19,22 +23,68 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][CreateX509CertFromString] failed. Invalid device certificate. Error: [ %T ]", err)
 	}
 
-	result, err := CertificateVerification(msg.Creator, msg.Signature, deviceCert)
-	if !result {
-		return nil, err
+	pubKeyDer, err := x509.MarshalPKIXPublicKey(deviceCert.PublicKey)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenRunner][MarshalPKIXPublicKey] failed. Couldn't convert a public key to PKIX."+err.Error())
+	}
+
+	pubKeyHex := hex.EncodeToString(pubKeyDer)
+	// verify the msg.Creator_Signed which basically the msg.Creator signed by the privateKey of the pubKey we just extracted from the msg.Certificate
+	signature, err := hex.DecodeString(msg.Signature)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenRunner][DecodeString] failed. Invalid signature encoding."+err.Error())
+	}
+
+	hashedAddr := sha256.Sum256([]byte(msg.Creator))
+
+	if deviceCert.PublicKeyAlgorithm == x509.ECDSA {
+
+		if ecdsaPubKey, ok := deviceCert.PublicKey.(*ecdsa.PublicKey); ok {
+
+			if ecdsa.VerifyASN1(ecdsaPubKey, hashedAddr[:], signature) {
+				// signature is valid
+			} else {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[GenRunner][VerifyASN1] failed. Signature verification failed.")
+			}
+		} else {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenRunner] failed. Invalid public key type.")
+		}
+	}
+
+	// Check validity of certificate
+	totalKeys := k.GetAllFactoryKeys(ctx)
+	var validated bool = false
+	var verificationError error = nil
+
+	for i := uint64(0); i < uint64(len(totalKeys)); i++ {
+		factoryKey, isFound := k.GetFactoryKeys(ctx, i)
+		if isFound {
+			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenRunner][CreateX509CertFromString] failed. Factory certificate couldn't be created from the storage."+err.Error())
+			}
+
+			validated, err = k.ValidateX509Cert(deviceCert, factoryCert)
+			if err != nil {
+				verificationError = sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenRunner][ValidateX509Cert] failed. Couldn't validate factory certificate."+err.Error())
+				continue // Try next certificate
+			}
+
+			if validated {
+				verificationError = nil
+				break
+			}
+		}
+	}
+
+	// No valid certificate found
+	if verificationError != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenRunner][ValidateX509Cert] failed. Device certificate couldn't be verified.")
 	}
 
 	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
-	}
-
-	if msg.RunnerAddr == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Address must be declared in the tx!")
-	}
-
-	if msg.RunnerPubKey == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Public Key must be declared in the tx!")
 	}
 
 	if msg.RunnerStake == "" {
@@ -44,31 +94,14 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	//check runner
 	var newRunner types.Runner
 
-	runners := k.GetAllRunner(ctx)
-	for _, runner := range runners {
-		if msg.RunnerPubKey == runner.PubKey {
-			sdkerrors.Wrap(sdkerrors.ErrConflict, "Runner is already registered in storage.")
-			break
-		}
+	_, isFoundAsRunner := k.GetRunnerUsingPubKey(ctx, pubKeyHex)
+	_, isFoundAsChallenger := k.GetChallengerUsingPubKey(ctx, pubKeyHex)
+	_, isFoundAsClient := k.GetClient(ctx, pubKeyHex)
+	if isFoundAsChallenger || isFoundAsRunner || isFoundAsClient {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Runner PubKey is not uniqe OR Runner is already registered.")
 	}
 
-	challengers := k.GetAllChallenger(ctx)
-	for _, challenger := range challengers {
-		if msg.RunnerPubKey == challenger.PubKey {
-			sdkerrors.Wrap(sdkerrors.ErrConflict, "Runner is already registered as challenger in storage.")
-			break
-		}
-	}
-
-	clients := k.GetAllClient(ctx)
-	for _, client := range clients {
-		if msg.RunnerPubKey == client.Index {
-			sdkerrors.Wrap(sdkerrors.ErrConflict, "Runner is already registered as client in storage.")
-			break
-		}
-	}
-
-	runnerAddr, err := sdk.AccAddressFromBech32(msg.RunnerAddr)
+	runnerAddr, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid runner address!")
 	}
@@ -93,7 +126,7 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
 
 	newRunner = types.Runner{
-		PubKey:             msg.RunnerPubKey,
+		PubKey:             pubKeyHex,
 		Address:            runnerAddr.String(),
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64), // Base Score
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),

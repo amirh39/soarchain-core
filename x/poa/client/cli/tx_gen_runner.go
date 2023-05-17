@@ -14,16 +14,14 @@ var _ = strconv.Itoa(0)
 
 func CmdGenRunner() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "gen-runner [RunnerPubKey] [RunnerAddr] [RunnerStake] [RunnerIp]",
+		Use:   "gen-runner [RunnerPubKey] [RunnerAddr] [RunnerStake] [RunnerIp] [RunnerCertificate] [RunnerSignature]",
 		Short: "Broadcast message gen-runner",
-		Args:  cobra.ExactArgs(6),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			argRunnerPubKey := args[0]
-			argRunnerAddr := args[1]
-			argRunnerStake := args[2]
-			argRunnerIp := args[3]
-			argRunnerCertificate := args[4]
-			argRunnerSignature := args[5]
+			argRunnerStake := args[0]
+			argRunnerIp := args[1]
+			argRunnerCertificate := "-----BEGIN CERTIFICATE-----\n" + args[2] + "\n-----END CERTIFICATE-----"
+			argRunnerSignature := args[3]
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -31,8 +29,6 @@ func CmdGenRunner() *cobra.Command {
 
 			msg := types.NewMsgGenRunner(
 				clientCtx.GetFromAddress().String(),
-				argRunnerPubKey,
-				argRunnerAddr,
 				argRunnerStake,
 				argRunnerIp,
 				argRunnerCertificate,
