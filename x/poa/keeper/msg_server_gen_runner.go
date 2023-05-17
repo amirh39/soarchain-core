@@ -14,6 +14,15 @@ import (
 func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
 
+	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
+	}
+
+	if msg.RunnerStake == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Stake must be declared in the tx!")
+	}
+
 	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][CreateX509CertFromString] failed. Invalid device certificate. Error: [ %T ]", err)
@@ -53,15 +62,6 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	// No valid certificate found
 	if verificationError != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenRunner][ValidateX509Cert] failed. Device certificate couldn't be verified.")
-	}
-
-	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
-	}
-
-	if msg.RunnerStake == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Stake must be declared in the tx!")
 	}
 
 	//check runner

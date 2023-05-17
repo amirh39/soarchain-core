@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdGenRunner() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "gen-runner [RunnerPubKey] [RunnerAddr] [RunnerStake] [RunnerIp] [RunnerCertificate] [RunnerSignature]",
+		Use:   "gen-runner [RunnerStake] [RunnerIp] [RunnerCertificate] [RunnerSignature]",
 		Short: "Broadcast message gen-runner",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
