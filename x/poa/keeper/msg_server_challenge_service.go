@@ -148,6 +148,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			NetEarnings:        totalEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
+			Type:               client.Type,
 		}
 
 		k.SetClient(ctx, updatedClient)
@@ -204,6 +205,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			NetEarnings:        client.NetEarnings,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
+			Type:               client.Type,
 		}
 
 		k.SetClient(ctx, updatedClient)

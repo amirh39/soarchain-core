@@ -54,6 +54,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		NetEarnings:        netEarnings.String(),
 		LastTimeChallenged: motusWallet.Client.LastTimeChallenged,
 		CoolDownTolerance:  motusWallet.Client.CoolDownTolerance,
+		Type:               motusWallet.Client.Type,
 	}
 
 	k.SetClient(ctx, updatedClient)
