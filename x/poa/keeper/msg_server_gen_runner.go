@@ -14,13 +14,21 @@ import (
 func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
 
-	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
+	runnerAddr, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
 	}
 
 	if msg.RunnerStake == "" {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Stake must be declared in the tx!")
+	}
+
+	if msg.Certificate == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Certificate must be declared in the tx!")
+	}
+
+	if msg.Signature == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Signature must be declared in the tx!")
 	}
 
 	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
@@ -34,34 +42,9 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	}
 
 	// Check validity of certificate
-	totalKeys := k.GetAllFactoryKeys(ctx)
-	var validated bool = false
-	var verificationError error = nil
-
-	for i := uint64(0); i < uint64(len(totalKeys)); i++ {
-		factoryKey, isFound := k.GetFactoryKeys(ctx, i)
-		if isFound {
-			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
-			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenRunner][CreateX509CertFromString] failed. Factory certificate couldn't be created from the storage."+err.Error())
-			}
-
-			validated, err = k.ValidateX509Cert(deviceCert, factoryCert)
-			if err != nil {
-				verificationError = sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenRunner][ValidateX509Cert] failed. Couldn't validate factory certificate."+err.Error())
-				continue // Try next certificate
-			}
-
-			if validated {
-				verificationError = nil
-				break
-			}
-		}
-	}
-
-	// No valid certificate found
-	if verificationError != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenRunner][ValidateX509Cert] failed. Device certificate couldn't be verified.")
+	errCert := k.validateCertificate(ctx, deviceCert)
+	if errCert != nil {
+		return nil, errCert
 	}
 
 	//check runner
@@ -72,11 +55,6 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	_, isFoundAsClient := k.GetClient(ctx, pubKeyHex)
 	if isFoundAsChallenger || isFoundAsRunner || isFoundAsClient {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Runner PubKey is not uniqe OR Runner is already registered.")
-	}
-
-	runnerAddr, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid runner address!")
 	}
 
 	// Check runner stake amount
@@ -90,7 +68,7 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	}
 
 	// Transfer stakedAmount to poa modules account:
-	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
+	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
 	if transferErr != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(runner) funds couldn't be transferred to POA module!")
 	}

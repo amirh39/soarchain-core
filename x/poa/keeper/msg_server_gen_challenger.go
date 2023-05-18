@@ -2,9 +2,9 @@ package keeper
 
 import (
 	"context"
-	"errors"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -12,6 +12,29 @@ import (
 
 func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallenger) (*types.MsgGenChallengerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
+
+	challengerAddress, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
+	}
+
+	challengerType := strings.ToLower(msg.Challengertype)
+
+	if challengerType != "v2n" && challengerType != "v2x" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenger type. Must be 'v2n' or 'v2x'.")
+	}
+
+	if msg.ChallengerStake == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Challenger Stake must be declared in the tx!")
+	}
+
+	if msg.Certificate == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Certificate must be declared in the tx!")
+	}
+
+	if msg.Signature == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Signature must be declared in the tx!")
+	}
 
 	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
 	if err != nil {
@@ -23,56 +46,14 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][VerifyX509CertByASN1AndExtractPubkey] failed. Invalid certificate validation. Error: [ %T ]", err)
 	}
 
-	msgSenderAddress, addrErr := sdk.AccAddressFromBech32(msg.Creator)
-	if addrErr != nil {
-		if errors.Is(addrErr, sdkerrors.ErrInvalidAddress) {
-			return nil, sdkerrors.Wrap(addrErr, "msg.Creator couldn't be parsed.")
-		}
-		return nil, addrErr
-	}
-
-	if msg.ChallengerAddr == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Challenger Address must be declared in the tx!")
-	}
-
-	if msg.ChallengerPubKey == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Challenger Public Key must be declared in the tx!")
-	}
-
-	if msg.ChallengerStake == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Challenger Stake must be declared in the tx!")
+	// Check validity of certificate
+	errCert := k.validateCertificate(ctx, deviceCert)
+	if errCert != nil {
+		return nil, errCert
 	}
 
 	var newChallenger types.Challenger
 
-	challengers := k.GetAllRunner(ctx)
-	for _, runner := range challengers {
-		if msg.ChallengerPubKey == runner.PubKey {
-			sdkerrors.Wrap(sdkerrors.ErrConflict, "Challenger is already registered in storage.")
-			break
-		}
-	}
-
-	runners := k.GetAllRunner(ctx)
-	for _, runner := range runners {
-		if msg.ChallengerPubKey == runner.PubKey {
-			sdkerrors.Wrap(sdkerrors.ErrConflict, "Challenger is already registered as runner in storage.")
-			break
-		}
-	}
-
-	clients := k.GetAllClient(ctx)
-	for _, client := range clients {
-		if msg.ChallengerPubKey == client.Index {
-			sdkerrors.Wrap(sdkerrors.ErrConflict, "Challenger is already registered as client in storage.")
-			break
-		}
-	}
-
-	ChallengerAddr, err := sdk.AccAddressFromBech32(msg.ChallengerAddr)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Invalid challenger address!")
-	}
 	// Check challenger stake amount
 	requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 1000000000)}
 	ChallengerStake, err := sdk.ParseCoinsNormalized(msg.ChallengerStake)
@@ -84,7 +65,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	}
 
 	// Transfer stakedAmount to poa modules account:
-	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, msgSenderAddress, types.ModuleName, requiredStake)
+	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, challengerAddress, types.ModuleName, requiredStake)
 	if transferErr != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(challenger) funds couldn't be transferred to POA module!")
 	}
@@ -95,7 +76,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 
 	newChallenger = types.Challenger{
 		PubKey:       pubKeyHex,
-		Address:      ChallengerAddr.String(),
+		Address:      challengerAddress.String(),
 		Score:        sdk.NewInt(50).String(), // Base Score
 		StakedAmount: ChallengerStake.String(),
 		NetEarnings:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),

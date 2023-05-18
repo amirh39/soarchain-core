@@ -77,13 +77,11 @@ message MsgGenRunnerResponse{
 
 message MsgGenChallenger{
   string creator = 1;
-  string ChallengerPubKey = 2;
-  string ChallengerAddr = 3;
-  string ChallengerStake = 4;
-  string ChallengerIp = 5;
-  string Challengertype = 6;
-  string certificate = 7;
-  string signature = 8;
+  string ChallengerStake = 2;
+  string ChallengerIp = 3;
+  string Challengertype = 4;
+  string certificate = 5;
+  string signature = 6;
 }
 
 message MsgGenChallengerResponse{

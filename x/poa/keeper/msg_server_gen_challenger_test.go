@@ -36,14 +36,12 @@ func Test_GenChallenger(t *testing.T) {
 	k.SetMasterKey(ctx, item)
 
 	res, err := msgServer.GenChallenger(context, &types.MsgGenChallenger{
-		Creator:          CREATOR,
-		ChallengerPubKey: PUBLICKEY,
-		ChallengerAddr:   ADDRESS,
-		ChallengerStake:  STAKE,
-		ChallengerIp:     IP,
-		Challengertype:   TYPE,
-		Certificate:      CERTIFICATE,
-		Signature:        SIGNATURE,
+		Creator:         CREATOR,
+		ChallengerStake: STAKE,
+		ChallengerIp:    IP,
+		Challengertype:  TYPE,
+		Certificate:     CERTIFICATE,
+		Signature:       SIGNATURE,
 	})
 
 	t.Log("response", res)
@@ -67,14 +65,12 @@ func Test_GenChallenger_NotValidCertificate(t *testing.T) {
 	k.SetMasterKey(ctx, item)
 
 	res, err := msgServer.GenChallenger(context, &types.MsgGenChallenger{
-		Creator:          CREATOR,
-		ChallengerPubKey: PUBLICKEY,
-		ChallengerAddr:   ADDRESS,
-		ChallengerStake:  STAKE,
-		ChallengerIp:     IP,
-		Challengertype:   TYPE,
-		Certificate:      NOTVALIDCERTIFICATE,
-		Signature:        SIGNATURE,
+		Creator:         CREATOR,
+		ChallengerStake: STAKE,
+		ChallengerIp:    IP,
+		Challengertype:  TYPE,
+		Certificate:     NOTVALIDCERTIFICATE,
+		Signature:       SIGNATURE,
 	})
 
 	t.Log("error message", err)

@@ -45,34 +45,9 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	}
 
 	// Check validity of certificate
-	totalKeys := k.GetAllFactoryKeys(ctx)
-	var validated bool = false
-	var verificationError error = nil
-
-	for i := uint64(0); i < uint64(len(totalKeys)); i++ {
-		factoryKey, isFound := k.GetFactoryKeys(ctx, i)
-		if isFound {
-			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
-			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenClient][CreateX509CertFromString] failed. Factory certificate couldn't be created from the storage."+err.Error())
-			}
-
-			validated, err = k.ValidateX509Cert(deviceCert, factoryCert)
-			if err != nil {
-				verificationError = sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenClient][ValidateX509Cert] failed. Couldn't validate factory certificate."+err.Error())
-				continue // Try next certificate
-			}
-
-			if validated {
-				verificationError = nil
-				break
-			}
-		}
-	}
-
-	// No valid certificate found
-	if verificationError != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[GenClient][ValidateX509Cert] failed. Device certificate couldn't be verified.")
+	errCert := k.validateCertificate(ctx, deviceCert)
+	if errCert != nil {
+		return nil, errCert
 	}
 
 	//check if the pubKey is uniqe, also check if msg.creator address have a motus wallet
