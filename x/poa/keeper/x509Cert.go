@@ -8,6 +8,7 @@ import (
 	"encoding/pem"
 	"io/ioutil"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
@@ -91,4 +92,30 @@ func (k Keeper) VerifyX509CertByASN1AndExtractPubkey(creatorInput string, signat
 		}
 	}
 	return pubKeyHex, nil
+}
+
+func (k msgServer) validateCertificate(ctx sdk.Context, deviceCert *x509.Certificate) error {
+
+	totalKeys := k.GetAllFactoryKeys(ctx)
+
+	for i := uint64(0); i < uint64(len(totalKeys)); i++ {
+		factoryKey, isFound := k.GetFactoryKeys(ctx, i)
+		if isFound {
+			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
+			if err != nil {
+				return sdkerrors.Wrap(sdkerrors.ErrPanic, "[validateCertificate][CreateX509CertFromString] failed. Factory certificate couldn't be created from the storage."+err.Error())
+			}
+
+			validated, err := k.ValidateX509Cert(deviceCert, factoryCert)
+			if err != nil {
+				continue // Try next certificate
+			}
+
+			if validated {
+				return nil
+			}
+		}
+	}
+
+	return sdkerrors.Wrap(sdkerrors.ErrPanic, "[validateCertificate][ValidateX509Cert] failed. Device certificate couldn't be verified.")
 }
