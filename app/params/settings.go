@@ -14,4 +14,6 @@ const (
 	DisplayDenom = "motus"
 
 	MotusExponent = 6
+
+	Upgrade1_0_0 = "1.0.0"
 )
