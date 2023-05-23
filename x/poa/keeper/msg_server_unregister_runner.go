@@ -18,7 +18,7 @@ func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregis
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UnregisterRunner][GetRunner] failed. Runner is not registered.")
 	}
 	// Check runner belongs to msg.Creator's address
-	if runner.Creator != msg.Creator {
+	if runner.Address != msg.Creator {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Runner doesn't belong to msg.Creator's address!")
 	}
 

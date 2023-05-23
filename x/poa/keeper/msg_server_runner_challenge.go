@@ -188,9 +188,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.Client) {
 
 	motusWallet, _ := k.GetMotusWallet(ctx, address)
-	// if !isFoundWallet {
-	// 	return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[RunnerChallenge][GetMotusWallet] failed. Couldn't find Motus wallet.")
-	// }
+
 	newMotusWallet := types.MotusWallet{
 		Index:  motusWallet.Index,
 		Client: &client,

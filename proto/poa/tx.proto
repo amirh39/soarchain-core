@@ -99,7 +99,7 @@ message MsgUnregisterRunnerResponse {
 
 message MsgRunnerChallenge {
   string creator = 1;
-  string runnerAddress = 2;
+  string runnerpubKey = 2;
   repeated string clientPubkeys = 3;
 }
 
