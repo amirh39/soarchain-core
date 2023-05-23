@@ -3,6 +3,7 @@ package rewardcap
 import (
 	"encoding/json"
 	"fmt"
+
 	// this line is used by starport scaffolding # 1
 
 	"github.com/gorilla/mux"
@@ -11,14 +12,15 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
+	"soarchain/x/rewardcap/client/cli"
+	"soarchain/x/rewardcap/keeper"
+	"soarchain/x/rewardcap/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"soarchain/x/rewardcap/client/cli"
-	"soarchain/x/rewardcap/keeper"
-	"soarchain/x/rewardcap/types"
 )
 
 var (
