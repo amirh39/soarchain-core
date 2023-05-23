@@ -70,3 +70,7 @@ type AppKeepers struct {
 
 	RewardcapKeeper rewardcapmodulekeeper.Keeper
 }
+
+func NewAppKeepers(
+	
+)

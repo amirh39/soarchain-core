@@ -13,7 +13,7 @@ func CalculateRewardMultiplier(score float64) float64 {
 	}
 
 	// Network parameteres
-	networkParams := NetworkParams{Omega: 2, Tau: 0, Psi: 0}
+	networkParams := NetworkParams{Omega: 1, Tau: 0, Psi: 0}
 
 	if score < 50 {
 		return 0
