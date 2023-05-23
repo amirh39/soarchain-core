@@ -4,7 +4,6 @@ package soarchain.poa;
 option go_package = "soarchain/x/poa/types";
 
 message Runner {
-  string r = 1;
   string pubKey = 2; 
   string address = 3; 
   string score = 4;
