@@ -26,7 +26,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	}
 
 	// Fetch runner from the store
-	runner, isFound := k.GetRunner(ctx, msg.RunnerAddress)
+	runner, isFound := k.GetRunnerUsingPubKey(ctx, msg.RunnerpubKey)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[RunnerChallenge][GetRunner] failed. The target runner is not registered in the store.")
 	}
