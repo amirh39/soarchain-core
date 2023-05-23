@@ -5,8 +5,10 @@ import (
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	param "soarchain/app/params"
+	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 )
@@ -24,7 +26,7 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 		Address:      challenger.Address,
 		Score:        strconv.Itoa(scoreIntChallenger),
 		StakedAmount: challenger.StakedAmount,
-		NetEarnings:  challenger.NetEarnings, // TBD
+		NetEarnings:  challenger.NetEarnings,
 		Type:         challenger.Type,
 		IpAddr:       challenger.IpAddr,
 	}
@@ -56,21 +58,21 @@ func (k Keeper) rewardAndScore(score string) (float64, float64) {
 	return rewardMultiplier, newScore
 }
 
-func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultiplier float64, clientCommunicationMode string) sdk.Coin {
+func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultiplier float64, clientCommunicationMode string) (sdk.Coin, error) {
 	var totalEarnings sdk.Coin
 	var epochRewards sdk.Coin
 
 	/** reward cap check for current epoch */
-	targetEpochRewardInt, _ := utility.V2NRewardEmissionPerEpoch(ctx, clientCommunicationMode)
-	// if targetEpochErr != nil {
-	// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][V2NRewardEmissionPerEpoch] failed. Couldn't calculate reward to emission for each reward"+err.Error())
-	// }
+	targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, clientCommunicationMode)
+	if targetEpochErr != nil {
+		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TargetEpoch)
+	}
 
 	targetEpochReward := sdk.NewCoin(param.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
-	epochData, _ := k.GetEpochData(ctx)
-	// if !found {
-	// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][GetEpochData] failed. Couldn't get epoch data with the current context.")
-	// }
+	epochData, found := k.GetEpochData(ctx)
+	if !found {
+		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochDataNotFound)
+	}
 
 	epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochRunner)
 
@@ -78,42 +80,51 @@ func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultipli
 	if epochRewards.IsLT(targetEpochReward) {
 
 		/** Calculate reward earned */
-		earnedTokenRewardsFloat, _ := k.V2NRewardCalculator(ctx, rewardMultiplier, clientCommunicationMode)
-		// if err != nil {
-		// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][V2NRewardCalculator] failed. Couldn't calcualte earned rewards."+err.Error())
-		// }
+		earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, clientCommunicationMode)
+		if err != nil {
+			return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EarnedTokenRewardsFloat)
+		}
 
 		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
 		earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
 
-		netEarnings, _ := sdk.ParseCoinNormalized(netEarning)
-		// if err != nil {
-		// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][ParseCoinNormalized] failed. Couldn't parse and normalize a cli input for one coin type, due to invalid or an empty string."+err.Error())
-		// }
+		netEarnings, err := sdk.ParseCoinNormalized(netEarning)
+		if err != nil {
+			return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
+		}
+
 		totalEarnings = netEarnings.Add(earnedCoin)
 
-		//epochErr := k.UpdateEpochRewards(ctx, clientCommunicationMode, earnedCoin)
-		// if epochErr != nil {
-		// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][UpdateEpochRewards] failed. Couldn't updat epoch reward."+epochErr.Error())
-		// }
+		epochErr := k.UpdateEpochRewards(ctx, clientCommunicationMode, earnedCoin)
+		if epochErr != nil {
+			return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochErr)
+		}
+
 	} else {
-		netEarnings, _ := sdk.ParseCoinNormalized(netEarning)
-		// if err != nil {
-		// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][ParseCoinNormalized] failed. Couldn't calculate earned rewards."+err.Error())
-		// }
+		netEarnings, err := sdk.ParseCoinNormalized(netEarning)
+		if err != nil {
+			return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
+		}
+
 		totalEarnings = netEarnings
 	}
 
-	return totalEarnings
+	return totalEarnings, nil
 }
 
-func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerAddress string) {
+func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerAddress string) error {
 
-	runner, _ := k.GetChallengeableRunner(ctx, runnerAddress)
+	runner, found := k.GetChallengeableRunner(ctx, runnerAddress)
+	if !found {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundChallengeableRunner)
+	}
 
 	rewardMultiplier, newScore := k.rewardAndScore(runner.Score)
 
-	totalEarnings := k.totalEarnings(ctx, runner.NetEarnings, rewardMultiplier, "runner")
+	totalEarnings, err := k.totalEarnings(ctx, runner.NetEarnings, rewardMultiplier, "runner")
+	if err != nil {
+		return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
+	}
 
 	updatedRunner := types.Runner{
 		PubKey:             runner.PubKey,
@@ -126,29 +137,33 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerAddress stri
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, creator), 10),
 	}
-
 	k.SetRunner(ctx, updatedRunner)
+
+	return nil
 }
 
-func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) {
+func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) error {
 
 	// ToDo: Set MOTUS mini rewards
 	v2nBxAddrCount := len(msg.ClientPubkeys)
-	// if v2nBxAddrCount < 1 {
-	// 	return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[RunnerChallenge][v2nBxAddrCount] failed. Couldn't find client pubkeys in the tx body.")
-	// }
+	if v2nBxAddrCount < 1 {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NoV2nBxAddrPubKeys)
+	}
 
 	/** All MOTUS mini devices will be rewarded */
 	for i := 0; i < v2nBxAddrCount; i++ {
 
-		v2nBxClient, _ := k.GetClient(ctx, msg.ClientPubkeys[i])
-		// if !isFound {
-		// 	return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[RunnerChallenge][GetClient] failed. v2n-bx client with index: "+strconv.Itoa(i)+" is not registered in the store.")
-		// }
+		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
+		if !isFound {
+			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
+		}
 
 		rewardMultiplier, newScore := k.rewardAndScore(v2nBxClient.Score)
 
-		totalEarnings := k.totalEarnings(ctx, v2nBxClient.NetEarnings, rewardMultiplier, "v2n-bx")
+		totalEarnings, err := k.totalEarnings(ctx, v2nBxClient.NetEarnings, rewardMultiplier, "v2n-bx")
+		if err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
+		}
 
 		updatedClient := types.Client{
 			Index:              v2nBxClient.Index,
@@ -166,6 +181,8 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) {
 		k.updateMotusWallet(ctx, v2nBxClient.Address, updatedClient)
 
 	}
+
+	return nil
 }
 
 func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.Client) {
@@ -178,16 +195,17 @@ func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.
 		Index:  motusWallet.Index,
 		Client: &client,
 	}
+
 	k.SetMotusWallet(ctx, newMotusWallet)
 }
 
 func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerChallenge) (*types.MsgRunnerChallengeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	challenger, _ := k.GetChallengerByType(ctx, msg.Creator, challengerType)
-	// if !found {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[RunnerChallenge][GetChallengerByType] failed. Only registered challengers with v2n type can initiate this transaction.")
-	// }
+	challenger, found := k.GetChallengerByType(ctx, msg.Creator, challengerType)
+	if !found {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
+	}
 
 	k.updateRunner(ctx, msg.Creator, msg.RunnerAddress)
 
