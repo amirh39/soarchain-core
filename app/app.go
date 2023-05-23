@@ -18,6 +18,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/server/api"
 	"github.com/cosmos/cosmos-sdk/server/config"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
+	store "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/version"
@@ -95,10 +96,6 @@ import (
 
 	"github.com/ignite/cli/ignite/pkg/openapiconsole"
 
-	monitoringp "github.com/tendermint/spn/x/monitoringp"
-	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
-	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
-
 	"soarchain/docs"
 	poamodule "soarchain/x/poa"
 	poamodulekeeper "soarchain/x/poa/keeper"
@@ -107,12 +104,18 @@ import (
 	rewardcapmodulekeeper "soarchain/x/rewardcap/keeper"
 	rewardcapmoduletypes "soarchain/x/rewardcap/types"
 
+	monitoringp "github.com/tendermint/spn/x/monitoringp"
+	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
+	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
+
 	// soarmintmodule "soarchain/x/soarmint"
 	// soarmintmodulekeeper "soarchain/x/soarmint/keeper"
 	// soarmintmoduletypes "soarchain/x/soarmint/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"github.com/CosmWasm/wasmd/x/wasm"
+
+	v1_0_0 "soarchain/app/upgrades/v1.0.0"
 )
 
 // GetWasmEnabledProposals parses the WasmProposalsEnabled and
@@ -221,6 +224,8 @@ type soarchainApp struct {
 	appCodec          codec.Codec
 	interfaceRegistry types.InterfaceRegistry
 
+	configurator module.Configurator
+
 	invCheckPeriod uint
 
 	// keys to access the substores
@@ -285,7 +290,6 @@ func NewsoarchainApp(
 	appCodec := encodingConfig.Marshaler
 	cdc := encodingConfig.Amino
 	interfaceRegistry := encodingConfig.InterfaceRegistry
-
 	bApp := baseapp.NewBaseApp(param.Name, logger, db, encodingConfig.TxConfig.TxDecoder(), baseAppOptions...)
 	bApp.SetCommitMultiStoreTracer(traceStore)
 	bApp.SetVersion(version.Version)
@@ -639,7 +643,11 @@ func NewsoarchainApp(
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
 	app.mm.RegisterRoutes(app.Router(), app.QueryRouter(), encodingConfig.Amino)
-	app.mm.RegisterServices(module.NewConfigurator(app.appCodec, app.MsgServiceRouter(), app.GRPCQueryRouter()))
+	app.configurator = module.NewConfigurator(app.appCodec, app.MsgServiceRouter(), app.GRPCQueryRouter())
+	app.mm.RegisterServices(app.configurator)
+
+	//register upgrade handlers
+	app.RegisterUpgradeHandlers(app.configurator)
 
 	// create the simulation manager and define the order of the modules for deterministic simulations
 	app.sm = module.NewSimulationManager(
@@ -697,6 +705,17 @@ func NewsoarchainApp(
 
 	app.SetAnteHandler(anteHandler)
 	app.SetEndBlocker(app.EndBlocker)
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(err)
+	}
+
+	if upgradeInfo.Name == param.Upgrade1_0_0 && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		storeUpgrades := store.StoreUpgrades{}
+
+		// configure store loader that checks if version == upgradeHeight and applies store upgrades
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
+	}
 
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
@@ -865,6 +884,14 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(wasm.ModuleName)
 
 	return paramsKeeper
+}
+
+// RegisterUpgradeHandlers returns upgrade handlers
+func (app *soarchainApp) RegisterUpgradeHandlers(cfg module.Configurator) {
+	app.UpgradeKeeper.SetUpgradeHandler(
+		param.Upgrade1_0_0,
+		v1_0_0.CreateUpgradeHandler(app.mm, app.configurator),
+	)
 }
 
 // SimulationManager implements the SimulationApp interface
