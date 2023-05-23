@@ -77,6 +77,7 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
 
 	newRunner = types.Runner{
+		Creator:            msg.Creator,
 		PubKey:             pubKeyHex,
 		Address:            runnerAddr.String(),
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64), // Base Score

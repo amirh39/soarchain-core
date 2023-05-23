@@ -75,6 +75,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	//rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
 
 	newChallenger = types.Challenger{
+		Creator:      msg.Creator,
 		PubKey:       pubKeyHex,
 		Address:      challengerAddress.String(),
 		Score:        sdk.NewInt(50).String(), // Base Score
