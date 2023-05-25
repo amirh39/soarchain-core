@@ -114,7 +114,7 @@ func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultipli
 
 func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerAddress string) error {
 
-	runner, found := k.GetChallengeableRunner(ctx, runnerAddress)
+	runner, found := k.GetRunner(ctx, runnerAddress)
 	if !found {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundChallengeableRunner)
 	}
