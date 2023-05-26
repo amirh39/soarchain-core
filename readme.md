@@ -46,11 +46,12 @@ Key objects over chain:
 
 <details><summary>Click to expand</summary>
 
-- [VRF](https://github.com/soar-robotics/soarchain-core/blob/dev/x/poa/keeper/createVRF.go):
+- [VRF](https://github.com/soar-robotics/soarchain-core/blob/dev/x/poa/keeper/createVRF.go)
   - [Basic Introduction](#basic-introduction)
-  - [Frequently Asked Questions (F.A.Q.s) & Answers](#frequently-asked-questions-faqs--answers)
+  - [Factor](#factor)
+  - [VRF Data](#basic-introduction)
+- [Factory Keys](https://github.com/soar-robotics/soarchain-core/blob/refactor/VRF/x/poa/keeper/factory_keys.go)
   - [Basic Introduction](#basic-introduction)
-  - [Development Tutorial](#development-tutorial)
     - [BitCoin](#bitcoin)
     - [Ethereum](#ethereum)
     - [Consortium Blockchain](#consortium-blockchain)
@@ -65,3 +66,12 @@ Key objects over chain:
 #### Basic Introduction
 
 A: A Verifiable Random Function (VRF) is the public-key version of a keyed cryptographic hash. Only the holder of the secret key can compute the hash, but anyone with the public key can verify the correctness of the hash. VRFs are useful for preventing enumeration of hash-based data structures.
+
+#### Factor
+
+When we were designing the formula to randomly generate a cool down time between challenges, we said we need a constant value too. The constant value will store by the Factor property.
+
+#### VRF Data
+
+Currently we are storing all proof data like privateKey, publicKey, message, proof as Vrf Data.
+
