@@ -37,3 +37,31 @@ curl https://get.ignite.com/username/soarchain@latest! | sudo bash
 ## Learn more
 - [Light Paper](https://www.soarchain.com/lightpaper)
 - [Official Documentation](https://docs.soarchain.com/)
+
+
+---
+## Development Tutorial
+
+Key objects over chain:
+
+<details><summary>Click to expand</summary>
+
+- [VRF](https://github.com/soar-robotics/soarchain-core/blob/dev/x/poa/keeper/createVRF.go):
+  - [Basic Introduction](#basic-introduction)
+  - [Frequently Asked Questions (F.A.Q.s) & Answers](#frequently-asked-questions-faqs--answers)
+  - [Basic Introduction](#basic-introduction)
+  - [Development Tutorial](#development-tutorial)
+    - [BitCoin](#bitcoin)
+    - [Ethereum](#ethereum)
+    - [Consortium Blockchain](#consortium-blockchain)
+      - [Hyperledger](#hyperledger)
+      - [XuperChain](#xuperchain)
+      - [FISCO-BCOS](#fisco-bcos)
+
+</details>
+
+## VRF
+
+#### Basic Introduction
+
+A: A Verifiable Random Function (VRF) is the public-key version of a keyed cryptographic hash. Only the holder of the secret key can compute the hash, but anyone with the public key can verify the correctness of the hash. VRFs are useful for preventing enumeration of hash-based data structures.
