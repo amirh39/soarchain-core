@@ -51,13 +51,9 @@ Key objects over chain:
   - [Factor](#factor)
   - [VRF Data](#basic-introduction)
 - [Factory Keys](https://github.com/soar-robotics/soarchain-core/blob/refactor/VRF/x/poa/keeper/factory_keys.go)
-  - [Basic Introduction](#basic-introduction)
-    - [BitCoin](#bitcoin)
-    - [Ethereum](#ethereum)
-    - [Consortium Blockchain](#consortium-blockchain)
-      - [Hyperledger](#hyperledger)
-      - [XuperChain](#xuperchain)
-      - [FISCO-BCOS](#fisco-bcos)
+  - [Cncept Introduction](#concept-introduction)
+    - [](#bitcoin)
+      - [](#hyperledger)
 
 </details>
 
@@ -74,4 +70,8 @@ When we were designing the formula to randomly generate a cool down time between
 #### VRF Data
 
 Currently we are storing all proof data like privateKey, publicKey, message, proof as Vrf Data.
+
+#### Basic Introduction
+
+
 
