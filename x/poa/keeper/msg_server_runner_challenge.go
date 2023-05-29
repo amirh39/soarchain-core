@@ -36,7 +36,7 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 
 func (k Keeper) coolDownMultiplier(ctx sdk.Context, creator string) uint64 {
 
-	vrfData, _, _ := k.CreateVRF(ctx, creator, multiplier)
+	vrfData, _ := k.CreateVRF(ctx, creator, multiplier)
 
 	generatedNumber, _ := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
 
@@ -112,9 +112,9 @@ func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultipli
 	return totalEarnings, nil
 }
 
-func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerAddress string) error {
+func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey string) error {
 
-	runner, found := k.GetRunner(ctx, runnerAddress)
+	runner, found := k.GetRunner(ctx, runnerPubKey)
 	if !found {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundChallengeableRunner)
 	}
@@ -205,7 +205,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
 
-	k.updateRunner(ctx, msg.Creator, msg.RunnerAddress)
+	k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey)
 
 	k.updateClient(ctx, msg)
 
