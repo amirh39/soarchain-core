@@ -26,6 +26,17 @@ func createNChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Ch
 	return items
 }
 
+func createV2NTypeChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
+	items := make([]types.Challenger, n)
+	for i := range items {
+		items[i].Address = strconv.Itoa(i)
+		items[i].Type = "v2n"
+
+		keeper.SetChallenger(ctx, items[i])
+	}
+	return items
+}
+
 func TestChallengerGet(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	items := createNChallenger(keeper, ctx, 10)
@@ -75,4 +86,20 @@ func TestGetChallengerUsingPubKey(t *testing.T) {
 	// Test that GetChallengerUsingPubKey returns the correct challenger
 	result, _ := keeper.GetChallengerUsingPubKey(ctx, targetChallenger.PubKey)
 	require.Equal(t, targetChallenger, result)
+}
+
+func Test_GetChallengerByType(t *testing.T) {
+	keeper, ctx := keepertest.PoaKeeper(t)
+	items := createV2NTypeChallenger(keeper, ctx, 1)
+	for _, item := range items {
+		rst, found := keeper.GetChallengerByType(ctx,
+			item.Address,
+			item.Type,
+		)
+		require.True(t, found)
+		require.Equal(t,
+			nullify.Fill(&item),
+			nullify.Fill(&rst),
+		)
+	}
 }
