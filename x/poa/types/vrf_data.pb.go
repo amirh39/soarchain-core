@@ -23,19 +23,18 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type VrfData struct {
-	Index              string      `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
-	Creator            string      `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	Vrv                string      `protobuf:"bytes,3,opt,name=vrv,proto3" json:"vrv,omitempty"`
-	Multiplier         string      `protobuf:"bytes,4,opt,name=multiplier,proto3" json:"multiplier,omitempty"`
-	Proof              string      `protobuf:"bytes,5,opt,name=proof,proto3" json:"proof,omitempty"`
-	Pubkey             string      `protobuf:"bytes,6,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	Message            string      `protobuf:"bytes,7,opt,name=message,proto3" json:"message,omitempty"`
-	ParsedVrv          string      `protobuf:"bytes,8,opt,name=parsedVrv,proto3" json:"parsedVrv,omitempty"`
-	FloatVrv           string      `protobuf:"bytes,9,opt,name=floatVrv,proto3" json:"floatVrv,omitempty"`
-	FinalVrv           string      `protobuf:"bytes,10,opt,name=finalVrv,proto3" json:"finalVrv,omitempty"`
-	FinalVrvFloat      string      `protobuf:"bytes,11,opt,name=finalVrvFloat,proto3" json:"finalVrvFloat,omitempty"`
-	SelectedChallenger *Challenger `protobuf:"bytes,12,opt,name=selectedChallenger,proto3" json:"selectedChallenger,omitempty"`
-	SelectedRunner     *Runner     `protobuf:"bytes,13,opt,name=selectedRunner,proto3" json:"selectedRunner,omitempty"`
+	Index         string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+	Creator       string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	Count         string `protobuf:"bytes,3,opt,name=count,proto3" json:"count,omitempty"`
+	Vrv           string `protobuf:"bytes,4,opt,name=vrv,proto3" json:"vrv,omitempty"`
+	Multiplier    string `protobuf:"bytes,5,opt,name=Multiplier,proto3" json:"Multiplier,omitempty"`
+	Proof         string `protobuf:"bytes,6,opt,name=proof,proto3" json:"proof,omitempty"`
+	Pubkey        string `protobuf:"bytes,7,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	Message       string `protobuf:"bytes,8,opt,name=message,proto3" json:"message,omitempty"`
+	ParsedVrv     string `protobuf:"bytes,9,opt,name=parsedVrv,proto3" json:"parsedVrv,omitempty"`
+	FloatVrv      string `protobuf:"bytes,10,opt,name=floatVrv,proto3" json:"floatVrv,omitempty"`
+	FinalVrv      string `protobuf:"bytes,11,opt,name=finalVrv,proto3" json:"finalVrv,omitempty"`
+	FinalVrvFloat string `protobuf:"bytes,12,opt,name=finalVrvFloat,proto3" json:"finalVrvFloat,omitempty"`
 }
 
 func (m *VrfData) Reset()         { *m = VrfData{} }
@@ -81,6 +80,13 @@ func (m *VrfData) GetIndex() string {
 func (m *VrfData) GetCreator() string {
 	if m != nil {
 		return m.Creator
+	}
+	return ""
+}
+
+func (m *VrfData) GetCount() string {
+	if m != nil {
+		return m.Count
 	}
 	return ""
 }
@@ -148,20 +154,6 @@ func (m *VrfData) GetFinalVrvFloat() string {
 	return ""
 }
 
-func (m *VrfData) GetSelectedChallenger() *Challenger {
-	if m != nil {
-		return m.SelectedChallenger
-	}
-	return nil
-}
-
-func (m *VrfData) GetSelectedRunner() *Runner {
-	if m != nil {
-		return m.SelectedRunner
-	}
-	return nil
-}
-
 func init() {
 	proto.RegisterType((*VrfData)(nil), "soarchain.poa.VrfData")
 }
@@ -169,29 +161,26 @@ func init() {
 func init() { proto.RegisterFile("poa/vrf_data.proto", fileDescriptor_fb49cb41f6e8d202) }
 
 var fileDescriptor_fb49cb41f6e8d202 = []byte{
-	// 351 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x91, 0x4f, 0x4f, 0xc2, 0x30,
-	0x18, 0xc6, 0x99, 0xc8, 0xbf, 0x17, 0x31, 0xa4, 0x01, 0x53, 0x89, 0x59, 0x88, 0xf1, 0xc0, 0x69,
-	0x4b, 0xf4, 0xec, 0x45, 0x8d, 0x89, 0xd7, 0x1d, 0x38, 0x78, 0x31, 0x2f, 0x5b, 0x07, 0x8b, 0x63,
-	0x6d, 0xba, 0xb2, 0xc0, 0xb7, 0xf0, 0xeb, 0xf8, 0x0d, 0x3c, 0x72, 0xf4, 0x68, 0xe0, 0x8b, 0x98,
-	0x76, 0x1b, 0x08, 0xf1, 0xd6, 0xe7, 0xf7, 0x7b, 0xda, 0x37, 0xe9, 0x0b, 0x44, 0x70, 0x74, 0x33,
-	0x19, 0xbe, 0x05, 0xa8, 0xd0, 0x11, 0x92, 0x2b, 0x4e, 0x3a, 0x29, 0x47, 0xe9, 0xcf, 0x30, 0x4a,
-	0x1c, 0xc1, 0x71, 0xd0, 0xd3, 0x15, 0x7f, 0x86, 0x71, 0xcc, 0x92, 0x29, 0x93, 0x79, 0x69, 0xd0,
-	0xd5, 0x54, 0x2e, 0x92, 0xa4, 0x24, 0xd7, 0x9f, 0x55, 0x68, 0x8c, 0x65, 0xf8, 0x84, 0x0a, 0x49,
-	0x0f, 0x6a, 0x51, 0x12, 0xb0, 0x25, 0xb5, 0x86, 0xd6, 0xa8, 0xe5, 0xe5, 0x81, 0x50, 0x68, 0xf8,
-	0x92, 0xa1, 0xe2, 0x92, 0x9e, 0x18, 0x5e, 0x46, 0xd2, 0x85, 0x6a, 0x26, 0x33, 0x5a, 0x35, 0x54,
-	0x1f, 0x89, 0x0d, 0x30, 0x5f, 0xc4, 0x2a, 0x12, 0x71, 0xc4, 0x24, 0x3d, 0x35, 0xe2, 0x0f, 0xd1,
-	0x13, 0x84, 0xe4, 0x3c, 0xa4, 0xb5, 0x7c, 0x82, 0x09, 0xe4, 0x02, 0xea, 0x62, 0x31, 0x79, 0x67,
-	0x2b, 0x5a, 0x37, 0xb8, 0x48, 0x7a, 0xf2, 0x9c, 0xa5, 0x29, 0x4e, 0x19, 0x6d, 0xe4, 0x93, 0x8b,
-	0x48, 0xae, 0xa0, 0x25, 0x50, 0xa6, 0x2c, 0x18, 0xcb, 0x8c, 0x36, 0x8d, 0xdb, 0x03, 0x32, 0x80,
-	0x66, 0x18, 0x73, 0x54, 0x5a, 0xb6, 0x8c, 0xdc, 0x65, 0xe3, 0xa2, 0x04, 0x63, 0xed, 0xa0, 0x70,
-	0x45, 0x26, 0x37, 0xd0, 0x29, 0xcf, 0xcf, 0xba, 0x4f, 0xdb, 0xa6, 0x70, 0x08, 0xc9, 0x0b, 0x90,
-	0x94, 0xc5, 0xcc, 0x57, 0x2c, 0x78, 0xdc, 0xfd, 0x2f, 0x3d, 0x1b, 0x5a, 0xa3, 0xf6, 0xed, 0xa5,
-	0x73, 0xb0, 0x05, 0x67, 0x5f, 0xf0, 0xfe, 0xb9, 0x44, 0xee, 0xe1, 0xbc, 0xa4, 0x9e, 0x59, 0x0a,
-	0xed, 0x98, 0x67, 0xfa, 0x47, 0xcf, 0xe4, 0xd2, 0x3b, 0x2a, 0x3f, 0xb8, 0x5f, 0x1b, 0xdb, 0x5a,
-	0x6f, 0x6c, 0xeb, 0x67, 0x63, 0x5b, 0x1f, 0x5b, 0xbb, 0xb2, 0xde, 0xda, 0x95, 0xef, 0xad, 0x5d,
-	0x79, 0xed, 0xef, 0xee, 0xbb, 0x4b, 0x57, 0xef, 0x5c, 0xad, 0x04, 0x4b, 0x27, 0x75, 0xb3, 0xf3,
-	0xbb, 0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0xc7, 0x58, 0x68, 0xa6, 0x40, 0x02, 0x00, 0x00,
+	// 291 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x54, 0x91, 0xc1, 0x4a, 0xc3, 0x40,
+	0x10, 0x86, 0x93, 0xd6, 0x26, 0xcd, 0x68, 0x41, 0x16, 0x95, 0x45, 0x64, 0x11, 0xf1, 0xe0, 0xa9,
+	0x39, 0xf8, 0x06, 0x22, 0xde, 0xbc, 0x78, 0xe8, 0xc1, 0x8b, 0x4c, 0x93, 0x8d, 0x06, 0x63, 0x76,
+	0xd9, 0x6c, 0x42, 0xfb, 0x16, 0xbe, 0x94, 0xe0, 0xb1, 0x47, 0x8f, 0x92, 0xbc, 0x88, 0xec, 0x24,
+	0xad, 0x7a, 0xdb, 0xef, 0xff, 0x7e, 0x86, 0x61, 0x07, 0x98, 0x56, 0x18, 0x37, 0x26, 0x7b, 0x4a,
+	0xd1, 0xe2, 0x5c, 0x1b, 0x65, 0x15, 0x9b, 0x55, 0x0a, 0x4d, 0xf2, 0x82, 0x79, 0x39, 0xd7, 0x0a,
+	0x2f, 0x3e, 0x46, 0x10, 0x2e, 0x4c, 0x76, 0x8b, 0x16, 0xd9, 0x11, 0x4c, 0xf2, 0x32, 0x95, 0x2b,
+	0xee, 0x9f, 0xfb, 0x57, 0xd1, 0x43, 0x0f, 0x8c, 0x43, 0x98, 0x18, 0x89, 0x56, 0x19, 0x3e, 0xa2,
+	0x7c, 0x8b, 0xae, 0x9f, 0xa8, 0xba, 0xb4, 0x7c, 0xdc, 0xf7, 0x09, 0xd8, 0x21, 0x8c, 0x1b, 0xd3,
+	0xf0, 0x3d, 0xca, 0xdc, 0x93, 0x09, 0x80, 0xfb, 0xba, 0xb0, 0xb9, 0x2e, 0x72, 0x69, 0xf8, 0x84,
+	0xc4, 0x9f, 0xc4, 0xcd, 0xd1, 0x46, 0xa9, 0x8c, 0x07, 0xfd, 0x1c, 0x02, 0x76, 0x02, 0x81, 0xae,
+	0x97, 0xaf, 0x72, 0xcd, 0x43, 0x8a, 0x07, 0x72, 0xfb, 0xbc, 0xc9, 0xaa, 0xc2, 0x67, 0xc9, 0xa7,
+	0xfd, 0x3e, 0x03, 0xb2, 0x33, 0x88, 0x34, 0x9a, 0x4a, 0xa6, 0x0b, 0xd3, 0xf0, 0x88, 0xdc, 0x6f,
+	0xc0, 0x4e, 0x61, 0x9a, 0x15, 0x0a, 0xad, 0x93, 0x40, 0x72, 0xc7, 0xe4, 0xf2, 0x12, 0x0b, 0xe7,
+	0xf6, 0x07, 0x37, 0x30, 0xbb, 0x84, 0xd9, 0xf6, 0x7d, 0xe7, 0xfa, 0xfc, 0x80, 0x0a, 0xff, 0xc3,
+	0x9b, 0xf8, 0xb3, 0x15, 0xfe, 0xa6, 0x15, 0xfe, 0x77, 0x2b, 0xfc, 0xf7, 0x4e, 0x78, 0x9b, 0x4e,
+	0x78, 0x5f, 0x9d, 0xf0, 0x1e, 0x8f, 0x77, 0x1f, 0x1e, 0xaf, 0x62, 0x77, 0x10, 0xbb, 0xd6, 0xb2,
+	0x5a, 0x06, 0x74, 0x8e, 0xeb, 0x9f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x74, 0x94, 0xf0, 0x77, 0xa4,
+	0x01, 0x00, 0x00,
 }
 
 func (m *VrfData) Marshal() (dAtA []byte, err error) {
@@ -214,90 +203,73 @@ func (m *VrfData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.SelectedRunner != nil {
-		{
-			size, err := m.SelectedRunner.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintVrfData(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x6a
-	}
-	if m.SelectedChallenger != nil {
-		{
-			size, err := m.SelectedChallenger.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintVrfData(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x62
-	}
 	if len(m.FinalVrvFloat) > 0 {
 		i -= len(m.FinalVrvFloat)
 		copy(dAtA[i:], m.FinalVrvFloat)
 		i = encodeVarintVrfData(dAtA, i, uint64(len(m.FinalVrvFloat)))
 		i--
-		dAtA[i] = 0x5a
+		dAtA[i] = 0x62
 	}
 	if len(m.FinalVrv) > 0 {
 		i -= len(m.FinalVrv)
 		copy(dAtA[i:], m.FinalVrv)
 		i = encodeVarintVrfData(dAtA, i, uint64(len(m.FinalVrv)))
 		i--
-		dAtA[i] = 0x52
+		dAtA[i] = 0x5a
 	}
 	if len(m.FloatVrv) > 0 {
 		i -= len(m.FloatVrv)
 		copy(dAtA[i:], m.FloatVrv)
 		i = encodeVarintVrfData(dAtA, i, uint64(len(m.FloatVrv)))
 		i--
-		dAtA[i] = 0x4a
+		dAtA[i] = 0x52
 	}
 	if len(m.ParsedVrv) > 0 {
 		i -= len(m.ParsedVrv)
 		copy(dAtA[i:], m.ParsedVrv)
 		i = encodeVarintVrfData(dAtA, i, uint64(len(m.ParsedVrv)))
 		i--
-		dAtA[i] = 0x42
+		dAtA[i] = 0x4a
 	}
 	if len(m.Message) > 0 {
 		i -= len(m.Message)
 		copy(dAtA[i:], m.Message)
 		i = encodeVarintVrfData(dAtA, i, uint64(len(m.Message)))
 		i--
-		dAtA[i] = 0x3a
+		dAtA[i] = 0x42
 	}
 	if len(m.Pubkey) > 0 {
 		i -= len(m.Pubkey)
 		copy(dAtA[i:], m.Pubkey)
 		i = encodeVarintVrfData(dAtA, i, uint64(len(m.Pubkey)))
 		i--
-		dAtA[i] = 0x32
+		dAtA[i] = 0x3a
 	}
 	if len(m.Proof) > 0 {
 		i -= len(m.Proof)
 		copy(dAtA[i:], m.Proof)
 		i = encodeVarintVrfData(dAtA, i, uint64(len(m.Proof)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 	}
 	if len(m.Multiplier) > 0 {
 		i -= len(m.Multiplier)
 		copy(dAtA[i:], m.Multiplier)
 		i = encodeVarintVrfData(dAtA, i, uint64(len(m.Multiplier)))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x2a
 	}
 	if len(m.Vrv) > 0 {
 		i -= len(m.Vrv)
 		copy(dAtA[i:], m.Vrv)
 		i = encodeVarintVrfData(dAtA, i, uint64(len(m.Vrv)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Count) > 0 {
+		i -= len(m.Count)
+		copy(dAtA[i:], m.Count)
+		i = encodeVarintVrfData(dAtA, i, uint64(len(m.Count)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -343,6 +315,10 @@ func (m *VrfData) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovVrfData(uint64(l))
 	}
+	l = len(m.Count)
+	if l > 0 {
+		n += 1 + l + sovVrfData(uint64(l))
+	}
 	l = len(m.Vrv)
 	if l > 0 {
 		n += 1 + l + sovVrfData(uint64(l))
@@ -377,14 +353,6 @@ func (m *VrfData) Size() (n int) {
 	}
 	l = len(m.FinalVrvFloat)
 	if l > 0 {
-		n += 1 + l + sovVrfData(uint64(l))
-	}
-	if m.SelectedChallenger != nil {
-		l = m.SelectedChallenger.Size()
-		n += 1 + l + sovVrfData(uint64(l))
-	}
-	if m.SelectedRunner != nil {
-		l = m.SelectedRunner.Size()
 		n += 1 + l + sovVrfData(uint64(l))
 	}
 	return n
@@ -491,6 +459,38 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Count", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVrfData
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthVrfData
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthVrfData
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Count = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Vrv", wireType)
 			}
 			var stringLen uint64
@@ -521,7 +521,7 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 			}
 			m.Vrv = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Multiplier", wireType)
 			}
@@ -553,7 +553,7 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 			}
 			m.Multiplier = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Proof", wireType)
 			}
@@ -585,7 +585,7 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 			}
 			m.Proof = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Pubkey", wireType)
 			}
@@ -617,7 +617,7 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 			}
 			m.Pubkey = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 7:
+		case 8:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Message", wireType)
 			}
@@ -649,7 +649,7 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 			}
 			m.Message = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 8:
+		case 9:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ParsedVrv", wireType)
 			}
@@ -681,7 +681,7 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 			}
 			m.ParsedVrv = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 9:
+		case 10:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field FloatVrv", wireType)
 			}
@@ -713,7 +713,7 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 			}
 			m.FloatVrv = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 10:
+		case 11:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field FinalVrv", wireType)
 			}
@@ -745,7 +745,7 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 			}
 			m.FinalVrv = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 11:
+		case 12:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field FinalVrvFloat", wireType)
 			}
@@ -776,78 +776,6 @@ func (m *VrfData) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.FinalVrvFloat = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 12:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SelectedChallenger", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowVrfData
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthVrfData
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthVrfData
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.SelectedChallenger == nil {
-				m.SelectedChallenger = &Challenger{}
-			}
-			if err := m.SelectedChallenger.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 13:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SelectedRunner", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowVrfData
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthVrfData
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthVrfData
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.SelectedRunner == nil {
-				m.SelectedRunner = &Runner{}
-			}
-			if err := m.SelectedRunner.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
