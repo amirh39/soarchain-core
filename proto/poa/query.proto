@@ -6,7 +6,6 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
 import "poa/vrf_data.proto";
-import "poa/vrf_user.proto";
 import "poa/epoch_data.proto";
 import "poa/motus_wallet.proto";
 import "poa/master_key.proto";
@@ -73,16 +72,6 @@ service Query {
 	// Queries a list of VrfData items.
 	rpc VrfDataAll(QueryAllVrfDataRequest) returns (QueryAllVrfDataResponse) {
 		option (google.api.http).get = "/soarchain/poa/vrf_data";
-	}
-
-// Queries a VrfUser by index.
-	rpc VrfUser(QueryGetVrfUserRequest) returns (QueryGetVrfUserResponse) {
-		option (google.api.http).get = "/soarchain/poa/vrf_user/{index}";
-	}
-
-	// Queries a list of VrfUser items.
-	rpc VrfUserAll(QueryAllVrfUserRequest) returns (QueryAllVrfUserResponse) {
-		option (google.api.http).get = "/soarchain/poa/vrf_user";
 	}
 
 // Queries a list of VerifyRandomNumber items.
@@ -233,24 +222,6 @@ message QueryAllVrfDataRequest {
 
 message QueryAllVrfDataResponse {
 	repeated VrfData vrfData = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetVrfUserRequest {
-	  string index = 1;
-
-}
-
-message QueryGetVrfUserResponse {
-	VrfUser vrfUser = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllVrfUserRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllVrfUserResponse {
-	repeated VrfUser vrfUser = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

@@ -123,12 +123,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// Generate random coolDownMultiplier
 		multiplier := int(5)
 
-		vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
-		if vrfErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF."+vrfErr.Error())
+		VrfData, err := k.CreateVRF(ctx, msg.Creator, multiplier)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF.")
 		}
 
-		generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+		generatedNumber, err := strconv.ParseUint(VrfData.FinalVrv, 10, 64)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseUint] failed. vrfData.FinalVrv parse error."+err.Error())
 		}
@@ -179,12 +179,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// Generate random coolDownMultiplier
 		multiplier := int(5)
 
-		vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
-		if vrfErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF."+vrfErr.Error())
+		VrfData, err := k.CreateVRF(ctx, msg.Creator, multiplier)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF.")
 		}
 
-		generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+		generatedNumber, err := strconv.ParseUint(VrfData.FinalVrv, 10, 64)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseUint] failed. vrfData.FinalVrv parse error."+err.Error())
 		}
