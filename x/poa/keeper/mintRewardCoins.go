@@ -12,30 +12,7 @@ import (
 
 func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 
-	epochData, _ := k.GetEpochData(ctx)
-
-	// Parse coins
-	v2vRxRewards, _ := sdk.ParseCoinsNormalized(epochData.EpochV2VRX)
-	v2vBxRewards, _ := sdk.ParseCoinsNormalized(epochData.EpochV2VBX)
-	v2nBxRewards, _ := sdk.ParseCoinsNormalized(epochData.EpochV2NBX)
-	runnerRewards, _ := sdk.ParseCoinsNormalized(epochData.EpochRunner)
-
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, v2vRxRewards)
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, v2vBxRewards)
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, v2nBxRewards)
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, runnerRewards)
-
-	// Reset Epoch Rewards
-	newEpochData := types.EpochData{
-		TotalEpochs: epochData.TotalEpochs,
-		EpochV2VRX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		EpochV2VBX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		EpochV2NBX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		EpochRunner: sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-	}
-	k.SetEpochData(ctx, newEpochData)
-
-	// Calculate leftover rewards
+	// Calculate rewards
 	targetV2VRx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-rx")
 	targetV2VRxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetV2VRx)))
 
@@ -48,11 +25,27 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	targetRunner, _ := utility.V2NRewardEmissionPerEpoch(ctx, "runner")
 	targetRunnerCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetRunner)))
 
-	//
-	v2vRxReward, _ := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
-	v2vBxReward, _ := sdk.ParseCoinNormalized(epochData.EpochV2VBX)
-	v2nBxReward, _ := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
-	runnerReward, _ := sdk.ParseCoinNormalized(epochData.EpochRunner)
+	v2vRxReward, _ := sdk.ParseCoinNormalized(targetV2VRxCoin.Denom)
+	v2vBxReward, _ := sdk.ParseCoinNormalized(targetV2VBxCoin.Denom)
+	v2nBxReward, _ := sdk.ParseCoinNormalized(targetV2NBxCoin.Denom)
+	runnerReward, _ := sdk.ParseCoinNormalized(targetRunnerCoin.Denom)
+
+	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2vRxReward})
+	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2vBxReward})
+	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2nBxReward})
+	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{runnerReward})
+
+	epochData, _ := k.GetEpochData(ctx)
+	// Reset Epoch Rewards
+	newEpochData := types.EpochData{
+
+		TotalEpochs: epochData.TotalEpochs,
+		EpochV2VRX:  v2vRxReward.String(),
+		EpochV2VBX:  v2vBxReward.String(),
+		EpochV2NBX:  v2nBxReward.String(),
+		EpochRunner: runnerReward.String(),
+	}
+	k.SetEpochData(ctx, newEpochData)
 
 	var leftOverV2VRx sdk.Coin
 	var leftOverV2VBx sdk.Coin
