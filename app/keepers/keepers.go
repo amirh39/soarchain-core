@@ -14,10 +14,6 @@ import (
 	feegrantkeeper "github.com/cosmos/cosmos-sdk/x/feegrant/keeper"
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 
-	// "github.com/cosmos/cosmos-sdk/x/mint"
-	// mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
-	// minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-
 	mintkeeper "soarchain/x/soarmint/keeper"
 
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
@@ -71,6 +67,4 @@ type AppKeepers struct {
 	RewardcapKeeper rewardcapmodulekeeper.Keeper
 }
 
-func NewAppKeepers(
-	
-)
+func NewAppKeepers()
