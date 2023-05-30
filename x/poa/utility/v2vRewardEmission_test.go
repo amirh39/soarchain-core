@@ -1,13 +1,14 @@
 package utility
 
 import (
+	"soarchain/x/poa/constants"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
-func TestV2VRewardEmissionPerBlock(t *testing.T) {
+func Test_V2VRewardEmissionPerBlock(t *testing.T) {
 	tests := []struct {
 		currentBlockNumber     int
 		expectedTokensPerBlock int
@@ -24,11 +25,19 @@ func TestV2VRewardEmissionPerBlock(t *testing.T) {
 		ctx = ctx.WithBlockHeight(int64(test.currentBlockNumber))
 
 		// Call the V2VReceiveReward
-		actualTokensPerBlock, err := V2VRewardEmissionPerBlock(ctx, "v2v-rx")
+		actualTokensPerBlock, err := V2VRewardEmissionPerBlock(ctx, constants.V2VRX)
 		require.NoError(t, err)
 
 		if actualTokensPerBlock != test.expectedTokensPerBlock {
 			t.Error("Test failed: expected tokens per block of, got", test.expectedTokensPerBlock, actualTokensPerBlock)
 		}
 	}
+}
+
+func Test_V2VRewardEmissionPerEpoch(t *testing.T) {
+	ctx := sdk.Context{}
+	actualTokensPerBlock, err := V2VRewardEmissionPerEpoch(ctx, constants.V2VRX)
+
+	require.NoError(t, err)
+	require.NotNil(t, actualTokensPerBlock)
 }
