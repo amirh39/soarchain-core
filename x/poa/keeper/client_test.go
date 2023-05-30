@@ -1,33 +1,17 @@
 package keeper_test
 
 import (
-	"strconv"
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
+
+	"github.com/stretchr/testify/require"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func createNClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
-	items := make([]types.Client, n)
-	for i := range items {
-		items[i].Index = strconv.Itoa(i)
-
-		keeper.SetClient(ctx, items[i])
-	}
-	return items
-}
-
-func TestClientGet(t *testing.T) {
+func Test_ClientGet(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
-	items := createNClient(keeper, ctx, 10)
+	items := CreateNClient(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetClient(ctx,
 			item.Index,
@@ -39,9 +23,9 @@ func TestClientGet(t *testing.T) {
 		)
 	}
 }
-func TestClientRemove(t *testing.T) {
+func Test_ClientRemove(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
-	items := createNClient(keeper, ctx, 10)
+	items := CreateNClient(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveClient(ctx,
 			item.Index,
@@ -53,9 +37,9 @@ func TestClientRemove(t *testing.T) {
 	}
 }
 
-func TestClientGetAll(t *testing.T) {
+func Test_ClientGetAll(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
-	items := createNClient(keeper, ctx, 10)
+	items := CreateNClient(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
 		nullify.Fill(keeper.GetAllClient(ctx)),
