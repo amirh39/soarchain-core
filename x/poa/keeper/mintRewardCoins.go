@@ -25,10 +25,10 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	targetRunner, _ := utility.V2NRewardEmissionPerEpoch(ctx, "runner")
 	targetRunnerCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetRunner)))
 
-	v2vRxReward, _ := sdk.ParseCoinNormalized(targetV2VRxCoin.Denom)
-	v2vBxReward, _ := sdk.ParseCoinNormalized(targetV2VBxCoin.Denom)
-	v2nBxReward, _ := sdk.ParseCoinNormalized(targetV2NBxCoin.Denom)
-	runnerReward, _ := sdk.ParseCoinNormalized(targetRunnerCoin.Denom)
+	v2vRxReward, _ := sdk.ParseCoinNormalized(targetV2VRxCoin.String())
+	v2vBxReward, _ := sdk.ParseCoinNormalized(targetV2VBxCoin.String())
+	v2nBxReward, _ := sdk.ParseCoinNormalized(targetV2NBxCoin.String())
+	runnerReward, _ := sdk.ParseCoinNormalized(targetRunnerCoin.String())
 
 	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2vRxReward})
 	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2vBxReward})
@@ -37,9 +37,12 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 
 	epochData, _ := k.GetEpochData(ctx)
 	// Reset Epoch Rewards
+	epochCnt := epochData.TotalEpochs
+	newEpochCnt := epochCnt + 1
+
 	newEpochData := types.EpochData{
 
-		TotalEpochs: epochData.TotalEpochs,
+		TotalEpochs: newEpochCnt,
 		EpochV2VRX:  v2vRxReward.String(),
 		EpochV2VBX:  v2vBxReward.String(),
 		EpochV2NBX:  v2nBxReward.String(),
