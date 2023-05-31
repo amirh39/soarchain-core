@@ -1,7 +1,7 @@
 package utilConstants
 
 const (
-	BlocksPerMinute                       = 1.0
+	BlocksPerMinute                       = 4.0
 	InitialTokensPerYear                  = 21850083350000.0
 	MaxValUnit64                          = 18446744073709551615
 	MinScore                              = 0

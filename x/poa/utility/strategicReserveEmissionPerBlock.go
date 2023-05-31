@@ -8,7 +8,7 @@ import (
 )
 
 func StrategicReserveEmissionPerBlock(ctx sdk.Context) float64 {
-	blocksPerMinute := 1.0
+	blocksPerMinute := utilConstants.BlocksPerMinute
 	currentBlockNumber := int(ctx.BlockHeight())
 
 	yearsSinceStart := int(math.Floor(float64(currentBlockNumber) / (blocksPerMinute * minutesPerYear)))
