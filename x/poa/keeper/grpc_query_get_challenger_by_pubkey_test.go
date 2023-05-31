@@ -17,7 +17,7 @@ which is related to that public key.*/
 func Test_GetChallengerByPubKey(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := CreateNChallengerByPubkey(keeper, ctx, 1)
+	msgs := CreateNChallenger(keeper, ctx, 1)
 
 	for _, tc := range []struct {
 		desc     string
