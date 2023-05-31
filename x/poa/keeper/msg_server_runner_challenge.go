@@ -56,6 +56,14 @@ func (k Keeper) rewardAndScore(score string) (float64, float64) {
 	return rewardMultiplier, newScore
 }
 
+func (k Keeper) punish(score string) (float64, float64) {
+	scoreFloat64, _ := strconv.ParseFloat(score, 64)
+	newScore := utility.CalculateScore(scoreFloat64, false)
+	rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
+
+	return rewardMultiplier, newScore
+}
+
 func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultiplier float64, clientCommunicationMode string) (sdk.Coin, error) {
 	var totalEarnings sdk.Coin
 	var epochRewards sdk.Coin
@@ -110,14 +118,21 @@ func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultipli
 	return totalEarnings, nil
 }
 
-func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey string) error {
+func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey string, result string) error {
 
-	runner, found := k.GetRunner(ctx, runnerPubKey)
+	runner, found := k.GetRunnerUsingPubKey(ctx, runnerPubKey)
 	if !found {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundAValidRunner)
 	}
 
-	rewardMultiplier, newScore := k.rewardAndScore(runner.Score)
+	var rewardMultiplier float64
+	var newScore float64
+
+	if result == constants.Reward {
+		rewardMultiplier, newScore = k.rewardAndScore(runner.Score)
+	} else {
+		rewardMultiplier, newScore = k.punish(runner.Score)
+	}
 
 	totalEarnings, err := k.totalEarnings(ctx, runner.NetEarnings, rewardMultiplier, constants.Runner)
 	if err != nil {
@@ -199,11 +214,12 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	challenger, found := k.GetChallengerByType(ctx, msg.Creator, constants.V2NChallengerType)
+
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
 
-	k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey)
+	k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey, msg.ChallengeResult)
 
 	k.updateClient(ctx, msg)
 
