@@ -2,7 +2,6 @@ package keeper_test
 
 import (
 	keepertest "soarchain/testutil/keeper"
-	"soarchain/x/poa/constants"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -14,7 +13,7 @@ func Test_V2VRewardCalculator(t *testing.T) {
 	clients := CreateRewardCapClient(keeper, ctx, 10)
 	t.Log("clients", clients)
 
-	res, err := keeper.V2VRewardCalculator(ctx, 4, constants.V2VRX)
+	res, err := keeper.V2VRewardCalculator(ctx, 4, "v2v-rx")
 
 	t.Log("response", res)
 	t.Log("err", err)
@@ -29,12 +28,12 @@ func Test_V2VRewardCalculator_NotValidClients(t *testing.T) {
 	clients := CreateNClient(keeper, ctx, 10)
 	t.Log("clients", clients)
 
-	res, err := keeper.V2NRewardCalculator(ctx, 4, constants.V2VRX)
+	res, err := keeper.V2NRewardCalculator(ctx, 4, "v2v-rx")
 
 	t.Log("response", res)
 	t.Log("err", err)
 
-	require.NoError(t, err)
+	require.Error(t, err)
 	require.Zero(t, 0)
 }
 
@@ -46,11 +45,11 @@ func Test_V2VRewardCalculator_NotValidRewardMultiplier(t *testing.T) {
 	clients := CreateNClient(keeper, ctx, 10)
 	t.Log("clients", clients)
 
-	res, err := keeper.V2NRewardCalculator(ctx, 4, constants.Runner)
+	res, err := keeper.V2NRewardCalculator(ctx, 4, "runner")
 
 	t.Log("response", res)
 	t.Log("err", err)
 
-	require.NoError(t, err)
+	require.Error(t, err)
 	require.Zero(t, 0)
 }
