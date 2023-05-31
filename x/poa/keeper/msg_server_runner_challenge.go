@@ -130,8 +130,10 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 
 	if result == constants.Reward {
 		rewardMultiplier, newScore = k.rewardAndScore(runner.Score)
-	} else {
+	} else if result == constants.Punish {
 		rewardMultiplier, newScore = k.punish(runner.Score)
+	} else {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.InvaldChallengeResult)
 	}
 
 	totalEarnings, err := k.totalEarnings(ctx, runner.NetEarnings, rewardMultiplier, constants.Runner)
