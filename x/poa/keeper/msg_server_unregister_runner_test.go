@@ -1,7 +1,6 @@
 package keeper_test
 
 import (
-	keepertest "soarchain/testutil/keeper"
 	"soarchain/x/poa/types"
 	"testing"
 
@@ -31,14 +30,15 @@ func Test_UnregisterRunner(t *testing.T) {
 
 /** Using not valid guard, response should raise proper error message*/
 func Test_UnregisterRunner_NotValidGuard(t *testing.T) {
-	msgServer, _, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
-	keeper, ctx := keepertest.PoaKeeper(t)
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
 
-	items := CreateNRunner(keeper, ctx, 1)
-	t.Log("Runner", items)
+	ctx := sdk.UnwrapSDKContext(context)
+
+	runner := SetupNRunner(1)
+	k.SetRunner(ctx, runner[0])
 
 	res, err := msgServer.UnregisterRunner(context, &types.MsgUnregisterRunner{
 		Creator:       "",

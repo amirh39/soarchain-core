@@ -1,26 +1,26 @@
 package keeper_test
 
 import (
-	keepertest "soarchain/testutil/keeper"
 	"soarchain/x/poa/types"
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_GenClient(t *testing.T) {
-	msgServer, _, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
 
-	keeper, ctx := keepertest.PoaKeeper(t)
+	ctx := sdk.UnwrapSDKContext(context)
 
-	clients := CreateGenClient(keeper, ctx, 1)
-	require.NotNil(t, clients)
+	clients := SetupClientEntity(1)
+	k.SetClient(ctx, clients[0])
 
-	motusWallet := CreateMotusWalletByClientEntity(keeper, ctx, clients[0])
-	require.NotNil(t, motusWallet)
+	motusWallet := SetupMotusWalletEntityByClient(clients[0])
+	k.SetMotusWallet(ctx, motusWallet)
 
 	res, err := msgServer.GenClient(context, &types.MsgGenClient{
 		Creator:     ADDRESS,
@@ -33,16 +33,18 @@ func Test_GenClient(t *testing.T) {
 }
 
 func Test_GenClient_NotValidCertificate(t *testing.T) {
-	msgServer, _, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
 
-	keeper, ctx := keepertest.PoaKeeper(t)
+	ctx := sdk.UnwrapSDKContext(context)
 
-	clients := CreateGenClient(keeper, ctx, 1)
+	clients := SetupClientEntity(1)
+	k.SetClient(ctx, clients[0])
 
-	CreateMotusWalletByClientEntity(keeper, ctx, clients[0])
+	motusWallet := SetupMotusWalletEntityByClient(clients[0])
+	k.SetMotusWallet(ctx, motusWallet)
 
 	res, err := msgServer.GenClient(context, &types.MsgGenClient{
 		Creator:     ADDRESS,
