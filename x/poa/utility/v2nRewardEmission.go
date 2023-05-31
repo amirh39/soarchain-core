@@ -1,6 +1,9 @@
 package utility
 
 import (
+	"soarchain/x/poa/constants"
+	"soarchain/x/poa/utility/utilConstants"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -9,15 +12,15 @@ func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 
 	// Calculates reward coin emissions for each reward type
 
-	blocksPerMinute := 1
+	blocksPerMinute := utilConstants.V2NRewardEmissionBlockPerYear
 	currentBlockNumber := int(ctx.BlockHeight())
 
 	var initialTokensPerYear int
 	switch clientCommunicationMode {
-	case "v2n-bx":
-		initialTokensPerYear = 64283578560000 // v2n broadcaster initial annual emission
-	case "runner":
-		initialTokensPerYear = 21850083350000 // v2n receiver (runner) initial annual emission
+	case constants.V2NBX:
+		initialTokensPerYear = utilConstants.V2NBXInitialTokenPerYear // v2n broadcaster initial annual emission
+	case constants.Runner:
+		initialTokensPerYear = utilConstants.RunnerInitialTokenPerYear // v2n receiver (runner) initial annual emission
 	default:
 		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2NRewardEmissionPerBlock] failed. V2N communication mode is not supported.")
 	}
@@ -44,16 +47,16 @@ func V2NRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) 
 
 	// Calculates reward coin emissions for each reward type
 
-	blocksPerMinute := 1
-	blocksPerEpoch := 30
+	blocksPerMinute := utilConstants.V2VRewardEmissionBlockPerYear
+	blocksPerEpoch := utilConstants.BlocksPerEpoch
 	currentBlockNumber := int(ctx.BlockHeight())
 
 	var initialTokensPerYear int
 	switch clientCommunicationMode {
-	case "v2n-bx":
-		initialTokensPerYear = 64283578560000 // v2n broadcaster initial annual emission
-	case "runner":
-		initialTokensPerYear = 21850083350000 // v2n receiver (runner) initial annual emission
+	case constants.V2NBX:
+		initialTokensPerYear = utilConstants.V2NBXInitialTokenPerYear // v2n broadcaster initial annual emission
+	case constants.Runner:
+		initialTokensPerYear = utilConstants.RunnerInitialTokenPerYear // v2n receiver (runner) initial annual emission
 	default:
 		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2NRewardEmissionPerEpoch] failed. V2N communication mode is not supported.")
 	}

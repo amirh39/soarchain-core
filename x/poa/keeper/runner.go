@@ -87,29 +87,3 @@ func (k Keeper) GetRunnerUsingPubKey(ctx sdk.Context, pubKey string) (runner typ
 
 	return runner, false
 }
-
-// Returns a challengeable runner
-func (k Keeper) GetChallengeableRunner(
-	ctx sdk.Context,
-	index string,
-
-) (val types.Runner, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RunnerKeyPrefix))
-
-	b := store.Get(types.RunnerKey(
-		index,
-	))
-	if b == nil {
-		return val, false
-	}
-
-	k.cdc.MustUnmarshal(b, &val)
-
-	isChallengeable, _, err := utility.IsChallengeable(ctx, val.Score, val.LastTimeChallenged, val.CoolDownTolerance)
-
-	if !isChallengeable || err != nil {
-		return val, false
-	}
-
-	return val, true
-}

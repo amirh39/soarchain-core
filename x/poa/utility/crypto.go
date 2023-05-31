@@ -3,13 +3,12 @@ package utility
 import (
 	"bytes"
 	"encoding/binary"
+	"soarchain/x/poa/utility/utilConstants"
 
 	"github.com/coniks-sys/coniks-go/crypto/vrf"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
-
-const Max_Val_Unit64 = 18446744073709551615
 
 func CreateRandomVrfValues(ctx sdk.Context, message []byte, multiplier int) (vrv []byte, prrof []byte, pub_key vrf.PublicKey, float_vrv float64, final_vrv float64, final_vrv_float float64, err error) {
 
@@ -24,7 +23,7 @@ func CreateRandomVrfValues(ctx sdk.Context, message []byte, multiplier int) (vrv
 	}
 
 	parse_vrv_to_uint64 := binary.BigEndian.Uint64(vrv)
-	float_vrv = float64(parse_vrv_to_uint64) / float64(Max_Val_Unit64)
+	float_vrv = float64(parse_vrv_to_uint64) / float64(utilConstants.MaxValUnit64)
 	final_vrv = float_vrv * float64(multiplier)
 	final_vrv_float = float_vrv * float64(multiplier)
 

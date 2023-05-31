@@ -9,7 +9,7 @@ import (
 )
 
 func Test_GenRunner(t *testing.T) {
-	msgServer, k, context, ctrl, bank := setupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -23,13 +23,11 @@ func Test_GenRunner(t *testing.T) {
 
 	res, err := msgServer.GenRunner(context, &types.MsgGenRunner{
 		Creator:     CREATOR,
-		RunnerStake: STAKE,
+		RunnerStake: StakedAmount,
 		RunnerIp:    IP,
 		Certificate: CERTIFICATE,
-		Signature:   SIGNATURE,
+		Signature:   Signature,
 	})
-
-	t.Log("response", res)
 
 	require.NoError(t, err)
 	require.NotNil(t, res)
@@ -37,7 +35,7 @@ func Test_GenRunner(t *testing.T) {
 
 /** Using not valid certificate, response should raise proper error message*/
 func Test_GenRunner_NotValidCertificate(t *testing.T) {
-	msgServer, k, context, ctrl, bank := setupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -51,13 +49,11 @@ func Test_GenRunner_NotValidCertificate(t *testing.T) {
 
 	res, err := msgServer.GenRunner(context, &types.MsgGenRunner{
 		Creator:     CREATOR,
-		RunnerStake: STAKE,
-		RunnerIp:    IP,
+		RunnerStake: RunnerStakedAmount,
+		RunnerIp:    RunnerIP,
 		Certificate: NOTVALIDCERTIFICATE,
-		Signature:   SIGNATURE,
+		Signature:   Signature,
 	})
-
-	t.Log("error message", err)
 
 	require.Error(t, err)
 	require.Nil(t, res)

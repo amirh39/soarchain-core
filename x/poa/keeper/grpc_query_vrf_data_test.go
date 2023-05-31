@@ -18,10 +18,10 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestVrfDataQuerySingle(t *testing.T) {
+func Test_VrfDataQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNVrfData(keeper, ctx, 2)
+	msgs := CreateNVrfData(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetVrfDataRequest
@@ -69,10 +69,10 @@ func TestVrfDataQuerySingle(t *testing.T) {
 	}
 }
 
-func TestVrfDataQueryPaginated(t *testing.T) {
+func Test_VrfDataQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNVrfData(keeper, ctx, 5)
+	msgs := CreateNVrfData(keeper, ctx, 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllVrfDataRequest {
 		return &types.QueryAllVrfDataRequest{

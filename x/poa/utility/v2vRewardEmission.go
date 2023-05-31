@@ -1,27 +1,28 @@
 package utility
 
 import (
+	"soarchain/x/poa/constants"
+	"soarchain/x/poa/utility/utilConstants"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const (
-	minutesPerYear = 525600
-)
+const minutesPerYear = utilConstants.MinutesPerYear
 
 func V2VRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) (int, error) {
 
 	// Calculates reward coin emissions for each reward type
 
-	blocksPerMinute := 1
+	blocksPerMinute := utilConstants.V2VRewardEmissionBlockPerYear
 	currentBlockNumber := int(ctx.BlockHeight())
 
 	var initialTokensPerYear int
 	switch clientCommunicationMode {
-	case "v2v-rx":
-		initialTokensPerYear = 37366809210000 // v2v receiver initial annual emission
-	case "v2v-bx":
-		initialTokensPerYear = 17416733110000 // v2v broadcaster initial annual emission
+	case constants.V2VRX:
+		initialTokensPerYear = utilConstants.V2VReceiverInitialAnnual // v2v receiver initial annual emission
+	case constants.V2VBX:
+		initialTokensPerYear = utilConstants.V2VBroadcasterInitialAnnual // v2v broadcaster initial annual emission
 	default:
 		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2VRewardEmissionPerBlock] failed. V2V client communication mode is not supported.")
 	}
@@ -47,17 +48,16 @@ func V2VRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 func V2VRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) (int, error) {
 
 	// Calculates reward coin emissions for each reward type
-
-	blocksPerMinute := 1
-	blocksPerEpoch := 30
+	blocksPerMinute := utilConstants.V2VRewardEmissionBlockPerYear
+	blocksPerEpoch := utilConstants.BlocksPerEpoch
 	currentBlockNumber := int(ctx.BlockHeight())
 
 	var initialTokensPerYear int
 	switch clientCommunicationMode {
-	case "v2v-rx":
-		initialTokensPerYear = 37366809210000 // v2v receiver initial annual emission
-	case "v2v-bx":
-		initialTokensPerYear = 17416733110000 // v2v broadcaster initial annual emission
+	case constants.V2VRX:
+		initialTokensPerYear = utilConstants.V2VReceiverInitialAnnual // v2v receiver initial annual emission
+	case constants.V2VBX:
+		initialTokensPerYear = utilConstants.V2VBroadcasterInitialAnnual // v2v broadcaster initial annual emission
 	default:
 		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2VRewardEmissionPerEpoch] failed. V2V client communication mode is not supported.")
 	}

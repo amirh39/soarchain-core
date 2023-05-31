@@ -3,24 +3,15 @@ package keeper_test
 import (
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
 )
 
-func createTestMasterKey(keeper *keeper.Keeper, ctx sdk.Context) types.MasterKey {
-	item := types.MasterKey{}
-	keeper.SetMasterKey(ctx, item)
-	return item
-}
-
-func TestMasterKeyGet(t *testing.T) {
+func Test_MasterKeyGet(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
-	item := createTestMasterKey(keeper, ctx)
+	item := CreateMasterKey(keeper, ctx)
 	rst, found := keeper.GetMasterKey(ctx)
 	require.True(t, found)
 	require.Equal(t,
@@ -29,9 +20,9 @@ func TestMasterKeyGet(t *testing.T) {
 	)
 }
 
-func TestMasterKeyRemove(t *testing.T) {
+func Test_MasterKeyRemove(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
-	createTestMasterKey(keeper, ctx)
+	CreateMasterKey(keeper, ctx)
 	keeper.RemoveMasterKey(ctx)
 	_, found := keeper.GetMasterKey(ctx)
 	require.False(t, found)

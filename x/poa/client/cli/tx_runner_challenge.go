@@ -3,6 +3,7 @@ package cli
 import (
 	"strconv"
 
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 
 	"strings"
@@ -22,7 +23,7 @@ func CmdRunnerChallenge() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argRunnerAddress := args[0]
-			argClientPubkeys := strings.Split(args[1], listSeparator)
+			argClientPubkeys := strings.Split(args[1], constants.ListSeparator)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
