@@ -101,6 +101,7 @@ message MsgRunnerChallenge {
   string creator = 1;
   string runnerpubKey = 2;
   repeated string clientPubkeys = 3;
+  string challengeResult = 4;
 }
 
 message MsgRunnerChallengeResponse {
