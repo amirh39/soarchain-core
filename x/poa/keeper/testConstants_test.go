@@ -159,16 +159,6 @@ func SetupNChallenger(n int) []types.Challenger {
 	return items
 }
 
-func CreateNChallengerByPubkey(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
-	items := make([]types.Challenger, 1)
-	for i := range items {
-		items[i].Address = strconv.Itoa(i)
-		items[i].PubKey = Challenger_PubKey
-		keeper.SetChallenger(ctx, items[i])
-	}
-	return items
-}
-
 func CreateV2NTypeChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
 	items := make([]types.Challenger, n)
 	for i := range items {
