@@ -330,10 +330,6 @@ const (
 )
 
 const (
-	Unregister_RunnerAddress = "soar1k9ee7xx2mqzehrt56y7ezyqnegzfy8afrs754n"
-)
-
-const (
 	MotusWallet_Index = "soar1k9ee7xx2mqzehrt56y7ezyqnegzfy8afrs754n"
 )
 
