@@ -1,3 +1,4 @@
+/** This file is created for tests. Firstly search what you nee if not find then create a new one for you. */
 package keeper_test
 
 import (
@@ -70,23 +71,6 @@ func CreateNClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client
 	items := make([]types.Client, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
-
-		keeper.SetClient(ctx, items[i])
-	}
-	return items
-}
-
-func CreateGenClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
-	items := make([]types.Client, n)
-	for i := range items {
-		items[i].Index = ClientPubKey
-		items[i].Address = ClientAddress
-		items[i].Score = ClientScore
-		items[i].RewardMultiplier = ClientRewardMultiplier
-		items[i].NetEarnings = ClientNetEarnings
-		items[i].LastTimeChallenged = ClientLastTimeChallenged
-		items[i].CoolDownTolerance = ClientCoolDownTolerance
-		items[i].Type = ClientType
 
 		keeper.SetClient(ctx, items[i])
 	}
