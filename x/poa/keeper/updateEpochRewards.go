@@ -16,13 +16,28 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	switch clientType {
 	case "v2v-rx":
+		// Parse the current value into a sdk.Coin
+		epochV2VRXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
+		if err != nil {
+			return err
+		}
+
+		// Subtract rewardToSet from epochV2VRXCoin
+		newEpochV2VRXCoin := epochV2VRXCoin.Sub(rewardToSet)
+
+		// Convert the result back to a string representation
+		newEpochV2VRX := newEpochV2VRXCoin.String()
+
+		// Create a new EpochData object with the updated value
 		newEpochData := types.EpochData{
 			TotalEpochs: epochData.TotalEpochs,
-			EpochV2VRX:  rewardToSet.String(),
+			EpochV2VRX:  newEpochV2VRX,
 			EpochV2VBX:  epochData.EpochV2VBX,
 			EpochV2NBX:  epochData.EpochV2NBX,
 			EpochRunner: epochData.EpochRunner,
 		}
+
+		// Store the updated epoch data
 		k.SetEpochData(ctx, newEpochData)
 
 	case "v2v-bx":

@@ -13,22 +13,22 @@ import (
 func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 
 	// Calculate rewards
-	targetV2VRx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-rx")
-	targetV2VRxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetV2VRx)))
+	TargetV2VRx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-rx")
+	TargetV2VRxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetV2VRx)))
 
-	targetV2VBx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-bx")
-	targetV2VBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetV2VBx)))
+	TargetV2VBx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-bx")
+	TargetV2VBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetV2VBx)))
 
-	targetV2NBx, _ := utility.V2NRewardEmissionPerEpoch(ctx, "v2n-bx")
-	targetV2NBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetV2NBx)))
+	TargetV2NBx, _ := utility.V2NRewardEmissionPerEpoch(ctx, "v2n-bx")
+	TargetV2NBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetV2NBx)))
 
-	targetRunner, _ := utility.V2NRewardEmissionPerEpoch(ctx, "runner")
-	targetRunnerCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetRunner)))
+	TargetRunner, _ := utility.V2NRewardEmissionPerEpoch(ctx, "runner")
+	TargetRunnerCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetRunner)))
 
-	v2vRxReward, _ := sdk.ParseCoinNormalized(targetV2VRxCoin.String())
-	v2vBxReward, _ := sdk.ParseCoinNormalized(targetV2VBxCoin.String())
-	v2nBxReward, _ := sdk.ParseCoinNormalized(targetV2NBxCoin.String())
-	runnerReward, _ := sdk.ParseCoinNormalized(targetRunnerCoin.String())
+	v2vRxReward, _ := sdk.ParseCoinNormalized(TargetV2VRxCoin.String())
+	v2vBxReward, _ := sdk.ParseCoinNormalized(TargetV2VBxCoin.String())
+	v2nBxReward, _ := sdk.ParseCoinNormalized(TargetV2NBxCoin.String())
+	runnerReward, _ := sdk.ParseCoinNormalized(TargetRunnerCoin.String())
 
 	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2vRxReward})
 	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2vBxReward})
@@ -49,42 +49,5 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 		EpochRunner: runnerReward.String(),
 	}
 	k.SetEpochData(ctx, newEpochData)
-
-	var leftOverV2VRx sdk.Coin
-	var leftOverV2VBx sdk.Coin
-	var leftOverV2NBx sdk.Coin
-	var leftOverRunner sdk.Coin
-
-	// v2vrx
-	if v2vRxReward.IsLT(targetV2VRxCoin) || v2vRxReward.IsEqual(targetV2VRxCoin) {
-		leftOverV2VRx = targetV2VRxCoin.Sub(v2vRxReward)
-		if leftOverV2VRx.IsPositive() {
-			k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2VRx})
-		}
-	}
-
-	// v2vbx
-	if v2vBxReward.IsLT(targetV2VBxCoin) || v2vBxReward.IsEqual(targetV2VBxCoin) {
-		leftOverV2VBx = targetV2VBxCoin.Sub(v2vBxReward)
-		if leftOverV2VBx.IsPositive() {
-			k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2VBx})
-		}
-	}
-
-	// v2nbx
-	if v2nBxReward.IsLT(targetV2NBxCoin) || v2nBxReward.IsEqual(targetV2NBxCoin) {
-		leftOverV2NBx = targetV2NBxCoin.Sub(v2nBxReward)
-		if leftOverV2NBx.IsPositive() {
-			k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverV2NBx})
-		}
-	}
-
-	// runner
-	if runnerReward.IsLT(targetRunnerCoin) || runnerReward.IsEqual(targetRunnerCoin) {
-		leftOverRunner = targetRunnerCoin.Sub(runnerReward)
-		if leftOverRunner.IsPositive() {
-			k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, "rewardcap", sdk.Coins{leftOverRunner})
-		}
-	}
 
 }
