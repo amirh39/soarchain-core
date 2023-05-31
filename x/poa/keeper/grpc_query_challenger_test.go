@@ -15,13 +15,10 @@ import (
 	"soarchain/x/poa/types"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func TestChallengerQuerySingle(t *testing.T) {
+func Test_ChallengerQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNChallenger(keeper, ctx, 2)
+	msgs := CreateNChallenger(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetChallengerRequest
@@ -69,10 +66,10 @@ func TestChallengerQuerySingle(t *testing.T) {
 	}
 }
 
-func TestChallengerQueryPaginated(t *testing.T) {
+func Test_ChallengerQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNChallenger(keeper, ctx, 5)
+	msgs := CreateNChallenger(keeper, ctx, 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllChallengerRequest {
 		return &types.QueryAllChallengerRequest{
