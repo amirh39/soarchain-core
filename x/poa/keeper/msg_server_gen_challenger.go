@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	params "soarchain/app/params"
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 	"strings"
 
@@ -20,7 +21,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 
 	challengerType := strings.ToLower(msg.Challengertype)
 
-	if challengerType != "v2n" && challengerType != "v2x" {
+	if challengerType != constants.V2NChallengerType && challengerType != constants.V2XChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenger type. Must be 'v2n' or 'v2x'.")
 	}
 
@@ -55,7 +56,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	var newChallenger types.Challenger
 
 	// Check challenger stake amount
-	requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 1000000000)}
+	requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, constants.ChallengerAmount)}
 	ChallengerStake, err := sdk.ParseCoinsNormalized(msg.ChallengerStake)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Coins couldn't be parsed!")
@@ -69,10 +70,6 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	if transferErr != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(challenger) funds couldn't be transferred to POA module!")
 	}
-
-	// rewardMultiplier
-	//var initialScore float64 = 50
-	//rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
 
 	newChallenger = types.Challenger{
 		PubKey:       pubKeyHex,

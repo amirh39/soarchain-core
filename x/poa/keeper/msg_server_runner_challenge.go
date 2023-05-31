@@ -8,13 +8,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	param "soarchain/app/params"
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 )
-
-const challengerType = "v2n"
-const multiplier = int(5)
 
 func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 
@@ -36,7 +34,7 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 
 func (k Keeper) coolDownMultiplier(ctx sdk.Context, creator string) uint64 {
 
-	vrfData, _ := k.CreateVRF(ctx, creator, multiplier)
+	vrfData, _ := k.CreateVRF(ctx, creator, constants.Multiplier)
 
 	generatedNumber, _ := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
 
@@ -116,12 +114,12 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 
 	runner, found := k.GetRunner(ctx, runnerPubKey)
 	if !found {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundChallengeableRunner)
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundAValidRunner)
 	}
 
 	rewardMultiplier, newScore := k.rewardAndScore(runner.Score)
 
-	totalEarnings, err := k.totalEarnings(ctx, runner.NetEarnings, rewardMultiplier, "runner")
+	totalEarnings, err := k.totalEarnings(ctx, runner.NetEarnings, rewardMultiplier, constants.Runner)
 	if err != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
 	}
@@ -160,7 +158,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 
 		rewardMultiplier, newScore := k.rewardAndScore(v2nBxClient.Score)
 
-		totalEarnings, err := k.totalEarnings(ctx, v2nBxClient.NetEarnings, rewardMultiplier, "v2n-bx")
+		totalEarnings, err := k.totalEarnings(ctx, v2nBxClient.NetEarnings, rewardMultiplier, constants.V2NBX)
 		if err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
 		}
@@ -200,7 +198,7 @@ func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.
 func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerChallenge) (*types.MsgRunnerChallengeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	challenger, found := k.GetChallengerByType(ctx, msg.Creator, challengerType)
+	challenger, found := k.GetChallengerByType(ctx, msg.Creator, constants.V2NChallengerType)
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
