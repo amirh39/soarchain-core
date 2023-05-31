@@ -102,24 +102,7 @@ func CreateRewardCapClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []type
 	return items
 }
 
-func CreateInvalidClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
-	items := make([]types.Client, n)
-	for i := range items {
-		items[i].Index = ""
-		items[i].Address = ""
-		items[i].Score = ClientScore
-		items[i].RewardMultiplier = ClientRewardMultiplier
-		items[i].NetEarnings = ClientNetEarnings
-		items[i].LastTimeChallenged = ClientLastTimeChallenged
-		items[i].CoolDownTolerance = ClientCoolDownTolerance
-		items[i].Type = ClientType
-
-		keeper.SetClient(ctx, items[i])
-	}
-	return items
-}
-
-func CreateNotValidClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
+func CreateInValidClientScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)

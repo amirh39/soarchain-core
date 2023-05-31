@@ -57,7 +57,7 @@ func Test_IsChallengeable(t *testing.T) {
 func Test_IsNotChallengeable(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	clients := CreateNotValidClient(keeper, ctx, 1)
+	clients := CreateInValidClientScore(keeper, ctx, 1)
 
 	for _, tc := range []struct {
 		desc     string
