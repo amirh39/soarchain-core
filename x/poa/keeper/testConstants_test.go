@@ -206,16 +206,6 @@ func CreateNMotusWallet(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.M
 	return items
 }
 
-func CreateMotusWalletByClientEntity(k *keeper.Keeper, ctx sdk.Context, client types.Client) types.MotusWallet {
-
-	motusWallet := types.MotusWallet{
-		Index:  MotusWallet_Index,
-		Client: &client,
-	}
-	k.SetMotusWallet(ctx, motusWallet)
-	return motusWallet
-}
-
 func SetupMotusWalletEntityByClient(client types.Client) types.MotusWallet {
 	motusWallet := types.MotusWallet{
 		Index:  MotusWallet_Index,
