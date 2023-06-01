@@ -3,6 +3,7 @@ package types
 import (
 	"errors"
 	"fmt"
+	param "soarchain/app/params"
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -35,7 +36,7 @@ func NewParams(mintDenom string, blocksPerYear uint64) Params {
 // default minting module parameters
 func DefaultParams() Params {
 	return Params{
-		MintDenom:     "umotus",
+		MintDenom:     param.BondDenom,
 		BlocksPerYear: uint64(525600), // assuming 60 second block times
 	}
 }
