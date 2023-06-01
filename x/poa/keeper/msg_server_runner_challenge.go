@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -163,20 +164,21 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		}
 
 		targetEpochReward := sdk.NewCoin(param.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
-
+		log.Println("targetEpochReward", targetEpochReward)
 		epochData, _ := k.GetEpochData(ctx)
 		if !found {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][GetEpochData] failed. Couldn't get epoch data with the current context.")
 		}
 
 		epochRewards, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
+		log.Println("EpochV2NBX:", epochData.EpochV2NBX)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][ParseCoinNormalized] failed. Couldn't parse and normalize a cli input for one coin type, due to invalid or an empty string."+err.Error())
 		}
 
 		// check reward cap inside the epoch
 		var totalEarnings sdk.Coin
-		if epochRewards.IsLT(targetEpochReward) {
+		if epochRewards.IsLT(targetEpochReward) || epochRewards.IsEqual(targetEpochReward) {
 			// Calculate reward earned
 			earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, "v2n-bx")
 			if err != nil {
@@ -192,7 +194,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 			}
 
 			totalEarnings = netEarnings.Add(earnedCoin)
-
+			log.Println("totalErnings", totalEarnings)
 			// update epoch rewards
 			epochErr := k.UpdateEpochRewards(ctx, "v2n-bx", earnedCoin)
 			if epochErr != nil {

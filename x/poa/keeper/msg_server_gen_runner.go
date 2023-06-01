@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
@@ -70,6 +71,7 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	// Transfer stakedAmount to poa modules account:
 	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
 	if transferErr != nil {
+		log.Panicln(transferErr)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(runner) funds couldn't be transferred to POA module!")
 	}
 	// rewardMultiplier
