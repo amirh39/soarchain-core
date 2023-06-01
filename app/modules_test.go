@@ -12,7 +12,7 @@ import (
 )
 
 // Test_newGovModule tests that the default genesis state for the gov module
-// uses the umotus denominiation.
+// uses the utmotus denominiation.
 func Test_newGovModule(t *testing.T) {
 	encCfg := MakeEncodingConfig()
 
