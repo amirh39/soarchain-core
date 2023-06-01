@@ -239,7 +239,7 @@ func CreateNVrfData(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.VrfDa
 const (
 	ClientScore              = "61.472555534405885"
 	ClientRewardMultiplier   = "3778.8750839306153"
-	ClientNetEarnings        = "107755123utmotus"
+	ClientNetEarnings        = "107755123umotus"
 	ClientLastTimeChallenged = "2023-05-08 19:14:55.666272303 +0000 UTC"
 	ClientCoolDownTolerance  = "1"
 	ClientType               = "mini"
@@ -285,8 +285,8 @@ const (
 	RunnerCreator            = "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8"
 	RunnerScore              = "70.01360618066334"
 	RunnerRewardMultiplier   = "4901.905050421021"
-	RunnerStakedAmount       = "1000000000utmotus"
-	RunnerNetEarnings        = "4268402637utmotus"
+	RunnerStakedAmount       = "1000000000umotus"
+	RunnerNetEarnings        = "4268402637umotus"
 	RunnerIP                 = "45.12.65.78"
 	RunnerLastTimeChallenged = "2023-05-08 14:33:56.656465058 +0000 UTC"
 	RunnerCoolDownTolerance  = "2"
@@ -321,8 +321,8 @@ const (
 	Challenger_PubKey       = "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251"
 	Challenger_Address      = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
 	Challenger_Score        = "189"
-	Challenger_StakedAmount = "2000000000utmotus"
-	Challenger_NetEarnings  = "0utmotus"
+	Challenger_StakedAmount = "2000000000umotus"
+	Challenger_NetEarnings  = "0umotus"
 	Challenger_IpAddr       = ""
 	Challenger_IPAddress    = "104.248.142.45"
 	Challenger_Type         = "v2n"
@@ -339,7 +339,7 @@ const (
 
 const (
 	ADDRESS      = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
-	StakedAmount = "2000000000utmotus"
+	StakedAmount = "2000000000umotus"
 	IP           = "104.248.142.45"
 	PUBLICKEY    = "3056301006072a8648ce3d020106052b8104000a034200044c1db1a1b1e19d6c423b1af88203ce79b6e4705d1dedaf65daeb0eedbe2c1fc6db010fa7f81443229d90181691df2e209be1c1278af42cc0f5ade03db549a795"
 )
