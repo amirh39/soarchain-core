@@ -5,7 +5,9 @@ const (
 	Name                 = "soarchain"
 
 	// BondDenom defines the native staking token denomination.
-	BondDenom = "umotus"
+	BondDenom = "utmotus"
+
+	MinDeposit = 10000000
 
 	// BondDenomAlias defines an alias for BondDenom.
 	BondDenomAlias = "micromotus"
@@ -16,4 +18,6 @@ const (
 	MotusExponent = 6
 
 	Upgrade1_0_0 = "1.0.0"
+
+	Prefix = "prefix"
 )

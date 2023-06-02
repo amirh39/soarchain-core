@@ -3,25 +3,15 @@ package keeper_test
 import (
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
+
+	"github.com/stretchr/testify/require"
 )
 
-func createNFactoryKeys(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.FactoryKeys {
-	items := make([]types.FactoryKeys, n)
-	for i := range items {
-		items[i].Id = keeper.AppendFactoryKeys(ctx, items[i])
-	}
-	return items
-}
-
-func TestFactoryKeysGet(t *testing.T) {
+func Test_FactoryKeysGet(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
-	items := createNFactoryKeys(keeper, ctx, 10)
+	items := CreateNFactoryKeys(keeper, ctx, 10)
 	for _, item := range items {
 		got, found := keeper.GetFactoryKeys(ctx, item.Id)
 		require.True(t, found)
@@ -32,9 +22,9 @@ func TestFactoryKeysGet(t *testing.T) {
 	}
 }
 
-func TestFactoryKeysRemove(t *testing.T) {
+func Test_FactoryKeysRemove(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
-	items := createNFactoryKeys(keeper, ctx, 10)
+	items := CreateNFactoryKeys(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveFactoryKeys(ctx, item.Id)
 		_, found := keeper.GetFactoryKeys(ctx, item.Id)
@@ -42,18 +32,18 @@ func TestFactoryKeysRemove(t *testing.T) {
 	}
 }
 
-func TestFactoryKeysGetAll(t *testing.T) {
+func Test_FactoryKeysGetAll(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
-	items := createNFactoryKeys(keeper, ctx, 10)
+	items := CreateNFactoryKeys(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
 		nullify.Fill(keeper.GetAllFactoryKeys(ctx)),
 	)
 }
 
-func TestFactoryKeysCount(t *testing.T) {
+func Test_FactoryKeysCount(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
-	items := createNFactoryKeys(keeper, ctx, 10)
+	items := CreateNFactoryKeys(keeper, ctx, 10)
 	count := uint64(len(items))
 	require.Equal(t, count, keeper.GetFactoryKeysCount(ctx))
 }

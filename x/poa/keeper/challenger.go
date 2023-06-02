@@ -74,3 +74,24 @@ func (k Keeper) GetChallengerUsingPubKey(ctx sdk.Context, pubKey string) (challe
 
 	return challenger, false
 }
+
+// GetChallenger returns a challenger from its index and type = "v2n"
+func (k Keeper) GetChallengerByType(
+	ctx sdk.Context,
+	Address string,
+	Type string,
+
+) (val types.Challenger, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerKeyPrefix))
+
+	b := store.Get(types.ChallengerKey(
+		Address,
+	))
+
+	k.cdc.MustUnmarshal(b, &val)
+	if b == nil || val.Type != Type {
+		return val, false
+	}
+
+	return val, true
+}

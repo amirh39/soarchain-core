@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"soarchain/x/poa/constants"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -122,7 +123,7 @@ func (m Minter) StakingRewardsPerBlock(ctx sdk.Context, params Params) sdk.Coins
 	blocksPerYear := params.BlocksPerYear
 	currentBlockNumber := uint64(ctx.BlockHeight())
 
-	initialTokensPerYear := uint64(21850083350000) // staking rewards initial annual emission
+	initialTokensPerYear := uint64(constants.InitialTokensPerYear) // staking rewards initial annual emission
 
 	// Number of tokens issued per year by the total number of blocks produced per year
 	tokensPerBlock := initialTokensPerYear / blocksPerYear

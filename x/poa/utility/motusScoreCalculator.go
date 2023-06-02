@@ -2,13 +2,14 @@ package utility
 
 import (
 	"math"
+	"soarchain/x/poa/utility/utilConstants"
 )
 
 func CalculateScore(score float64, c bool) float64 {
-	const minScore = 0
-	const maxScore = 100
-	const maxIncreaseFactor = 0.5
-	const maxDecreaseFactor = 0.7
+	const minScore = utilConstants.MinScore
+	const maxScore = utilConstants.MaxScore
+	const maxIncreaseFactor = utilConstants.MaxIncreaseFactor
+	const maxDecreaseFactor = utilConstants.MaxDecreaseFactor
 
 	increaseFactor := maxIncreaseFactor * (maxScore - score) / maxScore
 	decreaseFactor := maxDecreaseFactor * score / maxScore

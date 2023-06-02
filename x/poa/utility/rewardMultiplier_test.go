@@ -2,16 +2,15 @@ package utility
 
 import (
 	"math"
+	"soarchain/x/poa/utility/utilConstants"
 	"testing"
 
-	// sdk "github.com/cosmos/cosmos-sdk/types"
-	// "github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/stretchr/testify/require"
 )
 
-func TestCalculateRewardMultiplier(t *testing.T) {
+func Test_CalculateRewardMultiplier(t *testing.T) {
 	// Test input values
-	score := 100.0
+	score := utilConstants.CalculateRewardMultiplierScore
 	expectedMultiplier := math.Pow(score, 2)
 
 	// Call CalculateRewardMultiplier function

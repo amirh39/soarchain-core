@@ -22,11 +22,11 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 	if allChallengers == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[SelectRandomChallenger][GetAllChallenger] failed. Couldn't find any challenger.")
 	}
-	multiplier := int(len(allChallengers))
+	factor := int(len(allChallengers))
 
-	vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
-	if vrfErr != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomChallenger][CreateVRF] failed. VRF couldn't create. Error [ %T ]", vrfErr)
+	vrfData, err := k.CreateVRF(ctx, msg.Creator, factor)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomChallenger][CreateVRF] failed. VRF couldn't create. Error [ %T ]", err)
 	}
 
 	generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
@@ -50,19 +50,17 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[SelectRandomChallenger][GetVrfData] failed. Couldn't get VRF data.")
 	}
 	updateVrf := types.VrfData{
-		Index:              vrf.Index,
-		Creator:            vrf.Creator,
-		Vrv:                vrf.Vrv,
-		Multiplier:         vrf.Multiplier,
-		Proof:              vrf.Proof,
-		Pubkey:             vrf.Pubkey,
-		Message:            vrf.Message,
-		ParsedVrv:          vrf.ParsedVrv,
-		FloatVrv:           vrf.FloatVrv,
-		FinalVrv:           vrf.FinalVrv,
-		FinalVrvFloat:      vrf.FinalVrvFloat,
-		SelectedChallenger: &selectedChallenger,
-		SelectedRunner:     nil,
+		Index:         vrf.Index,
+		Creator:       vrf.Creator,
+		Vrv:           vrf.Vrv,
+		Multiplier:    vrf.Multiplier,
+		Proof:         vrf.Proof,
+		Pubkey:        vrf.Pubkey,
+		Message:       vrf.Message,
+		ParsedVrv:     vrf.ParsedVrv,
+		FloatVrv:      vrf.FloatVrv,
+		FinalVrv:      vrf.FinalVrv,
+		FinalVrvFloat: vrf.FinalVrvFloat,
 	}
 	k.SetVrfData(ctx, updateVrf)
 

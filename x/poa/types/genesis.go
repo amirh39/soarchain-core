@@ -18,7 +18,6 @@ func DefaultGenesis() *GenesisState {
 		ChallengerList: []Challenger{},
 		RunnerList:     []Runner{},
 		VrfDataList:    []VrfData{},
-		VrfUserList:    []VrfUser{},
 		EpochData: EpochData{
 			TotalEpochs: 0,
 			EpochV2VRX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
@@ -80,16 +79,6 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for vrfData")
 		}
 		vrfDataIndexMap[index] = struct{}{}
-	}
-	// Check for duplicated index in vrfUser
-	vrfUserIndexMap := make(map[string]struct{})
-
-	for _, elem := range gs.VrfUserList {
-		index := string(VrfUserKey(elem.Index))
-		if _, ok := vrfUserIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for vrfUser")
-		}
-		vrfUserIndexMap[index] = struct{}{}
 	}
 	// Check for duplicated index in motusWallet
 	motusWalletIndexMap := make(map[string]struct{})

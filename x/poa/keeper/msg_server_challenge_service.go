@@ -4,6 +4,7 @@ import (
 	"context"
 	"strconv"
 
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 
@@ -22,7 +23,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 
 	// Challenger type must be v2x for this operation
-	if challenger.Type != "v2x" {
+	if challenger.Type != constants.V2XChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[ChallengeService][GetChallenger][v2x] failed. Only v2x type challengers can initiate this transaction.")
 	}
 
@@ -33,7 +34,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 
 	// Check tx input of client communication mode
-	if msg.ClientCommunicationMode != "v2v-rx" && msg.ClientCommunicationMode != "v2v-bx" {
+	if msg.ClientCommunicationMode != constants.V2VRX && msg.ClientCommunicationMode != constants.V2VBX {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "[ChallengeService][ClientCommunicationMode] failed. V2V client communication mode is not supported.")
 	}
 
@@ -50,7 +51,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	// Check the challenge result
 	result := msg.ChallengeResult
 
-	if result == "reward" { // reward condition
+	if result == constants.Reward { // reward condition
 
 		// Update challengee score
 		scoreFloat64, err := strconv.ParseFloat(client.Score, 64)
@@ -76,12 +77,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 		var epochRewards sdk.Coin
 
-		if msg.ClientCommunicationMode == "v2v-rx" {
+		if msg.ClientCommunicationMode == constants.V2VRX {
 			epochRewards, err = sdk.ParseCoinNormalized(epochData.EpochV2VRX)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize coin for v2v-rx."+err.Error())
 			}
-		} else if msg.ClientCommunicationMode == "v2v-bx" {
+		} else if msg.ClientCommunicationMode == constants.V2VBX {
 			epochRewards, err = sdk.ParseCoinNormalized(epochData.EpochV2VBX)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize coin for v2v-bx."+err.Error())
@@ -121,14 +122,14 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 
 		// Generate random coolDownMultiplier
-		multiplier := int(5)
+		multiplier := int(constants.Multiplier)
 
-		vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
-		if vrfErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF."+vrfErr.Error())
+		VrfData, err := k.CreateVRF(ctx, msg.Creator, multiplier)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF.")
 		}
 
-		generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+		generatedNumber, err := strconv.ParseUint(VrfData.FinalVrv, 10, 64)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseUint] failed. vrfData.FinalVrv parse error."+err.Error())
 		}
@@ -164,7 +165,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 		k.SetMotusWallet(ctx, newMotusWallet)
 
-	} else if result == "punish" {
+	} else if result == constants.Punish {
 
 		// Update challengee score
 		scoreFloat64, err := strconv.ParseFloat(client.Score, 64)
@@ -179,12 +180,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// Generate random coolDownMultiplier
 		multiplier := int(5)
 
-		vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
-		if vrfErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF."+vrfErr.Error())
+		VrfData, err := k.CreateVRF(ctx, msg.Creator, multiplier)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF.")
 		}
 
-		generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+		generatedNumber, err := strconv.ParseUint(VrfData.FinalVrv, 10, 64)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseUint] failed. vrfData.FinalVrv parse error."+err.Error())
 		}

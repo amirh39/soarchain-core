@@ -12,11 +12,6 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 )
 
-const (
-	// EpochDuration defines how long one epoch lasts in minutes
-	EpochDuration = 30
-)
-
 func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {
 	defer telemetry.ModuleMeasureSince(types.ModuleName, time.Now(), telemetry.MetricKeyBeginBlocker)
 

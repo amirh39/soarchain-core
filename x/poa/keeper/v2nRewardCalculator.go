@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/utility"
 	"strconv"
 
@@ -22,7 +23,7 @@ func (k Keeper) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64, c
 
 	var totalMultipliers float64 = 0.0
 
-	if clientCommunicationMode == "v2n-bx" {
+	if clientCommunicationMode == constants.V2NBX {
 		allClients := k.GetAllClient(ctx)
 		if allClients == nil {
 			return 0, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[V2NRewardCalculator][GetAllClient] failed. Couldn't find any client for v2n-bx. Error: [ %T ]", err)
@@ -35,7 +36,7 @@ func (k Keeper) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64, c
 			}
 			totalMultipliers += currMultiplier
 		}
-	} else if clientCommunicationMode == "runner" {
+	} else if clientCommunicationMode == constants.Runner {
 		allRunners := k.GetAllRunner(ctx)
 		if allRunners == nil {
 			return 0, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[V2NRewardCalculator][GetAllRunner] failed. Couldn't find any client for runner. Error: [ %T ]", err)

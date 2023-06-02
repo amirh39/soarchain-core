@@ -18,28 +18,24 @@ func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelec
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[SelectRandomRunner] failed. Couldn't find a valid msg.Creator. got [ %T ]", msg.Creator)
 	}
 
-	allRunners := k.GetAllRunner(ctx)
-	if allRunners == nil {
+	runenrs := k.GetAllRunner(ctx)
+	if runenrs == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[SelectRandomRunner][GetAllRunner] failed. Couldn't find any runner.")
 	}
 
-	multiplier := int(len(allRunners))
+	factor := int(len(runenrs))
 
-	vrfData, _, vrfErr := k.CreateVRF(ctx, msg.Creator, multiplier)
-	if vrfErr != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomRunner][CreateVRF] failed. VRF error: [ %T ]", vrfErr)
+	VrfData, err := k.CreateVRF(ctx, msg.Creator, factor)
+	if err != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomRunner][CreateVRF] failed. Error: [ %T ]", err)
 	}
 
-	generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
+	generatedNumber, err := strconv.ParseUint(VrfData.FinalVrv, 10, 64)
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomRunner][ParseUint] failed. vrfData.FinalVrv parse error: [ %T ]", err)
 	}
-	var selectedRunner types.Runner
-	runenrs := k.GetAllRunner(ctx)
-	if allRunners == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[SelectRandomRunner][GetAllRunner] failed. Couldn't find any runner.")
-	}
 
+	var selectedRunner types.Runner
 	for i := 0; i < len(runenrs); i++ {
 		if i == int(generatedNumber) {
 			selectedRunner = runenrs[i]
@@ -47,24 +43,23 @@ func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelec
 	}
 
 	// record selected challenger for future referenece
-	vrf, isFound := k.GetVrfData(ctx, vrfData.Index)
+	vrf, isFound := k.GetVrfData(ctx, VrfData.Index)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[SelectRandomRunner][GetVrfData] failed. Vrf data couldn't found.")
 	}
+
 	updateVrf := types.VrfData{
-		Index:              vrf.Index,
-		Creator:            vrf.Creator,
-		Vrv:                vrf.Vrv,
-		Multiplier:         vrf.Multiplier,
-		Proof:              vrf.Proof,
-		Pubkey:             vrf.Pubkey,
-		Message:            vrf.Message,
-		ParsedVrv:          vrf.ParsedVrv,
-		FloatVrv:           vrf.FloatVrv,
-		FinalVrv:           vrf.FinalVrv,
-		FinalVrvFloat:      vrf.FinalVrvFloat,
-		SelectedChallenger: nil,
-		SelectedRunner:     &selectedRunner,
+		Index:         vrf.Index,
+		Creator:       vrf.Creator,
+		Vrv:           vrf.Vrv,
+		Multiplier:    vrf.Multiplier,
+		Proof:         vrf.Proof,
+		Pubkey:        vrf.Pubkey,
+		Message:       vrf.Message,
+		ParsedVrv:     vrf.ParsedVrv,
+		FloatVrv:      vrf.FloatVrv,
+		FinalVrv:      vrf.FinalVrv,
+		FinalVrvFloat: vrf.FinalVrvFloat,
 	}
 	k.SetVrfData(ctx, updateVrf)
 

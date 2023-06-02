@@ -21,10 +21,10 @@ func Test_VerifyGeneratedNumber(t *testing.T) {
 		{
 			desc: "Verify Valid Generated Number",
 			request: &types.QueryVerifyRandomNumberRequest{
-				Pubkey:  "66eea999dcfb6fa4df8a5d2b22ea5e637d65ff9525e5f58f5e27bdac457c0450",
-				Message: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y,1",
-				Vrv:     "4afbf8af915f46626cadcff67ea7eee354fb6b8a3645de238126355fe524cd8c",
-				Proof:   "e8cd528e10b85b629bd836b2f71a964cd4c2734f8136093d41e677b3c98fbb0e72f2f53371f6f4b068c3d05370d383f4b6e2ca59b5b71a745c7207c3dc754a0d58bd4cbbc630906c70c214cfdcbedfbd649627da37d8e53ce8cc14168b3e792b",
+				Pubkey:  GeneratedNumber_Pubkey,
+				Message: GeberatedNumber_Message,
+				Vrv:     GeberatedNumber_Vrv,
+				Proof:   GeberatedNumber_Proof,
 			},
 		},
 	} {
@@ -56,9 +56,9 @@ func Test_NotVerifyGeneratedNumber_InvalidPubkey(t *testing.T) {
 			desc: "Not Verified Generated Number",
 			request: &types.QueryVerifyRandomNumberRequest{
 				Pubkey:  "",
-				Message: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y,1",
-				Vrv:     "4afbf8af915f46626cadcff67ea7eee354fb6b8a3645de238126355fe524cd8c",
-				Proof:   "e8cd528e10b85b629bd836b2f71a964cd4c2734f8136093d41e677b3c98fbb0e72f2f53371f6f4b068c3d05370d383f4b6e2ca59b5b71a745c7207c3dc754a0d58bd4cbbc630906c70c214cfdcbedfbd649627da37d8e53ce8cc14168b3e792b",
+				Message: GeberatedNumber_Message,
+				Vrv:     GeberatedNumber_Vrv,
+				Proof:   GeberatedNumber_Proof,
 			},
 		},
 	} {
@@ -89,10 +89,10 @@ func Test_NotVerifyGeneratedNumber_InvalidMessage(t *testing.T) {
 		{
 			desc: "Not Verified Generated Number",
 			request: &types.QueryVerifyRandomNumberRequest{
-				Pubkey:  "66eea999dcfb6fa4df8a5d2b22ea5e637d65ff9525e5f58f5e27bdac457c0450",
+				Pubkey:  GeneratedNumber_Pubkey,
 				Message: "",
-				Vrv:     "4afbf8af915f46626cadcff67ea7eee354fb6b8a3645de238126355fe524cd8c",
-				Proof:   "e8cd528e10b85b629bd836b2f71a964cd4c2734f8136093d41e677b3c98fbb0e72f2f53371f6f4b068c3d05370d383f4b6e2ca59b5b71a745c7207c3dc754a0d58bd4cbbc630906c70c214cfdcbedfbd649627da37d8e53ce8cc14168b3e792b",
+				Vrv:     GeberatedNumber_Vrv,
+				Proof:   GeberatedNumber_Proof,
 			},
 		},
 	} {
@@ -123,10 +123,10 @@ func Test_NotVerifyGeneratedNumber_InvalidVRV(t *testing.T) {
 		{
 			desc: "Not Verified Generated Number",
 			request: &types.QueryVerifyRandomNumberRequest{
-				Pubkey:  "66eea999dcfb6fa4df8a5d2b22ea5e637d65ff9525e5f58f5e27bdac457c0450",
-				Message: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y,1",
+				Pubkey:  GeneratedNumber_Pubkey,
+				Message: GeberatedNumber_Message,
 				Vrv:     "",
-				Proof:   "e8cd528e10b85b629bd836b2f71a964cd4c2734f8136093d41e677b3c98fbb0e72f2f53371f6f4b068c3d05370d383f4b6e2ca59b5b71a745c7207c3dc754a0d58bd4cbbc630906c70c214cfdcbedfbd649627da37d8e53ce8cc14168b3e792b",
+				Proof:   GeberatedNumber_Proof,
 			},
 		},
 	} {
@@ -157,9 +157,9 @@ func Test_NotVerifyGeneratedNumber_InvalidProof(t *testing.T) {
 		{
 			desc: "Not Verified Generated Number",
 			request: &types.QueryVerifyRandomNumberRequest{
-				Pubkey:  "66eea999dcfb6fa4df8a5d2b22ea5e637d65ff9525e5f58f5e27bdac457c0450",
-				Message: "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y,1",
-				Vrv:     "4afbf8af915f46626cadcff67ea7eee354fb6b8a3645de238126355fe524cd8c",
+				Pubkey:  GeneratedNumber_Pubkey,
+				Message: GeberatedNumber_Message,
+				Vrv:     GeberatedNumber_Vrv,
 				Proof:   "",
 			},
 		},

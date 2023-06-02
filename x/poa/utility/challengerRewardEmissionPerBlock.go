@@ -2,6 +2,7 @@ package utility
 
 import (
 	"math"
+	"soarchain/x/poa/utility/utilConstants"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -10,10 +11,10 @@ func ChallengerRewardEmissionPerBlock(ctx sdk.Context) (float64, error) {
 
 	// Calculates reward coin emissions for each reward type
 
-	blocksPerMinute := 1.0
+	blocksPerMinute := utilConstants.BlocksPerMinute
 	currentBlockNumber := int(ctx.BlockHeight())
 
-	initialTokensPerYear := 21850083350000.0 // v2n receiver (runner) initial annual emission
+	initialTokensPerYear := utilConstants.InitialTokensPerYear // v2n receiver (runner) initial annual emission
 
 	// Number of tokens issued per year by the total number of blocks produced per year
 	tokensPerBlock := initialTokensPerYear / (blocksPerMinute * minutesPerYear)

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -15,7 +16,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	}
 
 	switch clientType {
-	case "v2v-rx":
+	case constants.V2VRX:
 		newEpochData := types.EpochData{
 			TotalEpochs: epochData.TotalEpochs,
 			EpochV2VRX:  rewardToSet.String(),
@@ -25,7 +26,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 		k.SetEpochData(ctx, newEpochData)
 
-	case "v2v-bx":
+	case constants.V2VBX:
 		newEpochData := types.EpochData{
 			TotalEpochs: epochData.TotalEpochs,
 			EpochV2VRX:  epochData.EpochV2VRX,
@@ -35,7 +36,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 		k.SetEpochData(ctx, newEpochData)
 
-	case "v2n-bx":
+	case constants.V2NBX:
 		newEpochData := types.EpochData{
 			TotalEpochs: epochData.TotalEpochs,
 			EpochV2VRX:  epochData.EpochV2VRX,
@@ -45,7 +46,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 		k.SetEpochData(ctx, newEpochData)
 
-	case "runner":
+	case constants.Runner:
 		newEpochData := types.EpochData{
 			TotalEpochs: epochData.TotalEpochs,
 			EpochV2VRX:  epochData.EpochV2VRX,

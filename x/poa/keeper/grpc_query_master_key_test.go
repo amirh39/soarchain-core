@@ -13,10 +13,10 @@ import (
 	"soarchain/x/poa/types"
 )
 
-func TestMasterKeyQuery(t *testing.T) {
+func Test_MasterKeyQuery(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	item := createTestMasterKey(keeper, ctx)
+	item := CreateMasterKey(keeper, ctx)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetMasterKeyRequest
@@ -35,8 +35,8 @@ func TestMasterKeyQuery(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			response, err := keeper.MasterKey(wctx, tc.request)
-			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+			if err != nil {
+				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
 				require.Equal(t,

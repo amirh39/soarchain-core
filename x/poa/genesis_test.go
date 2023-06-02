@@ -47,14 +47,6 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
-		VrfUserList: []types.VrfUser{
-			{
-				Index: "0",
-			},
-			{
-				Index: "1",
-			},
-		},
 		EpochData: types.EpochData{
 			TotalEpochs: 99,
 			EpochV2VRX:  "61",
@@ -98,7 +90,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.ChallengerList, got.ChallengerList)
 	require.ElementsMatch(t, genesisState.RunnerList, got.RunnerList)
 	require.ElementsMatch(t, genesisState.VrfDataList, got.VrfDataList)
-	require.ElementsMatch(t, genesisState.VrfUserList, got.VrfUserList)
 	require.Equal(t, genesisState.EpochData, got.EpochData)
 	require.ElementsMatch(t, genesisState.MotusWalletList, got.MotusWalletList)
 	require.Equal(t, genesisState.MasterKey, got.MasterKey)

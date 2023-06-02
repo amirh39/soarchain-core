@@ -27,10 +27,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.VrfDataList {
 		k.SetVrfData(ctx, elem)
 	}
-	// Set all the vrfUser
-	for _, elem := range genState.VrfUserList {
-		k.SetVrfUser(ctx, elem)
-	}
+
 	// Set if defined
 	k.SetEpochData(ctx, genState.EpochData)
 
@@ -61,7 +58,6 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.RunnerList = k.GetAllRunner(ctx)
 
 	genesis.VrfDataList = k.GetAllVrfData(ctx)
-	genesis.VrfUserList = k.GetAllVrfUser(ctx)
 	// Get all epochData
 	epochData, found := k.GetEpochData(ctx)
 	if found {

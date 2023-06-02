@@ -55,14 +55,6 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
-				VrfUserList: []types.VrfUser{
-					{
-						Index: "0",
-					},
-					{
-						Index: "1",
-					},
-				},
 				EpochData: types.EpochData{
 					TotalEpochs: 81,
 					EpochV2VRX:  "46",
@@ -141,20 +133,6 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated vrfData",
 			genState: &types.GenesisState{
 				VrfDataList: []types.VrfData{
-					{
-						Index: "0",
-					},
-					{
-						Index: "0",
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "duplicated vrfUser",
-			genState: &types.GenesisState{
-				VrfUserList: []types.VrfUser{
 					{
 						Index: "0",
 					},
