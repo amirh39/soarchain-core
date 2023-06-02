@@ -1,6 +1,6 @@
 {
-  "genesis_time": "2023-04-24T23:34:07.733409932Z",
-  "chain_id": "soarchaindevnet",
+  "genesis_time": "2023-05-23T22:22:14.736666144Z",
+  "chain_id": "soarchaintestnet",
   "initial_height": "1",
   "consensus_params": {
     "block": {
@@ -33,14 +33,7 @@
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar136kdkhhuu5ure7r6gxcacr6gdycr4jlrqtmc4q",
-          "pub_key": null,
-          "account_number": "0",
-          "sequence": "0"
-        },
-        {
-          "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a",
+          "address": "soar1caffzw6akr97yxrj4c82thrnttwtsszgtl5azq",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
@@ -54,35 +47,84 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar1u77apnzntlu0aenel54ga604qe5gdywenjz666",
+          "address": "soar1qyhtcgw54973l3tz7fag27480q5qzt7cmsv9th",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar1h40pm88vuj798dlqkj04wv5ma9cwuleflfnys7",
+          "address": "soar1wfly3s05fvtuqs7lpesr8nas6rydm96jh88m9v",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar10qasdawg5uzlc2gx6c3zhtuj70kuhltj3jzv0j",
+          "address": "soar1743qv44dgty0zv4t7vnnzdfhd7ftjfsmpreggg",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar1grqn7pj6m9jqxf9gm700re24sn4rky7necngau",
+          "address": "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "soar14hmfknk9556d4ehs04ga90n3u7se47jz5pk3wr",
+          "address": "soar1paaxlh6luwlxvv9smf935nj53hz0yk7wna2hu2",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "soar1m6u0zxu4hkg4ycqawgrvmnlqhudqr32ydgal0m",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "soar1hmj5fccg6nuns2scxz0pvwqgyy44ntp2knvnfa",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "soar1s6n8jr600zhnefzdgv0d5z5mdhkx7au8k0glh0",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "soar1hcr2r7v54gdus8ud7u7vm0wggt9y7pp2qfxssc",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "soar1nz5tc5q4fr7xcwwwr0j4nvh4nhynptqvwvk903",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "soar1avu0w07kp8jujzpr530frjx4uafxts32ahvu8s",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "soar13fn4x22x9dq9n995jfwgy4ytku55xl80em84p4",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
@@ -99,73 +141,127 @@
       },
       "balances": [
         {
-          "address": "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8",
+          "address": "soar1qyhtcgw54973l3tz7fag27480q5qzt7cmsv9th",
           "coins": [
             {
-              "denom": "umotus",
-              "amount": "10000000000000"
-            }
-          ]
-        },
-        {
-          "address": "soar1grqn7pj6m9jqxf9gm700re24sn4rky7necngau",
-          "coins": [
-            {
-              "denom": "umotus",
-              "amount": "100700000000000"
-            }
-          ]
-        },
-        {
-          "address": "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a",
-          "coins": [
-            {
-              "denom": "umotus",
-              "amount": "10000000000000"
-            }
-          ]
-        },
-        {
-          "address": "soar10qasdawg5uzlc2gx6c3zhtuj70kuhltj3jzv0j",
-          "coins": [
-            {
-              "denom": "umotus",
-              "amount": "180500000000000"
-            }
-          ]
-        },
-        {
-          "address": "soar136kdkhhuu5ure7r6gxcacr6gdycr4jlrqtmc4q",
-          "coins": [
-            {
-              "denom": "umotus",
-              "amount": "10000000000000"
-            }
-          ]
-        },
-        {
-          "address": "soar14hmfknk9556d4ehs04ga90n3u7se47jz5pk3wr",
-          "coins": [
-            {
-              "denom": "umotus",
-              "amount": "100000000000000"
-            }
-          ]
-        },
-        {
-          "address": "soar1h40pm88vuj798dlqkj04wv5ma9cwuleflfnys7",
-          "coins": [
-            {
-              "denom": "umotus",
+              "denom": "utmotus",
               "amount": "47500000000000"
             }
           ]
         },
         {
-          "address": "soar1u77apnzntlu0aenel54ga604qe5gdywenjz666",
+          "address": "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8",
           "coins": [
             {
-              "denom": "umotus",
+              "denom": "utmotus",
+              "amount": "10000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1paaxlh6luwlxvv9smf935nj53hz0yk7wna2hu2",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "285000000000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1wfly3s05fvtuqs7lpesr8nas6rydm96jh88m9v",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "100700000000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1s6n8jr600zhnefzdgv0d5z5mdhkx7au8k0glh0",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "36100000000000"
+            }
+          ]
+        },
+        {
+          "address": "soar13fn4x22x9dq9n995jfwgy4ytku55xl80em84p4",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "10000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1nz5tc5q4fr7xcwwwr0j4nvh4nhynptqvwvk903",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "10000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1hcr2r7v54gdus8ud7u7vm0wggt9y7pp2qfxssc",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "36100000000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1hmj5fccg6nuns2scxz0pvwqgyy44ntp2knvnfa",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "36100000000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "36100000000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1caffzw6akr97yxrj4c82thrnttwtsszgtl5azq",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "10000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1m6u0zxu4hkg4ycqawgrvmnlqhudqr32ydgal0m",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "36100000000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1avu0w07kp8jujzpr530frjx4uafxts32ahvu8s",
+          "coins": [
+            {
+              "denom": "utmotus",
+              "amount": "10000000"
+            }
+          ]
+        },
+        {
+          "address": "soar1743qv44dgty0zv4t7vnnzdfhd7ftjfsmpreggg",
+          "coins": [
+            {
+              "denom": "utmotus",
               "amount": "77425000000000"
             }
           ]
@@ -177,22 +273,22 @@
           "description": "The native staking token of the Soarchain-core.",
           "denom_units": [
             {
-              "denom": "umotus",
+              "denom": "utmotus",
               "exponent": 0,
               "aliases": [
-                "micromotus"
+                "microtmotus"
               ]
             },
             {
-              "denom": "motus",
+              "denom": "tmotus",
               "exponent": 6,
               "aliases": []
             }
           ],
-          "base": "umotus",
-          "display": "motus",
-          "name": "motus",
-          "symbol": "motus"
+          "base": "utmotus",
+          "display": "tmotus",
+          "name": "tmotus",
+          "symbol": "tmotus"
         }
       ]
     },
@@ -202,7 +298,7 @@
     },
     "crisis": {
       "constant_fee": {
-        "denom": "umotus",
+        "denom": "utmotus",
         "amount": "1000"
       }
     },
@@ -239,7 +335,7 @@
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
                 "description": {
-                  "moniker": "devnet-validator-apollo",
+                  "moniker": "cartel",
                   "identity": "",
                   "website": "",
                   "security_contact": "",
@@ -251,19 +347,19 @@
                   "max_change_rate": "0.010000000000000000"
                 },
                 "min_self_delegation": "1",
-                "delegator_address": "soar14hmfknk9556d4ehs04ga90n3u7se47jz5pk3wr",
-                "validator_address": "soarvaloper14hmfknk9556d4ehs04ga90n3u7se47jzc5zquy",
+                "delegator_address": "soar1caffzw6akr97yxrj4c82thrnttwtsszgtl5azq",
+                "validator_address": "soarvaloper1caffzw6akr97yxrj4c82thrnttwtsszg82qvs8",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "9km2d1PI+yfYpVBK6gnayt7cCxdb49oWQuXyfe3nntM="
+                  "key": "tsb9sjEtlO766xsTtxYWFIv3xz0Pn8/x7TlPn20P1AU="
                 },
                 "value": {
-                  "denom": "umotus",
-                  "amount": "1000000"
+                  "denom": "utmotus",
+                  "amount": "2000000"
                 }
               }
             ],
-            "memo": "a76be618efb2d0f585691b1f7a8ec414a5c75a2f@10.128.0.36:26656",
+            "memo": "57d88b6ba7c4a8ab4fdcf9390f0717c831e83b6f@10.208.0.2:26656",
             "timeout_height": "0",
             "extension_options": [],
             "non_critical_extension_options": []
@@ -273,7 +369,7 @@
               {
                 "public_key": {
                   "@type": "/cosmos.crypto.secp256k1.PubKey",
-                  "key": "A3m7uAdYxbrwQB1XVk8Nv2EGBcYatJAk27I/DqF08ER/"
+                  "key": "AtDf1hzgbBIgPPqOsk5/ZQTtMuuhCpoYm0DQGZj8ZCkY"
                 },
                 "mode_info": {
                   "single": {
@@ -291,7 +387,7 @@
             }
           },
           "signatures": [
-            "QvpVxL1j/+tWgxH+sr2IxIEQQ5/lqb+5AadRLsq+2CpnZKMATJgp9skqIOLs+6UApJjI1kBZS0Ue071081w8yQ=="
+            "AEd9uu38AznA9B4D71MnM8GtzbrDzDlMDhn9R15UAjhEk1A8bj3o+v03MKGDG4fChYUtrEA8GrMZb6Nkbog9Cg=="
           ]
         }
       ]
@@ -304,14 +400,14 @@
       "deposit_params": {
         "min_deposit": [
           {
-            "denom": "umotus",
+            "denom": "utmotus",
             "amount": "10000000"
           }
         ],
         "max_deposit_period": "172800s"
       },
       "voting_params": {
-        "voting_period": "172800s"
+        "voting_period": "600s"
       },
       "tally_params": {
         "quorum": "0.334000000000000000",
@@ -354,7 +450,7 @@
     },
     "mint": {
       "params": {
-        "mint_denom": "umotus"
+        "mint_denom": "utmotus"
       }
     },
     "monitoringp": {
@@ -382,15 +478,14 @@
       "clientList": [],
       "challengerList": [],
       "runnerList": [],
-      "guardList": [],
       "vrfDataList": [],
       "vrfUserList": [],
       "epochData": {
         "totalEpochs": "0",
-        "epochV2VRX": "0umotus",
-        "epochV2VBX": "0umotus",
-        "epochV2NBX": "0umotus",
-        "epochRunner": "0umotus"
+        "epochV2VRX": "0utmotus",
+        "epochV2VBX": "0utmotus",
+        "epochV2NBX": "0utmotus",
+        "epochRunner": "0utmotus"
       },
       "motusWalletList": [],
       "masterKey": {
@@ -416,7 +511,7 @@
     },
     "soarmint": {
       "params": {
-        "mint_denom": "umotus",
+        "mint_denom": "utmotus",
         "blocks_per_year": "525600"
       },
       "minter": {
@@ -433,7 +528,7 @@
         "max_validators": 100,
         "max_entries": 7,
         "historical_entries": 10000,
-        "bond_denom": "umotus"
+        "bond_denom": "utmotus"
       },
       "last_total_power": "0",
       "last_validator_powers": [],
