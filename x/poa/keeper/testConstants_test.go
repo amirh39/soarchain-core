@@ -102,6 +102,17 @@ func CreateRewardCapClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []type
 	return items
 }
 
+func CreateInValidClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
+	items := make([]types.Client, n)
+	for i := range items {
+		items[i].Index = ""
+		items[i].Address = ""
+
+		keeper.SetClient(ctx, items[i])
+	}
+	return items
+}
+
 func CreateInValidClientScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
@@ -343,4 +354,11 @@ const (
 	StakedAmount = "2000000000utmotus"
 	IP           = "104.248.142.45"
 	PUBLICKEY    = "3056301006072a8648ce3d020106052b8104000a034200044c1db1a1b1e19d6c423b1af88203ce79b6e4705d1dedaf65daeb0eedbe2c1fc6db010fa7f81443229d90181691df2e209be1c1278af42cc0f5ade03db549a795"
+)
+
+const (
+	TV2VRX  = "v2v-rx"
+	TV2VBX  = "v2v-bx"
+	TV2NBX  = "v2n-bx"
+	TRunner = "runner"
 )
