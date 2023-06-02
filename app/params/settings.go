@@ -10,10 +10,10 @@ const (
 	MinDeposit = 10000000
 
 	// BondDenomAlias defines an alias for BondDenom.
-	BondDenomAlias = "micromotus"
+	BondDenomAlias = "microtmotus"
 
 	// DisplayDenom defines the name, symbol, and display value of the motus token.
-	DisplayDenom = "motus"
+	DisplayDenom = "tmotus"
 
 	MotusExponent = 6
 
