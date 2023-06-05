@@ -16,6 +16,17 @@ func Test_GenClient(t *testing.T) {
 
 	ctx := sdk.UnwrapSDKContext(context)
 
+	item := types.MasterKey{MasterCertificate: MASTER_CERTIFICATE,
+		MasterAccount: MASTER_ACCOUNT,
+	}
+	k.SetMasterKey(ctx, item)
+
+	registeredFactoryKey, err := msgServer.RegisterFactoryKey(context, &types.MsgRegisterFactoryKey{
+		Creator:     CREATOR,
+		FactoryCert: FACTORY_CERT,
+	})
+	require.NotNil(t, registeredFactoryKey)
+
 	clients := SetupClientEntity(1)
 	k.SetClient(ctx, clients[0])
 
@@ -23,7 +34,7 @@ func Test_GenClient(t *testing.T) {
 	k.SetMotusWallet(ctx, motusWallet)
 
 	res, err := msgServer.GenClient(context, &types.MsgGenClient{
-		Creator:     ADDRESS,
+		Creator:     CertCreator,
 		Certificate: CERTIFICATE,
 		Signature:   Signature,
 	})
