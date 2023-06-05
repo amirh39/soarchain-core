@@ -31,7 +31,7 @@ func CreateNRunner(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner
 		items[i].RewardMultiplier = RunnerRewardMultiplier
 		items[i].StakedAmount = RunnerStakedAmount
 		items[i].NetEarnings = RunnerNetEarnings
-		items[i].IpAddr = ""
+		items[i].IpAddr = "45.12.65.78"
 		items[i].LastTimeChallenged = RunnerLastTimeChallenged
 		items[i].CoolDownTolerance = RunnerCoolDownTolerance
 		keeper.SetRunner(ctx, items[i])
@@ -71,6 +71,7 @@ func CreateNClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client
 	items := make([]types.Client, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
+		items[i].Address = strconv.Itoa(i)
 
 		keeper.SetClient(ctx, items[i])
 	}
@@ -135,6 +136,15 @@ func SetupClientWithInvalidScore(n int) []types.Client {
 		items[i].Score = NotValid_Score
 		items[i].LastTimeChallenged = NotValid_LastTimeChallenged
 		items[i].CoolDownTolerance = NotValid_CoolDownTolerance
+	}
+	return items
+}
+
+func SetupClientToUnregistration(n int) []types.Client {
+	items := make([]types.Client, n)
+	for i := range items {
+		items[i].Index = ClientPubKey
+		items[i].Address = CREATOR
 	}
 	return items
 }
@@ -247,6 +257,26 @@ func CreateNVrfData(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.VrfDa
 	return items
 }
 
+func CreatesChallengerForPagination(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
+	items := make([]types.Challenger, n)
+	for i := range items {
+		items[i].Address = strconv.Itoa(i)
+
+		keeper.SetChallenger(ctx, items[i])
+	}
+	return items
+}
+
+func CreatesRunnerForPagination(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner {
+	items := make([]types.Runner, n)
+	for i := range items {
+		items[i].Address = strconv.Itoa(i)
+
+		keeper.SetRunner(ctx, items[i])
+	}
+	return items
+}
+
 const (
 	ClientScore              = "61.472555534405885"
 	ClientRewardMultiplier   = "3778.8750839306153"
@@ -268,7 +298,7 @@ const (
 
 const (
 	ClientPubKey                = "3059301306072a8648ce3d020106082a8648ce3d0301070342000402a530fa9267e1518e4d9069de38f2aecd3b508a2aca8b6d9cbd1b36b3b412e6db603ba6230728a7803acfdc8e57a21d24f648e10db24b4c957a2b2dad9a5817"
-	ClientAddress               = "soar1k9ee7xx2mqzehrt56y7ezyqnegzfy8afrs754n"
+	ClientAddress               = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
 	ClientScroe                 = "80"
 	LastTimeChallenged          = "2023-01-06 11:05:17.40125 +0000 UTC"
 	CoolDownTolerance           = "1"
@@ -341,7 +371,7 @@ const (
 )
 
 const (
-	MotusWallet_Index = "soar1k9ee7xx2mqzehrt56y7ezyqnegzfy8afrs754n"
+	MotusWallet_Index = "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8"
 	MotusWalletAmount = "100utmotus"
 )
 
