@@ -29,3 +29,9 @@ const (
 	PubKey  = "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251"
 	Address = "soar1uajy2t7tyamnuqms7l65ka4wtwgrvey0rve34t"
 )
+
+const (
+	Omega = 2
+	Tau   = 0
+	Psi   = 0
+)
