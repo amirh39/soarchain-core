@@ -13,7 +13,7 @@ func IsChallengeable(ctx sdk.Context, score string, lastChallengeTime string, co
 	// Convert cooldownTolerance to uint64
 	cooldownToleranceUint64, err := strconv.ParseUint(cooldownTolerance, 10, 64)
 	if err != nil {
-		return false, 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[IsChallengeable][ParseUint] failed. Couldn't convert to uint64."+err.Error())
+		return false, 0, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[IsChallengeable][ParseUint] failed. Couldn't convert to uint64. Error: [ %T ]", err)
 	}
 
 	if cooldownToleranceUint64 < 1 || cooldownToleranceUint64 > 5 {
@@ -23,7 +23,7 @@ func IsChallengeable(ctx sdk.Context, score string, lastChallengeTime string, co
 	// Convert lastChallengeTime to int
 	t, err := time.Parse("2006-01-02 15:04:05.999999 -0700 MST", lastChallengeTime)
 	if err != nil {
-		return false, 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[IsChallengeable] failed. Couldn't parse lastChallengeTime."+err.Error())
+		return false, 0, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[IsChallengeable] failed. Couldn't parse lastChallengeTime. Error: [ %T ]", err)
 	}
 
 	// Convert the time.Time value to a Unix timestamp (number of seconds since January 1, 1970 UTC).
@@ -45,7 +45,7 @@ func IsChallengeable(ctx sdk.Context, score string, lastChallengeTime string, co
 	// Convert score to float64
 	scoreFloat64, err := strconv.ParseFloat(score, 64)
 	if err != nil {
-		return false, 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[IsChallengeable][ParseFloat] failed. Couldn't convert score to Float64."+err.Error())
+		return false, 0, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[IsChallengeable][ParseFloat] failed. Couldn't convert score to Float64. Error: [ %T ]", err)
 	}
 
 	// Calculate challengeability
@@ -55,5 +55,4 @@ func IsChallengeable(ctx sdk.Context, score string, lastChallengeTime string, co
 		return true, C, nil
 	}
 	return false, C, nil
-
 }
