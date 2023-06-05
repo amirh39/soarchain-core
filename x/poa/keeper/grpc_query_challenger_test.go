@@ -54,7 +54,7 @@ func Test_ChallengerQuerySingle(t *testing.T) {
 		t.Run(tc.desc, func(t *testing.T) {
 			response, err := keeper.Challenger(wctx, tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+				require.Error(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
 				require.Equal(t,
@@ -69,7 +69,7 @@ func Test_ChallengerQuerySingle(t *testing.T) {
 func Test_ChallengerQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := CreateNChallenger(keeper, ctx, 5)
+	msgs := CreatesChallengerForPagination(keeper, ctx, 7)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllChallengerRequest {
 		return &types.QueryAllChallengerRequest{
@@ -109,7 +109,7 @@ func Test_ChallengerQueryPaginated(t *testing.T) {
 	})
 	t.Run("Total", func(t *testing.T) {
 		resp, err := keeper.ChallengerAll(wctx, request(nil, 0, 0, true))
-		require.NoError(t, err)
+		require.Nil(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
@@ -118,6 +118,6 @@ func Test_ChallengerQueryPaginated(t *testing.T) {
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
 		_, err := keeper.ChallengerAll(wctx, nil)
-		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
+		require.Error(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

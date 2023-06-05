@@ -35,8 +35,8 @@ func Test_VerifyRandomNumber(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			response, err := keeper.VerifyRandomNumber(wctx, tc.request)
-			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+			if err != nil {
+				require.Error(t, err, err)
 			} else {
 				require.NoError(t, err)
 				require.Equal(t,

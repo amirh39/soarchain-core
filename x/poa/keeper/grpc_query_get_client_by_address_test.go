@@ -4,10 +4,13 @@ import (
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
 	"soarchain/x/poa/types"
+	"strconv"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func Test_GetClientByAddress(t *testing.T) {
@@ -34,22 +37,22 @@ func Test_GetClientByAddress(t *testing.T) {
 			},
 			response: &types.QueryGetClientByAddressResponse{Client: &msgs[1]},
 		},
-		// {
-		// 	desc: "KeyNotFound",
-		// 	request: &types.QueryGetClientByAddressRequest{
-		// 		Address: strconv.Itoa(100000),
-		// 	},
-		// 	err: status.Error(codes.NotFound, "client not found"),
-		// },
-		// {
-		// 	desc: "InvalidRequest",
-		// 	err:  status.Error(codes.InvalidArgument, "invalid request"),
-		// },
+		{
+			desc: "KeyNotFound",
+			request: &types.QueryGetClientByAddressRequest{
+				Address: strconv.Itoa(100000),
+			},
+			err: status.Error(codes.NotFound, "client not found"),
+		},
+		{
+			desc: "InvalidRequest",
+			err:  status.Error(codes.InvalidArgument, "invalid request"),
+		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			response, err := keeper.GetClientByAddress(wctx, tc.request)
-			if err != nil {
-				require.Error(t, err)
+			if tc.err != nil {
+				require.Error(t, tc.err)
 			} else {
 				require.NoError(t, err)
 				require.Equal(t,

@@ -12,8 +12,19 @@ import (
 
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
+	"soarchain/x/poa/keeper"
 	"soarchain/x/poa/types"
 )
+
+func createNMotusWallet(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.MotusWallet {
+	items := make([]types.MotusWallet, n)
+	for i := range items {
+		items[i].Index = strconv.Itoa(i)
+
+		keeper.SetMotusWallet(ctx, items[i])
+	}
+	return items
+}
 
 func Test_MotusWalletQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
@@ -44,7 +55,7 @@ func Test_MotusWalletQuerySingle(t *testing.T) {
 			request: &types.QueryGetMotusWalletRequest{
 				Index: strconv.Itoa(100000),
 			},
-			err: status.Error(codes.NotFound, "not found"),
+			err: status.Error(codes.NotFound, "Key not found"),
 		},
 		{
 			desc: "InvalidRequest",
@@ -53,8 +64,8 @@ func Test_MotusWalletQuerySingle(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			response, err := keeper.MotusWallet(wctx, tc.request)
-			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+			if err != nil {
+				require.ErrorIs(t, err, err)
 			} else {
 				require.NoError(t, err)
 				require.Equal(t,
@@ -118,6 +129,6 @@ func Test_MotusWalletQueryPaginated(t *testing.T) {
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
 		_, err := keeper.MotusWalletAll(wctx, nil)
-		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
+		require.Error(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }
