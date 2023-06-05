@@ -2,25 +2,17 @@ package utility
 
 import (
 	"math"
+	"soarchain/x/poa/utility/utilConstants"
 )
 
 func CalculateRewardMultiplier(score float64) float64 {
-
-	type NetworkParams struct {
-		Omega float64
-		Tau   float64
-		Psi   float64
-	}
-
-	// Network parameteres
-	networkParams := NetworkParams{Omega: 1, Tau: 0, Psi: 0}
 
 	if score < 50 {
 		return 0
 	}
 
 	// rewardMultiplier = (Sω)∗(1−(τ∗ψ))
-	rewardMultiplier := (math.Pow(score, networkParams.Omega)) * (1 - (networkParams.Tau * networkParams.Psi))
+	rewardMultiplier := (math.Pow(score, utilConstants.Omega)) * (1 - (utilConstants.Tau * utilConstants.Psi))
 
 	return rewardMultiplier
 }
