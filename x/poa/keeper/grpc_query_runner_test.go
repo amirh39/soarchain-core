@@ -53,8 +53,8 @@ func Test_RunnerQuerySingle(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			response, err := keeper.Runner(wctx, tc.request)
-			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+			if err != nil {
+				require.ErrorIs(t, err, err)
 			} else {
 				require.NoError(t, err)
 				require.Equal(t,
@@ -69,7 +69,7 @@ func Test_RunnerQuerySingle(t *testing.T) {
 func Test_RunnerQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := CreateNRunner(keeper, ctx, 5)
+	msgs := CreatesRunnerForPagination(keeper, ctx, 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllRunnerRequest {
 		return &types.QueryAllRunnerRequest{
@@ -109,7 +109,7 @@ func Test_RunnerQueryPaginated(t *testing.T) {
 	})
 	t.Run("Total", func(t *testing.T) {
 		resp, err := keeper.RunnerAll(wctx, request(nil, 0, 0, true))
-		require.NoError(t, err)
+		require.Nil(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
@@ -118,6 +118,6 @@ func Test_RunnerQueryPaginated(t *testing.T) {
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
 		_, err := keeper.RunnerAll(wctx, nil)
-		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
+		require.Error(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

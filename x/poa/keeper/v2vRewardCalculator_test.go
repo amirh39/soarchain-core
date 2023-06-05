@@ -13,7 +13,7 @@ func Test_V2VRewardCalculator(t *testing.T) {
 	clients := CreateRewardCapClient(keeper, ctx, 10)
 	t.Log("clients", clients)
 
-	res, err := keeper.V2VRewardCalculator(ctx, 4, "v2v-rx")
+	res, err := keeper.V2VRewardCalculator(ctx, 4, TV2VRX)
 
 	t.Log("response", res)
 	t.Log("err", err)
@@ -28,7 +28,7 @@ func Test_V2VRewardCalculator_NotValidClients(t *testing.T) {
 	clients := CreateNClient(keeper, ctx, 10)
 	t.Log("clients", clients)
 
-	res, err := keeper.V2NRewardCalculator(ctx, 4, "v2v-rx")
+	res, err := keeper.V2NRewardCalculator(ctx, 4, TV2VRX)
 
 	t.Log("response", res)
 	t.Log("err", err)
@@ -45,7 +45,7 @@ func Test_V2VRewardCalculator_NotValidRewardMultiplier(t *testing.T) {
 	clients := CreateNClient(keeper, ctx, 10)
 	t.Log("clients", clients)
 
-	res, err := keeper.V2NRewardCalculator(ctx, 4, "runner")
+	res, err := keeper.V2NRewardCalculator(ctx, 4, TV2VRX)
 
 	t.Log("response", res)
 	t.Log("err", err)

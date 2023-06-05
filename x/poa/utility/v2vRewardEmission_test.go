@@ -2,6 +2,7 @@ package utility
 
 import (
 	"soarchain/x/poa/constants"
+	"soarchain/x/poa/utility/utilConstants"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -13,10 +14,10 @@ func Test_V2VRewardEmissionPerBlock(t *testing.T) {
 		currentBlockNumber     int
 		expectedTokensPerBlock int
 	}{
-		{0, 373668092100 / (1 * minutesPerYear)},
-		{600000, 373668092100 / (1 * minutesPerYear)},
-		{2102400, 373668092100 / (1 * minutesPerYear) / 2},
-		{3679200, 373668092100 / (1 * minutesPerYear) / 4},
+		{0, utilConstants.V2VReceiverInitialAnnual / (1 * minutesPerYear)},
+		{600000, utilConstants.V2VReceiverInitialAnnual / (1 * minutesPerYear)},
+		{2102400, utilConstants.V2VReceiverInitialAnnual / (1 * minutesPerYear) / 2},
+		{3679200, utilConstants.V2VReceiverInitialAnnual / (1 * minutesPerYear) / 4},
 	}
 
 	for _, test := range tests {

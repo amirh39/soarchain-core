@@ -16,14 +16,25 @@ func Test_UnregisterClient(t *testing.T) {
 
 	ctx := sdk.UnwrapSDKContext(context)
 
-	client := SetupClientEntity(1)
-	k.SetClient(ctx, client[0])
+	item := types.MasterKey{MasterCertificate: MASTER_CERTIFICATE,
+		MasterAccount: MASTER_ACCOUNT,
+	}
+	k.SetMasterKey(ctx, item)
 
-	motusWallet := SetupMotusWalletEntityByClient(client[0])
+	registeredFactoryKey, err := msgServer.RegisterFactoryKey(context, &types.MsgRegisterFactoryKey{
+		Creator:     CREATOR,
+		FactoryCert: FACTORY_CERT,
+	})
+	require.NotNil(t, registeredFactoryKey)
+
+	clients := SetupClientToUnregistration(1)
+	k.SetClient(ctx, clients[0])
+
+	motusWallet := SetupMotusWalletEntityByClient(clients[0])
 	k.SetMotusWallet(ctx, motusWallet)
 
 	res, err := msgServer.UnregisterClient(context, &types.MsgUnregisterClient{
-		Creator: ClientAddress,
+		Creator: CREATOR,
 		Pubkey:  ClientPubKey,
 	})
 
