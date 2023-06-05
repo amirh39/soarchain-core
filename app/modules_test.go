@@ -6,7 +6,7 @@ import (
 
 	param "soarchain/app/params"
 
-	"github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/stretchr/testify/assert"
 )
@@ -25,10 +25,7 @@ func Test_newGovModule(t *testing.T) {
 	// uint which is unrelated to the test here.
 	_ = json.Unmarshal(raw, &govGenesisState)
 
-	want := []types.Coin{{
-		Denom:  param.BondDenom,
-		Amount: types.NewInt(10000000),
-	}}
+	want := sdk.NewCoins(sdk.NewCoin(param.BondDenom, sdk.NewInt(10000000)))
 
 	assert.Equal(t, want, govGenesisState.DepositParams.MinDeposit)
 }
