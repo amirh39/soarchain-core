@@ -9,11 +9,12 @@ const TypeMsgRunnerChallenge = "runner_challenge"
 
 var _ sdk.Msg = &MsgRunnerChallenge{}
 
-func NewMsgRunnerChallenge(creator string, runnerPubkey string, clientPubkeys []string) *MsgRunnerChallenge {
+func NewMsgRunnerChallenge(creator string, runnerPubkey string, clientPubkeys []string, challengeResult string) *MsgRunnerChallenge {
 	return &MsgRunnerChallenge{
-		Creator:       creator,
-		RunnerpubKey:  runnerPubkey,
-		ClientPubkeys: clientPubkeys,
+		Creator:         creator,
+		RunnerpubKey:    runnerPubkey,
+		ClientPubkeys:   clientPubkeys,
+		ChallengeResult: challengeResult,
 	}
 }
 
