@@ -92,6 +92,5 @@ func (k Keeper) GetChallengerByType(
 	if val.Type != Type {
 		return val, false
 	}
-
 	return val, true
 }
