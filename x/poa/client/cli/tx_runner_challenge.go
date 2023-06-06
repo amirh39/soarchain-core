@@ -18,12 +18,13 @@ var _ = strconv.Itoa(0)
 
 func CmdRunnerChallenge() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "runner-challenge [runner-address] [v2nbx-device-array]",
+		Use:   "runner-challenge [runner-address] [v2nbx-device-array] [challenge-result]",
 		Short: "Broadcast message runner-challenge",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argRunnerAddress := args[0]
 			argClientPubkeys := strings.Split(args[1], constants.ListSeparator)
+			argChallengeResult := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -34,6 +35,7 @@ func CmdRunnerChallenge() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				argRunnerAddress,
 				argClientPubkeys,
+				argChallengeResult,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
