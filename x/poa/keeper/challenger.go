@@ -89,7 +89,7 @@ func (k Keeper) GetChallengerByType(
 	))
 
 	k.cdc.MustUnmarshal(b, &val)
-	if b == nil || val.Type != Type {
+	if val.Type != Type {
 		return val, false
 	}
 
