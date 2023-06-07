@@ -216,14 +216,19 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	challenger, found := k.GetChallengerByType(ctx, msg.Creator, constants.V2NChallengerType)
-
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
 
-	k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey, msg.ChallengeResult)
+	err := k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey, msg.ChallengeResult)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	}
 
-	k.updateClient(ctx, msg)
+	err = k.updateClient(ctx, msg)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	}
 
 	/** Update challenger info after the successfull reward session */
 	k.updateChallenger(ctx, challenger)
