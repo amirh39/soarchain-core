@@ -20,7 +20,7 @@ func CmdRunnerChallenge() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "runner-challenge [runner-address] [v2nbx-device-array] [challenge-result]",
 		Short: "Broadcast message runner-challenge",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argRunnerAddress := args[0]
 			argClientPubkeys := strings.Split(args[1], constants.ListSeparator)
