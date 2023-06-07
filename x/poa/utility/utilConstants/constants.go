@@ -31,7 +31,7 @@ const (
 )
 
 const (
-	Omega = 2
+	Omega = 1
 	Tau   = 0
 	Psi   = 0
 )
