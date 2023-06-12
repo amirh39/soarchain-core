@@ -48,7 +48,7 @@ func V2NRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) 
 
 	// Calculates reward coin emissions for each reward type
 
-	blocksPerMinute := utilConstants.V2VRewardEmissionBlockPerYear
+	blocksPerMinute := utilConstants.BlocksPerMinute
 	blocksPerEpoch := utilConstants.BlocksPerEpoch
 	currentBlockNumber := int(ctx.BlockHeight())
 
