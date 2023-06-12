@@ -14,10 +14,10 @@ func Test_V2VRewardEmissionPerBlock(t *testing.T) {
 		currentBlockNumber     int
 		expectedTokensPerBlock int
 	}{
-		{0, utilConstants.V2VReceiverInitialAnnual / (1 * minutesPerYear)},
-		{600000, utilConstants.V2VReceiverInitialAnnual / (1 * minutesPerYear)},
-		{2102400, utilConstants.V2VReceiverInitialAnnual / (1 * minutesPerYear) / 2},
-		{3679200, utilConstants.V2VReceiverInitialAnnual / (1 * minutesPerYear) / 4},
+		{0, int(utilConstants.V2VReceiverInitialAnnual) / (1 * minutesPerYear)},
+		{600000, int(utilConstants.V2VReceiverInitialAnnual) / (1 * minutesPerYear)},
+		{2102400, int(utilConstants.V2VReceiverInitialAnnual) / (1 * minutesPerYear) / 2},
+		{3679200, int(utilConstants.V2VReceiverInitialAnnual) / (1 * minutesPerYear) / 4},
 	}
 
 	for _, test := range tests {

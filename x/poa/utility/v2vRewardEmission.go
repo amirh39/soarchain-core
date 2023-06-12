@@ -45,7 +45,7 @@ func V2VRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 	return tokensPerBlock, nil
 }
 
-func V2VRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) (int, error) {
+func V2VRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) (float64, error) {
 
 	// Calculates reward coin emissions for each reward type
 	blocksPerMinute := utilConstants.V2VRewardEmissionBlockPerYear
@@ -77,5 +77,5 @@ func V2VRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) 
 		tokensPerBlock = initialTokensPerYear / (blocksPerMinute * minutesPerYear)
 	}
 
-	return tokensPerBlock * blocksPerEpoch, nil
+	return float64(tokensPerBlock) * blocksPerEpoch, nil
 }

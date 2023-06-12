@@ -1,6 +1,7 @@
 package utility
 
 import (
+	"math"
 	"soarchain/x/poa/constants"
 	"soarchain/x/poa/utility/utilConstants"
 
@@ -8,14 +9,14 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) (int, error) {
+func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) (float64, error) {
 
 	// Calculates reward coin emissions for each reward type
 
-	blocksPerMinute := utilConstants.V2NRewardEmissionBlockPerYear
+	blocksPerMinute := utilConstants.BlocksPerMinute
 	currentBlockNumber := int(ctx.BlockHeight())
 
-	var initialTokensPerYear int
+	var initialTokensPerYear float64
 	switch clientCommunicationMode {
 	case constants.V2NBX:
 		initialTokensPerYear = utilConstants.V2NBXInitialTokenPerYear // v2n broadcaster initial annual emission
@@ -29,7 +30,7 @@ func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 	tokensPerBlock := initialTokensPerYear / (blocksPerMinute * minutesPerYear)
 
 	// Calculate the number of years that have passed since the start of the token issuance
-	yearsSinceStart := (currentBlockNumber) / (blocksPerMinute * minutesPerYear)
+	yearsSinceStart := int(math.Floor(float64(currentBlockNumber) / (blocksPerMinute * minutesPerYear)))
 
 	// Calculate the number of times the token issuance rate has been halved
 	halvings := (yearsSinceStart) / 3
@@ -43,7 +44,7 @@ func V2NRewardEmissionPerBlock(ctx sdk.Context, clientCommunicationMode string) 
 	return tokensPerBlock, nil
 }
 
-func V2NRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) (int, error) {
+func V2NRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) (float64, error) {
 
 	// Calculates reward coin emissions for each reward type
 
@@ -76,5 +77,5 @@ func V2NRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) 
 		tokensPerBlock = initialTokensPerYear / (blocksPerMinute * minutesPerYear)
 	}
 
-	return tokensPerBlock * blocksPerEpoch, nil
+	return float64(tokensPerBlock) * blocksPerEpoch, nil
 }
