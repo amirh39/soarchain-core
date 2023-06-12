@@ -53,9 +53,15 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 		return nil, errCert
 	}
 
+	//check if the address is uniqe
+	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
+	if isUniqueAddress {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client with the address [ %T ] is already registered.", msg.Creator)
+	}
+
 	//check if the pubKey is uniqe, also check if msg.creator address have a motus wallet
-	isUnique := IsUniquePubKey(k, ctx, msg.Creator, pubKeyHex)
-	if !isUnique {
+	isUniquePubkey := IsUniquePubKey(k, ctx, msg.Creator, pubKeyHex)
+	if isUniquePubkey {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client PubKey is not uniqe OR Client is already registered.")
 	}
 
