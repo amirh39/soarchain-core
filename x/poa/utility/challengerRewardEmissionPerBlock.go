@@ -44,7 +44,7 @@ func ChallengerRewardEmissionPerEpoch(ctx sdk.Context) (float64, error) {
 	tokensPerBlock := initialTokensPerYear / (blocksPerMinute * minutesPerYear)
 
 	// Calculate the number of years that have passed since the start of the token issuance
-	yearsSinceStart := (currentBlockNumber) / (blocksPerMinute * minutesPerYear)
+	yearsSinceStart := (currentBlockNumber) / int(blocksPerMinute*minutesPerYear)
 
 	// Calculate the number of times the token issuance rate has been halved
 	halvings := (yearsSinceStart) / 3
