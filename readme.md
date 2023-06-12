@@ -47,19 +47,21 @@ Key objects over chain:
 <details><summary>Click to expand</summary>
 
 - [VRF](https://github.com/soar-robotics/soarchain-core/blob/dev/x/poa/keeper/createVRF.go)
-  - [Basic Introduction](#basic-introduction)
+  - [Concept Introduction](#basic-introduction)
   - [Multiplier](#multiplier)
   - [VRF Data](#basic-introduction)
-- [Factory Keys](https://github.com/soar-robotics/soarchain-core/blob/refactor/VRF/x/poa/keeper/factory_keys.go)
-  - [Concept Introduction](#concept-introduction)
-    - [](#bitcoin)
-      - [](#hyperledger)
+- [Runner](https://github.com/soar-robotics/soarchain-core/blob/dev/x/poa/keeper/msg_server_gen_runner.go)
+  - [Concept Introduction](#basic-introduction)
+- [Challenger](https://github.com/soar-robotics/soarchain-core/blob/dev/x/poa/keeper/msg_server_gen_challenger.go)
+  - [Concept Introduction](#basic-introduction)
+- [Runner Challenge](https://github.com/soar-robotics/soarchain-core/blob/dev/x/poa/keeper/msg_server_runner_challenge.go)
+  - [Concept Introduction](#basic-introduction)
 
 </details>
 
 ## VRF
 
-#### Basic Introduction
+#### Concept Introduction
 
 A: A Verifiable Random Function (VRF) is the public-key version of a keyed cryptographic hash. Only the holder of the secret key can compute the hash, but anyone with the public key can verify the correctness of the hash. VRFs are useful for preventing enumeration of hash-based data structures.
 
@@ -75,9 +77,23 @@ Implementing VRF module on cosmos SDK needs to store some VRF values.
 - VRV/FinalVRV
 - Multiplier
 
+## Runner
 
-## Factory Keys
 #### Concept Introduction
+
+A Runners are responsible for receiving V2N messages from the Motus and then broadcast them to the Motus devices nearby.
+
+## Challenger
+
+#### Concept Introduction
+
+Challengers are responsible for challenging this receive & broadcast operation and verify if it was done correctly or not.
+
+## Runner Challenge
+
+#### Concept Introduction
+
+Runner challenge is a service we use to reward/punish v2n challenges based on challenge results. In the case a malicious activity breaks our V2N network and prevents messages to be broadcasted or just publish wrong data to the network we would punish otherwise we would reward.
 
 
 
