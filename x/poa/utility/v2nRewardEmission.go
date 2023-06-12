@@ -52,7 +52,7 @@ func V2NRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) 
 	blocksPerEpoch := utilConstants.BlocksPerEpoch
 	currentBlockNumber := int(ctx.BlockHeight())
 
-	var initialTokensPerYear int
+	var initialTokensPerYear float64
 	switch clientCommunicationMode {
 	case constants.V2NBX:
 		initialTokensPerYear = utilConstants.V2NBXInitialTokenPerYear // v2n broadcaster initial annual emission
@@ -63,10 +63,10 @@ func V2NRewardEmissionPerEpoch(ctx sdk.Context, clientCommunicationMode string) 
 	}
 
 	// Number of tokens issued per year by the total number of blocks produced per year
-	tokensPerBlock := initialTokensPerYear / (blocksPerMinute * minutesPerYear)
+	tokensPerBlock := float64(initialTokensPerYear) / (blocksPerMinute * minutesPerYear)
 
 	// Calculate the number of years that have passed since the start of the token issuance
-	yearsSinceStart := (currentBlockNumber) / (blocksPerMinute * minutesPerYear)
+	yearsSinceStart := currentBlockNumber / int(blocksPerMinute*minutesPerYear)
 
 	// Calculate the number of times the token issuance rate has been halved
 	halvings := (yearsSinceStart) / 3
