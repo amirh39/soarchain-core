@@ -2,7 +2,7 @@ package utilConstants
 
 const (
 	BlocksPerMinute                       = 4.0
-	InitialTokensPerYear                  = 21850083350000.0
+	ChallengerInitialTokenPerYear         = 2185008335000.0
 	MaxValUnit64                          = 18446744073709551615.0
 	MinScore                              = 0.0
 	MaxScore                              = 100.0

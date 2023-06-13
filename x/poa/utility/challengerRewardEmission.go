@@ -14,7 +14,7 @@ func ChallengerRewardEmissionPerBlock(ctx sdk.Context) (float64, error) {
 	blocksPerMinute := utilConstants.BlocksPerMinute
 	currentBlockNumber := int(ctx.BlockHeight())
 
-	initialTokensPerYear := utilConstants.InitialTokensPerYear // v2n receiver (runner) initial annual emission
+	initialTokensPerYear := utilConstants.ChallengerInitialTokenPerYear // v2n receiver (runner) initial annual emission
 
 	// Number of tokens issued per year by the total number of blocks produced per year
 	tokensPerBlock := initialTokensPerYear / (blocksPerMinute * minutesPerYear)
@@ -38,7 +38,7 @@ func ChallengerRewardEmissionPerEpoch(ctx sdk.Context) (float64, error) {
 	blocksPerMinute := utilConstants.BlocksPerMinute
 	currentBlockNumber := int(ctx.BlockHeight())
 	blocksPerEpoch := utilConstants.BlocksPerEpoch
-	initialTokensPerYear := utilConstants.InitialTokensPerYear
+	initialTokensPerYear := utilConstants.ChallengerInitialTokenPerYear
 
 	// Number of tokens issued per year by the total number of blocks produced per year
 	tokensPerBlock := initialTokensPerYear / (blocksPerMinute * minutesPerYear)
