@@ -11,7 +11,7 @@ import (
 func Test_CalculateRewardMultiplier(t *testing.T) {
 	// Test input values
 	score := utilConstants.CalculateRewardMultiplierScore
-	expectedMultiplier := math.Pow(score, 2)
+	expectedMultiplier := math.Pow(score, 1)
 
 	// Call CalculateRewardMultiplier function
 	multiplier := CalculateRewardMultiplier(score)

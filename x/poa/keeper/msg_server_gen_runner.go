@@ -14,21 +14,21 @@ import (
 func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
 
+	if msg.Certificate == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GenRunner] failed. Certificate must be declared in the tx.")
+	}
+
 	runnerAddr, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[GenRunner][AccAddressFromBech32] failed. Creator address couldn't be parsed.")
 	}
 
 	if msg.RunnerStake == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Runner Stake must be declared in the tx!")
-	}
-
-	if msg.Certificate == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Certificate must be declared in the tx!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GenRunner] failed. Runner Stake must be declared in the tx.")
 	}
 
 	if msg.Signature == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "Signature must be declared in the tx!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GenRunner] failed. Signature must be declared in the tx.")
 	}
 
 	deviceCert, err := k.CreateX509CertFromString(msg.Certificate)
@@ -50,11 +50,16 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	//check runner
 	var newRunner types.Runner
 
-	_, isFoundAsRunner := k.GetRunnerUsingPubKey(ctx, pubKeyHex)
-	_, isFoundAsChallenger := k.GetChallengerUsingPubKey(ctx, pubKeyHex)
-	_, isFoundAsClient := k.GetClient(ctx, pubKeyHex)
-	if isFoundAsChallenger || isFoundAsRunner || isFoundAsClient {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Runner PubKey is not uniqe OR Runner is already registered.")
+	//check if the address is uniqe
+	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
+	if isUniqueAddress {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client with the address [ %T ] is already registered.", msg.Creator)
+	}
+
+	//check if the pubKey is uniqe, also check if msg.creator address have a motus wallet
+	isUniquePubkey := IsUniquePubKey(k, ctx, msg.Creator, pubKeyHex)
+	if isUniquePubkey {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client PubKey is not uniqe OR Client is already registered.")
 	}
 
 	// Check runner stake amount

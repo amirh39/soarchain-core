@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"strconv"
 
-	// "encoding/pem"
 	param "soarchain/app/params"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
@@ -50,12 +49,15 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, errCert
 	}
 
+	//check if the address is uniqe
+	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
+	if isUniqueAddress {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client with the address [ %T ] is already registered.", msg.Creator)
+	}
+
 	//check if the pubKey is uniqe, also check if msg.creator address have a motus wallet
-	_, isFoundWallet := k.GetMotusWallet(ctx, msg.Creator)
-	_, isFoundAsChallenger := k.GetChallengerUsingPubKey(ctx, pubKeyHex)
-	_, isFoundAsRunner := k.GetRunnerUsingPubKey(ctx, pubKeyHex)
-	_, isFoundAsClient := k.GetClient(ctx, pubKeyHex)
-	if isFoundWallet || isFoundAsChallenger || isFoundAsRunner || isFoundAsClient {
+	isUniquePubkey := IsUniquePubKey(k, ctx, msg.Creator, pubKeyHex)
+	if isUniquePubkey {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client PubKey is not uniqe OR Client is already registered.")
 	}
 
