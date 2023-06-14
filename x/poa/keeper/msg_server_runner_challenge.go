@@ -16,17 +16,20 @@ import (
 
 func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 
-	scoreIntChallenger, _ := strconv.Atoi(challenger.Score)
-	scoreIntChallenger++
+	var rewardMultiplier float64
+	var newScore float64
+
+	rewardMultiplier, newScore = k.rewardAndScore(challenger.Score)
 
 	updatedChallenger := types.Challenger{
-		PubKey:       challenger.PubKey,
-		Address:      challenger.Address,
-		Score:        strconv.Itoa(scoreIntChallenger),
-		StakedAmount: challenger.StakedAmount,
-		NetEarnings:  challenger.NetEarnings,
-		Type:         challenger.Type,
-		IpAddr:       challenger.IpAddr,
+		PubKey:           challenger.PubKey,
+		Address:          challenger.Address,
+		Score:            strconv.FormatFloat(newScore, 'f', -1, 64),
+		StakedAmount:     challenger.StakedAmount,
+		NetEarnings:      challenger.NetEarnings,
+		Type:             challenger.Type,
+		IpAddr:           challenger.IpAddr,
+		RewardMultiplier: strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 	}
 
 	k.SetChallenger(ctx, updatedChallenger)
@@ -69,7 +72,13 @@ func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultipli
 	var epochRewards sdk.Coin
 
 	/** reward cap check for current epoch */
-	targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, clientCommunicationMode)
+	var targetEpochRewardInt float64
+	var targetEpochErr error
+	if clientCommunicationMode == "challenger" {
+		targetEpochRewardInt, targetEpochErr = utility.ChallengerRewardEmissionPerEpoch(ctx)
+	} else {
+		targetEpochRewardInt, targetEpochErr = utility.V2NRewardEmissionPerEpoch(ctx, clientCommunicationMode)
+	}
 	if targetEpochErr != nil {
 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TargetEpoch)
 	}
