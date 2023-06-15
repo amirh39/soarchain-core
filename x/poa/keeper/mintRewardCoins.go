@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 
@@ -19,8 +18,6 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	TargetV2VBx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-bx")
 	TargetV2VBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetV2VBx)))
 
-
-
 	TargetV2NBx, _ := utility.V2NRewardEmissionPerEpoch(ctx, "v2n-bx")
 	TargetV2NBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetV2NBx)))
 
@@ -37,7 +34,6 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2nBxReward})
 	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{runnerReward})
 
-
 	epochData, _ := k.GetEpochData(ctx)
 	// Reset Epoch Rewards
 	epochCnt := epochData.TotalEpochs
@@ -50,7 +46,6 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 		EpochV2VBX:  v2vBxReward.String(),
 		EpochV2NBX:  v2nBxReward.String(),
 		EpochRunner: runnerReward.String(),
-
 	}
 	k.SetEpochData(ctx, newEpochData)
 

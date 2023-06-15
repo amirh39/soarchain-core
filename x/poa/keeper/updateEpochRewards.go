@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,7 +15,6 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	}
 
 	switch clientType {
-
 
 	case "v2v-rx":
 		// Parse the current value into a sdk.Coin
@@ -44,7 +42,6 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		// Store the updated epoch data
 		k.SetEpochData(ctx, newEpochData)
 
-
 	case "v2v-bx":
 		epochV2VBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VBX)
 		if err != nil {
@@ -61,9 +58,6 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochRunner: epochData.EpochRunner,
 		}
 		k.SetEpochData(ctx, newEpochData)
-
-
-
 
 	case "v2n-bx":
 		epochV2NBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
