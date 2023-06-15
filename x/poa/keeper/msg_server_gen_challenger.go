@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	params "soarchain/app/params"
 	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
@@ -68,6 +69,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	// Transfer stakedAmount to poa modules account:
 	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, challengerAddress, types.ModuleName, requiredStake)
 	if transferErr != nil {
+		log.Println(transferErr)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(challenger) funds couldn't be transferred to POA module!")
 	}
 

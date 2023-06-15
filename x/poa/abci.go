@@ -22,19 +22,5 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
 		k.MintRewardCoins(ctx)
 
-		// Update epochs passed
-		epoch, _ := k.GetEpochData(ctx)
-		epochCnt := epoch.TotalEpochs
-		newEpochCnt := epochCnt + 1
-
-		newEpoch := types.EpochData{
-			TotalEpochs: newEpochCnt,
-			EpochV2VRX:  epoch.EpochV2VRX,
-			EpochV2VBX:  epoch.EpochV2VBX,
-			EpochV2NBX:  epoch.EpochV2NBX,
-			EpochRunner: epoch.EpochRunner,
-		}
-
-		k.SetEpochData(ctx, newEpoch)
 	}
 }

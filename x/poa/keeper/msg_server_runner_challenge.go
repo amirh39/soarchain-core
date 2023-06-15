@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -181,6 +182,67 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 		if !isFound {
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
+
+
+		newScore := utility.CalculateScore(scoreFloat64, true)
+
+		// Update rewardMultiplier
+		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
+
+		// reward cap check for current epoch
+		targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, "v2n-bx")
+		if targetEpochErr != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][V2NRewardEmissionPerEpoch] failed. Couldn't emission reward per epoch."+targetEpochErr.Error())
+		}
+
+		targetEpochReward := sdk.NewCoin(param.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
+		log.Println("targetEpochReward", targetEpochReward)
+		epochData, _ := k.GetEpochData(ctx)
+		if !found {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][GetEpochData] failed. Couldn't get epoch data with the current context.")
+		}
+
+		epochRewards, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
+		log.Println("EpochV2NBX:", epochData.EpochV2NBX)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][ParseCoinNormalized] failed. Couldn't parse and normalize a cli input for one coin type, due to invalid or an empty string."+err.Error())
+		}
+
+		// check reward cap inside the epoch
+		var totalEarnings sdk.Coin
+		if epochRewards.IsLT(targetEpochReward) || epochRewards.IsEqual(targetEpochReward) {
+			// Calculate reward earned
+			earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, "v2n-bx")
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][V2NRewardCalculator] failed. Couldn't calculate earned reward."+err.Error())
+			}
+
+			earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
+			earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
+
+			netEarnings, err := sdk.ParseCoinNormalized(v2nBxClient.NetEarnings)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][ParseCoinNormalized] failed. Couldn't parse and normalize a cli input for one coin type, due to invalid or an empty string."+err.Error())
+			}
+
+			totalEarnings = netEarnings.Add(earnedCoin)
+			log.Println("totalErnings", totalEarnings)
+			// update epoch rewards
+			epochErr := k.UpdateEpochRewards(ctx, "v2n-bx", earnedCoin)
+			if epochErr != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][UpdateEpochRewards] failed. Couldn't update epoch reward."+epochErr.Error())
+			}
+		} else {
+			netEarnings, err := sdk.ParseCoinNormalized(v2nBxClient.NetEarnings)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[RunnerChallenge][UpdateEpochRewards] failed. Couldn't parse and normalize a cli input for one coin type, due to invalid or an empty string."+err.Error())
+			}
+			totalEarnings = netEarnings
+		}
+
+		// Generate random coolDownMultiplier
+		multiplier := int(5)
+
 
 		rewardMultiplier, newScore := k.rewardAndScore(v2nBxClient.Score)
 
