@@ -9,5 +9,5 @@ message EpochData {
   string epochV2VBX = 3; 
   string epochV2NBX = 4; 
   string epochRunner = 5; 
-  
+  string totalChallenges = 6;
 }
