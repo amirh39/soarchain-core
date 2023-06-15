@@ -16,17 +16,21 @@ import (
 
 func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 
-	scoreIntChallenger, _ := strconv.Atoi(challenger.Score)
-	scoreIntChallenger++
+	var rewardMultiplier float64
+	var newScore float64
+	rewardMultiplier, newScore = k.rewardAndScore(challenger.Score)
+
+	var totalEarnings = k.CalculateReward(3, newScore)
 
 	updatedChallenger := types.Challenger{
-		PubKey:       challenger.PubKey,
-		Address:      challenger.Address,
-		Score:        strconv.Itoa(scoreIntChallenger),
-		StakedAmount: challenger.StakedAmount,
-		NetEarnings:  challenger.NetEarnings,
-		Type:         challenger.Type,
-		IpAddr:       challenger.IpAddr,
+		PubKey:           challenger.PubKey,
+		Address:          challenger.Address,
+		Score:            strconv.FormatFloat(newScore, 'f', -1, 64),
+		StakedAmount:     challenger.StakedAmount,
+		NetEarnings:      totalEarnings.String(),
+		Type:             challenger.Type,
+		IpAddr:           challenger.IpAddr,
+		RewardMultiplier: strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 	}
 
 	k.SetChallenger(ctx, updatedChallenger)
