@@ -5,10 +5,11 @@ import (
 
 	"github.com/tendermint/tendermint/libs/log"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"soarchain/x/poa/types"
 )
 
 type (
@@ -19,6 +20,7 @@ type (
 		paramstore paramtypes.Subspace
 
 		bankKeeper types.BankKeeper
+		authKeeper types.AccountKeeper
 	}
 )
 
