@@ -17,15 +17,15 @@ import (
 func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 
 	var rewardMultiplier float64
-	var newScore float64
-	rewardMultiplier, newScore = k.rewardAndScore(challenger.Score)
+	var newScore []float64
+	rewardMultiplier, newScore[0] = k.rewardAndScore(challenger.Score)
 
 	var totalEarnings = k.CalculateRewards(5, newScore)
 
 	updatedChallenger := types.Challenger{
 		PubKey:           challenger.PubKey,
 		Address:          challenger.Address,
-		Score:            strconv.FormatFloat(newScore, 'f', -1, 64),
+		Score:            strconv.FormatFloat(newScore[0], 'f', -1, 64),
 		StakedAmount:     challenger.StakedAmount,
 		NetEarnings:      strconv.FormatFloat(totalEarnings[0], 'f', -1, 64),
 		Type:             challenger.Type,
