@@ -11,8 +11,8 @@ message EpochData {
   string epochRunner = 5; 
   string epochChallenger = 6;
   string V2VRXtotalChallenges = 7;
-  string V2VRXtotalChallenges = 8;
-  string V2VBXtotalChallenges = 9;
+  string V2VBXtotalChallenges = 8;
+  string V2NBXtotalChallenges = 9;
   string RunnerTotalChallenges = 10;
   string ChallengerTotalChallenges = 11;
 }
