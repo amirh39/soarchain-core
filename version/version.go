@@ -10,6 +10,7 @@ var (
 	AppVersion    = "v1.0.-2023"
 	GitCommit     = "ge3089bea6"
 	GitCommitDate = ""
+	AppName = ""
 )
 
 func Version() string {
