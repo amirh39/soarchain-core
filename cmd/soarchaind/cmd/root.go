@@ -159,6 +159,7 @@ func initRootCmd(rootCmd *cobra.Command, encodingConfig params.EncodingConfig) {
 		InitCmd(soar.ModuleBasics, soar.DefaultNodeHome),
 		genutilcli.CollectGenTxsCmd(banktypes.GenesisBalancesIterator{}, soar.DefaultNodeHome),
 		genutilcli.MigrateGenesisCmd(),
+		VersionCmd(),
 		AddGenesisAccountCmd(soar.DefaultNodeHome),
 		AddGenesisWasmMsgCmd(soar.DefaultNodeHome),
 		genutilcli.GenTxCmd(soar.ModuleBasics, encodingConfig.TxConfig, banktypes.GenesisBalancesIterator{}, soar.DefaultNodeHome),
