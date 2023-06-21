@@ -32,11 +32,17 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		// Create a new EpochData object with the updated value
 
 		newEpochData := types.EpochData{
-			TotalEpochs: epochData.TotalEpochs,
-			EpochV2VRX:  newEpochV2VRX,
-			EpochV2VBX:  epochData.EpochV2VBX,
-			EpochV2NBX:  epochData.EpochV2NBX,
-			EpochRunner: epochData.EpochRunner,
+			TotalEpochs:               epochData.TotalEpochs,
+			EpochV2VRX:                newEpochV2VRX,
+			EpochV2VBX:                epochData.EpochV2VBX,
+			EpochV2NBX:                epochData.EpochV2NBX,
+			EpochRunner:               epochData.EpochRunner,
+			EpochChallenger:           epochData.EpochChallenger,
+			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
 
 		// Store the updated epoch data
@@ -51,11 +57,17 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochV2VBX := newEpochV2VBXCoin.String()
 
 		newEpochData := types.EpochData{
-			TotalEpochs: epochData.TotalEpochs,
-			EpochV2VRX:  epochData.EpochV2VRX,
-			EpochV2VBX:  newEpochV2VBX,
-			EpochV2NBX:  epochData.EpochV2NBX,
-			EpochRunner: epochData.EpochRunner,
+			TotalEpochs:               epochData.TotalEpochs,
+			EpochV2VRX:                epochData.EpochV2VRX,
+			EpochV2VBX:                newEpochV2VBX,
+			EpochV2NBX:                epochData.EpochV2NBX,
+			EpochRunner:               epochData.EpochRunner,
+			EpochChallenger:           epochData.EpochChallenger,
+			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
@@ -68,11 +80,17 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochV2NBX := newEpochV2NBXCoin.String()
 
 		newEpochData := types.EpochData{
-			TotalEpochs: epochData.TotalEpochs,
-			EpochV2VRX:  epochData.EpochV2VRX,
-			EpochV2VBX:  epochData.EpochV2VBX,
-			EpochV2NBX:  newEpochV2NBX,
-			EpochRunner: epochData.EpochRunner,
+			TotalEpochs:               epochData.TotalEpochs,
+			EpochV2VRX:                epochData.EpochV2VRX,
+			EpochV2VBX:                epochData.EpochV2VBX,
+			EpochV2NBX:                newEpochV2NBX,
+			EpochRunner:               epochData.EpochRunner,
+			EpochChallenger:           epochData.EpochChallenger,
+			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
@@ -85,11 +103,17 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochRunner := newEpochRunnerCoin.String()
 
 		newEpochData := types.EpochData{
-			TotalEpochs: epochData.TotalEpochs,
-			EpochV2VRX:  epochData.EpochV2VRX,
-			EpochV2VBX:  epochData.EpochV2VBX,
-			EpochV2NBX:  epochData.EpochV2NBX,
-			EpochRunner: newEpochRunner,
+			TotalEpochs:               epochData.TotalEpochs,
+			EpochV2VRX:                epochData.EpochV2VRX,
+			EpochV2VBX:                epochData.EpochV2VBX,
+			EpochV2NBX:                epochData.EpochV2NBX,
+			EpochRunner:               newEpochRunner,
+			EpochChallenger:           epochData.EpochChallenger,
+			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
