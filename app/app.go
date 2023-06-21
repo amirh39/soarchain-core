@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	param "soarchain/app/params"
+	"soarchain/version"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -21,7 +22,6 @@ import (
 	store "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authrest "github.com/cosmos/cosmos-sdk/x/auth/client/rest"
@@ -292,7 +292,7 @@ func NewsoarchainApp(
 	interfaceRegistry := encodingConfig.InterfaceRegistry
 	bApp := baseapp.NewBaseApp(param.Name, logger, db, encodingConfig.TxConfig.TxDecoder(), baseAppOptions...)
 	bApp.SetCommitMultiStoreTracer(traceStore)
-	bApp.SetVersion(version.Version)
+	bApp.SetVersion(version.AppVersion)
 	bApp.SetInterfaceRegistry(interfaceRegistry)
 
 	keys := sdk.NewKVStoreKeys(
