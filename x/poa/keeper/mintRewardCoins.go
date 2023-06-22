@@ -1,52 +1,70 @@
 package keeper
 
 import (
-	"soarchain/x/poa/types"
-	"soarchain/x/poa/utility"
-
 	params "soarchain/app/params"
+	"soarchain/x/poa/types"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func (k Keeper) MintRewardCoins(ctx sdk.Context) {
-
-	// Calculate rewards
-	TargetV2VRx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-rx")
-	TargetV2VRxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetV2VRx)))
-
-	TargetV2VBx, _ := utility.V2VRewardEmissionPerEpoch(ctx, "v2v-bx")
-	TargetV2VBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetV2VBx)))
-
-	TargetV2NBx, _ := utility.V2NRewardEmissionPerEpoch(ctx, "v2n-bx")
-	TargetV2NBxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetV2NBx)))
-
-	TargetRunner, _ := utility.V2NRewardEmissionPerEpoch(ctx, "runner")
-	TargetRunnerCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(TargetRunner)))
-
-	v2vRxReward, _ := sdk.ParseCoinNormalized(TargetV2VRxCoin.String())
-	v2vBxReward, _ := sdk.ParseCoinNormalized(TargetV2VBxCoin.String())
-	v2nBxReward, _ := sdk.ParseCoinNormalized(TargetV2NBxCoin.String())
-	runnerReward, _ := sdk.ParseCoinNormalized(TargetRunnerCoin.String())
-
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2vRxReward})
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2vBxReward})
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{v2nBxReward})
-	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{runnerReward})
-
 	epochData, _ := k.GetEpochData(ctx)
-	// Reset Epoch Rewards
 	epochCnt := epochData.TotalEpochs
 	newEpochCnt := epochCnt + 1
 
-	newEpochData := types.EpochData{
-
-		TotalEpochs: newEpochCnt,
-		EpochV2VRX:  v2vRxReward.String(),
-		EpochV2VBX:  v2vBxReward.String(),
-		EpochV2NBX:  v2nBxReward.String(),
-		EpochRunner: runnerReward.String(),
+	parseUintAndCreateCoin := func(value string) (sdk.Coin, error) {
+		amount, err := strconv.ParseUint(value, 10, 64)
+		if err != nil {
+			return sdk.Coin{}, err
+		}
+		return sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(amount)), nil
 	}
-	k.SetEpochData(ctx, newEpochData)
 
+	ChallengeCountV2VRx, err := parseUintAndCreateCoin(epochData.V2VRXtotalChallenges)
+	if err != nil {
+		sdkerrors.Wrap(sdkerrors.ErrPanic, "Parsing error")
+	}
+
+	ChallengeCountV2VBx, err := parseUintAndCreateCoin(epochData.V2VBXtotalChallenges)
+	if err != nil {
+		sdkerrors.Wrap(sdkerrors.ErrPanic, "Parsing error")
+	}
+
+	ChallengeCountV2NBx, err := parseUintAndCreateCoin(epochData.V2NBXtotalChallenges)
+	if err != nil {
+		sdkerrors.Wrap(sdkerrors.ErrPanic, "Parsing error")
+	}
+
+	ChallengeCountRunner, err := parseUintAndCreateCoin(epochData.RunnerTotalChallenges)
+	if err != nil {
+		sdkerrors.Wrap(sdkerrors.ErrPanic, "Parsing error")
+	}
+
+	ChallengeCountChallenger, err := parseUintAndCreateCoin(epochData.ChallengerTotalChallenges)
+	if err != nil {
+		sdkerrors.Wrap(sdkerrors.ErrPanic, "Parsing error")
+	}
+
+	mintAndParseCoins := func(ctx sdk.Context, coin sdk.Coin) {
+		parsedCoin, _ := sdk.ParseCoinNormalized(coin.String())
+		k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{parsedCoin})
+	}
+
+	mintAndParseCoins(ctx, ChallengeCountV2VRx)
+	mintAndParseCoins(ctx, ChallengeCountV2VBx)
+	mintAndParseCoins(ctx, ChallengeCountV2NBx)
+	mintAndParseCoins(ctx, ChallengeCountRunner)
+	mintAndParseCoins(ctx, ChallengeCountChallenger)
+
+	newEpochData := types.EpochData{
+		TotalEpochs: newEpochCnt,
+		EpochV2VRX:  ChallengeCountV2VRx.String(),
+		EpochV2VBX:  ChallengeCountV2VBx.String(),
+		EpochV2NBX:  ChallengeCountV2NBx.String(),
+		EpochRunner: ChallengeCountRunner.String(),
+	}
+
+	k.SetEpochData(ctx, newEpochData)
 }
