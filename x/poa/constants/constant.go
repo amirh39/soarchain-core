@@ -35,3 +35,5 @@ const EpochDuration = 30
 const DefaultIndex uint64 = 1
 
 const InitialTokensPerYear = 21850083350000
+
+const AddressLength = 43
