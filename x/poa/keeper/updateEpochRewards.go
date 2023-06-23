@@ -24,7 +24,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 
 		// Subtract rewardToSet from epochV2VRXCoin
-		newEpochV2VRXCoin := epochV2VRXCoin.Sub(rewardToSet)
+		newEpochV2VRXCoin := epochV2VRXCoin.Add(rewardToSet)
 
 		// Convert the result back to a string representation
 		newEpochV2VRX := newEpochV2VRXCoin.String()
