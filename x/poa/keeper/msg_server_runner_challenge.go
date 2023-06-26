@@ -16,18 +16,32 @@ import (
 
 func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 
+	var totalEarnings sdk.Coin
 	var rewardMultiplier float64
 	var newScore []float64
 	rewardMultiplier, newScore[0] = k.rewardAndScore(challenger.Score)
 
-	var totalEarnings = k.CalculateRewards(5, newScore)
+	var earnedTokenRewardsFloat = k.CalculateRewards(5, newScore)
+
+	earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat[0])))
+	earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
+
+	netEarnings, err := sdk.ParseCoinNormalized(challenger.NetEarnings)
+	if err != nil {
+
+	}
+	totalEarnings = netEarnings.Add(earnedCoin)
+	epochErr := k.UpdateEpochRewards(ctx, "challenger", earnedCoin)
+	if epochErr != nil {
+
+	}
 
 	updatedChallenger := types.Challenger{
 		PubKey:           challenger.PubKey,
 		Address:          challenger.Address,
 		Score:            strconv.FormatFloat(newScore[0], 'f', -1, 64),
 		StakedAmount:     challenger.StakedAmount,
-		NetEarnings:      strconv.FormatFloat(totalEarnings[0], 'f', -1, 64),
+		NetEarnings:      totalEarnings.String(),
 		Type:             challenger.Type,
 		IpAddr:           challenger.IpAddr,
 		RewardMultiplier: strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
@@ -68,56 +82,56 @@ func (k Keeper) punish(score string) (float64, float64) {
 	return rewardMultiplier, newScore
 }
 
-func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultiplier float64, clientCommunicationMode string) (sdk.Coin, error) {
+func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, clientCommunicationMode string) (sdk.Coin, error) {
 	var totalEarnings sdk.Coin
-	var epochRewards sdk.Coin
+	// var epochRewards sdk.Coin
 
-	/** reward cap check for current epoch */
-	targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, clientCommunicationMode)
-	if targetEpochErr != nil {
-		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TargetEpoch)
-	}
+	// /** reward cap check for current epoch */
+	// targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, clientCommunicationMode)
+	// if targetEpochErr != nil {
+	// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TargetEpoch)
+	// }
 
-	targetEpochReward := sdk.NewCoin(param.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
-	epochData, found := k.GetEpochData(ctx)
-	if !found {
-		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochDataNotFound)
-	}
+	// targetEpochReward := sdk.NewCoin(param.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
+	// epochData, found := k.GetEpochData(ctx)
+	// if !found {
+	// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochDataNotFound)
+	// }
 
-	epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochRunner)
+	// epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochRunner)
 
-	/** check reward cap inside the epoch */
-	if epochRewards.IsLT(targetEpochReward) {
+	// /** check reward cap inside the epoch */
+	// if epochRewards.IsLT(targetEpochReward) {
 
-		/** Calculate reward earned */
-		earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, clientCommunicationMode)
-		if err != nil {
-			return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EarnedTokenRewardsFloat)
-		}
+	// 	/** Calculate reward earned */
+	// 	earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, clientCommunicationMode)
+	// 	if err != nil {
+	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EarnedTokenRewardsFloat)
+	// 	}
 
-		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
-		earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
+	// 	earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
+	// 	earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
 
-		netEarnings, err := sdk.ParseCoinNormalized(netEarning)
-		if err != nil {
-			return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
-		}
+	// 	netEarnings, err := sdk.ParseCoinNormalized(netEarning)
+	// 	if err != nil {
+	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
+	// 	}
 
-		totalEarnings = netEarnings.Add(earnedCoin)
+	// 	totalEarnings = netEarnings.Add(earnedCoin)
 
-		epochErr := k.UpdateEpochRewards(ctx, clientCommunicationMode, earnedCoin)
-		if epochErr != nil {
-			return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochErr)
-		}
+	// 	epochErr := k.UpdateEpochRewards(ctx, clientCommunicationMode, earnedCoin)
+	// 	if epochErr != nil {
+	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochErr)
+	// 	}
 
-	} else {
-		netEarnings, err := sdk.ParseCoinNormalized(netEarning)
-		if err != nil {
-			return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
-		}
+	// } else {
+	// 	netEarnings, err := sdk.ParseCoinNormalized(netEarning)
+	// 	if err != nil {
+	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
+	// 	}
 
-		totalEarnings = netEarnings
-	}
+	// 	totalEarnings = netEarnings
+	// }
 
 	return totalEarnings, nil
 }
@@ -140,7 +154,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.InvaldChallengeResult)
 	}
 
-	totalEarnings, err := k.totalEarnings(ctx, runner.NetEarnings, rewardMultiplier, constants.Runner)
+	totalEarnings, err := k.totalEarnings(ctx, runner.NetEarnings, constants.Runner)
 	if err != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
 	}
@@ -179,7 +193,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 
 		rewardMultiplier, newScore := k.rewardAndScore(v2nBxClient.Score)
 
-		totalEarnings, err := k.totalEarnings(ctx, v2nBxClient.NetEarnings, rewardMultiplier, constants.V2NBX)
+		totalEarnings, err := k.totalEarnings(ctx, v2nBxClient.NetEarnings, constants.V2NBX)
 		if err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
 		}

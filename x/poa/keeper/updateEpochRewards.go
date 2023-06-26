@@ -53,7 +53,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		if err != nil {
 			return err
 		}
-		newEpochV2VBXCoin := epochV2VBXCoin.Sub(rewardToSet)
+		newEpochV2VBXCoin := epochV2VBXCoin.Add(rewardToSet)
 		newEpochV2VBX := newEpochV2VBXCoin.String()
 
 		newEpochData := types.EpochData{
@@ -76,7 +76,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		if err != nil {
 			return err
 		}
-		newEpochV2NBXCoin := epochV2NBXCoin.Sub(rewardToSet)
+		newEpochV2NBXCoin := epochV2NBXCoin.Add(rewardToSet)
 		newEpochV2NBX := newEpochV2NBXCoin.String()
 
 		newEpochData := types.EpochData{
@@ -99,7 +99,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		if err != nil {
 			return err
 		}
-		newEpochRunnerCoin := epochRunnerCoin.Sub(rewardToSet)
+		newEpochRunnerCoin := epochRunnerCoin.Add(rewardToSet)
 		newEpochRunner := newEpochRunnerCoin.String()
 
 		newEpochData := types.EpochData{
@@ -108,6 +108,30 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochV2VBX:                epochData.EpochV2VBX,
 			EpochV2NBX:                epochData.EpochV2NBX,
 			EpochRunner:               newEpochRunner,
+			EpochChallenger:           epochData.EpochChallenger,
+			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
+		}
+
+		k.SetEpochData(ctx, newEpochData)
+
+	case "challenger":
+		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
+		if err != nil {
+			return err
+		}
+		newEpochChallengerCoin := epochChallengerCoin.Add(rewardToSet)
+		newEpochChallenger := newEpochChallengerCoin.String()
+
+		newEpochData := types.EpochData{
+			TotalEpochs:               epochData.TotalEpochs,
+			EpochV2VRX:                epochData.EpochV2VRX,
+			EpochV2VBX:                epochData.EpochV2VBX,
+			EpochV2NBX:                epochData.EpochV2NBX,
+			EpochRunner:               newEpochChallenger,
 			EpochChallenger:           epochData.EpochChallenger,
 			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
 			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
