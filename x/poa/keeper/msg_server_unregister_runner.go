@@ -36,7 +36,7 @@ func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregis
 
 	transferErr2 := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, msgSenderAddress, stakedAmount)
 	if transferErr2 != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UnregisterRunner][SendCoinsFromModuleToAccount] failed. couldn't send coins.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UnregisterRunner][SendCoinsFromModuleToAccount] failed. couldn't send coins.")
 	}
 
 	// Remove runner

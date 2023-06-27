@@ -4,6 +4,7 @@ import (
 	"context"
 	params "soarchain/app/params"
 	"soarchain/x/poa/constants"
+	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
 	"strings"
 
@@ -16,7 +17,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 
 	challengerAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "msg.Creator couldn't be parsed.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, errors.ErrInvalidAddress)
 	}
 
 	challengerType := strings.ToLower(msg.Challengertype)
@@ -80,7 +81,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	// Transfer stakedAmount to poa modules account:
 	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, challengerAddress, types.ModuleName, requiredStake)
 	if transferErr != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(challenger) funds couldn't be transferred to POA module!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Stake(challenger) funds couldn't be transferred to POA module!")
 	}
 
 	newChallenger = types.Challenger{

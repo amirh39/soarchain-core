@@ -27,12 +27,12 @@ func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelec
 
 	VrfData, err := k.CreateVRF(ctx, msg.Creator, factor)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomRunner][CreateVRF] failed. Error: [ %T ]", err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[SelectRandomRunner][CreateVRF] failed. Error: [ %T ]", err)
 	}
 
 	generatedNumber, err := strconv.ParseUint(VrfData.FinalVrv, 10, 64)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomRunner][ParseUint] failed. vrfData.FinalVrv parse error: [ %T ]", err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[SelectRandomRunner][ParseUint] failed. vrfData.FinalVrv parse error: [ %T ]", err)
 	}
 
 	var selectedRunner types.Runner

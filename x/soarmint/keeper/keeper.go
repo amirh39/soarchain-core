@@ -9,6 +9,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
 
@@ -38,7 +39,8 @@ func NewKeeper(
 ) Keeper {
 	// ensure mint module account is set
 	if addr := accountKeeper.GetModuleAddress(types.ModuleName); addr == nil {
-		panic("the mint module account has not been set")
+		sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GetWasmEnabledProposals] failed. The mint module account has not been set.")
+		return Keeper{}
 	}
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {

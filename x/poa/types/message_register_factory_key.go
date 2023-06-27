@@ -1,6 +1,8 @@
 package types
 
 import (
+	"soarchain/x/poa/errors"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -27,7 +29,8 @@ func (msg *MsgRegisterFactoryKey) Type() string {
 func (msg *MsgRegisterFactoryKey) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, errors.ErrInvalidAddress)
+		return nil
 	}
 	return []sdk.AccAddress{creator}
 }

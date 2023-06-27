@@ -37,7 +37,7 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	clientAccount, _ := sdk.AccAddressFromBech32(client.Address)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, earnedAmount)
 	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UnregisterClient][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UnregisterClient][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
 	}
 
 	// Remove client

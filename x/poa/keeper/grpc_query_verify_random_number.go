@@ -20,7 +20,7 @@ func (k Keeper) VerifyRandomNumber(goCtx context.Context, req *types.QueryVerify
 
 	isVerified, err := k.VerifyGeneratedNumber(ctx, req)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[VerifyRandomNumber][V2VRewardEmissionPerEpoch] failed. Couldn't emission reward per epoch."+err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[VerifyRandomNumber][VerifyGeneratedNumber] failed. Invalid generated number with VRF data.")
 	}
 
 	return &types.QueryVerifyRandomNumberResponse{Result: isVerified}, nil

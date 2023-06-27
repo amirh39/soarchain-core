@@ -25,19 +25,19 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 
 	msgSenderAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[UnregisterChallenger][AccAddressFromBech32] failed. Sender addres is not valid."+err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[UnregisterChallenger][AccAddressFromBech32] failed. Sender addres is not valid.")
 	}
 
 	// Query the staked amount and refund
 	stakedAmountStr := challenger.StakedAmount
 	stakedAmount, err := sdk.ParseCoinsNormalized(stakedAmountStr)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UnregisterChallenger][ParseCoinsNormalized] failed. Couldn't parse the list if coins."+err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UnregisterChallenger][ParseCoinsNormalized] failed. Couldn't parse the list if coins.")
 	}
 
 	transferErr2 := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, msgSenderAddress, stakedAmount)
 	if transferErr2 != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[UnregisterChallenger][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UnregisterChallenger][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
 	}
 
 	// Remove challenger

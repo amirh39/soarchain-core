@@ -20,12 +20,12 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	withdrawAmount, err := sdk.ParseCoinsNormalized(msg.Amount)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount."+err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount.")
 	}
 
 	earnedAmount, err := sdk.ParseCoinsNormalized(motusWallet.Client.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount."+err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount.")
 	}
 
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
@@ -35,7 +35,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	clientAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, withdrawAmount)
 	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ClaimMotusRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins."+errTransfer.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
 	}
 
 	// Calculate new net earnings

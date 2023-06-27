@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -131,12 +132,14 @@ func (keeper Keeper) IterateAllBalances(k Keeper, ctx sdk.Context, cb func(sdk.A
 	for ; iterator.Valid(); iterator.Next() {
 		address, denom, err := AddressAndDenomFromBalancesStore(iterator.Key())
 		if err != nil {
-			panic(err)
+			sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, errors.ErrInvalidAddress)
+			return
 		}
 
 		balance, err := UnmarshalBalanceCompat(keeper.cdc, iterator.Value(), denom)
 		if err != nil {
-			panic(err)
+			sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[UnmarshalBalanceCompat] failed. invalid denom.")
+			return
 		}
 
 		if cb(address, balance) {
@@ -147,7 +150,7 @@ func (keeper Keeper) IterateAllBalances(k Keeper, ctx sdk.Context, cb func(sdk.A
 
 func AddressAndDenomFromBalancesStore(key []byte) (sdk.AccAddress, string, error) {
 	if len(key) == 0 {
-		return nil, "", sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Address is notvalid in the store.")
+		return nil, "", sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, errors.ErrInvalidAddress)
 	}
 
 	kv.AssertKeyAtLeastLength(key, 1)
@@ -155,7 +158,7 @@ func AddressAndDenomFromBalancesStore(key []byte) (sdk.AccAddress, string, error
 	addrBound := int(key[0])
 
 	if len(key)-1 < addrBound {
-		return nil, "", sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Address is notvalid in the store.")
+		return nil, "", sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, errors.ErrInvalidAddress)
 	}
 
 	return key[1 : addrBound+1], string(key[addrBound+1:]), nil
