@@ -6,6 +6,7 @@ import (
 	"soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/golang/mock/gomock"
 )
 
@@ -27,7 +28,8 @@ func coinsOf(amount uint64) sdk.Coins {
 func (bank *MockBankKeeper) ExpectPay(context context.Context, who string, amount uint64) *gomock.Call {
 	whoAddr, err := sdk.AccAddressFromBech32(who)
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[AccAddressFromBech32] failed. Empty address string is not allowed.")
+		return nil
 	}
 	return bank.EXPECT().SendCoinsFromAccountToModule(sdk.UnwrapSDKContext(context), whoAddr, types.ModuleName, coinsOf(amount))
 }
@@ -35,7 +37,8 @@ func (bank *MockBankKeeper) ExpectPay(context context.Context, who string, amoun
 func (bank *MockBankKeeper) ExpectRefund(context context.Context, who string, amount uint64) *gomock.Call {
 	whoAddr, err := sdk.AccAddressFromBech32(who)
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[AccAddressFromBech32] failed. Empty address string is not allowed.")
+		return nil
 	}
 	return bank.EXPECT().SendCoinsFromModuleToAccount(sdk.UnwrapSDKContext(context), types.ModuleName, whoAddr, coinsOf(amount))
 }

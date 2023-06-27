@@ -26,17 +26,17 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 
 	vrfData, err := k.CreateVRF(ctx, msg.Creator, factor)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomChallenger][CreateVRF] failed. VRF couldn't create. Error [ %T ]", err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[SelectRandomChallenger][CreateVRF] failed. VRF couldn't create. Error [ %T ]", err)
 	}
 
 	generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomChallenger][ParseUint] failed. Couldn't parse VRF data. Error: [ %T ]", err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[SelectRandomChallenger][ParseUint] failed. Couldn't parse VRF data. Error: [ %T ]", err)
 	}
 	var selectedChallenger types.Challenger
 	challengers := k.GetAllChallenger(ctx)
 	if allChallengers == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[SelectRandomChallenger][GetAllChallenger] failed. Couldn't find any challenger.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[SelectRandomChallenger][GetAllChallenger] failed. Couldn't find any challenger.")
 	}
 	for i := 0; i < len(challengers); i++ {
 		if i == int(generatedNumber) {

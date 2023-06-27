@@ -28,6 +28,7 @@ import (
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
@@ -257,7 +258,8 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 
 	pruningOpts, err := server.GetPruningOptionsFromFlags(appOpts)
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[GetPruningOptionsFromFlags] failed. Invalid custom pruning options.")
+		return nil
 	}
 
 	// Add snapshots
@@ -265,11 +267,13 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 	//nolint: staticcheck
 	snapshotDB, err := sdk.NewLevelDB("metadata", snapshotDir)
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[NewLevelDB] failed. Couln't create db.")
+		return nil
 	}
 	snapshotStore, err := snapshots.NewStore(snapshotDB, snapshotDir)
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[NewStore] failed. Couln't create snapshot directory .")
+		return nil
 	}
 
 	var wasmOpts []wasm.Option
@@ -317,7 +321,7 @@ func createSoarchainAppAndExport(
 
 	if !loadLatest {
 		if err := app.LoadHeight(height); err != nil {
-			return servertypes.ExportedApp{}, err
+			return servertypes.ExportedApp{}, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[LoadHeight] failed. Invalid height number.")
 		}
 	}
 

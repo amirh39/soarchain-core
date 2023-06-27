@@ -30,13 +30,13 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 	}
 
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[ClaimRunnerRewards][IsAllLT][DenomsSubsetOf] failed. Not enough coins to claim.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[ClaimRunnerRewards][DenomsSubsetOf] failed. Not enough coins to claim.")
 	}
 
 	runnerAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, runnerAccount, withdrawAmount)
 	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ClaimRunnerRewards][IsAllLT][DenomsSubsetOf] failed. Couldn't send coins.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
 	}
 
 	// Calculate new net earnings

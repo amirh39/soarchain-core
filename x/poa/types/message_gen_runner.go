@@ -30,7 +30,8 @@ func (msg *MsgGenRunner) Type() string {
 func (msg *MsgGenRunner) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[AccAddressFromBech32] failed. Empty address string is not allowed.")
+		return nil
 	}
 	return []sdk.AccAddress{creator}
 

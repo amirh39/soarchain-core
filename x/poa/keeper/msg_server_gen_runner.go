@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	params "soarchain/app/params"
+	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 	"strconv"
@@ -20,7 +21,7 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 
 	runnerAddr, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[GenRunner][AccAddressFromBech32] failed. Creator address couldn't be parsed.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, errors.ErrInvalidAddress)
 	}
 
 	if msg.RunnerStake == "" {
@@ -75,7 +76,7 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	// Transfer stakedAmount to poa modules account:
 	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
 	if transferErr != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(runner) funds couldn't be transferred to POA module!")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Stake(runner) funds couldn't be transferred to POA module!")
 	}
 	// rewardMultiplier
 	var initialScore float64 = 50

@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -21,6 +20,7 @@ import (
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	store "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
@@ -130,11 +130,12 @@ func GetWasmEnabledProposals() []wasm.ProposalType {
 		return wasm.DisableAllProposals
 	}
 
-	chunks := strings.Split(EnableSpecificWasmProposals, ",")
+	keys := strings.Split(EnableSpecificWasmProposals, ",")
 
-	proposals, err := wasm.ConvertToProposals(chunks)
+	proposals, err := wasm.ConvertToProposals(keys)
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GetWasmEnabledProposals] failed. Couln't maps each key to a ProposalType. Make sure key is valid.")
+		return nil
 	}
 
 	return proposals
@@ -208,7 +209,8 @@ var (
 func init() {
 	userHomeDir, err := os.UserHomeDir()
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[init] failed. Make sure the current user's home directory is valid.")
+		return
 	}
 
 	DefaultNodeHome = filepath.Join(userHomeDir, "."+param.Name)
@@ -450,7 +452,8 @@ func NewsoarchainApp(
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
 	if err != nil {
-		panic(fmt.Sprintf("error while reading wasm config: %s", err))
+		sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ReadWasmConfig] failed. Couln't read Wasm Config.")
+		return nil
 	}
 
 	// The last arguments can contain custom message handlers, and custom query handlers,
@@ -700,14 +703,16 @@ func NewsoarchainApp(
 		},
 	)
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[NewAnteHandler] failed. Couln't create valid NewAnteHandler.")
+		return nil
 	}
 
 	app.SetAnteHandler(anteHandler)
 	app.SetEndBlocker(app.EndBlocker)
 	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
 	if err != nil {
-		panic(err)
+		sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ReadUpgradeInfoFromDisk] failed. The upgrade path directory cannot be created or if the file exists and cannot be read or if the upgrade info fails to unmarshal.")
+		return nil
 	}
 
 	if upgradeInfo.Name == param.Upgrade1_0_0 && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
@@ -751,7 +756,8 @@ func (app *soarchainApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) a
 func (app *soarchainApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState GenesisState
 	if err := tmjson.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
-		panic(err)
+		sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ReadUpgradeInfoFromDisk] failed. The upgrade path directory cannot be created or if the file exists and cannot be read or if the upgrade info fails to unmarshal.")
+		return abci.ResponseInitChain{}
 	}
 	app.UpgradeKeeper.SetModuleVersionMap(ctx, app.mm.GetVersionMap())
 	return app.mm.InitGenesis(ctx, app.appCodec, genesisState)
