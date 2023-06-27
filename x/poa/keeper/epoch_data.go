@@ -15,16 +15,18 @@ func (k Keeper) SetEpochData(ctx sdk.Context, epochData types.EpochData) {
 }
 
 // GetEpochData returns epochData
-func (k Keeper) GetEpochData(ctx sdk.Context) (val types.EpochData, found bool) {
+func (k Keeper) GetEpochData(ctx sdk.Context) (types.EpochData, bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EpochDataKey))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{0})
+	defer iterator.Close()
 
-	b := store.Get([]byte{0})
-	if b == nil {
-		return val, false
+	if iterator.Valid() {
+		var epochData types.EpochData
+		k.cdc.MustUnmarshal(iterator.Value(), &epochData)
+		return epochData, true
 	}
 
-	k.cdc.MustUnmarshal(b, &val)
-	return val, true
+	return types.EpochData{}, false
 }
 
 // RemoveEpochData removes epochData from the store

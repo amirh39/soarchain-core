@@ -19,11 +19,12 @@ func DefaultGenesis() *GenesisState {
 		RunnerList:     []Runner{},
 		VrfDataList:    []VrfData{},
 		EpochData: EpochData{
-			TotalEpochs: 0,
-			EpochV2VRX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochV2VBX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochV2NBX:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochRunner: sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+			TotalEpochs:     0,
+			EpochV2VRX:      sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+			EpochV2VBX:      sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+			EpochV2NBX:      sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+			EpochRunner:     sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+			EpochChallenger: sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 		},
 		MotusWalletList: []MotusWallet{},
 		MasterKey: MasterKey{

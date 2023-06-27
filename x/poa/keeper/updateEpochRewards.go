@@ -23,12 +23,14 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			return err
 		}
 
-		// Subtract rewardToSet from epochV2VRXCoin
+		// Addition rewardToSet
 		newEpochV2VRXCoin := epochV2VRXCoin.Add(rewardToSet)
 
 		// Convert the result back to a string representation
 		newEpochV2VRX := newEpochV2VRXCoin.String()
 
+		epochCnt := epochData.V2VRXtotalChallenges
+		newEpochCnt := epochCnt + 1
 		// Create a new EpochData object with the updated value
 
 		newEpochData := types.EpochData{
@@ -38,7 +40,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochV2NBX:                epochData.EpochV2NBX,
 			EpochRunner:               epochData.EpochRunner,
 			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
+			V2VRXtotalChallenges:      newEpochCnt,
 			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
 			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
 			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
@@ -56,6 +58,9 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochV2VBXCoin := epochV2VBXCoin.Add(rewardToSet)
 		newEpochV2VBX := newEpochV2VBXCoin.String()
 
+		epochCnt := epochData.V2VBXtotalChallenges
+		newEpochCnt := epochCnt + 1
+
 		newEpochData := types.EpochData{
 			TotalEpochs:               epochData.TotalEpochs,
 			EpochV2VRX:                epochData.EpochV2VRX,
@@ -64,7 +69,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochRunner:               epochData.EpochRunner,
 			EpochChallenger:           epochData.EpochChallenger,
 			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
+			V2VBXtotalChallenges:      newEpochCnt,
 			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
 			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
 			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
@@ -79,6 +84,9 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochV2NBXCoin := epochV2NBXCoin.Add(rewardToSet)
 		newEpochV2NBX := newEpochV2NBXCoin.String()
 
+		epochCnt := epochData.V2NBXtotalChallenges
+		newEpochCnt := epochCnt + 1
+
 		newEpochData := types.EpochData{
 			TotalEpochs:               epochData.TotalEpochs,
 			EpochV2VRX:                epochData.EpochV2VRX,
@@ -88,7 +96,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochChallenger:           epochData.EpochChallenger,
 			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
 			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			V2NBXtotalChallenges:      newEpochCnt,
 			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
 			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
@@ -102,6 +110,9 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochRunnerCoin := epochRunnerCoin.Add(rewardToSet)
 		newEpochRunner := newEpochRunnerCoin.String()
 
+		epochCnt := epochData.RunnerTotalChallenges
+		newEpochCnt := epochCnt + 1
+
 		newEpochData := types.EpochData{
 			TotalEpochs:               epochData.TotalEpochs,
 			EpochV2VRX:                epochData.EpochV2VRX,
@@ -112,32 +123,35 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
 			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
 			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
+			RunnerTotalChallenges:     newEpochCnt,
 			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
 
 		k.SetEpochData(ctx, newEpochData)
 
 	case "challenger":
-		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
+		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
 		if err != nil {
 			return err
 		}
 		newEpochChallengerCoin := epochChallengerCoin.Add(rewardToSet)
 		newEpochChallenger := newEpochChallengerCoin.String()
 
+		epochCnt := epochData.ChallengerTotalChallenges
+		newEpochCnt := epochCnt + 1
+
 		newEpochData := types.EpochData{
 			TotalEpochs:               epochData.TotalEpochs,
 			EpochV2VRX:                epochData.EpochV2VRX,
 			EpochV2VBX:                epochData.EpochV2VBX,
 			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               newEpochChallenger,
-			EpochChallenger:           epochData.EpochChallenger,
+			EpochRunner:               epochData.EpochRunner,
+			EpochChallenger:           newEpochChallenger,
 			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
 			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
 			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
 			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
+			ChallengerTotalChallenges: newEpochCnt,
 		}
 		k.SetEpochData(ctx, newEpochData)
 

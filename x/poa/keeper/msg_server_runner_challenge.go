@@ -18,22 +18,26 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 
 	var totalEarnings sdk.Coin
 	var rewardMultiplier float64
-	var newScore []float64
-	rewardMultiplier, newScore[0] = k.rewardAndScore(challenger.Score)
+	newScore := make([]float64, 0)
+	rewardMultiplier, score := k.rewardAndScore(challenger.Score)
+	newScore = append(newScore, score)
 
-	var earnedTokenRewardsFloat = k.CalculateRewards(5, newScore)
+	earnedRewardsFloat := k.CalculateRewards(5, newScore)
 
-	earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat[0])))
-	earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
+	if len(earnedRewardsFloat) > 0 {
+		earnedRewardsInt := sdk.NewIntFromUint64(uint64(earnedRewardsFloat[0]))
+		earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
 
-	netEarnings, err := sdk.ParseCoinNormalized(challenger.NetEarnings)
-	if err != nil {
+		netEarnings, err := sdk.ParseCoinNormalized(challenger.NetEarnings)
+		if err != nil {
+			// Handle the error appropriately
+		}
 
-	}
-	totalEarnings = netEarnings.Add(earnedCoin)
-	epochErr := k.UpdateEpochRewards(ctx, "challenger", earnedCoin)
-	if epochErr != nil {
+		totalEarnings = netEarnings.Add(earnedCoin)
 
+		if epochErr := k.UpdateEpochRewards(ctx, "challenger", earnedCoin); epochErr != nil {
+			// Handle the error appropriately
+		}
 	}
 
 	updatedChallenger := types.Challenger{
@@ -82,153 +86,153 @@ func (k Keeper) punish(score string) (float64, float64) {
 	return rewardMultiplier, newScore
 }
 
-func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, clientCommunicationMode string) (sdk.Coin, error) {
-	var totalEarnings sdk.Coin
-	// var epochRewards sdk.Coin
+// func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, clientCommunicationMode string) (sdk.Coin, error) {
+// 	var totalEarnings sdk.Coin
+// 	// var epochRewards sdk.Coin
 
-	// /** reward cap check for current epoch */
-	// targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, clientCommunicationMode)
-	// if targetEpochErr != nil {
-	// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TargetEpoch)
-	// }
+// 	// /** reward cap check for current epoch */
+// 	// targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, clientCommunicationMode)
+// 	// if targetEpochErr != nil {
+// 	// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TargetEpoch)
+// 	// }
 
-	// targetEpochReward := sdk.NewCoin(param.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
-	// epochData, found := k.GetEpochData(ctx)
-	// if !found {
-	// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochDataNotFound)
-	// }
+// 	// targetEpochReward := sdk.NewCoin(param.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
+// 	// epochData, found := k.GetEpochData(ctx)
+// 	// if !found {
+// 	// 	return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochDataNotFound)
+// 	// }
 
-	// epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochRunner)
+// 	// epochRewards, _ = sdk.ParseCoinNormalized(epochData.EpochRunner)
 
-	// /** check reward cap inside the epoch */
-	// if epochRewards.IsLT(targetEpochReward) {
+// 	// /** check reward cap inside the epoch */
+// 	// if epochRewards.IsLT(targetEpochReward) {
 
-	// 	/** Calculate reward earned */
-	// 	earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, clientCommunicationMode)
-	// 	if err != nil {
-	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EarnedTokenRewardsFloat)
-	// 	}
+// 	// 	/** Calculate reward earned */
+// 	// 	earnedTokenRewardsFloat, err := k.V2NRewardCalculator(ctx, rewardMultiplier, clientCommunicationMode)
+// 	// 	if err != nil {
+// 	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EarnedTokenRewardsFloat)
+// 	// 	}
 
-	// 	earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
-	// 	earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
+// 	// 	earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
+// 	// 	earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
 
-	// 	netEarnings, err := sdk.ParseCoinNormalized(netEarning)
-	// 	if err != nil {
-	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
-	// 	}
+// 	// 	netEarnings, err := sdk.ParseCoinNormalized(netEarning)
+// 	// 	if err != nil {
+// 	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
+// 	// 	}
 
-	// 	totalEarnings = netEarnings.Add(earnedCoin)
+// 	// 	totalEarnings = netEarnings.Add(earnedCoin)
 
-	// 	epochErr := k.UpdateEpochRewards(ctx, clientCommunicationMode, earnedCoin)
-	// 	if epochErr != nil {
-	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochErr)
-	// 	}
+// 	// 	epochErr := k.UpdateEpochRewards(ctx, clientCommunicationMode, earnedCoin)
+// 	// 	if epochErr != nil {
+// 	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.EpochErr)
+// 	// 	}
 
-	// } else {
-	// 	netEarnings, err := sdk.ParseCoinNormalized(netEarning)
-	// 	if err != nil {
-	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
-	// 	}
+// 	// } else {
+// 	// 	netEarnings, err := sdk.ParseCoinNormalized(netEarning)
+// 	// 	if err != nil {
+// 	// 		return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrPanic, errors.NetEarnings)
+// 	// 	}
 
-	// 	totalEarnings = netEarnings
-	// }
+// 	// 	totalEarnings = netEarnings
+// 	// }
 
-	return totalEarnings, nil
-}
+// 	return totalEarnings, nil
+// }
 
-func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey string, result string) error {
+// func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey string, result string) error {
 
-	runner, found := k.GetRunnerUsingPubKey(ctx, runnerPubKey)
-	if !found {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundAValidRunner)
-	}
+// 	runner, found := k.GetRunnerUsingPubKey(ctx, runnerPubKey)
+// 	if !found {
+// 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundAValidRunner)
+// 	}
 
-	var rewardMultiplier float64
-	var newScore float64
+// 	var rewardMultiplier float64
+// 	var newScore float64
 
-	if result == constants.Reward {
-		rewardMultiplier, newScore = k.rewardAndScore(runner.Score)
-	} else if result == constants.Punish {
-		rewardMultiplier, newScore = k.punish(runner.Score)
-	} else {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.InvaldChallengeResult)
-	}
+// 	if result == constants.Reward {
+// 		rewardMultiplier, newScore = k.rewardAndScore(runner.Score)
+// 	} else if result == constants.Punish {
+// 		rewardMultiplier, newScore = k.punish(runner.Score)
+// 	} else {
+// 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.InvaldChallengeResult)
+// 	}
 
-	totalEarnings, err := k.totalEarnings(ctx, runner.NetEarnings, constants.Runner)
-	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
-	}
+// 	totalEarnings, err := k.totalEarnings(ctx, runner.NetEarnings, constants.Runner)
+// 	if err != nil {
+// 		return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
+// 	}
 
-	updatedRunner := types.Runner{
-		PubKey:             runner.PubKey,
-		Address:            runner.Address,
-		Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
-		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-		StakedAmount:       runner.StakedAmount,
-		NetEarnings:        totalEarnings.String(),
-		IpAddr:             runner.IpAddr,
-		LastTimeChallenged: ctx.BlockTime().String(),
-		CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, creator), 10),
-	}
-	k.SetRunner(ctx, updatedRunner)
+// 	updatedRunner := types.Runner{
+// 		PubKey:             runner.PubKey,
+// 		Address:            runner.Address,
+// 		Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
+// 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
+// 		StakedAmount:       runner.StakedAmount,
+// 		NetEarnings:        totalEarnings.String(),
+// 		IpAddr:             runner.IpAddr,
+// 		LastTimeChallenged: ctx.BlockTime().String(),
+// 		CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, creator), 10),
+// 	}
+// 	k.SetRunner(ctx, updatedRunner)
 
-	return nil
-}
+// 	return nil
+// }
 
-func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) error {
+// func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) error {
 
-	// ToDo: Set MOTUS mini rewards
-	v2nBxAddrCount := len(msg.ClientPubkeys)
-	if v2nBxAddrCount < 1 {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NoV2nBxAddrPubKeys)
-	}
+// 	// ToDo: Set MOTUS mini rewards
+// 	v2nBxAddrCount := len(msg.ClientPubkeys)
+// 	if v2nBxAddrCount < 1 {
+// 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NoV2nBxAddrPubKeys)
+// 	}
 
-	/** All MOTUS mini devices will be rewarded */
-	for i := 0; i < v2nBxAddrCount; i++ {
+// 	/** All MOTUS mini devices will be rewarded */
+// 	for i := 0; i < v2nBxAddrCount; i++ {
 
-		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
-		if !isFound {
-			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
-		}
+// 		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
+// 		if !isFound {
+// 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
+// 		}
 
-		rewardMultiplier, newScore := k.rewardAndScore(v2nBxClient.Score)
+// 		rewardMultiplier, newScore := k.rewardAndScore(v2nBxClient.Score)
 
-		totalEarnings, err := k.totalEarnings(ctx, v2nBxClient.NetEarnings, constants.V2NBX)
-		if err != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
-		}
+// 		totalEarnings, err := k.totalEarnings(ctx, v2nBxClient.NetEarnings, constants.V2NBX)
+// 		if err != nil {
+// 			return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
+// 		}
 
-		updatedClient := types.Client{
-			Index:              v2nBxClient.Index,
-			Address:            v2nBxClient.Address,
-			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
-			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-			NetEarnings:        totalEarnings.String(),
-			LastTimeChallenged: ctx.BlockTime().String(),
-			CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, msg.Creator), 10),
-			Type:               v2nBxClient.Type,
-		}
+// 		updatedClient := types.Client{
+// 			Index:              v2nBxClient.Index,
+// 			Address:            v2nBxClient.Address,
+// 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
+// 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
+// 			NetEarnings:        totalEarnings.String(),
+// 			LastTimeChallenged: ctx.BlockTime().String(),
+// 			CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, msg.Creator), 10),
+// 			Type:               v2nBxClient.Type,
+// 		}
 
-		k.SetClient(ctx, updatedClient)
+// 		k.SetClient(ctx, updatedClient)
 
-		k.updateMotusWallet(ctx, v2nBxClient.Address, updatedClient)
+// 		k.updateMotusWallet(ctx, v2nBxClient.Address, updatedClient)
 
-	}
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.Client) {
+// func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.Client) {
 
-	motusWallet, _ := k.GetMotusWallet(ctx, address)
+// 	motusWallet, _ := k.GetMotusWallet(ctx, address)
 
-	newMotusWallet := types.MotusWallet{
-		Index:  motusWallet.Index,
-		Client: &client,
-	}
+// 	newMotusWallet := types.MotusWallet{
+// 		Index:  motusWallet.Index,
+// 		Client: &client,
+// 	}
 
-	k.SetMotusWallet(ctx, newMotusWallet)
-}
+// 	k.SetMotusWallet(ctx, newMotusWallet)
+// }
 
 func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerChallenge) (*types.MsgRunnerChallengeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -238,15 +242,15 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
 
-	err := k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey, msg.ChallengeResult)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
-	}
+	// err := k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey, msg.ChallengeResult)
+	// if err != nil {
+	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	// }
 
-	err = k.updateClient(ctx, msg)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
-	}
+	// err = k.updateClient(ctx, msg)
+	// if err != nil {
+	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	// }
 
 	/** Update challenger info after the successfull reward session */
 	k.updateChallenger(ctx, challenger)
