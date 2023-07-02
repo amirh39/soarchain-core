@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	"strconv"
 
 	"soarchain/x/poa/types"
@@ -13,6 +14,9 @@ import (
 
 func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelectRandomRunner) (*types.MsgSelectRandomRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Select Random Runner Transaction Started ##############")
 
 	if msg.Creator == "" {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[SelectRandomRunner] failed. Couldn't find a valid msg.Creator. got [ %T ]", msg.Creator)
@@ -62,6 +66,12 @@ func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelec
 		FinalVrvFloat: vrf.FinalVrvFloat,
 	}
 	k.SetVrfData(ctx, updateVrf)
+
+	if logger != nil {
+		logger.Info("Updating Vrf data successfully done.", "transaction", "SelectRandomRunner")
+	}
+
+	log.Println("############## End of Select Random Runner Transaction ##############")
 
 	return &types.MsgSelectRandomRunnerResponse{RandomRunner: &selectedRunner}, nil
 }
