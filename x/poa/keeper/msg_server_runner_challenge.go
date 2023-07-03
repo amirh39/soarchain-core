@@ -191,7 +191,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 		}
 
 		updatedClient := types.Client{
-			Index:              v2nBxClient.Index,
+			PubKey:             v2nBxClient.PubKey,
 			Address:            v2nBxClient.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),

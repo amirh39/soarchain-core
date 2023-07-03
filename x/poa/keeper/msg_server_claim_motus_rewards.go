@@ -59,7 +59,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	}
 
 	updatedClient := types.Client{
-		Index:              motusWallet.Client.Index,
+		PubKey:             motusWallet.Client.PubKey,
 		Address:            motusWallet.Client.Address,
 		Score:              motusWallet.Client.Score,
 		RewardMultiplier:   motusWallet.Client.RewardMultiplier,

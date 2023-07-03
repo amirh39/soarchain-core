@@ -3,10 +3,11 @@ package cli
 import (
 	"context"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
 func CmdListClient() *cobra.Command {
@@ -44,7 +45,7 @@ func CmdListClient() *cobra.Command {
 
 func CmdShowClient() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-client [index]",
+		Use:   "show-client [PubKey]",
 		Short: "shows a client",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -55,7 +56,7 @@ func CmdShowClient() *cobra.Command {
 			argIndex := args[0]
 
 			params := &types.QueryGetClientRequest{
-				Index: argIndex,
+				PubKey: argIndex,
 			}
 
 			res, err := queryClient.Client(context.Background(), params)

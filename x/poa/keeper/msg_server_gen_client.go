@@ -79,7 +79,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// Save client into storage
 	newClient := types.Client{
-		Index:              pubKeyHex,
+		PubKey:             pubKeyHex,
 		Type:               clientType(deviceCert),
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),

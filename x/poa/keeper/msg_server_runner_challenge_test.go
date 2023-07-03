@@ -25,7 +25,7 @@ func Test_RunnerChallengey(t *testing.T) {
 	challenger := SetupNChallenger(1)
 	k.SetChallenger(ctx, challenger[0])
 
-	clientPubkeys := []string{client[0].Index}
+	clientPubkeys := []string{client[0].PubKey}
 
 	resp, err := msgServer.RunnerChallenge(context, &types.MsgRunnerChallenge{
 		Creator:         Challenger_Address,

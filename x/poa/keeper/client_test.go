@@ -14,7 +14,7 @@ func Test_ClientGet(t *testing.T) {
 	items := CreateNClient(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetClient(ctx,
-			item.Index,
+			item.PubKey,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -28,10 +28,10 @@ func Test_ClientRemove(t *testing.T) {
 	items := CreateNClient(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveClient(ctx,
-			item.Index,
+			item.PubKey,
 		)
 		_, found := keeper.GetClient(ctx,
-			item.Index,
+			item.PubKey,
 		)
 		require.False(t, found)
 	}

@@ -49,7 +49,7 @@ func (k Keeper) Client(c context.Context, req *types.QueryGetClientRequest) (*ty
 
 	val, found := k.GetClient(
 		ctx,
-		req.Index,
+		req.PubKey,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "[Client][GetClient] failed. Couldn't find a client from the request.")
