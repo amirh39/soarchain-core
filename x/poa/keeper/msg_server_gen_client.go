@@ -93,8 +93,8 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// Register Motus client into Motus Wallet object
 	newMotusWallet := types.MotusWallet{
-		Index:  msg.Creator,
-		Client: &newClient,
+		Address: msg.Creator,
+		Client:  &newClient,
 	}
 	k.SetMotusWallet(ctx, newMotusWallet)
 

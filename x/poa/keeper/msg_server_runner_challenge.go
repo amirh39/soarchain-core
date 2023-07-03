@@ -215,8 +215,8 @@ func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.
 	motusWallet, _ := k.GetMotusWallet(ctx, address)
 
 	newMotusWallet := types.MotusWallet{
-		Index:  motusWallet.Index,
-		Client: &client,
+		Address: motusWallet.Address,
+		Client:  &client,
 	}
 
 	k.SetMotusWallet(ctx, newMotusWallet)

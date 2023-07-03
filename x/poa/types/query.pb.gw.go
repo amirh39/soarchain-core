@@ -722,15 +722,15 @@ func request_Query_MotusWallet_0(ctx context.Context, marshaler runtime.Marshale
 		_   = err
 	)
 
-	val, ok = pathParams["index"]
+	val, ok = pathParams["address"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "index")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "address")
 	}
 
-	protoReq.Index, err = runtime.String(val)
+	protoReq.Address, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "index", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "address", err)
 	}
 
 	msg, err := client.MotusWallet(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -749,15 +749,15 @@ func local_request_Query_MotusWallet_0(ctx context.Context, marshaler runtime.Ma
 		_   = err
 	)
 
-	val, ok = pathParams["index"]
+	val, ok = pathParams["address"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "index")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "address")
 	}
 
-	protoReq.Index, err = runtime.String(val)
+	protoReq.Address, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "index", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "address", err)
 	}
 
 	msg, err := server.MotusWallet(ctx, &protoReq)
@@ -2096,7 +2096,7 @@ var (
 
 	pattern_Query_EpochData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"soarchain", "poa", "epoch_data"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_MotusWallet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "poa", "motus_wallet", "index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_MotusWallet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "poa", "motus_wallet", "address"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_MotusWalletAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"soarchain", "poa", "motus_wallet"}, "", runtime.AssumeColonVerbOpt(true)))
 

@@ -64,10 +64,10 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 				MotusWalletList: []types.MotusWallet{
 					{
-						Index: "0",
+						Address: "0",
 					},
 					{
-						Index: "1",
+						Address: "1",
 					},
 				},
 				MasterKey: types.MasterKey{
@@ -148,10 +148,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				MotusWalletList: []types.MotusWallet{
 					{
-						Index: "0",
+						Address: "0",
 					},
 					{
-						Index: "0",
+						Address: "0",
 					},
 				},
 			},
