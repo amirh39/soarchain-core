@@ -23,9 +23,9 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/soarchain/poa/params";
   }
-  // Queries a Client by index.
+  // Queries a Client by PubKey.
 	rpc Client(QueryGetClientRequest) returns (QueryGetClientResponse) {
-		option (google.api.http).get = "/soarchain/poa/client/{index}";
+		option (google.api.http).get = "/soarchain/poa/client/{PubKey}";
 	}
 
 	// Queries a list of Client items.
@@ -138,7 +138,7 @@ message QueryParamsResponse {
 }
 
 message QueryGetClientRequest {
-	  string index = 1;
+	  string PubKey = 1;
 
 }
 
