@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -11,6 +12,9 @@ import (
 
 func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnregisterChallenger) (*types.MsgUnregisterChallengerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Unregister Challenger Transaction Started ##############")
 
 	// check challenger
 	challenger, isFoundChallenger := k.GetChallenger(ctx, msg.ChallengerAddress)
@@ -28,6 +32,10 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[UnregisterChallenger][AccAddressFromBech32] failed. Sender addres is not valid.")
 	}
 
+	if logger != nil {
+		logger.Info("Checking sender address successfully done.", "transaction", "UnregisterChallenger")
+	}
+
 	// Query the staked amount and refund
 	stakedAmountStr := challenger.StakedAmount
 	stakedAmount, err := sdk.ParseCoinsNormalized(stakedAmountStr)
@@ -42,6 +50,12 @@ func (k msgServer) UnregisterChallenger(goCtx context.Context, msg *types.MsgUnr
 
 	// Remove challenger
 	k.RemoveChallenger(ctx, msg.ChallengerAddress)
+
+	if logger != nil {
+		logger.Info("Removing challenger successfully done.", "transaction", "UnregisterChallenger")
+	}
+
+	log.Println("############## End of Unregister Challenger Transaction ##############")
 
 	return &types.MsgUnregisterChallengerResponse{}, nil
 }

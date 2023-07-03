@@ -43,6 +43,12 @@ import (
 
 const prefix = "soar"
 
+const (
+
+	// FlagLogToFile specifies whether to log to file or not.
+	FlagLogToFile = "log-to-file"
+)
+
 func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 
 	params.SetPrefixes(prefix)
@@ -80,6 +86,12 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 
 			customAppTemplate, customAppConfig := initAppConfig()
 
+			// optionally log to file by replaceing the default logger with a file logger
+			err = replaceLogger(cmd)
+			if err != nil {
+				return err
+			}
+
 			return server.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig)
 
 		},
@@ -88,6 +100,8 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 
 		SilenceUsage: true,
 	}
+
+	rootCmd.PersistentFlags().String(FlagLogToFile, "", "Write logs directly to a file. If empty, logs are written to stderr")
 
 	initRootCmd(rootCmd, encodingConfig)
 
@@ -326,4 +340,26 @@ func createSoarchainAppAndExport(
 	}
 
 	return app.ExportAppStateAndValidators(forZeroHeight, jailWhiteList)
+}
+
+// replaceLogger optionally replaces the logger with a file logger if the flag
+// is set to something other than the default.
+func replaceLogger(cmd *cobra.Command) error {
+	logFilePath, err := cmd.Flags().GetString(FlagLogToFile)
+	if err != nil {
+		return err
+	}
+
+	if logFilePath == "" {
+		return nil
+	}
+
+	file, err := os.OpenFile(logFilePath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0o644)
+	if err != nil {
+		return err
+	}
+
+	sctx := server.GetServerContextFromCmd(cmd)
+	sctx.Logger = log.NewTMLogger(log.NewSyncWriter(file))
+	return server.SetCmdServerContext(cmd, sctx)
 }

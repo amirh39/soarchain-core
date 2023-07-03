@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -11,6 +12,9 @@ import (
 
 func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregisterRunner) (*types.MsgUnregisterRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Unregiste Runner Transaction Started ##############")
 
 	// check runner
 	runner, isFoundRunner := k.GetRunner(ctx, msg.RunnerAddress)
@@ -28,6 +32,10 @@ func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregis
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[UnregisterRunner][AccAddressFromBech32] failed. Sender address is not valid."+err.Error())
 	}
 
+	if logger != nil {
+		logger.Info("Authorizing runner successfully done.", "transaction", "UnregisterRunner")
+	}
+
 	stakedAmountStr := runner.StakedAmount
 	stakedAmount, err := sdk.ParseCoinsNormalized(stakedAmountStr)
 	if err != nil {
@@ -39,8 +47,18 @@ func (k msgServer) UnregisterRunner(goCtx context.Context, msg *types.MsgUnregis
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[UnregisterRunner][SendCoinsFromModuleToAccount] failed. couldn't send coins.")
 	}
 
+	if logger != nil {
+		logger.Info("Transfering coins successfully done.", "transaction", "UnregisterRunner")
+	}
+
 	// Remove runner
 	k.RemoveRunner(ctx, msg.RunnerAddress)
+
+	if logger != nil {
+		logger.Info("Removing runner successfully done.", "transaction", "UnregisterRunner")
+	}
+
+	log.Println("############## End of Unregister Runner Transaction ##############")
 
 	return &types.MsgUnregisterRunnerResponse{}, nil
 }

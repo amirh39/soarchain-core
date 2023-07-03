@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -12,6 +13,9 @@ import (
 
 func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimMotusRewards) (*types.MsgClaimMotusRewardsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Claim Motus Rewards Transaction Started ##############")
 
 	motusWallet, isFound := k.GetMotusWallet(ctx, msg.Creator)
 	if !isFound {
@@ -38,12 +42,20 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
 	}
 
+	if logger != nil {
+		logger.Info("Transfering coins to the target client successfully done.", "transaction", "ClaimMotusRewards")
+	}
+
 	// Calculate new net earnings
 	newNetEarnings := earnedAmount.Sub(withdrawAmount)
 	netEarnings := sdk.NewCoin(params.BondDenom, newNetEarnings.AmountOf(params.BondDenom))
 
 	if newNetEarnings.IsZero() {
 		netEarnings = sdk.NewCoin(params.BondDenom, sdk.ZeroInt())
+	}
+
+	if logger != nil {
+		logger.Info("Calculating new net earning successfully done.", "transaction", "ClaimMotusRewards")
 	}
 
 	updatedClient := types.Client{
@@ -65,6 +77,12 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		Client: &updatedClient,
 	}
 	k.SetMotusWallet(ctx, newMotusWallet)
+
+	if logger != nil {
+		logger.Info("Updating target client and motus wallet successfully done.", "transaction", "ClaimMotusRewards")
+	}
+
+	log.Println("############## End of Claim Motus Rewards Transaction ##############")
 
 	return &types.MsgClaimMotusRewardsResponse{}, nil
 }

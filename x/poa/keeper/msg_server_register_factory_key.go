@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -11,11 +12,18 @@ import (
 
 func (k msgServer) RegisterFactoryKey(goCtx context.Context, msg *types.MsgRegisterFactoryKey) (*types.MsgRegisterFactoryKeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Registering factory key transaction started ##############")
 
 	// Authorization check
 	soarMasterKey, isFound := k.GetMasterKey(ctx)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[RegisterFactoryKey][GetMasterKey] failed. Master key not found from the genesis.")
+	}
+
+	if logger != nil {
+		logger.Info("Authirization of master key successfully done.", "transaction", "RegisterFactorykey")
 	}
 
 	if msg.Creator != soarMasterKey.MasterAccount {
@@ -42,6 +50,10 @@ func (k msgServer) RegisterFactoryKey(goCtx context.Context, msg *types.MsgRegis
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[RegisterFactoryKey] failed. Cert verification error.")
 	}
 
+	if logger != nil {
+		logger.Info("Verifed master certificate by the factory certificate.")
+	}
+
 	// Save factory key
 	factoryKeys := k.GetAllFactoryKeys(ctx)
 
@@ -60,6 +72,12 @@ func (k msgServer) RegisterFactoryKey(goCtx context.Context, msg *types.MsgRegis
 	}
 
 	k.SetFactoryKeys(ctx, updatedFactoryKeyList)
+
+	if logger != nil {
+		logger.Info("Factory Key successfully registered into the chain", "Creator", msg.Creator)
+	}
+
+	log.Println("############## End of register factory key Transaction ##############")
 
 	return &types.MsgRegisterFactoryKeyResponse{}, nil
 }

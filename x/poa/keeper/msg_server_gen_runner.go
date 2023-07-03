@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	params "soarchain/app/params"
 	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
@@ -14,6 +15,9 @@ import (
 
 func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Generating a runner Transaction Started ##############")
 
 	if msg.Certificate == "" {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GenRunner] failed. Certificate must be declared in the tx.")
@@ -48,6 +52,10 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 		return nil, errCert
 	}
 
+	if logger != nil {
+		logger.Info("Verifying runner certificate successfully done.", "transaction", "GenRunner")
+	}
+
 	//check runner
 	var newRunner types.Runner
 
@@ -61,6 +69,10 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	isUniquePubkey := IsUniquePubKey(k, ctx, msg.Creator, pubKeyHex)
 	if isUniquePubkey {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client PubKey is not uniqe OR Client is already registered.")
+	}
+
+	if logger != nil {
+		logger.Info("Checking for unique runner successfully done.", "transaction", "GenRunner")
 	}
 
 	// Check runner stake amount
@@ -78,6 +90,11 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	if transferErr != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Stake(runner) funds couldn't be transferred to POA module!")
 	}
+
+	if logger != nil {
+		logger.Info("Transfering coin successfully done.", "transaction", "GenRunner")
+	}
+
 	// rewardMultiplier
 	var initialScore float64 = 50
 	rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
@@ -95,6 +112,12 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	}
 
 	k.SetRunner(ctx, newRunner)
+
+	if logger != nil {
+		logger.Info("Updating runner successfully done.", "transaction", "GenRunner")
+	}
+
+	log.Println("############## End of Gen runner Transaction ##############")
 
 	return &types.MsgGenRunnerResponse{}, nil
 }

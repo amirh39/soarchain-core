@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	params "soarchain/app/params"
 	"soarchain/x/poa/constants"
 	"soarchain/x/poa/errors"
@@ -14,6 +15,9 @@ import (
 
 func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallenger) (*types.MsgGenChallengerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Generating a challenger Transaction Started ##############")
 
 	challengerAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
@@ -24,6 +28,10 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 
 	if challengerType != constants.V2NChallengerType && challengerType != constants.V2XChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenger type. Must be 'v2n' or 'v2x'.")
+	}
+
+	if logger != nil {
+		logger.Info("Cahllenger type is valid.", "transaction", "GenChallenger")
 	}
 
 	if msg.ChallengerStake == "" {
@@ -54,6 +62,10 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 		return nil, errCert
 	}
 
+	if logger != nil {
+		logger.Info("Verifying Cahllenger successfully done.", "transaction", "GenChallenger")
+	}
+
 	//check if the address is uniqe
 	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
 	if isUniqueAddress {
@@ -64,6 +76,10 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	isUniquePubkey := IsUniquePubKey(k, ctx, msg.Creator, pubKeyHex)
 	if isUniquePubkey {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client PubKey is not uniqe OR Client is already registered.")
+	}
+
+	if logger != nil {
+		logger.Info("Checking for Cahllenger address and pubKey successfully done.", "transaction", "GenChallenger")
 	}
 
 	var newChallenger types.Challenger
@@ -84,6 +100,10 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Stake(challenger) funds couldn't be transferred to POA module!")
 	}
 
+	if logger != nil {
+		logger.Info("Transfering coins successfully done.", "transaction", "GenChallenger")
+	}
+
 	newChallenger = types.Challenger{
 		PubKey:       pubKeyHex,
 		Address:      challengerAddress.String(),
@@ -95,6 +115,12 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	}
 
 	k.SetChallenger(ctx, newChallenger)
+
+	if logger != nil {
+		logger.Info("Updating challenger successfully done.", "transaction", "GenChallenger")
+	}
+
+	log.Println("############## End of Gen Challenger Transaction ##############")
 
 	return &types.MsgGenChallengerResponse{}, nil
 }

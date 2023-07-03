@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"log"
 	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
@@ -11,8 +12,10 @@ import (
 )
 
 func (k Keeper) MintRewardCoins(ctx sdk.Context) {
-
+	logger := k.Logger(ctx)
 	epochData, _ := k.GetEpochData(ctx)
+
+	log.Println("############## Minting Reward Coins Transaction Started ##############")
 
 	// Parse coins
 	v2vRxRewards, _ := sdk.ParseCoinsNormalized(epochData.EpochV2VRX)
@@ -35,6 +38,10 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	}
 	k.SetEpochData(ctx, newEpochData)
 
+	if logger != nil {
+		logger.Info("Epoch Rewards successfully updated.", "transaction", "MintRewardCoins")
+	}
+
 	// Calculate leftover rewards
 	targetV2VRx, _ := utility.V2VRewardEmissionPerEpoch(ctx, constants.V2VRX)
 	targetV2VRxCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetV2VRx)))
@@ -47,6 +54,10 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 
 	targetRunner, _ := utility.V2NRewardEmissionPerEpoch(ctx, constants.Runner)
 	targetRunnerCoin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetRunner)))
+
+	if logger != nil {
+		logger.Info("Leftover rewards successfully Calculated.", "transaction", "MintRewardCoins")
+	}
 
 	//
 	v2vRxReward, _ := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
@@ -83,5 +94,9 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 		k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{leftOverRunner})
 		k.bankKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, constants.RewardCap, sdk.Coins{leftOverRunner})
 	}
+	if logger != nil {
+		logger.Info("MintRewardCoins successfully submitted in the chain.", "transaction", "MintRewardCoins")
+	}
 
+	log.Println("############## End of  Minting Reward Coins Transaction ##############")
 }

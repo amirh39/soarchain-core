@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/x509"
 	"fmt"
+	"log"
 	"strconv"
 
 	param "soarchain/app/params"
@@ -28,6 +29,9 @@ func clientType(deviceCert *x509.Certificate) string {
 
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Generating a client Transaction Started ##############")
 
 	if msg.Creator == "" || msg.Certificate == "" {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient] failed. Couldn't find valid msg.creator OR msg.Certificate. got: msg.Creator [ %T ] msg.Certificate [ %T ]. Make sure you they are valid and not empty.", msg.Creator, msg.Certificate)
@@ -49,6 +53,10 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, errCert
 	}
 
+	if logger != nil {
+		logger.Info("Verifying client certificate successfully done.", "transaction", "GenClient")
+	}
+
 	//check if the address is uniqe
 	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
 	if isUniqueAddress {
@@ -59,6 +67,10 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	isUniquePubkey := IsUniquePubKey(k, ctx, msg.Creator, pubKeyHex)
 	if isUniquePubkey {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client PubKey is not uniqe OR Client is already registered.")
+	}
+
+	if logger != nil {
+		logger.Info("Checking for unique client successfully done.", "transaction", "GenClient")
 	}
 
 	// rewardMultiplier
@@ -85,6 +97,12 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		Client: &newClient,
 	}
 	k.SetMotusWallet(ctx, newMotusWallet)
+
+	if logger != nil {
+		logger.Info("Updating client and motus wallet successfully done.", "transaction", "GenChallenger")
+	}
+
+	log.Println("############## End of Gen client Transaction ##############")
 
 	return &types.MsgGenClientResponse{}, nil
 

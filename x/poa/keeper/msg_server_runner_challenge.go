@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -67,6 +68,7 @@ func (k Keeper) punish(score string) (float64, float64) {
 func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultiplier float64, clientCommunicationMode string) (sdk.Coin, error) {
 	var totalEarnings sdk.Coin
 	var epochRewards sdk.Coin
+	logger := k.Logger(ctx)
 
 	/** reward cap check for current epoch */
 	targetEpochRewardInt, targetEpochErr := utility.V2NRewardEmissionPerEpoch(ctx, clientCommunicationMode)
@@ -91,6 +93,10 @@ func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultipli
 			return totalEarnings, sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EarnedTokenRewardsFloat)
 		}
 
+		if logger != nil {
+			logger.Info("Calculating reward earning successfully done.", "transaction", "RunnerChallenge")
+		}
+
 		earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
 		earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
 
@@ -113,6 +119,10 @@ func (k Keeper) totalEarnings(ctx sdk.Context, netEarning string, rewardMultipli
 		}
 
 		totalEarnings = netEarnings
+	}
+
+	if logger != nil {
+		logger.Info("Calculating total earning successfully done.", "transaction", "RunnerChallenge")
 	}
 
 	return totalEarnings, nil
@@ -214,6 +224,9 @@ func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.
 
 func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerChallenge) (*types.MsgRunnerChallengeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Runner Challenge Transaction Started ##############")
 
 	challenger, found := k.GetChallengerByType(ctx, msg.Creator, constants.V2NChallengerType)
 	if !found {
@@ -225,13 +238,27 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
 
+	if logger != nil {
+		logger.Info("Updating runner successfully done.", "transaction", "RunnerChallenge")
+	}
+
 	err = k.updateClient(ctx, msg)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
 
+	if logger != nil {
+		logger.Info("Updating client successfully done.", "transaction", "RunnerChallenge")
+	}
+
 	/** Update challenger info after the successfull reward session */
 	k.updateChallenger(ctx, challenger)
+
+	if logger != nil {
+		logger.Info("Updating challenger successfully done.", "transaction", "RunnerChallenge")
+	}
+
+	log.Println("############## End of Runner Challenge Transaction ##############")
 
 	return &types.MsgRunnerChallengeResponse{}, nil
 }

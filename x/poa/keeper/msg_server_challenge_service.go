@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	"strconv"
 
 	"soarchain/x/poa/constants"
@@ -16,6 +17,9 @@ import (
 
 func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallengeService) (*types.MsgChallengeServiceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Challenge Service Transaction Started ##############")
 
 	challenger, isFound := k.GetChallenger(ctx, msg.Creator)
 	if !isFound {
@@ -25,6 +29,10 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	// Challenger type must be v2x for this operation
 	if challenger.Type != constants.V2XChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[ChallengeService][GetChallenger][v2x] failed. Only v2x type challengers can initiate this transaction.")
+	}
+
+	if logger != nil {
+		logger.Info("V2X challenger is found successfully.", "transaction", "ChallengeService")
 	}
 
 	// Fetch client from the store
@@ -46,6 +54,10 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	if !isChallengeable {
 		pointString := strconv.FormatFloat(point, 'f', -1, 64)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][IsChallengeable] failed. Client is not challengeable at the moment. The Point is: "+pointString+" with multiplier: "+client.CoolDownTolerance)
+	}
+
+	if logger != nil {
+		logger.Info("Checking challengeability for the clinet successfully done.", "transaction", "ChallengeService")
 	}
 
 	// Check the challenge result
@@ -165,6 +177,10 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 		k.SetMotusWallet(ctx, newMotusWallet)
 
+		if logger != nil {
+			logger.Info("Rewarding the client successfully done.", "transaction", "ChallengeService")
+		}
+
 	} else if result == constants.Punish {
 
 		// Update challengee score
@@ -222,6 +238,10 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 		k.SetMotusWallet(ctx, newMotusWallet)
 
+		if logger != nil {
+			logger.Info("Punishing the client successfully done.", "transaction", "ChallengeService")
+		}
+
 	} else {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[ChallengeService] failed. Invalid challenge result.")
 	}
@@ -241,6 +261,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 
 	k.SetChallenger(ctx, updatedChallenger)
+
+	if logger != nil {
+		logger.Info("Increasing Challenger score successfully done.", "transaction", "ChallengeService")
+	}
+
+	log.Println("############## End of Challenge Service Transaction ##############")
 
 	return &types.MsgChallengeServiceResponse{}, nil
 }
