@@ -31,7 +31,7 @@ func Test_IsChallengeable(t *testing.T) {
 		{
 			desc: "Valid Client Address",
 			request: &types.QueryIsChallengeableRequest{
-				ClientAddr: clients[0].Index,
+				ClientAddr: clients[0].Address,
 			},
 			response: &types.QueryIsChallengeableResponse{ResultBool: "false", ChallengeabilityScore: "-63808599897"},
 		},
@@ -68,7 +68,7 @@ func Test_IsNotChallengeable(t *testing.T) {
 		{
 			desc: "Invalid Client Address",
 			request: &types.QueryIsChallengeableRequest{
-				ClientAddr: clients[0].Index,
+				ClientAddr: clients[0].Address,
 			},
 			response: &types.QueryIsChallengeableResponse{ResultBool: "false", ChallengeabilityScore: "-63808599897"},
 		},

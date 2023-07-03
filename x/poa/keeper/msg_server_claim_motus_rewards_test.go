@@ -18,8 +18,8 @@ func Test_ClaimMotusRewards(t *testing.T) {
 	ctx := sdk.UnwrapSDKContext(context)
 	// create test motus wallet and client
 	motusWallet := types.MotusWallet{
-		Index:  CommunityWallet,
-		Client: &types.Client{Address: CommunityWallet, NetEarnings: MotusWalletAmount},
+		Address: CommunityWallet,
+		Client:  &types.Client{Address: CommunityWallet, NetEarnings: MotusWalletAmount},
 	}
 	k.SetMotusWallet(ctx, motusWallet)
 

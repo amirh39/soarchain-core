@@ -25,10 +25,10 @@ func TestGenesisState_Validate(t *testing.T) {
 
 				ClientList: []types.Client{
 					{
-						Index: "0",
+						PubKey: "0",
 					},
 					{
-						Index: "1",
+						PubKey: "1",
 					},
 				},
 				ChallengerList: []types.Challenger{
@@ -64,10 +64,10 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 				MotusWalletList: []types.MotusWallet{
 					{
-						Index: "0",
+						Address: "0",
 					},
 					{
-						Index: "1",
+						Address: "1",
 					},
 				},
 				MasterKey: types.MasterKey{
@@ -92,10 +92,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				ClientList: []types.Client{
 					{
-						Index: "0",
+						PubKey: "0",
 					},
 					{
-						Index: "0",
+						PubKey: "0",
 					},
 				},
 			},
@@ -148,10 +148,10 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				MotusWalletList: []types.MotusWallet{
 					{
-						Index: "0",
+						Address: "0",
 					},
 					{
-						Index: "0",
+						Address: "0",
 					},
 				},
 			},
