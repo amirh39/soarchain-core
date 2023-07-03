@@ -23,7 +23,7 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/soarchain/poa/params";
   }
-  // Queries a Client by PubKey.
+  // Queries a Client by index.
 	rpc Client(QueryGetClientRequest) returns (QueryGetClientResponse) {
 		option (google.api.http).get = "/soarchain/poa/client/{PubKey}";
 	}
@@ -90,7 +90,7 @@ service Query {
 	}
 // Queries a MotusWallet by index.
 	rpc MotusWallet(QueryGetMotusWalletRequest) returns (QueryGetMotusWalletResponse) {
-		option (google.api.http).get = "/soarchain/poa/motus_wallet/{index}";
+		option (google.api.http).get = "/soarchain/poa/motus_wallet/{address}";
 	}
 
 	// Queries a list of MotusWallet items.
@@ -251,7 +251,7 @@ message QueryGetEpochDataResponse {
 	EpochData EpochData = 1 [(gogoproto.nullable) = false];
 }
 message QueryGetMotusWalletRequest {
-	  string index = 1;
+	  string address = 1;
 
 }
 
