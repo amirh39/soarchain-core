@@ -12,20 +12,20 @@ func (k Keeper) SetClient(ctx sdk.Context, client types.Client) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ClientKeyPrefix))
 	b := k.cdc.MustMarshal(&client)
 	store.Set(types.ClientKey(
-		client.Index,
+		client.PubKey,
 	), b)
 }
 
 // GetClient returns a client from its index
 func (k Keeper) GetClient(
 	ctx sdk.Context,
-	index string,
+	PubKey string,
 
 ) (val types.Client, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ClientKeyPrefix))
 
 	b := store.Get(types.ClientKey(
-		index,
+		PubKey,
 	))
 	if b == nil {
 		return val, false
@@ -38,12 +38,12 @@ func (k Keeper) GetClient(
 // RemoveClient removes a client from the store
 func (k Keeper) RemoveClient(
 	ctx sdk.Context,
-	index string,
+	PubKey string,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ClientKeyPrefix))
 	store.Delete(types.ClientKey(
-		index,
+		PubKey,
 	))
 }
 

@@ -17,10 +17,10 @@ func TestGenesis(t *testing.T) {
 
 		ClientList: []types.Client{
 			{
-				Index: "0",
+				PubKey: "0",
 			},
 			{
-				Index: "1",
+				PubKey: "1",
 			},
 		},
 		ChallengerList: []types.Challenger{
