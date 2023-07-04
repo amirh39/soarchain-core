@@ -87,16 +87,15 @@ func (k Keeper) punish(score string) (float64, float64) {
 }
 
 func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey string, result string) error {
-
 	runner, found := k.GetRunnerUsingPubKey(ctx, runnerPubKey)
 	if !found {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundAValidRunner)
 	}
 
 	var totalEarnings sdk.Coin
-	var rewardMultiplier float64
 	var score float64
 	newScore := make([]float64, 0)
+	var rewardMultiplier float64 // Declare the rewardMultiplier variable
 
 	if result == constants.Reward {
 		rewardMultiplier, score = k.rewardAndScore(runner.Score)
@@ -106,6 +105,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.InvaldChallengeResult)
 	}
 	newScore = append(newScore, score)
+
 	earnedRewardsFloat := k.CalculateRewards(5, newScore)
 
 	if len(earnedRewardsFloat) > 0 {
@@ -119,6 +119,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 
 		totalEarnings = netEarnings.Add(earnedCoin)
 
+		// Update the epoch rewards
 		if epochErr := k.UpdateEpochRewards(ctx, "runner", earnedCoin); epochErr != nil {
 			// Handle the error appropriately
 		}
@@ -212,10 +213,10 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
 
-	err = k.updateClient(ctx, msg)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
-	}
+	// err = k.updateClient(ctx, msg)
+	// if err != nil {
+	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	// }
 
 	/** Update challenger info after the successfull reward session */
 	k.updateChallenger(ctx, challenger)
