@@ -119,7 +119,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 
 		totalEarnings = netEarnings.Add(earnedCoin)
 
-		if epochErr := k.UpdateEpochRewards(ctx, "challenger", earnedCoin); epochErr != nil {
+		if epochErr := k.UpdateEpochRewards(ctx, "runner", earnedCoin); epochErr != nil {
 			// Handle the error appropriately
 		}
 	}
@@ -140,60 +140,64 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 	return nil
 }
 
-// func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) error {
+func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) error {
+	v2nBxAddrCount := len(msg.ClientPubkeys)
+	if v2nBxAddrCount < 1 {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NoV2nBxAddrPubKeys)
+	}
 
-// 	// ToDo: Set MOTUS mini rewards
-// 	v2nBxAddrCount := len(msg.ClientPubkeys)
-// 	if v2nBxAddrCount < 1 {
-// 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NoV2nBxAddrPubKeys)
-// 	}
+	// Create an array of scores to send to CalculateRewards
+	scores := make([]float64, v2nBxAddrCount)
+	for i := 0; i < v2nBxAddrCount; i++ {
+		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
+		if !isFound {
+			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
+		}
 
-// 	/** All MOTUS mini devices will be rewarded */
-// 	for i := 0; i < v2nBxAddrCount; i++ {
+		score, err := strconv.ParseFloat(v2nBxClient.Score, 64)
+		if err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid score")
+		}
+		scores[i] = score
+	}
 
-// 		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
-// 		if !isFound {
-// 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
-// 		}
+	// Calculate rewards for all scores
+	rewards := k.CalculateRewards(10, scores)
 
-// 		rewardMultiplier, newScore := k.rewardAndScore(v2nBxClient.Score)
+	for i := 0; i < v2nBxAddrCount; i++ {
+		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
+		if !isFound {
+			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
+		}
 
-// 		totalEarnings, err := k.totalEarnings(ctx, v2nBxClient.NetEarnings, constants.V2NBX)
-// 		if err != nil {
-// 			return sdkerrors.Wrap(sdkerrors.ErrPanic, errors.TotalEarnings)
-// 		}
+		updatedClient := types.Client{
+			Index:              v2nBxClient.Index,
+			Address:            v2nBxClient.Address,
+			Score:              v2nBxClient.Score,
+			NetEarnings:        strconv.FormatFloat(rewards[i], 'f', -1, 64),
+			LastTimeChallenged: ctx.BlockTime().String(),
+			CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, msg.Creator), 10),
+			Type:               v2nBxClient.Type,
+		}
 
-// 		updatedClient := types.Client{
-// 			Index:              v2nBxClient.Index,
-// 			Address:            v2nBxClient.Address,
-// 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
-// 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-// 			NetEarnings:        totalEarnings.String(),
-// 			LastTimeChallenged: ctx.BlockTime().String(),
-// 			CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, msg.Creator), 10),
-// 			Type:               v2nBxClient.Type,
-// 		}
+		k.SetClient(ctx, updatedClient)
 
-// 		k.SetClient(ctx, updatedClient)
+		k.updateMotusWallet(ctx, v2nBxClient.Address, updatedClient)
+	}
 
-// 		k.updateMotusWallet(ctx, v2nBxClient.Address, updatedClient)
+	return nil
+}
 
-// 	}
+func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.Client) {
+	motusWallet, _ := k.GetMotusWallet(ctx, address)
 
-// 	return nil
-// }
+	newMotusWallet := types.MotusWallet{
+		Index:  motusWallet.Index,
+		Client: &client,
+	}
 
-// func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.Client) {
-
-// 	motusWallet, _ := k.GetMotusWallet(ctx, address)
-
-// 	newMotusWallet := types.MotusWallet{
-// 		Index:  motusWallet.Index,
-// 		Client: &client,
-// 	}
-
-// 	k.SetMotusWallet(ctx, newMotusWallet)
-// }
+	k.SetMotusWallet(ctx, newMotusWallet)
+}
 
 func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerChallenge) (*types.MsgRunnerChallengeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -203,15 +207,15 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
 
-	// err := k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey, msg.ChallengeResult)
-	// if err != nil {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
-	// }
+	err := k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey, msg.ChallengeResult)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	}
 
-	// err = k.updateClient(ctx, msg)
-	// if err != nil {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
-	// }
+	err = k.updateClient(ctx, msg)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	}
 
 	/** Update challenger info after the successfull reward session */
 	k.updateChallenger(ctx, challenger)
