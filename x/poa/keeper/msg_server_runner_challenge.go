@@ -121,7 +121,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 
 		// Update the epoch rewards
 		if epochErr := k.UpdateEpochRewards(ctx, "runner", earnedCoin); epochErr != nil {
-			// Handle the error appropriately
+
 		}
 	}
 
@@ -171,19 +171,44 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
 
+		// RewardAndScore functionality
+		rewardMultiplier, score := k.rewardAndScore(v2nBxClient.Score)
+
+		earnedRewardsInt := sdk.NewIntFromUint64(uint64(rewards[i]))
+		earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
+
+		netEarnings, err := sdk.ParseCoinNormalized(v2nBxClient.NetEarnings)
+		if err != nil {
+			// Handle the error appropriately
+		}
+
+		totalEarnings := netEarnings.Add(earnedCoin)
+
 		updatedClient := types.Client{
 			Index:              v2nBxClient.Index,
 			Address:            v2nBxClient.Address,
-			Score:              v2nBxClient.Score,
-			NetEarnings:        strconv.FormatFloat(rewards[i], 'f', -1, 64),
+			Score:              strconv.FormatFloat(score, 'f', -1, 64),
+			NetEarnings:        totalEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, msg.Creator), 10),
 			Type:               v2nBxClient.Type,
+			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		}
 
 		k.SetClient(ctx, updatedClient)
 
 		k.updateMotusWallet(ctx, v2nBxClient.Address, updatedClient)
+	}
+
+	// Update the epoch rewards outside the loop
+	for i := 0; i < v2nBxAddrCount; i++ {
+		earnedRewardsInt := sdk.NewIntFromUint64(uint64(rewards[i]))
+		earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
+
+		// Update the epoch rewards
+		if epochErr := k.UpdateEpochRewards(ctx, "v2n-bx", earnedCoin); epochErr != nil {
+
+		}
 	}
 
 	return nil
@@ -213,10 +238,10 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
 
-	// err = k.updateClient(ctx, msg)
-	// if err != nil {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
-	// }
+	err = k.updateClient(ctx, msg)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	}
 
 	/** Update challenger info after the successfull reward session */
 	k.updateChallenger(ctx, challenger)
