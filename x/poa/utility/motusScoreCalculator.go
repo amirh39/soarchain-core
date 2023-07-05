@@ -11,6 +11,11 @@ func CalculateScore(score float64, c bool) float64 {
 	const maxIncreaseFactor = utilConstants.MaxIncreaseFactor
 	const maxDecreaseFactor = utilConstants.MaxDecreaseFactor
 
+	// Score should between 0 and 100
+	if score < minScore || score > maxScore {
+		return 0.0
+	}
+
 	increaseFactor := maxIncreaseFactor * (maxScore - score) / maxScore
 	decreaseFactor := maxDecreaseFactor * score / maxScore
 
