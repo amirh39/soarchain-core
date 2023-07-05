@@ -51,7 +51,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 
 	newEpochData := types.EpochData{
 		TotalEpochs:               newEpochCnt,
-		EpochV2VRX:                epochData.EpochV2NBX,
+		EpochV2VRX:                epochData.EpochV2VRX,
 		EpochV2VBX:                epochData.EpochV2VBX,
 		EpochV2NBX:                epochData.EpochV2NBX,
 		EpochRunner:               epochData.EpochRunner,
