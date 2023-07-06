@@ -51,16 +51,16 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 
 	newEpochData := types.EpochData{
 		TotalEpochs:               newEpochCnt,
-		EpochV2VRX:                epochData.EpochV2VRX,
-		EpochV2VBX:                epochData.EpochV2VBX,
-		EpochV2NBX:                epochData.EpochV2NBX,
-		EpochRunner:               epochData.EpochRunner,
-		EpochChallenger:           epochData.EpochChallenger,
-		V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-		V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-		V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
-		RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-		ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
+		EpochV2VRX:                sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochV2VBX:                sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochV2NBX:                sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochRunner:               sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochChallenger:           sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		V2VRXtotalChallenges:      0,
+		V2VBXtotalChallenges:      0,
+		V2NBXtotalChallenges:      0,
+		RunnerTotalChallenges:     0,
+		ChallengerTotalChallenges: 0,
 	}
 
 	k.SetEpochData(ctx, newEpochData)
