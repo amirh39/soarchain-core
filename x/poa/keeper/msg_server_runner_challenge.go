@@ -8,6 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	param "soarchain/app/params"
+	params "soarchain/app/params"
 	"soarchain/x/poa/constants"
 	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
@@ -245,6 +246,11 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 
 	/** Update challenger info after the successfull reward session */
 	k.updateChallenger(ctx, challenger)
+
+	//update the challenge counts
+	if epochErr := k.UpdateEpochRewards(ctx, "runner_challenge", sdk.NewCoin(params.BondDenom, sdk.ZeroInt())); epochErr != nil {
+
+	}
 
 	return &types.MsgRunnerChallengeResponse{}, nil
 }
