@@ -94,7 +94,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// check reward cap inside the epoch
 		var totalEarnings sdk.Coin
 		if epochRewards.IsLT(targetEpochReward) {
-			// Calculate reward earned
+			//Calculate reward earned
 			earnedTokenRewardsFloat, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][V2VRewardCalculator] failed. Couldn't calculate v2v earned reward."+err.Error())
@@ -108,7 +108,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			}
 			totalEarnings = netEarnings.Add(earnedCoin)
 
-			// update epoch rewards
+			//update epoch rewards
 			epochErr := k.UpdateEpochRewards(ctx, msg.ClientCommunicationMode, earnedCoin)
 			if epochErr != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][UpdateEpochRewards] failed. Couldn't update epoch rewards."+epochErr.Error())
