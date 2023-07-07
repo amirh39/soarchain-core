@@ -9,8 +9,6 @@ import (
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 
-	params "soarchain/app/params"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -75,63 +73,63 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// Update rewardMultiplier
 		rewardMultiplier := utility.CalculateRewardMultiplier(newScore)
 
-		// reward cap check for current epoch
-		targetEpochRewardInt, targetEpochErr := utility.V2VRewardEmissionPerEpoch(ctx, msg.ClientCommunicationMode)
-		if targetEpochErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][V2VRewardEmissionPerEpoch] failed. Couldn't emission reward per epoch.")
-		}
-		targetEpochReward := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
+		// // reward cap check for current epoch
+		// targetEpochRewardInt, targetEpochErr := utility.V2VRewardEmissionPerEpoch(ctx, msg.ClientCommunicationMode)
+		// if targetEpochErr != nil {
+		// 	return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][V2VRewardEmissionPerEpoch] failed. Couldn't emission reward per epoch.")
+		// }
+		// targetEpochReward := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
 
-		epochData, found := k.GetEpochData(ctx)
-		if !found {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][GetEpochData] failed. Couldn't find epoch data."+err.Error())
-		}
+		// epochData, found := k.GetEpochData(ctx)
+		// if !found {
+		// 	return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][GetEpochData] failed. Couldn't find epoch data."+err.Error())
+		// }
 
-		var epochRewards sdk.Coin
+		// var epochRewards sdk.Coin
 
-		if msg.ClientCommunicationMode == constants.V2VRX {
-			epochRewards, err = sdk.ParseCoinNormalized(epochData.EpochV2VRX)
-			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize coin for v2v-rx."+err.Error())
-			}
-		} else if msg.ClientCommunicationMode == constants.V2VBX {
-			epochRewards, err = sdk.ParseCoinNormalized(epochData.EpochV2VBX)
-			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize coin for v2v-bx."+err.Error())
-			}
-		} else {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "[ChallengeService] failed. Epoch rewards couldn't be calculated due to invalid v2v type.")
-		}
+		// if msg.ClientCommunicationMode == constants.V2VRX {
+		// 	epochRewards, err = sdk.ParseCoinNormalized(epochData.EpochV2VRX)
+		// 	if err != nil {
+		// 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize coin for v2v-rx."+err.Error())
+		// 	}
+		// } else if msg.ClientCommunicationMode == constants.V2VBX {
+		// 	epochRewards, err = sdk.ParseCoinNormalized(epochData.EpochV2VBX)
+		// 	if err != nil {
+		// 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize coin for v2v-bx."+err.Error())
+		// 	}
+		// } else {
+		// 	return nil, sdkerrors.Wrap(sdkerrors.ErrNotSupported, "[ChallengeService] failed. Epoch rewards couldn't be calculated due to invalid v2v type.")
+		// }
 
 		// check reward cap inside the epoch
-		var totalEarnings sdk.Coin
-		if epochRewards.IsLT(targetEpochReward) {
-			//Calculate reward earned
-			earnedTokenRewardsFloat, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
-			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][V2VRewardCalculator] failed. Couldn't calculate v2v earned reward.")
-			}
-			earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
-			earnedCoin := sdk.NewCoin(params.BondDenom, earnedRewardsInt)
+		// var totalEarnings sdk.Coin
+		// if epochRewards.IsLT(targetEpochReward) {
+		// 	//Calculate reward earned
+		// 	earnedTokenRewardsFloat, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
+		// 	if err != nil {
+		// 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][V2VRewardCalculator] failed. Couldn't calculate v2v earned reward.")
+		// 	}
+		// 	earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
+		// 	earnedCoin := sdk.NewCoin(params.BondDenom, earnedRewardsInt)
 
-			netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
-			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize client new earned coin.")
-			}
-			totalEarnings = netEarnings.Add(earnedCoin)
+		// 	netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
+		// 	if err != nil {
+		// 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize client new earned coin.")
+		// 	}
+		// 	totalEarnings = netEarnings.Add(earnedCoin)
 
-			//update epoch rewards
-			epochErr := k.UpdateEpochRewards(ctx, msg.ClientCommunicationMode, earnedCoin)
-			if epochErr != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][UpdateEpochRewards] failed. Couldn't update epoch rewards.")
-			}
-		} else {
-			netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
-			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize client net earning.")
-			}
-			totalEarnings = netEarnings
-		}
+		// 	//update epoch rewards
+		// 	epochErr := k.UpdateEpochRewards(ctx, msg.ClientCommunicationMode, earnedCoin)
+		// 	if epochErr != nil {
+		// 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][UpdateEpochRewards] failed. Couldn't update epoch rewards.")
+		// 	}
+		// } else {
+		// 	netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
+		// 	if err != nil {
+		// 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize client net earning.")
+		// 	}
+		// 	totalEarnings = netEarnings
+		// }
 
 		// Generate random coolDownMultiplier
 		multiplier := int(constants.Multiplier)
@@ -158,7 +156,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-			NetEarnings:        totalEarnings.String(),
+			NetEarnings:        "0",
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 			Type:               client.Type,
