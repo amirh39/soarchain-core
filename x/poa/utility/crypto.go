@@ -19,7 +19,7 @@ func CreateRandomVrfValues(ctx sdk.Context, message []byte, multiplier int) (vrv
 	vrv, proof := sk.Prove(message) // Generate vrv (verifiable random value) and proof
 	pub_key, ok_bool := sk.Public() // public key creation
 	if !ok_bool {
-		return nil, nil, nil, 0, 0, 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[CreateVrfData] failed. Couldn't generate VRF public key!")
+		return nil, nil, nil, 0, 0, 0, sdkerrors.Wrap(sdkerrors.ErrInvalidPubKey, "[CreateVrfData] failed. Couldn't generate VRF public key!")
 	}
 
 	parse_vrv_to_uint64 := binary.BigEndian.Uint64(vrv)
@@ -28,7 +28,7 @@ func CreateRandomVrfValues(ctx sdk.Context, message []byte, multiplier int) (vrv
 	final_vrv_float = float_vrv * float64(multiplier)
 
 	if uint64(multiplier) < uint64(final_vrv) {
-		return nil, nil, nil, 0, 0, 0, sdkerrors.Wrap(sdkerrors.ErrPanic, "[CreateVrfData] failed. Generated random number is out of index.")
+		return nil, nil, nil, 0, 0, 0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[CreateVrfData] failed. Generated random number is out of index.")
 	}
 
 	return vrv, proof, pub_key, float_vrv, final_vrv, final_vrv_float, nil

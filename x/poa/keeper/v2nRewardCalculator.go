@@ -10,10 +10,15 @@ import (
 )
 
 func (k Keeper) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64, clientCommunicationMode string) (float64, error) {
+	logger := k.Logger(ctx)
 
 	rewardPerBlock, err := utility.V2NRewardEmissionPerBlock(ctx, clientCommunicationMode)
 	if err != nil {
-		return 0, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[V2NRewardCalculator][V2NRewardEmissionPerBlock] failed. V2V Motus Reward Emission per block couldn't be computed. Check client communication mode. Error: [ %T ]", err)
+		return 0, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[V2NRewardCalculator][V2NRewardEmissionPerBlock] failed. V2V Motus Reward Emission per block couldn't be computed. Check client communication mode. Error: [ %T ]", err)
+	}
+
+	if logger != nil {
+		logger.Info("V2V Motus Reward Emission per block successfully computed.", "calculation of", "V2NRewardCalculator")
 	}
 
 	// Score is below 50, no rewards are earned
@@ -32,9 +37,12 @@ func (k Keeper) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64, c
 		for i := 0; i < len(allClients); i++ {
 			currMultiplier, err := strconv.ParseFloat(allClients[i].RewardMultiplier, 64)
 			if err != nil {
-				return 0.0, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[V2NRewardCalculator][ParseFloat] failed. Couldn't convert the string to a floating-point number for a v2n-bx. Error: [ %T ]", err)
+				return 0.0, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[V2NRewardCalculator][ParseFloat] failed. Couldn't convert the string to a floating-point number for a v2n-bx. Error: [ %T ]", err)
 			}
 			totalMultipliers += currMultiplier
+		}
+		if logger != nil {
+			logger.Info("V2NBX total multiplier successfully computed.", "calculation of", "V2NRewardCalculator")
 		}
 	} else if clientCommunicationMode == constants.Runner {
 		allRunners := k.GetAllRunner(ctx)
@@ -45,9 +53,12 @@ func (k Keeper) V2NRewardCalculator(ctx sdk.Context, rewardMultiplier float64, c
 		for i := 0; i < len(allRunners); i++ {
 			currMultiplier, err := strconv.ParseFloat(allRunners[i].RewardMultiplier, 64)
 			if err != nil {
-				return 0.0, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[V2NRewardCalculator][ParseFloat] failed. Couldn't convert the string to a floating-point number for a runner. Error: [ %T ]", err)
+				return 0.0, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[V2NRewardCalculator][ParseFloat] failed. Couldn't convert the string to a floating-point number for a runner. Error: [ %T ]", err)
 			}
 			totalMultipliers += currMultiplier
+		}
+		if logger != nil {
+			logger.Info("Runner total multiplier successfully computed.", "calculation of", "V2NRewardCalculator")
 		}
 	} else {
 		return 0.0, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[V2NRewardCalculator][ParseFloat] failed. V2N communication mode is not supported.")

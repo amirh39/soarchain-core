@@ -23,6 +23,7 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Challenger struct {
+
 	PubKey           string `protobuf:"bytes,1,opt,name=PubKey,proto3" json:"PubKey,omitempty"`
 	Address          string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	Score            string `protobuf:"bytes,3,opt,name=score,proto3" json:"score,omitempty"`
@@ -31,6 +32,7 @@ type Challenger struct {
 	Type             string `protobuf:"bytes,6,opt,name=type,proto3" json:"type,omitempty"`
 	IpAddr           string `protobuf:"bytes,7,opt,name=ipAddr,proto3" json:"ipAddr,omitempty"`
 	RewardMultiplier string `protobuf:"bytes,8,opt,name=rewardMultiplier,proto3" json:"rewardMultiplier,omitempty"`
+
 }
 
 func (m *Challenger) Reset()         { *m = Challenger{} }
@@ -129,6 +131,7 @@ func init() {
 func init() { proto.RegisterFile("poa/challenger.proto", fileDescriptor_d2723ec770faa160) }
 
 var fileDescriptor_d2723ec770faa160 = []byte{
+
 	// 258 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x90, 0x41, 0x4a, 0x03, 0x31,
 	0x14, 0x86, 0x27, 0xda, 0x4e, 0xf5, 0xa9, 0x20, 0xa1, 0x4a, 0x56, 0xa1, 0x74, 0x25, 0x2e, 0x3a,
@@ -147,6 +150,7 @@ var fileDescriptor_d2723ec770faa160 = []byte{
 	0x95, 0xd9, 0x7b, 0x2b, 0xb3, 0x87, 0x93, 0xed, 0x3a, 0xc5, 0x4b, 0xd1, 0xed, 0xd7, 0xfd, 0x19,
 	0x16, 0x79, 0xda, 0xee, 0xe2, 0x2b, 0x00, 0x00, 0xff, 0xff, 0xc3, 0xc5, 0x26, 0xae, 0x53, 0x01,
 	0x00, 0x00,
+
 }
 
 func (m *Challenger) Marshal() (dAtA []byte, err error) {

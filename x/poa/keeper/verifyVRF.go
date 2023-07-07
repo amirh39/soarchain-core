@@ -13,6 +13,7 @@ import (
 )
 
 func (k Keeper) VerifyGeneratedNumber(ctx sdk.Context, req *types.QueryVerifyRandomNumberRequest) (bool, error) {
+	logger := k.Logger(ctx)
 
 	var public_key vrf.PublicKey
 	public_key, err := hex.DecodeString(req.Pubkey)
@@ -32,6 +33,10 @@ func (k Keeper) VerifyGeneratedNumber(ctx sdk.Context, req *types.QueryVerifyRan
 	}
 
 	is_verified := public_key.Verify(message_value, vrv_value, proof_value)
+
+	if logger != nil {
+		logger.Info("Verifying VRF data successfully done.", "calculation of", "VerifyGeneratedNumber")
+	}
 
 	// return strconv.FormatBool(is_verified), err
 	return is_verified, err

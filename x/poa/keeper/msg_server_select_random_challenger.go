@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	"strconv"
 
 	"soarchain/x/poa/types"
@@ -13,6 +14,9 @@ import (
 
 func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgSelectRandomChallenger) (*types.MsgSelectRandomChallengerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Select Random Challenger Transaction Started ##############")
 
 	if msg.Creator == "" {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[SelectRandomChallenger] failed. Couldn't find a valid msg.Creator. got [ %T ]", msg.Creator)
@@ -26,17 +30,17 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 
 	vrfData, err := k.CreateVRF(ctx, msg.Creator, factor)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomChallenger][CreateVRF] failed. VRF couldn't create. Error [ %T ]", err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[SelectRandomChallenger][CreateVRF] failed. VRF couldn't create. Error [ %T ]", err)
 	}
 
 	generatedNumber, err := strconv.ParseUint(vrfData.FinalVrv, 10, 64)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrPanic, "[SelectRandomChallenger][ParseUint] failed. Couldn't parse VRF data. Error: [ %T ]", err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[SelectRandomChallenger][ParseUint] failed. Couldn't parse VRF data. Error: [ %T ]", err)
 	}
 	var selectedChallenger types.Challenger
 	challengers := k.GetAllChallenger(ctx)
 	if allChallengers == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[SelectRandomChallenger][GetAllChallenger] failed. Couldn't find any challenger.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[SelectRandomChallenger][GetAllChallenger] failed. Couldn't find any challenger.")
 	}
 	for i := 0; i < len(challengers); i++ {
 		if i == int(generatedNumber) {
@@ -63,6 +67,12 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 		FinalVrvFloat: vrf.FinalVrvFloat,
 	}
 	k.SetVrfData(ctx, updateVrf)
+
+	if logger != nil {
+		logger.Info("Updating Vrf data successfully done.", "transaction", "SelectRandomChallenger")
+	}
+
+	log.Println("############## End of Select Random Challenger Transaction ##############")
 
 	return &types.MsgSelectRandomChallengerResponse{RandomChallenger: &selectedChallenger}, nil
 }

@@ -28,7 +28,7 @@ func Test_V2VRewardEmissionPerBlock(t *testing.T) {
 		// Call the V2VReceiveReward
 		actualTokensPerBlock, err := V2VRewardEmissionPerBlock(ctx, constants.V2VRX)
 		require.NoError(t, err)
-
+		t.Log("actualTokensPerBlock", actualTokensPerBlock)
 		if actualTokensPerBlock != test.expectedTokensPerBlock {
 			t.Error("Test failed: expected tokens per block of, got", test.expectedTokensPerBlock, actualTokensPerBlock)
 		}
@@ -37,8 +37,8 @@ func Test_V2VRewardEmissionPerBlock(t *testing.T) {
 
 func Test_V2VRewardEmissionPerEpoch(t *testing.T) {
 	ctx := sdk.Context{}
-	actualTokensPerBlock, err := V2VRewardEmissionPerEpoch(ctx, constants.V2VRX)
-
+	actualTokensPerEpoch, err := V2VRewardEmissionPerEpoch(ctx, constants.V2VRX)
+	t.Log("actualTokensPerEpoch", actualTokensPerEpoch)
 	require.NoError(t, err)
-	require.NotNil(t, actualTokensPerBlock)
+	require.NotNil(t, actualTokensPerEpoch)
 }

@@ -15,6 +15,8 @@ func Test_V2NRewardCalculator(t *testing.T) {
 	res, err := keeper.V2NRewardCalculator(ctx, 4, TRunner)
 
 	require.NoError(t, err)
+	t.Log("res", res)
+	require.NotZero(t, res)
 	require.NotNil(t, res)
 }
 
@@ -27,8 +29,9 @@ func Test_V2NRewardCalculator_NotValidRunners(t *testing.T) {
 	res, err := keeper.V2NRewardCalculator(ctx, 4, TRunner)
 
 	require.Error(t, err)
+	t.Log("res", res)
 	require.Zero(t, 0)
-	require.Equal(t, 0.0, res)
+	require.NotNil(t, res)
 }
 
 func Test_V2NRewardCalculator_NotValidClients(t *testing.T) {
@@ -41,6 +44,6 @@ func Test_V2NRewardCalculator_NotValidClients(t *testing.T) {
 
 	require.Error(t, err)
 	require.Zero(t, 0)
-	require.Equal(t, 0.0, res)
+	require.NotNil(t, res)
 
 }

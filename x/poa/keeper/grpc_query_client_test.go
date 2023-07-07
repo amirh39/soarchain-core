@@ -28,21 +28,21 @@ func Test_ClientQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetClientRequest{
-				Index: msgs[0].Index,
+				PubKey: msgs[0].PubKey,
 			},
 			response: &types.QueryGetClientResponse{Client: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetClientRequest{
-				Index: msgs[1].Index,
+				PubKey: msgs[1].PubKey,
 			},
 			response: &types.QueryGetClientResponse{Client: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetClientRequest{
-				Index: strconv.Itoa(100000),
+				PubKey: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	"strconv"
 
 	"soarchain/x/poa/constants"
@@ -16,6 +17,9 @@ import (
 
 func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallengeService) (*types.MsgChallengeServiceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Challenge Service Transaction Started ##############")
 
 	challenger, isFound := k.GetChallenger(ctx, msg.Creator)
 	if !isFound {
@@ -25,6 +29,10 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	// Challenger type must be v2x for this operation
 	if challenger.Type != constants.V2XChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[ChallengeService][GetChallenger][v2x] failed. Only v2x type challengers can initiate this transaction.")
+	}
+
+	if logger != nil {
+		logger.Info("V2X challenger is found successfully.", "transaction", "ChallengeService")
 	}
 
 	// Fetch client from the store
@@ -45,7 +53,11 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 	if !isChallengeable {
 		pointString := strconv.FormatFloat(point, 'f', -1, 64)
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][IsChallengeable] failed. Client is not challengeable at the moment. The Point is: "+pointString+" with multiplier: "+client.CoolDownTolerance)
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][IsChallengeable] failed. Client is not challengeable at the moment. The Point is: "+pointString+" with multiplier: "+client.CoolDownTolerance)
+	}
+
+	if logger != nil {
+		logger.Info("Checking challengeability for the clinet successfully done.", "transaction", "ChallengeService")
 	}
 
 	// Check the challenge result
@@ -56,7 +68,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// Update challengee score
 		scoreFloat64, err := strconv.ParseFloat(client.Score, 64)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseFloat] failed. Couldn't convert client score to Float64."+err.Error())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][ParseFloat] failed. Couldn't convert client score to Float64."+err.Error())
 		}
 		newScore := utility.CalculateScore(scoreFloat64, true)
 
@@ -66,7 +78,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		// reward cap check for current epoch
 		targetEpochRewardInt, targetEpochErr := utility.V2VRewardEmissionPerEpoch(ctx, msg.ClientCommunicationMode)
 		if targetEpochErr != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][V2VRewardEmissionPerEpoch] failed. Couldn't emission reward per epoch."+err.Error())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][V2VRewardEmissionPerEpoch] failed. Couldn't emission reward per epoch.")
 		}
 		targetEpochReward := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(uint64(targetEpochRewardInt)))
 
@@ -97,26 +109,26 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			//Calculate reward earned
 			earnedTokenRewardsFloat, err := k.V2VRewardCalculator(ctx, rewardMultiplier, msg.ClientCommunicationMode)
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][V2VRewardCalculator] failed. Couldn't calculate v2v earned reward."+err.Error())
+				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][V2VRewardCalculator] failed. Couldn't calculate v2v earned reward.")
 			}
 			earnedRewardsInt := sdk.NewIntFromUint64((uint64(earnedTokenRewardsFloat)))
 			earnedCoin := sdk.NewCoin(params.BondDenom, earnedRewardsInt)
 
 			netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize client new earned coin."+err.Error())
+				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize client new earned coin.")
 			}
 			totalEarnings = netEarnings.Add(earnedCoin)
 
 			//update epoch rewards
 			epochErr := k.UpdateEpochRewards(ctx, msg.ClientCommunicationMode, earnedCoin)
 			if epochErr != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][UpdateEpochRewards] failed. Couldn't update epoch rewards."+epochErr.Error())
+				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][UpdateEpochRewards] failed. Couldn't update epoch rewards.")
 			}
 		} else {
 			netEarnings, err := sdk.ParseCoinNormalized(client.NetEarnings)
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize client net earning."+err.Error())
+				return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ChallengeService][ParseCoinNormalized] failed. Couldn't parse and normalize client net earning.")
 			}
 			totalEarnings = netEarnings
 		}
@@ -126,12 +138,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 		VrfData, err := k.CreateVRF(ctx, msg.Creator, multiplier)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF.")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF.")
 		}
 
 		generatedNumber, err := strconv.ParseUint(VrfData.FinalVrv, 10, 64)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseUint] failed. vrfData.FinalVrv parse error."+err.Error())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][ParseUint] failed. vrfData.FinalVrv parse error.")
 		}
 
 		var coolDownMultiplier uint64
@@ -142,7 +154,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 
 		updatedClient := types.Client{
-			Index:              client.Index,
+			PubKey:             client.PubKey,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
@@ -160,17 +172,21 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][GetMotusWallet] failed. Couldn't find a wallet for Motus client.")
 		}
 		newMotusWallet := types.MotusWallet{
-			Index:  motusWallet.Index,
-			Client: &updatedClient,
+			Address: motusWallet.Address,
+			Client:  &updatedClient,
 		}
 		k.SetMotusWallet(ctx, newMotusWallet)
+
+		if logger != nil {
+			logger.Info("Rewarding the client successfully done.", "transaction", "ChallengeService")
+		}
 
 	} else if result == constants.Punish {
 
 		// Update challengee score
 		scoreFloat64, err := strconv.ParseFloat(client.Score, 64)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseFloat] failed. Cannot convert client score to Float64."+err.Error())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][ParseFloat] failed. Cannot convert client score to Float64.")
 		}
 		newScore := utility.CalculateScore(scoreFloat64, false)
 
@@ -182,12 +198,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 		VrfData, err := k.CreateVRF(ctx, msg.Creator, multiplier)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF.")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][CreateVRF] failed. Couldn't create a new VRF.")
 		}
 
 		generatedNumber, err := strconv.ParseUint(VrfData.FinalVrv, 10, 64)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ChallengeService][ParseUint] failed. vrfData.FinalVrv parse error."+err.Error())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[ChallengeService][ParseUint] failed. vrfData.FinalVrv parse error.")
 		}
 
 		var coolDownMultiplier uint64
@@ -199,7 +215,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 		//
 		updatedClient := types.Client{
-			Index:              client.Index,
+			PubKey:             client.PubKey,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
@@ -217,10 +233,14 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][GetMotusWallet] failed. Motus client wallet not found.")
 		}
 		newMotusWallet := types.MotusWallet{
-			Index:  motusWallet.Index,
-			Client: &updatedClient,
+			Address: motusWallet.Address,
+			Client:  &updatedClient,
 		}
 		k.SetMotusWallet(ctx, newMotusWallet)
+
+		if logger != nil {
+			logger.Info("Punishing the client successfully done.", "transaction", "ChallengeService")
+		}
 
 	} else {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[ChallengeService] failed. Invalid challenge result.")
@@ -241,6 +261,12 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 
 	k.SetChallenger(ctx, updatedChallenger)
+
+	if logger != nil {
+		logger.Info("Increasing Challenger score successfully done.", "transaction", "ChallengeService")
+	}
+
+	log.Println("############## End of Challenge Service Transaction ##############")
 
 	return &types.MsgChallengeServiceResponse{}, nil
 }

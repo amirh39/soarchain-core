@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	params "soarchain/app/params"
+	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
 	"strconv"
@@ -14,6 +15,9 @@ import (
 
 func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goctx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Generating a runner Transaction Started ##############")
 
 	if msg.Certificate == "" {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GenRunner] failed. Certificate must be declared in the tx.")
@@ -21,7 +25,7 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 
 	runnerAddr, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[GenRunner][AccAddressFromBech32] failed. Creator address couldn't be parsed.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, errors.ErrInvalidAddress)
 	}
 
 	if msg.RunnerStake == "" {
@@ -48,6 +52,10 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 		return nil, errCert
 	}
 
+	if logger != nil {
+		logger.Info("Verifying runner certificate successfully done.", "transaction", "GenRunner")
+	}
+
 	//check runner
 	var newRunner types.Runner
 
@@ -63,6 +71,10 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][GetMotusWallet][GetChallengerUsingPubKey][GetRunnerUsingPubKey][GetClient] failed. Client PubKey is not uniqe OR Client is already registered.")
 	}
 
+	if logger != nil {
+		logger.Info("Checking for unique runner successfully done.", "transaction", "GenRunner")
+	}
+
 	// Check runner stake amount
 	requiredStake := sdk.Coins{sdk.NewInt64Coin(params.BondDenom, 1000000000)}
 	runnerStake, err := sdk.ParseCoinsNormalized(msg.RunnerStake)
@@ -76,9 +88,15 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	// Transfer stakedAmount to poa modules account:
 	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
 	if transferErr != nil {
-		log.Panicln(transferErr)
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(runner) funds couldn't be transferred to POA module!")
+
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Stake(runner) funds couldn't be transferred to POA module!")
+
 	}
+
+	if logger != nil {
+		logger.Info("Transfering coin successfully done.", "transaction", "GenRunner")
+	}
+
 	// rewardMultiplier
 	var initialScore float64 = 50
 	rewardMultiplier := utility.CalculateRewardMultiplier(initialScore)
@@ -96,6 +114,12 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	}
 
 	k.SetRunner(ctx, newRunner)
+
+	if logger != nil {
+		logger.Info("Updating runner successfully done.", "transaction", "GenRunner")
+	}
+
+	log.Println("############## End of Gen runner Transaction ##############")
 
 	return &types.MsgGenRunnerResponse{}, nil
 }

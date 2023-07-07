@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -12,6 +13,9 @@ import (
 
 func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimMotusRewards) (*types.MsgClaimMotusRewardsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+
+	log.Println("############## Claim Motus Rewards Transaction Started ##############")
 
 	motusWallet, isFound := k.GetMotusWallet(ctx, msg.Creator)
 	if !isFound {
@@ -20,12 +24,12 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	withdrawAmount, err := sdk.ParseCoinsNormalized(msg.Amount)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount."+err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount.")
 	}
 
 	earnedAmount, err := sdk.ParseCoinsNormalized(motusWallet.Client.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount."+err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount.")
 	}
 
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
@@ -35,7 +39,11 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	clientAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
 	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, withdrawAmount)
 	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrPanic, "[ClaimMotusRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins."+errTransfer.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
+	}
+
+	if logger != nil {
+		logger.Info("Transfering coins to the target client successfully done.", "transaction", "ClaimMotusRewards")
 	}
 
 	// Calculate new net earnings
@@ -46,8 +54,12 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		netEarnings = sdk.NewCoin(params.BondDenom, sdk.ZeroInt())
 	}
 
+	if logger != nil {
+		logger.Info("Calculating new net earning successfully done.", "transaction", "ClaimMotusRewards")
+	}
+
 	updatedClient := types.Client{
-		Index:              motusWallet.Client.Index,
+		PubKey:             motusWallet.Client.PubKey,
 		Address:            motusWallet.Client.Address,
 		Score:              motusWallet.Client.Score,
 		RewardMultiplier:   motusWallet.Client.RewardMultiplier,
@@ -61,10 +73,16 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	// Update Motus wallet
 	newMotusWallet := types.MotusWallet{
-		Index:  motusWallet.Index,
-		Client: &updatedClient,
+		Address: motusWallet.Address,
+		Client:  &updatedClient,
 	}
 	k.SetMotusWallet(ctx, newMotusWallet)
+
+	if logger != nil {
+		logger.Info("Updating target client and motus wallet successfully done.", "transaction", "ClaimMotusRewards")
+	}
+
+	log.Println("############## End of Claim Motus Rewards Transaction ##############")
 
 	return &types.MsgClaimMotusRewardsResponse{}, nil
 }
