@@ -10,8 +10,6 @@ import (
 
 func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	epochData, _ := k.GetEpochData(ctx)
-	epochCnt := epochData.TotalEpochs
-	newEpochCnt := epochCnt + 1
 
 	handleParsingError := func(err error) {
 		if err != nil {
@@ -50,7 +48,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	}
 
 	newEpochData := types.EpochData{
-		TotalEpochs:               newEpochCnt,
+		TotalEpochs:               epochData.TotalEpochs,
 		EpochV2VRX:                epochData.EpochV2VRX,
 		EpochV2VBX:                epochData.EpochV2VBX,
 		EpochV2NBX:                epochData.EpochV2NBX,
