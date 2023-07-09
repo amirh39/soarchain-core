@@ -1,9 +1,10 @@
 package keeper
 
 import (
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"soarchain/x/poa/types"
 )
 
 // SetEpochData set epochData in the store

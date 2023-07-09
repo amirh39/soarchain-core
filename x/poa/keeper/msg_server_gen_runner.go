@@ -88,7 +88,9 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 	// Transfer stakedAmount to poa modules account:
 	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, runnerAddr, types.ModuleName, requiredStake)
 	if transferErr != nil {
+
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Stake(runner) funds couldn't be transferred to POA module!")
+
 	}
 
 	if logger != nil {

@@ -11,4 +11,5 @@ message Challenger {
   string netEarnings = 5; 
   string type = 6;
   string ipAddr = 7;
+  string rewardMultiplier = 8;
 }

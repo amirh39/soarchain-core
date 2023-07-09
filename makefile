@@ -10,15 +10,18 @@ reset:
 	soarchaind tendermint unsafe-reset-all
 
 init:
-	soarchaind init cartel --chain-id soarchaintestnet
+	soarchaind init hermes --chain-id soarchaindevnet
 
 config:
 	soarchaind config keyring-backend test
-	soarchaind config chain-id soarchaintestnet
+	soarchaind config chain-id soarchaindevnet
 
 keys:
-	soarchaind keys add cartel --keyring-backend test --algo secp256k1
-	soarchaind keys add soarMasterAccount --recover
+	soarchaind keys add apollo --keyring-backend test --algo secp256k1
+	soarchaind keys add client --recover --keyring-backend test --algo secp256k1
+	soarchaind keys add soarMasterAccount --recover --keyring-backend test --algo secp256k1
+	soarchaind keys add challenger --recover --keyring-backend test --algo secp256k1
+	soarchaind keys add runner --recover --keyring-backend test --algo secp256k1
 
 parameter_token_denomination:
 	cat ~/.soarchain/config/genesis.json | jq '.app_state["staking"]["params"]["bond_denom"]="utmotus"' > ~/.soarchain/config/tmp_genesis.json && mv ~/.soarchain/config/tmp_genesis.json ~/.soarchain/config/genesis.json
@@ -33,23 +36,24 @@ parameter_voting_period:
 	cat <<< $$(jq '.app_state.gov.voting_params.voting_period = "600s"' ~/.soarchain/config/genesis.json) > ~/.soarchain/config/genesis.json
 
 allocate_genesis_accounts:
-	soarchaind add-genesis-account cartel 10000000utmotus --keyring-backend test
-	soarchaind add-genesis-account soarMasterAccount 10000000utmotus --keyring-backend test
-	soarchaind add-genesis-account soar1qyhtcgw54973l3tz7fag27480q5qzt7cmsv9th 47500000000000utmotus #airdrop
-	soarchaind add-genesis-account soar1wfly3s05fvtuqs7lpesr8nas6rydm96jh88m9v 100700000000000utmotus #coummunityPool
-	soarchaind add-genesis-account soar1743qv44dgty0zv4t7vnnzdfhd7ftjfsmpreggg 77425000000000utmotus #inverstorSeed
-	soarchaind add-genesis-account soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4 36100000000000utmotus #StrategicReserve0
-	soarchaind add-genesis-account soar1paaxlh6luwlxvv9smf935nj53hz0yk7wna2hu2 285000000000000utmotus #team
-	soarchaind add-genesis-account soar1m6u0zxu4hkg4ycqawgrvmnlqhudqr32ydgal0m 36100000000000utmotus #StrategicReserve1
-	soarchaind add-genesis-account soar1hmj5fccg6nuns2scxz0pvwqgyy44ntp2knvnfa 36100000000000utmotus #StrategicReserve2
-	soarchaind add-genesis-account soar1s6n8jr600zhnefzdgv0d5z5mdhkx7au8k0glh0 36100000000000utmotus #StrategicReserve3
-	soarchaind add-genesis-account soar1hcr2r7v54gdus8ud7u7vm0wggt9y7pp2qfxssc 36100000000000utmotus #StrategicReserve4
-	soarchaind add-genesis-account soar1nz5tc5q4fr7xcwwwr0j4nvh4nhynptqvwvk903 10000000utmotus 
-	soarchaind add-genesis-account soar1avu0w07kp8jujzpr530frjx4uafxts32ahvu8s 10000000utmotus 
-	soarchaind add-genesis-account soar13fn4x22x9dq9n995jfwgy4ytku55xl80em84p4 10000000utmotus 
+
+	soarchaind add-genesis-account soarMasterAccount 10000000000utmotus --keyring-backend test
+	soarchaind add-genesis-account client 10000000000utmotus --keyring-backend test
+	soarchaind add-genesis-account apollo 10000000000utmotus --keyring-backend test
+	soarchaind add-genesis-account challenger 10000000000utmotus --keyring-backend test
+	soarchaind add-genesis-account runner 10000000000utmotus --keyring-backend test
+	soarchaind add-genesis-account soar1qyhtcgw54973l3tz7fag27480q5qzt7cmsv9th 47500000utmotus #airdrop
+	soarchaind add-genesis-account soar1wfly3s05fvtuqs7lpesr8nas6rydm96jh88m9v 100700000utmotus #coummunityPool
+	soarchaind add-genesis-account soar1743qv44dgty0zv4t7vnnzdfhd7ftjfsmpreggg 77425000utmotus #inverstorSeed
+	soarchaind add-genesis-account soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4 36100000utmotus #StrategicReserve0
+	soarchaind add-genesis-account soar1paaxlh6luwlxvv9smf935nj53hz0yk7wna2hu2 285000000utmotus #team
+	soarchaind add-genesis-account soar1m6u0zxu4hkg4ycqawgrvmnlqhudqr32ydgal0m 36100000utmotus #StrategicReserve1
+	soarchaind add-genesis-account soar1hmj5fccg6nuns2scxz0pvwqgyy44ntp2knvnfa 36100000utmotus #StrategicReserve2
+	soarchaind add-genesis-account soar1s6n8jr600zhnefzdgv0d5z5mdhkx7au8k0glh0 36100000utmotus #StrategicReserve3
+	soarchaind add-genesis-account soar1hcr2r7v54gdus8ud7u7vm0wggt9y7pp2qfxssc 36100000utmotus #StrategicReserve4
 
 sign_genesis_transaction:
-	soarchaind gentx cartel 2000000utmotus --chain-id soarchaintestnet
+	soarchaind gentx apollo 2000000utmotus --chain-id soarchaindevnet
 
 collect_genesis_tx:
 	soarchaind collect-gentxs

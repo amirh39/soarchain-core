@@ -2,14 +2,15 @@ package utilConstants
 
 const (
 	BlocksPerMinute                       = 4.0
-	InitialTokensPerYear                  = 21850083350000.0
-	MaxValUnit64                          = 18446744073709551615
-	MinScore                              = 0
-	MaxScore                              = 100
+	ChallengerInitialTokenPerYear         = 2185008335000.0
+	MaxValUnit64                          = 18446744073709551615.0
+	MinScore                              = 0.0
+	MaxScore                              = 100.0
 	MaxIncreaseFactor                     = 0.5
 	MaxDecreaseFactor                     = 0.7
 	StrategicReserveEmissionTokensPerYear = 46455000000000.0
 	TeamReserveEmissionTokensPerYear      = 57000000000000.0
+
 	V2NBXInitialTokenPerYear              = 64283578560000
 	RunnerInitialTokenPerYear             = 21850083350000
 	MinutesPerYear                        = 525600
@@ -18,6 +19,7 @@ const (
 	BlocksPerEpoch                        = 30
 	V2VBlocksPerMinute                    = 1
 	V2NBlocksPerMinute                    = 1
+
 	AddressLength                         = 43
 )
 
