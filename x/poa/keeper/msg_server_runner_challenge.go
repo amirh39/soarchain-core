@@ -124,7 +124,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 
 		// Update the epoch rewards
 		if epochErr := k.UpdateEpochRewards(ctx, "runner", earnedCoin); epochErr != nil {
-
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochErr)
 		}
 	}
 
