@@ -15,7 +15,7 @@ import (
 	"soarchain/x/poa/utility"
 )
 
-func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
+func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) error {
 
 	var totalEarnings sdk.Coin
 	var rewardMultiplier float64
@@ -31,13 +31,13 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 
 		netEarnings, err := sdk.ParseCoinNormalized(challenger.NetEarnings)
 		if err != nil {
-			// Handle the error appropriately
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, errors.NetEarnings)
 		}
 
 		totalEarnings = netEarnings.Add(earnedCoin)
 
 		if epochErr := k.UpdateEpochRewards(ctx, "challenger", earnedCoin); epochErr != nil {
-			// Handle the error appropriately
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochErr)
 		}
 	}
 
@@ -53,6 +53,8 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) {
 	}
 
 	k.SetChallenger(ctx, updatedChallenger)
+
+	return nil
 }
 
 func (k Keeper) coolDownMultiplier(ctx sdk.Context, creator string) uint64 {
@@ -96,7 +98,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 	var totalEarnings sdk.Coin
 	var score float64
 	newScore := make([]float64, 0)
-	var rewardMultiplier float64 // Declare the rewardMultiplier variable
+	var rewardMultiplier float64
 
 	if result == constants.Reward {
 		rewardMultiplier, score = k.rewardAndScore(runner.Score)
@@ -115,7 +117,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 
 		netEarnings, err := sdk.ParseCoinNormalized(runner.NetEarnings)
 		if err != nil {
-			// Handle the error appropriately
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, errors.NetEarnings)
 		}
 
 		totalEarnings = netEarnings.Add(earnedCoin)
@@ -178,9 +180,13 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 		earnedRewardsInt := sdk.NewIntFromUint64(uint64(rewards[i]))
 		earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
 
+		if epochErr := k.UpdateEpochRewards(ctx, "v2n-bx", earnedCoin); epochErr != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochErr)
+		}
+
 		netEarnings, err := sdk.ParseCoinNormalized(v2nBxClient.NetEarnings)
 		if err != nil {
-			// Handle the error appropriately
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, errors.NetEarnings)
 		}
 
 		totalEarnings := netEarnings.Add(earnedCoin)
@@ -199,17 +205,6 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 		k.SetClient(ctx, updatedClient)
 
 		k.updateMotusWallet(ctx, v2nBxClient.Address, updatedClient)
-	}
-
-	// Update the epoch rewards outside the loop
-	for i := 0; i < v2nBxAddrCount; i++ {
-		earnedRewardsInt := sdk.NewIntFromUint64(uint64(rewards[i]))
-		earnedCoin := sdk.NewCoin(param.BondDenom, earnedRewardsInt)
-
-		// Update the epoch rewards
-		if epochErr := k.UpdateEpochRewards(ctx, "v2n-bx", earnedCoin); epochErr != nil {
-
-		}
 	}
 
 	return nil
@@ -245,11 +240,14 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	}
 
 	/** Update challenger info after the successfull reward session */
-	k.updateChallenger(ctx, challenger)
+	err = k.updateChallenger(ctx, challenger)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	}
 
 	//update the challenge counts
 	if epochErr := k.UpdateEpochRewards(ctx, "runner_challenge", sdk.NewCoin(params.BondDenom, sdk.ZeroInt())); epochErr != nil {
-
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EpochErr)
 	}
 
 	return &types.MsgRunnerChallengeResponse{}, nil
