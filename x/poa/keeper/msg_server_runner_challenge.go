@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"log"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -223,6 +224,8 @@ func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.
 
 func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerChallenge) (*types.MsgRunnerChallengeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
+	log.Println("############## runner_challenge Transaction Has Started ##############")
 
 	challenger, found := k.GetChallengerByType(ctx, msg.Creator, constants.V2NChallengerType)
 	if !found {
@@ -234,15 +237,27 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
 
+	if logger != nil {
+		logger.Info("Updating runner successfully done.", "transaction", "RunnerChallenge")
+	}
+
 	err = k.updateClient(ctx, msg)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	}
+
+	if logger != nil {
+		logger.Info("Updating client successfully done.", "transaction", "RunnerChallenge")
 	}
 
 	/** Update challenger info after the successfull reward session */
 	err = k.updateChallenger(ctx, challenger)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	}
+
+	if logger != nil {
+		logger.Info("Updating challenger successfully done.", "transaction", "RunnerChallenge")
 	}
 
 	//update the challenge counts
