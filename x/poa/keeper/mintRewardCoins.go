@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"fmt"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 
@@ -13,7 +14,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 
 	handleParsingError := func(err error) {
 		if err != nil {
-			panic(sdkerrors.Wrap(sdkerrors.ErrPanic, "Parsing error"))
+			sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Parsing error")
 		}
 	}
 
@@ -45,6 +46,9 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 		handleParsingError(err)
 		*c.target = challengeCount
 		mintAndParseCoins(ctx, challengeCount, k)
+		// Log the minted coin
+		k.Logger(ctx).Info(fmt.Sprintf("Minted coin: %s", challengeCount.String()))
+
 	}
 
 	newEpochData := types.EpochData{
