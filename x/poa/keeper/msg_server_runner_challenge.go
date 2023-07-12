@@ -14,6 +14,7 @@ import (
 	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
+	constant "soarchain/x/poa/utility/utilConstants"
 )
 
 func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) error {
@@ -24,7 +25,7 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) e
 	rewardMultiplier, score := k.rewardAndScore(challenger.Score)
 	newScore = append(newScore, score)
 
-	earnedRewardsFloat := k.CalculateRewards(5, newScore)
+	earnedRewardsFloat := k.CalculateRewards(constant.Challenger, newScore)
 
 	if len(earnedRewardsFloat) > 0 {
 		earnedRewardsInt := sdk.NewIntFromUint64(uint64(earnedRewardsFloat[0]))
@@ -110,7 +111,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 	}
 	newScore = append(newScore, score)
 
-	earnedRewardsFloat := k.CalculateRewards(5, newScore)
+	earnedRewardsFloat := k.CalculateRewards(constant.Runner, newScore)
 
 	if len(earnedRewardsFloat) > 0 {
 		earnedRewardsInt := sdk.NewIntFromUint64(uint64(earnedRewardsFloat[0]))
@@ -167,7 +168,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 	}
 
 	// Calculate rewards for all scores
-	rewards := k.CalculateRewards(10, scores)
+	rewards := k.CalculateRewards(constant.V2NBX, scores)
 
 	for i := 0; i < v2nBxAddrCount; i++ {
 		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])

@@ -11,16 +11,20 @@ const (
 	StrategicReserveEmissionTokensPerYear = 46455000000000.0
 	TeamReserveEmissionTokensPerYear      = 57000000000000.0
 
-	V2NBXInitialTokenPerYear              = 64283578560000
-	RunnerInitialTokenPerYear             = 21850083350000
-	MinutesPerYear                        = 525600
-	V2VReceiverInitialAnnual              = 373668092100
-	V2VBroadcasterInitialAnnual           = 174167331100
-	BlocksPerEpoch                        = 30
-	V2VBlocksPerMinute                    = 1
-	V2NBlocksPerMinute                    = 1
+	V2NBXInitialTokenPerYear    = 64283578560000
+	RunnerInitialTokenPerYear   = 21850083350000
+	MinutesPerYear              = 525600
+	V2VReceiverInitialAnnual    = 373668092100
+	V2VBroadcasterInitialAnnual = 174167331100
+	BlocksPerEpoch              = 30
+	V2VBlocksPerMinute          = 1
+	V2NBlocksPerMinute          = 1
 
-	AddressLength                         = 43
+	V2NBX      = 3.0
+	Runner     = 1.0
+	Challenger = 1.0
+
+	AddressLength = 43
 )
 
 const (

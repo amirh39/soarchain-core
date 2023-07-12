@@ -5,6 +5,8 @@ import (
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 
+	constant "soarchain/x/poa/utility/utilConstants"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -37,9 +39,9 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 		}{
 			{epochData.V2VRXtotalChallenges, 10.0, &ChallengeCountV2VRx},
 			{epochData.V2VBXtotalChallenges, 10.0, &ChallengeCountV2VBx},
-			{epochData.V2NBXtotalChallenges, 10.0, &ChallengeCountV2NBx},
-			{epochData.RunnerTotalChallenges, 5.0, &ChallengeCountRunner},
-			{epochData.ChallengerTotalChallenges, 5.0, &ChallengeCountChallenger},
+			{epochData.V2NBXtotalChallenges, constant.V2NBX, &ChallengeCountV2NBx},
+			{epochData.RunnerTotalChallenges, constant.Runner, &ChallengeCountRunner},
+			{epochData.ChallengerTotalChallenges, constant.Challenger, &ChallengeCountChallenger},
 		}
 
 		for _, c := range challengeTypes {
