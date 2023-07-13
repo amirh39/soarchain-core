@@ -4,7 +4,7 @@ package soarchain.poa;
 option go_package = "soarchain/x/poa/types";
 
 message Client {
-  string pubKey = 1; 
+  string PubKey = 1; 
   string address = 2;
   string score = 4;
   string rewardMultiplier = 5;
