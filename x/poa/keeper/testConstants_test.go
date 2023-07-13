@@ -70,7 +70,7 @@ func CreateNRunnersForRewardCap(keeper *keeper.Keeper, ctx sdk.Context, n int) [
 func CreateNClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
-		items[i].PubKey = strconv.Itoa(i)
+		items[i].Index = strconv.Itoa(i)
 		items[i].Address = strconv.Itoa(i)
 
 		keeper.SetClient(ctx, items[i])
@@ -81,7 +81,7 @@ func CreateNClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client
 func SetupClientEntity(n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
-		items[i].PubKey = ClientPubKey
+		items[i].Index = ClientPubKey
 		items[i].Address = ClientAddress
 		items[i].Score = ClientScore
 		items[i].RewardMultiplier = ClientRewardMultiplier
@@ -96,7 +96,7 @@ func SetupClientEntity(n int) []types.Client {
 func CreateRewardCapClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
-		items[i].PubKey = strconv.Itoa(i)
+		items[i].Index = strconv.Itoa(i)
 		items[i].RewardMultiplier = "4"
 		keeper.SetClient(ctx, items[i])
 	}
@@ -106,7 +106,7 @@ func CreateRewardCapClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []type
 func CreateInValidClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
-		items[i].PubKey = ""
+		items[i].Index = ""
 		items[i].Address = ""
 
 		keeper.SetClient(ctx, items[i])
@@ -117,7 +117,7 @@ func CreateInValidClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.
 func CreateInValidClientScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
-		items[i].PubKey = strconv.Itoa(i)
+		items[i].Index = strconv.Itoa(i)
 		items[i].Address = strconv.Itoa(12)
 		items[i].Score = NotValid_Score
 		items[i].LastTimeChallenged = NotValid_LastTimeChallenged
@@ -131,7 +131,7 @@ func CreateInValidClientScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []t
 func SetupClientWithInvalidScore(n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
-		items[i].PubKey = strconv.Itoa(i)
+		items[i].Index = strconv.Itoa(i)
 		items[i].Address = strconv.Itoa(12)
 		items[i].Score = NotValid_Score
 		items[i].LastTimeChallenged = NotValid_LastTimeChallenged
@@ -143,7 +143,7 @@ func SetupClientWithInvalidScore(n int) []types.Client {
 func SetupClientToUnregistration(n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
-		items[i].PubKey = ClientPubKey
+		items[i].Index = ClientPubKey
 		items[i].Address = CREATOR
 	}
 	return items
@@ -220,7 +220,7 @@ func CreateNFactoryKeys(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.F
 func CreateNMotusWallet(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.MotusWallet {
 	items := make([]types.MotusWallet, n)
 	for i := range items {
-		items[i].Address = strconv.Itoa(i)
+		items[i].Index = strconv.Itoa(i)
 
 		keeper.SetMotusWallet(ctx, items[i])
 	}
@@ -229,8 +229,8 @@ func CreateNMotusWallet(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.M
 
 func SetupMotusWalletEntityByClient(client types.Client) types.MotusWallet {
 	motusWallet := types.MotusWallet{
-		Address: MotusWallet_Index,
-		Client:  &client,
+		Index:  MotusWallet_Index,
+		Client: &client,
 	}
 	return motusWallet
 }

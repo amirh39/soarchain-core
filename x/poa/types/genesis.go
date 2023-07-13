@@ -49,7 +49,7 @@ func (gs GenesisState) Validate() error {
 	clientIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.ClientList {
-		index := string(ClientKey(elem.PubKey))
+		index := string(ClientKey(elem.Index))
 		if _, ok := clientIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for client")
 		}
@@ -90,7 +90,7 @@ func (gs GenesisState) Validate() error {
 	motusWalletIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.MotusWalletList {
-		index := string(MotusWalletKey(elem.Address))
+		index := string(MotusWalletKey(elem.Index))
 		if _, ok := motusWalletIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for motusWallet")
 		}

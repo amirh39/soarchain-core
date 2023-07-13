@@ -79,7 +79,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// Save client into storage
 	newClient := types.Client{
-		PubKey:             pubKeyHex,
+		Index:              pubKeyHex,
 		Type:               clientType(deviceCert),
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(initialScore, 'f', -1, 64),
@@ -93,8 +93,8 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	// Register Motus client into Motus Wallet object
 	newMotusWallet := types.MotusWallet{
-		Address: msg.Creator,
-		Client:  &newClient,
+		Index:  msg.Creator,
+		Client: &newClient,
 	}
 	k.SetMotusWallet(ctx, newMotusWallet)
 

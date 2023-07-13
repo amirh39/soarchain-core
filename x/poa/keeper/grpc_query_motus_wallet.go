@@ -49,7 +49,7 @@ func (k Keeper) MotusWallet(c context.Context, req *types.QueryGetMotusWalletReq
 
 	val, found := k.GetMotusWallet(
 		ctx,
-		req.Address,
+		req.Index,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "[MotusWallet][GetMotusWallet] failed. Couldn't find motus wallet.")

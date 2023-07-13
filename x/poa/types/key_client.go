@@ -11,11 +11,11 @@ const (
 
 // ClientKey returns the store key to retrieve a Client from the index fields
 func ClientKey(
-	PubKey string,
+	index string,
 ) []byte {
 	var key []byte
 
-	indexBytes := []byte(PubKey)
+	indexBytes := []byte(index)
 	key = append(key, indexBytes...)
 	key = append(key, []byte("/")...)
 

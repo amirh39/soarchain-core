@@ -14,7 +14,7 @@ func Test_MotusWalletGet(t *testing.T) {
 	items := CreateNMotusWallet(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetMotusWallet(ctx,
-			item.Address,
+			item.Index,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -28,10 +28,10 @@ func Test_MotusWalletRemove(t *testing.T) {
 	items := CreateNMotusWallet(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveMotusWallet(ctx,
-			item.Address,
+			item.Index,
 		)
 		_, found := keeper.GetMotusWallet(ctx,
-			item.Address,
+			item.Index,
 		)
 		require.False(t, found)
 	}

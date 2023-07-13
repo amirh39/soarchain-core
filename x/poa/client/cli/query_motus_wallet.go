@@ -3,11 +3,10 @@ package cli
 import (
 	"context"
 
-	"soarchain/x/poa/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
+	"soarchain/x/poa/types"
 )
 
 func CmdListMotusWallet() *cobra.Command {
@@ -45,7 +44,7 @@ func CmdListMotusWallet() *cobra.Command {
 
 func CmdShowMotusWallet() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-motus-wallet [address]",
+		Use:   "show-motus-wallet [index]",
 		Short: "shows a motusWallet",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -56,7 +55,7 @@ func CmdShowMotusWallet() *cobra.Command {
 			argIndex := args[0]
 
 			params := &types.QueryGetMotusWalletRequest{
-				Address: argIndex,
+				Index: argIndex,
 			}
 
 			res, err := queryClient.MotusWallet(context.Background(), params)

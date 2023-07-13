@@ -60,7 +60,7 @@ func (k msgServer) UnregisterClient(goCtx context.Context, msg *types.MsgUnregis
 	}
 
 	// Remove motus wallet
-	k.RemoveMotusWallet(ctx, motusWallet.Address)
+	k.RemoveMotusWallet(ctx, motusWallet.Index)
 
 	if logger != nil {
 		logger.Info("Removing motus wallet successfully done.", "transaction", "UnregisterClient")

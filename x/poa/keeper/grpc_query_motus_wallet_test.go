@@ -19,7 +19,7 @@ import (
 func createNMotusWallet(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.MotusWallet {
 	items := make([]types.MotusWallet, n)
 	for i := range items {
-		items[i].Address = strconv.Itoa(i)
+		items[i].Index = strconv.Itoa(i)
 
 		keeper.SetMotusWallet(ctx, items[i])
 	}
@@ -39,21 +39,21 @@ func Test_MotusWalletQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetMotusWalletRequest{
-				Address: msgs[0].Address,
+				Index: msgs[0].Index,
 			},
 			response: &types.QueryGetMotusWalletResponse{MotusWallet: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetMotusWalletRequest{
-				Address: msgs[1].Address,
+				Index: msgs[1].Index,
 			},
 			response: &types.QueryGetMotusWalletResponse{MotusWallet: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetMotusWalletRequest{
-				Address: strconv.Itoa(100000),
+				Index: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "Key not found"),
 		},

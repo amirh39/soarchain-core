@@ -59,7 +59,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	}
 
 	updatedClient := types.Client{
-		PubKey:             motusWallet.Client.PubKey,
+		Index:              motusWallet.Client.Index,
 		Address:            motusWallet.Client.Address,
 		Score:              motusWallet.Client.Score,
 		RewardMultiplier:   motusWallet.Client.RewardMultiplier,
@@ -73,8 +73,8 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	// Update Motus wallet
 	newMotusWallet := types.MotusWallet{
-		Address: motusWallet.Address,
-		Client:  &updatedClient,
+		Index:  motusWallet.Index,
+		Client: &updatedClient,
 	}
 	k.SetMotusWallet(ctx, newMotusWallet)
 

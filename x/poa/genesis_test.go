@@ -17,10 +17,10 @@ func TestGenesis(t *testing.T) {
 
 		ClientList: []types.Client{
 			{
-				PubKey: "0",
+				Index: "0",
 			},
 			{
-				PubKey: "1",
+				Index: "1",
 			},
 		},
 		ChallengerList: []types.Challenger{
@@ -56,10 +56,10 @@ func TestGenesis(t *testing.T) {
 		},
 		MotusWalletList: []types.MotusWallet{
 			{
-				Address: "0",
+				Index: "0",
 			},
 			{
-				Address: "1",
+				Index: "1",
 			},
 		},
 		MasterKey: types.MasterKey{

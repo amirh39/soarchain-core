@@ -5,7 +5,7 @@ option go_package = "soarchain/x/poa/types";
 import "poa/client.proto"; 
 
 message MotusWallet {
-  string address = 1; 
+  string index = 1; 
   Client client = 2; 
   
 }

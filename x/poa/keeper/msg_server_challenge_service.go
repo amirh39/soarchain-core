@@ -152,7 +152,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 
 		updatedClient := types.Client{
-			PubKey:             client.PubKey,
+			Index:              client.Index,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
@@ -170,8 +170,8 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][GetMotusWallet] failed. Couldn't find a wallet for Motus client.")
 		}
 		newMotusWallet := types.MotusWallet{
-			Address: motusWallet.Address,
-			Client:  &updatedClient,
+			Index:  motusWallet.Index,
+			Client: &updatedClient,
 		}
 		k.SetMotusWallet(ctx, newMotusWallet)
 
@@ -213,7 +213,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 		//
 		updatedClient := types.Client{
-			PubKey:             client.PubKey,
+			Index:              client.Index,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
@@ -231,8 +231,8 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][GetMotusWallet] failed. Motus client wallet not found.")
 		}
 		newMotusWallet := types.MotusWallet{
-			Address: motusWallet.Address,
-			Client:  &updatedClient,
+			Index:  motusWallet.Index,
+			Client: &updatedClient,
 		}
 		k.SetMotusWallet(ctx, newMotusWallet)
 

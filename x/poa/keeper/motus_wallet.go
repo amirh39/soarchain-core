@@ -1,10 +1,9 @@
 package keeper
 
 import (
-	"soarchain/x/poa/types"
-
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"soarchain/x/poa/types"
 )
 
 // SetMotusWallet set a specific motusWallet in the store from its index
@@ -12,7 +11,7 @@ func (k Keeper) SetMotusWallet(ctx sdk.Context, motusWallet types.MotusWallet) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.MotusWalletKeyPrefix))
 	b := k.cdc.MustMarshal(&motusWallet)
 	store.Set(types.MotusWalletKey(
-		motusWallet.Address,
+		motusWallet.Index,
 	), b)
 }
 

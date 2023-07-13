@@ -194,7 +194,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 		totalEarnings := netEarnings.Add(earnedCoin)
 
 		updatedClient := types.Client{
-			PubKey:             v2nBxClient.PubKey,
+			Index:              v2nBxClient.Index,
 			Address:            v2nBxClient.Address,
 			Score:              strconv.FormatFloat(score, 'f', -1, 64),
 			NetEarnings:        totalEarnings.String(),
@@ -216,8 +216,8 @@ func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.
 	motusWallet, _ := k.GetMotusWallet(ctx, address)
 
 	newMotusWallet := types.MotusWallet{
-		Address: motusWallet.Address,
-		Client:  &client,
+		Index:  motusWallet.Index,
+		Client: &client,
 	}
 
 	k.SetMotusWallet(ctx, newMotusWallet)
