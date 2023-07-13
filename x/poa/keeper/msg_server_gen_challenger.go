@@ -97,11 +97,13 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	// Transfer stakedAmount to poa modules account:
 	transferErr := k.bankKeeper.SendCoinsFromAccountToModule(ctx, challengerAddress, types.ModuleName, requiredStake)
 	if transferErr != nil {
+
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Stake(challenger) funds couldn't be transferred to POA module!")
 	}
 
 	if logger != nil {
 		logger.Info("Transfering coins successfully done.", "transaction", "GenChallenger")
+
 	}
 
 	newChallenger = types.Challenger{
