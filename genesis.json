@@ -494,9 +494,6 @@
       "factoryKeysList": [],
       "factoryKeysCount": "0"
     },
-    "rewardcap": {
-      "params": {}
-    },
     "slashing": {
       "params": {
         "signed_blocks_window": "100",

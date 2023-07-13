@@ -26,7 +26,6 @@ import (
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 
 	poamodulekeeper "soarchain/x/poa/keeper"
-	rewardcapmodulekeeper "soarchain/x/rewardcap/keeper"
 )
 
 type AppKeepers struct {
@@ -63,8 +62,6 @@ type AppKeepers struct {
 	ScopedWasmKeeper       capabilitykeeper.ScopedKeeper
 
 	PoaKeeper poamodulekeeper.Keeper
-
-	RewardcapKeeper rewardcapmodulekeeper.Keeper
 }
 
 func NewAppKeepers()

@@ -100,9 +100,6 @@ import (
 	poamodule "soarchain/x/poa"
 	poamodulekeeper "soarchain/x/poa/keeper"
 	poamoduletypes "soarchain/x/poa/types"
-	rewardcapmodule "soarchain/x/rewardcap"
-	rewardcapmodulekeeper "soarchain/x/rewardcap/keeper"
-	rewardcapmoduletypes "soarchain/x/rewardcap/types"
 
 	monitoringp "github.com/tendermint/spn/x/monitoringp"
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
@@ -184,23 +181,21 @@ var (
 		monitoringp.AppModuleBasic{},
 		wasm.AppModuleBasic{},
 		poamodule.AppModuleBasic{},
-		rewardcapmodule.AppModuleBasic{},
 		// soarmintmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:      nil,
-		distrtypes.ModuleName:           nil,
-		minttypes.ModuleName:            {authtypes.Minter},
-		stakingtypes.BondedPoolName:     {authtypes.Burner, authtypes.Staking},
-		stakingtypes.NotBondedPoolName:  {authtypes.Burner, authtypes.Staking},
-		govtypes.ModuleName:             {authtypes.Burner},
-		ibctransfertypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
-		poamoduletypes.ModuleName:       {authtypes.Minter, authtypes.Burner, authtypes.Staking},
-		rewardcapmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner, authtypes.Staking},
-		wasm.ModuleName:                 {authtypes.Burner},
+		authtypes.FeeCollectorName:     nil,
+		distrtypes.ModuleName:          nil,
+		minttypes.ModuleName:           {authtypes.Minter},
+		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
+		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
+		govtypes.ModuleName:            {authtypes.Burner},
+		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		poamoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		wasm.ModuleName:                {authtypes.Burner},
 		// soarmintmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
@@ -263,8 +258,6 @@ type soarchainApp struct {
 
 	PoaKeeper poamodulekeeper.Keeper
 
-	RewardcapKeeper rewardcapmodulekeeper.Keeper
-
 	// SoarmintKeeper soarmintmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
@@ -303,7 +296,6 @@ func NewsoarchainApp(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		poamoduletypes.StoreKey,
-		rewardcapmoduletypes.StoreKey,
 		wasm.StoreKey,
 		// soarmintmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
@@ -479,19 +471,6 @@ func NewsoarchainApp(
 		wasmOpts...,
 	)
 
-	// The last arguments can contain custom message handlers, and custom query handlers,
-	// if we want to allow any custom callbacks
-	// availableCapabilities := "iterator,staking,stargate,cosmwasm_1_1"
-	app.RewardcapKeeper = *rewardcapmodulekeeper.NewKeeper(
-		appCodec,
-		keys[rewardcapmoduletypes.StoreKey],
-		keys[rewardcapmoduletypes.MemStoreKey],
-		app.GetSubspace(rewardcapmoduletypes.ModuleName),
-
-		app.BankKeeper,
-	)
-	rewardcapModule := rewardcapmodule.NewAppModule(appCodec, app.RewardcapKeeper, app.AccountKeeper, app.BankKeeper)
-
 	// app.SoarmintKeeper = *soarmintmodulekeeper.NewKeeper(
 	// 	appCodec,
 	// 	keys[soarmintmoduletypes.StoreKey],
@@ -548,7 +527,6 @@ func NewsoarchainApp(
 		transferModule,
 		monitoringModule,
 		poaModule,
-		rewardcapModule,
 		// soarmintModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
@@ -579,7 +557,6 @@ func NewsoarchainApp(
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
-		rewardcapmoduletypes.ModuleName,
 		// soarmintmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 		wasm.ModuleName,
@@ -606,7 +583,6 @@ func NewsoarchainApp(
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
-		rewardcapmoduletypes.ModuleName,
 		// soarmintmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 		wasm.ModuleName,
@@ -638,7 +614,6 @@ func NewsoarchainApp(
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
-		rewardcapmoduletypes.ModuleName,
 		// soarmintmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 		wasm.ModuleName,
@@ -670,7 +645,6 @@ func NewsoarchainApp(
 		transferModule,
 		monitoringModule,
 		poaModule,
-		rewardcapModule,
 		// soarmintModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
@@ -884,7 +858,6 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(poamoduletypes.ModuleName)
-	paramsKeeper.Subspace(rewardcapmoduletypes.ModuleName)
 	// paramsKeeper.Subspace(soarmintmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 	paramsKeeper.Subspace(wasm.ModuleName)

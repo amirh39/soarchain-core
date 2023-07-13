@@ -55,18 +55,6 @@ func SetupNRunner(n int) []types.Runner {
 	return items
 }
 
-func CreateNRunnersForRewardCap(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner {
-	items := make([]types.Runner, n)
-	for i := range items {
-		items[i].Address = strconv.Itoa(i)
-		items[i].IpAddr = "45.12.65.78"
-		items[i].RewardMultiplier = "4"
-
-		keeper.SetRunner(ctx, items[i])
-	}
-	return items
-}
-
 func CreateNClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
 	items := make([]types.Client, n)
 	for i := range items {
@@ -89,16 +77,6 @@ func SetupClientEntity(n int) []types.Client {
 		items[i].LastTimeChallenged = ClientLastTimeChallenged
 		items[i].CoolDownTolerance = ClientCoolDownTolerance
 		items[i].Type = ClientType
-	}
-	return items
-}
-
-func CreateRewardCapClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
-	items := make([]types.Client, n)
-	for i := range items {
-		items[i].Index = strconv.Itoa(i)
-		items[i].RewardMultiplier = "4"
-		keeper.SetClient(ctx, items[i])
 	}
 	return items
 }
