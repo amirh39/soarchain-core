@@ -22,10 +22,6 @@ const (
 	Runner = "runner"
 )
 
-const (
-	RewardCap = "rewardcap"
-)
-
 const Multiplier = int(5)
 
 // EpochDuration defines how long one epoch lasts in minutes
