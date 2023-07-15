@@ -1,30 +1,40 @@
 package cli
 
-// func CmdClaimChallengerRewards() *cobra.Command {
-// 	cmd := &cobra.Command{
-// 		Use:   "claim-challenger-rewards [amount]",
-// 		Short: "Broadcast a claimChallengerRewards transaction",
-// 		Args:  cobra.ExactArgs(1),
-// 		RunE:  runClaimChallengerRewardsCmd,
-// 	}
+import (
+	"fmt"
+	"soarchain/x/poa/types"
 
-// 	flags.AddTxFlagsToCmd(cmd)
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/spf13/cobra"
+)
 
-// 	return cmd
-// }
+func CmdClaimChallengerRewards() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "claim-challenger-rewards [amount]",
+		Short: "Broadcast a claimChallengerRewards transaction",
+		Args:  cobra.ExactArgs(1),
+		RunE:  runClaimChallengerRewardsCmd,
+	}
 
-// func runClaimChallengerRewardsCmd(cmd *cobra.Command, args []string) error {
-// 	amount := args[0]
+	flags.AddTxFlagsToCmd(cmd)
 
-// 	clientCtx, err := client.GetClientTxContext(cmd)
-// 	if err != nil {
-// 		return err
-// 	}
+	return cmd
+}
 
-// 	msg := types.MsgCla(clientCtx.GetFromAddress().String(), amount)
-// 	if err := msg.ValidateBasic(); err != nil {
-// 		return fmt.Errorf("failed to validate claimChallengerRewards message: %w", err)
-// 	}
+func runClaimChallengerRewardsCmd(cmd *cobra.Command, args []string) error {
+	amount := args[0]
 
-// 	return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-// }
+	clientCtx, err := client.GetClientTxContext(cmd)
+	if err != nil {
+		return err
+	}
+
+	msg := types.NewMsgClaimChallengerRewards(clientCtx.GetFromAddress().String(), amount)
+	if err := msg.ValidateBasic(); err != nil {
+		return fmt.Errorf("failed to validate claimChallengerRewards message: %w", err)
+	}
+
+	return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+}
