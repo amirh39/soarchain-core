@@ -23,7 +23,7 @@ service Msg {
   rpc RegisterFactoryKey(MsgRegisterFactoryKey) returns (MsgRegisterFactoryKeyResponse);
   rpc GenRunner(MsgGenRunner) returns (MsgGenRunnerResponse);
   rpc GenChallenger(MsgGenChallenger) returns (MsgGenChallengerResponse);
-  rpc ClaimChallengerRewards(MsgClaimChallengerRewards) returns (MsgClaimChallengerRewardsResponse)
+  rpc ClaimChallengerRewards(MsgClaimChallengerRewards) returns (MsgClaimChallengerRewardsResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
