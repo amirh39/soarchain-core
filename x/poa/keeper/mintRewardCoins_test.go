@@ -1,30 +1,26 @@
 package keeper_test
 
 import (
-	"testing"
-	// "github.com/stretchr/testify/require"
-	// sdk "github.com/cosmos/cosmos-sdk/types"
 	keepertest "soarchain/testutil/keeper"
-	// "soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
+	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestMintRewardCoins(t *testing.T) {
-	// Initialize a context and the keeper
-	k, ctx := keepertest.PoaKeeper(t)
-	// Create some test clients
-	client1 := types.Client{
-		Address:     "soar1q96a2x8ghzaxsscc2h5pgdt2q23zzp3vjmll0s",
-		NetEarnings: "10",
-	}
-	client2 := types.Client{
-		Address:     "soar1ecfp64t4qs3m94840uu2pqh8ky03h47s6ee38m",
-		NetEarnings: "20",
-	}
-	k.SetClient(ctx, client1)
-	k.SetClient(ctx, client2)
+	keeper, ctx := keepertest.PoaKeeper(t)
 
-	// Call the MintRewardCoins function
-	k.MintRewardCoins(ctx)
+	// Execute the function to be tested
+	keeper.MintRewardCoins(ctx)
+
+	// Retrieve the updated epoch data after minting rewards
+	updatedEpochData, _ := keeper.GetEpochData(ctx)
+
+	// Validate the results
+	require.Equal(t, uint64(0), updatedEpochData.V2VRXtotalChallenges, "V2VRXtotalChallenges should be set to 0 after minting rewards")
+	require.Equal(t, uint64(0), updatedEpochData.V2VBXtotalChallenges, "V2VBXtotalChallenges should be set to 0 after minting rewards")
+	require.Equal(t, uint64(0), updatedEpochData.V2NBXtotalChallenges, "V2NBXtotalChallenges should be set to 0 after minting rewards")
+	require.Equal(t, uint64(0), updatedEpochData.RunnerTotalChallenges, "RunnerTotalChallenges should be set to 0 after minting rewards")
+	require.Equal(t, uint64(0), updatedEpochData.ChallengerTotalChallenges, "ChallengerTotalChallenges should be set to 0 after minting rewards")
 
 }
