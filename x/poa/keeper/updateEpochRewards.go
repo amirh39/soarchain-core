@@ -146,17 +146,22 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochCnt := epochCnt + 1
 
 		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      newEpochCnt,
-			RunnerTotalChallenges:     newEpochCnt,
-			ChallengerTotalChallenges: newEpochCnt,
+			TotalEpochs:                   epochData.TotalEpochs,
+			EpochV2VRX:                    epochData.EpochV2VRX,
+			EpochV2VBX:                    epochData.EpochV2VBX,
+			EpochV2NBX:                    epochData.EpochV2NBX,
+			EpochRunner:                   epochData.EpochRunner,
+			EpochChallenger:               epochData.EpochChallenger,
+			V2VRXtotalChallenges:          epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:          epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:          newEpochCnt,
+			RunnerTotalChallenges:         newEpochCnt,
+			ChallengerTotalChallenges:     newEpochCnt,
+			V2VRXLastBlockChallenges:      newEpochCnt,
+			V2VBXLastBlockChallenges:      newEpochCnt,
+			V2NBXLastBlockChallenges:      newEpochCnt,
+			RunnerLastBlockChallenges:     newEpochCnt,
+			ChallengerLastBlockChallenges: newEpochCnt,
 		}
 		k.SetEpochData(ctx, newEpochData)
 

@@ -14,7 +14,7 @@ import (
 func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	epochData, _ := k.GetEpochData(ctx)
 
-	if epochData.V2VRXtotalChallenges != 0 || epochData.V2VBXtotalChallenges != 0 || epochData.V2NBXtotalChallenges != 0 || epochData.RunnerTotalChallenges != 0 || epochData.ChallengerTotalChallenges != 0 {
+	if epochData.V2VRXLastBlockChallenges != 0 || epochData.V2VBXLastBlockChallenges != 0 || epochData.V2NBXLastBlockChallenges != 0 || epochData.RunnerLastBlockChallenges != 0 || epochData.ChallengerLastBlockChallenges != 0 {
 		handleParsingError := func(err error) {
 			if err != nil {
 				sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Parsing error")
@@ -37,11 +37,11 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 			multiplier float64
 			target     *sdk.Coin
 		}{
-			{epochData.V2VRXtotalChallenges, 10.0, &ChallengeCountV2VRx},
-			{epochData.V2VBXtotalChallenges, 10.0, &ChallengeCountV2VBx},
-			{epochData.V2NBXtotalChallenges, constant.V2NBX, &ChallengeCountV2NBx},
-			{epochData.RunnerTotalChallenges, constant.Runner, &ChallengeCountRunner},
-			{epochData.ChallengerTotalChallenges, constant.Challenger, &ChallengeCountChallenger},
+			{epochData.V2VRXLastBlockChallenges, 10.0, &ChallengeCountV2VRx},
+			{epochData.V2VBXLastBlockChallenges, 10.0, &ChallengeCountV2VBx},
+			{epochData.V2NBXLastBlockChallenges, constant.V2NBX, &ChallengeCountV2NBx},
+			{epochData.RunnerLastBlockChallenges, constant.Runner, &ChallengeCountRunner},
+			{epochData.ChallengerLastBlockChallenges, constant.Challenger, &ChallengeCountChallenger},
 		}
 
 		for _, c := range challengeTypes {
@@ -54,17 +54,22 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 		}
 
 		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      0,
-			V2VBXtotalChallenges:      0,
-			V2NBXtotalChallenges:      0,
-			RunnerTotalChallenges:     0,
-			ChallengerTotalChallenges: 0,
+			TotalEpochs:                   epochData.TotalEpochs,
+			EpochV2VRX:                    epochData.EpochV2VRX,
+			EpochV2VBX:                    epochData.EpochV2VBX,
+			EpochV2NBX:                    epochData.EpochV2NBX,
+			EpochRunner:                   epochData.EpochRunner,
+			EpochChallenger:               epochData.EpochChallenger,
+			V2VRXtotalChallenges:          epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:          epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:          epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:         epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges:     epochData.ChallengerTotalChallenges,
+			V2VRXLastBlockChallenges:      0,
+			V2VBXLastBlockChallenges:      0,
+			V2NBXLastBlockChallenges:      0,
+			RunnerLastBlockChallenges:     0,
+			ChallengerLastBlockChallenges: 0,
 		}
 
 		k.SetEpochData(ctx, newEpochData)
