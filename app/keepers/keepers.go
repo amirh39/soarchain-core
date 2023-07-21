@@ -25,6 +25,7 @@ import (
 
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 
+	epochmodulekeeper "soarchain/x/epoch/keeper"
 	poamodulekeeper "soarchain/x/poa/keeper"
 )
 
@@ -61,7 +62,8 @@ type AppKeepers struct {
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 	ScopedWasmKeeper       capabilitykeeper.ScopedKeeper
 
-	PoaKeeper poamodulekeeper.Keeper
+	PoaKeeper   poamodulekeeper.Keeper
+	EpochKeeper epochmodulekeeper.Keeper
 }
 
 func NewAppKeepers()
