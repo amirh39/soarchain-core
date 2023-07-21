@@ -55,13 +55,6 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
-				EpochData: types.EpochData{
-					TotalEpochs: 81,
-					EpochV2VRX:  "46",
-					EpochV2VBX:  "26",
-					EpochV2NBX:  "99",
-					EpochRunner: "26",
-				},
 				MotusWalletList: []types.MotusWallet{
 					{
 						Index: "0",
