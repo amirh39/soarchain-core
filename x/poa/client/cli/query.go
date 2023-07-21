@@ -37,7 +37,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdShowVrfData())
 	cmd.AddCommand(CmdVerifyRandomNumber())
 	cmd.AddCommand(CmdIsChallengeable())
-	cmd.AddCommand(CmdShowEpochData())
 	cmd.AddCommand(CmdListMotusWallet())
 	cmd.AddCommand(CmdShowMotusWallet())
 	cmd.AddCommand(CmdShowMasterKey())
