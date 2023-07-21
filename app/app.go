@@ -101,6 +101,10 @@ import (
 	poamodulekeeper "soarchain/x/poa/keeper"
 	poamoduletypes "soarchain/x/poa/types"
 
+	epochmodule "soarchain/x/epoch"
+	epochmodulekeeper "soarchain/x/epoch/keeper"
+	epochmoduletypes "soarchain/x/epoch/types"
+
 	monitoringp "github.com/tendermint/spn/x/monitoringp"
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
@@ -181,6 +185,7 @@ var (
 		monitoringp.AppModuleBasic{},
 		wasm.AppModuleBasic{},
 		poamodule.AppModuleBasic{},
+		epochmodule.AppModuleBasic{},
 		// soarmintmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
@@ -196,6 +201,7 @@ var (
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		poamoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		wasm.ModuleName:                {authtypes.Burner},
+		epochmoduletypes.ModuleName:    {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// soarmintmoduletypes.ModuleName:  {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
@@ -258,6 +264,8 @@ type soarchainApp struct {
 
 	PoaKeeper poamodulekeeper.Keeper
 
+	EpochKeeper epochmodulekeeper.Keeper
+
 	// SoarmintKeeper soarmintmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
@@ -296,6 +304,7 @@ func NewsoarchainApp(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		poamoduletypes.StoreKey,
+		epochmoduletypes.StoreKey,
 		wasm.StoreKey,
 		// soarmintmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
@@ -431,6 +440,16 @@ func NewsoarchainApp(
 	)
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
+	app.EpochKeeper = *epochmodulekeeper.NewEpochKeeper(
+		appCodec,
+		keys[epochmoduletypes.StoreKey],
+		keys[epochmoduletypes.MemStoreKey],
+		app.GetSubspace(epochmoduletypes.ModuleName),
+
+		app.BankKeeper,
+	)
+	epochModule := epochmodule.NewAppModule(appCodec, app.EpochKeeper, app.AccountKeeper, app.BankKeeper)
+
 	app.PoaKeeper = *poamodulekeeper.NewKeeper(
 		appCodec,
 		keys[poamoduletypes.StoreKey],
@@ -438,8 +457,9 @@ func NewsoarchainApp(
 		app.GetSubspace(poamoduletypes.ModuleName),
 
 		app.BankKeeper,
+		app.EpochKeeper,
 	)
-	poaModule := poamodule.NewAppModule(appCodec, app.PoaKeeper, app.AccountKeeper, app.BankKeeper)
+	poaModule := poamodule.NewAppModule(appCodec, app.PoaKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper)
 
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
@@ -527,6 +547,7 @@ func NewsoarchainApp(
 		transferModule,
 		monitoringModule,
 		poaModule,
+		epochModule,
 		// soarmintModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
@@ -557,6 +578,7 @@ func NewsoarchainApp(
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
+		epochmoduletypes.ModuleName,
 		// soarmintmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 		wasm.ModuleName,
@@ -583,6 +605,7 @@ func NewsoarchainApp(
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
+		epochmoduletypes.ModuleName,
 		// soarmintmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 		wasm.ModuleName,
@@ -614,6 +637,7 @@ func NewsoarchainApp(
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
+		epochmoduletypes.ModuleName,
 		// soarmintmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 		wasm.ModuleName,
@@ -645,6 +669,7 @@ func NewsoarchainApp(
 		transferModule,
 		monitoringModule,
 		poaModule,
+		epochModule,
 		// soarmintModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
@@ -858,6 +883,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(poamoduletypes.ModuleName)
+	paramsKeeper.Subspace(epochmoduletypes.ModuleName)
 	// paramsKeeper.Subspace(soarmintmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 	paramsKeeper.Subspace(wasm.ModuleName)
