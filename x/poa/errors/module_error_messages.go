@@ -2,8 +2,6 @@ package errors
 
 var (
 	GetChallengerByType     = "[RunnerChallenge][GetChallengerByType] failed. Only registered challengers with v2n type can initiate this transaction."
-	TargetEpoch             = "[RunnerChallenge][V2NRewardEmissionPerEpoch] failed. Couldn't calculate reward to emission for each reward."
-	EpochDataNotFound       = "[RunnerChallenge][GetEpochData] failed. Couldn't find epoch data in the current context."
 	EarnedTokenRewardsFloat = "[RunnerChallenge][V2NRewardCalculator] failed. Couldn't calcualte earned rewards."
 	NetEarnings             = "[RunnerChallenge][ParseCoinNormalized] failed. Couldn't parse and normalize a cli input for one coin type, due to invalid or an empty string."
 	EpochErr                = "[RunnerChallenge][UpdateEpochRewards] failed. Couldn't updat epoch reward."
