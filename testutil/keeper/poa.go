@@ -48,6 +48,7 @@ func PoaKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Ke
 		memStoreKey,
 		paramsSubspace,
 		bank,
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
