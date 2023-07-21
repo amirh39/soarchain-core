@@ -3,6 +3,8 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+
+	epochtypes "soarchain/x/epoch/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
@@ -22,4 +24,11 @@ type BankKeeper interface {
 	MintCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
 	BurnCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
 	//GetAllBalances(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
+}
+
+type EpochKeeper interface {
+	GetEpochData(ctx sdk.Context) (epochtypes.EpochData, bool)
+	SetEpochData(ctx sdk.Context, epochData epochtypes.EpochData)
+	UpdateEpochRewards(ctx sdk.Context, serviceName string, coin sdk.Coin) error
+	UpdateEpoch(ctx sdk.Context)
 }
