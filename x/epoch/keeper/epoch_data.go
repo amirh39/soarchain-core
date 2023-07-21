@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"soarchain/x/poa/types"
+	"soarchain/x/epoch/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"

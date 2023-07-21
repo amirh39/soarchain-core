@@ -1,17 +1,30 @@
 package keeper
 
 import (
-	"soarchain/x/poa/types"
+	"fmt"
+	"log"
+	"soarchain/x/epoch/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToSet sdk.Coin) error {
+func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToSet sdk.Coin) (err error) {
+
+	logger := k.Logger(ctx)
+	log.Println("############## Update Epoch Rewards Started ##############")
 
 	epochData, isFound := k.GetEpochData(ctx)
 	if !isFound {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateEpochRewards][GetEpochData] failed. Epoch data is not found!")
+	}
+
+	if logger != nil {
+		logger.Info("Getting epoch data successfully done.", "transaction", "UpdateEpochRewards", "epochData", epochData, "isFound", isFound)
+	}
+
+	if logger != nil {
+		logger.Info("Print out the client type.", "transaction", "UpdateEpochRewards", "clientType", clientType)
 	}
 
 	switch clientType {
@@ -75,6 +88,9 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		if err != nil {
 			return err
 		}
+		if logger != nil {
+			logger.Info("Reward v2n-bx device started.", "transaction", "UpdateEpochRewards")
+		}
 		newEpochV2NBXCoin := epochV2NBXCoin.Add(rewardToSet)
 		newEpochV2NBX := newEpochV2NBXCoin.String()
 
@@ -94,12 +110,21 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	case "runner":
+
+		fmt.Print("0000000000000000000000")
+
+		if logger != nil {
+			logger.Info("Reward Runner device started.", "transaction", "UpdateEpochRewards")
+		}
+
 		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
 		if err != nil {
 			return err
 		}
 		newEpochRunnerCoin := epochRunnerCoin.Add(rewardToSet)
 		newEpochRunner := newEpochRunnerCoin.String()
+
+		fmt.Print("111111111111111111111111111111111111", newEpochRunner)
 
 		newEpochData := types.EpochData{
 			TotalEpochs:               epochData.TotalEpochs,
@@ -115,9 +140,27 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
 
+		fmt.Print("222222222222222222222222", newEpochData)
 		k.SetEpochData(ctx, newEpochData)
 
+		if logger != nil {
+			logger.Info("Reward Runner device successfuly done.", "transaction", "UpdateEpochRewards", "Runner Epoch Data", newEpochData)
+		}
+
+		rst, found := k.GetEpochData(ctx)
+
+		fmt.Print("333333333333333333333333333333", rst)
+
+		if logger != nil {
+			logger.Info("Fetching epoch data successfuly done.", "transaction", "UpdateEpochRewards", "rst", rst, "found", found)
+		}
+
 	case "challenger":
+
+		if logger != nil {
+			logger.Info("Reward challenger device started.", "transaction", "UpdateEpochRewards")
+		}
+
 		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
 		if err != nil {
 			return err
@@ -140,10 +183,28 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 		k.SetEpochData(ctx, newEpochData)
 
+		if logger != nil {
+			logger.Info("Reward challenger device successfuly done.", "transaction", "UpdateEpochRewards", "Challenger Epoch Data", newEpochData)
+		}
+
+		rst, found := k.GetEpochData(ctx)
+
+		if logger != nil {
+			logger.Info("Fetching epoch data successfuly done.", "transaction", "UpdateEpochRewards", "rst", rst, "found", found)
+		}
+
 	case "runner_challenge":
+
+		if logger != nil {
+			logger.Info("Reward runner_challenger device started.", "transaction", "UpdateEpochRewards")
+		}
 
 		epochCnt := epochData.ChallengerTotalChallenges
 		newEpochCnt := epochCnt + 1
+
+		if logger != nil {
+			logger.Info("newE poch Cnt.", "transaction", "UpdateEpochRewards", "newEpochCnt", newEpochCnt)
+		}
 
 		newEpochData := types.EpochData{
 			TotalEpochs:               epochData.TotalEpochs,
@@ -158,7 +219,20 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			RunnerTotalChallenges:     newEpochCnt,
 			ChallengerTotalChallenges: newEpochCnt,
 		}
+		if logger != nil {
+			logger.Info("newEpochData - runner-challenger.", "transaction", "UpdateEpochRewards", "newEpochData", newEpochData)
+		}
 		k.SetEpochData(ctx, newEpochData)
+
+		if logger != nil {
+			logger.Info("Reward challenger device successfuly done.", "transaction", "UpdateEpochRewards", "runner_challenger Epoch Data", newEpochData)
+		}
+
+		rst, found := k.GetEpochData(ctx)
+
+		if logger != nil {
+			logger.Info("Fetching epoch data successfuly done.", "transaction", "UpdateEpochRewards", "rst", rst, "found", found)
+		}
 
 	default:
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[UpdateEpochRewards] failed. Client type is not valid.")

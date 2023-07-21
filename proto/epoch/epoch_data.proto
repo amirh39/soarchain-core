@@ -1,7 +1,7 @@
 syntax = "proto3";
-package soarchain.poa;
+package soarchain.epoch;
 
-option go_package = "soarchain/x/poa/types";
+option go_package = "soarchain/x/epoch/types";
 
 message EpochData {
   uint64 totalEpochs = 1; 

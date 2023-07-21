@@ -2,7 +2,7 @@ package keeper
 
 import (
 	params "soarchain/app/params"
-	"soarchain/x/poa/types"
+	"soarchain/x/epoch/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

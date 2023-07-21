@@ -169,24 +169,6 @@ func CreateV2NTypeChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []ty
 	return items
 }
 
-func CreateEpoachDataForTestRewards(keeper *keeper.Keeper, ctx sdk.Context) types.EpochData {
-	item := types.EpochData{
-		TotalEpochs: 30,
-		EpochV2VRX:  "2",
-		EpochV2VBX:  "3",
-		EpochV2NBX:  "4",
-		EpochRunner: "5",
-	}
-	keeper.SetEpochData(ctx, item)
-	return item
-}
-
-func CreateEpochData(keeper *keeper.Keeper, ctx sdk.Context) types.EpochData {
-	item := types.EpochData{}
-	keeper.SetEpochData(ctx, item)
-	return item
-}
-
 func CreateNFactoryKeys(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.FactoryKeys {
 	items := make([]types.FactoryKeys, n)
 	for i := range items {

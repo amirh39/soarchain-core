@@ -22,10 +22,6 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	EpochDataKey = "EpochData-value-"
-)
-
-const (
 	MasterKeyKey = "MasterKey-value-"
 )
 

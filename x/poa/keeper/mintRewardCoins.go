@@ -9,10 +9,12 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	epochtypes "soarchain/x/epoch/types"
 )
 
 func (k Keeper) MintRewardCoins(ctx sdk.Context) {
-	epochData, _ := k.GetEpochData(ctx)
+	epochData, _ := k.epochKeeper.GetEpochData(ctx)
 
 	if epochData.V2VRXtotalChallenges != 0 || epochData.V2VBXtotalChallenges != 0 || epochData.V2NBXtotalChallenges != 0 || epochData.RunnerTotalChallenges != 0 || epochData.ChallengerTotalChallenges != 0 {
 		handleParsingError := func(err error) {
@@ -53,7 +55,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 			k.Logger(ctx).Info(fmt.Sprintf("Minted coin: %s", challengeCount.String()))
 		}
 
-		newEpochData := types.EpochData{
+		newEpochData := epochtypes.EpochData{
 			TotalEpochs:               epochData.TotalEpochs,
 			EpochV2VRX:                epochData.EpochV2VRX,
 			EpochV2VBX:                epochData.EpochV2VBX,
@@ -67,7 +69,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 			ChallengerTotalChallenges: 0,
 		}
 
-		k.SetEpochData(ctx, newEpochData)
+		k.epochKeeper.SetEpochData(ctx, newEpochData)
 	}
 }
 

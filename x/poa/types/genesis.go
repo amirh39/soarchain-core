@@ -2,10 +2,6 @@ package types
 
 import (
 	"fmt"
-
-	params "soarchain/app/params"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // DefaultIndex is the default capability global index
@@ -14,23 +10,10 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		ClientList:     []Client{},
-		ChallengerList: []Challenger{},
-		RunnerList:     []Runner{},
-		VrfDataList:    []VrfData{},
-		EpochData: EpochData{
-			TotalEpochs:               0,
-			EpochV2VRX:                sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochV2VBX:                sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochV2NBX:                sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochRunner:               sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochChallenger:           sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			V2VRXtotalChallenges:      0,
-			V2VBXtotalChallenges:      0,
-			V2NBXtotalChallenges:      0,
-			RunnerTotalChallenges:     0,
-			ChallengerTotalChallenges: 0,
-		},
+		ClientList:      []Client{},
+		ChallengerList:  []Challenger{},
+		RunnerList:      []Runner{},
+		VrfDataList:     []VrfData{},
 		MotusWalletList: []MotusWallet{},
 		MasterKey: MasterKey{
 			MasterCertificate: "",

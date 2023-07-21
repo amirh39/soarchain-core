@@ -10,7 +10,7 @@ import (
 )
 
 func Test_EpochDataGet(t *testing.T) {
-	keeper, ctx := keepertest.PoaKeeper(t)
+	keeper, ctx := keepertest.EpochKeeper(t)
 	item := CreateEpochData(keeper, ctx)
 	rst, found := keeper.GetEpochData(ctx)
 	require.True(t, found)
@@ -21,7 +21,7 @@ func Test_EpochDataGet(t *testing.T) {
 }
 
 func Test_EpochDataRemove(t *testing.T) {
-	keeper, ctx := keepertest.PoaKeeper(t)
+	keeper, ctx := keepertest.EpochKeeper(t)
 	CreateEpochData(keeper, ctx)
 	keeper.RemoveEpochData(ctx)
 	_, found := keeper.GetEpochData(ctx)
