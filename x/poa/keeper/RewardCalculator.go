@@ -1,8 +1,12 @@
 package keeper
 
-import "sync"
+import (
+	"sync"
 
-func (k Keeper) CalculateRewards(totalAmount float64, scores []float64) []float64 {
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k Keeper) CalculateRewards(totalAmount float64, scores []float64) []sdk.Dec {
 	numScores := len(scores)
 
 	// Calculate total score
@@ -11,7 +15,7 @@ func (k Keeper) CalculateRewards(totalAmount float64, scores []float64) []float6
 		totalScore += score
 	}
 
-	// Calculate individual rewards concurrently
+	// Calculate individual rewards concurrently in float64
 	rewards := make([]float64, numScores)
 	var wg sync.WaitGroup
 	var mu sync.Mutex
@@ -28,5 +32,11 @@ func (k Keeper) CalculateRewards(totalAmount float64, scores []float64) []float6
 	}
 	wg.Wait()
 
-	return rewards
+	// Convert rewards to sdk.Dec
+	sdkRewards := make([]sdk.Dec, numScores)
+	for i, reward := range rewards {
+		sdkRewards[i] = sdk.NewDecWithPrec(int64(reward*1000000), 6) // Convert to 6 decimal places
+	}
+
+	return sdkRewards
 }

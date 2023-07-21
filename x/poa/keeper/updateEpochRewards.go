@@ -7,7 +7,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToSet sdk.Coin) error {
+func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToSet sdk.DecCoin) error {
 
 	epochData, isFound := k.GetEpochData(ctx)
 	if !isFound {
@@ -18,7 +18,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	case "v2v-rx":
 		// Parse the current value into a sdk.Coin
-		epochV2VRXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
+		epochV2VRXCoin, err := sdk.ParseDecCoin(epochData.EpochV2VRX)
 		if err != nil {
 			return err
 		}
@@ -48,7 +48,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	case "v2v-bx":
-		epochV2VBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VBX)
+		epochV2VBXCoin, err := sdk.ParseDecCoin(epochData.EpochV2VBX)
 		if err != nil {
 			return err
 		}
@@ -71,7 +71,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	case "v2n-bx":
-		epochV2NBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
+		epochV2NBXCoin, err := sdk.ParseDecCoin(epochData.EpochV2NBX)
 		if err != nil {
 			return err
 		}
@@ -94,7 +94,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	case "runner":
-		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
+		epochRunnerCoin, err := sdk.ParseDecCoin(epochData.EpochRunner)
 		if err != nil {
 			return err
 		}
@@ -118,7 +118,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	case "challenger":
-		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
+		epochChallengerCoin, err := sdk.ParseDecCoin(epochData.EpochChallenger)
 		if err != nil {
 			return err
 		}
