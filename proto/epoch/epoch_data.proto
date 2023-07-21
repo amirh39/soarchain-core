@@ -1,0 +1,18 @@
+syntax = "proto3";
+package soarchain.epoch;
+
+option go_package = "soarchain/x/epoch/types";
+
+message EpochData {
+  uint64 totalEpochs = 1; 
+  string epochV2VRX = 2; 
+  string epochV2VBX = 3; 
+  string epochV2NBX = 4; 
+  string epochRunner = 5; 
+  string epochChallenger = 6;
+  uint64 V2VRXtotalChallenges = 7;
+  uint64 V2VBXtotalChallenges = 8;
+  uint64 V2NBXtotalChallenges = 9;
+  uint64 RunnerTotalChallenges = 10;
+  uint64 ChallengerTotalChallenges = 11;
+}
