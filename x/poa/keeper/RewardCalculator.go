@@ -1,12 +1,11 @@
 package keeper
 
 import (
+	"math/big"
 	"sync"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k Keeper) CalculateRewards(totalAmount float64, scores []float64) []sdk.Dec {
+func (k Keeper) CalculateRewards(totalAmount *big.Int, scores []float64) []*big.Int {
 	numScores := len(scores)
 
 	// Calculate total score
@@ -15,8 +14,8 @@ func (k Keeper) CalculateRewards(totalAmount float64, scores []float64) []sdk.De
 		totalScore += score
 	}
 
-	// Calculate individual rewards concurrently in float64
-	rewards := make([]float64, numScores)
+	// Calculate individual rewards concurrently
+	rewards := make([]*big.Int, numScores)
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	wg.Add(numScores)
@@ -24,7 +23,7 @@ func (k Keeper) CalculateRewards(totalAmount float64, scores []float64) []sdk.De
 		go func(index int, s float64) {
 			defer wg.Done()
 			percentage := s / totalScore
-			reward := totalAmount * percentage
+			reward := big.NewInt(int64(percentage * float64(totalAmount.Int64())))
 			mu.Lock()
 			rewards[index] = reward
 			mu.Unlock()
@@ -32,11 +31,5 @@ func (k Keeper) CalculateRewards(totalAmount float64, scores []float64) []sdk.De
 	}
 	wg.Wait()
 
-	// Convert rewards to sdk.Dec
-	sdkRewards := make([]sdk.Dec, numScores)
-	for i, reward := range rewards {
-		sdkRewards[i] = sdk.NewDecWithPrec(int64(reward*1000000), 6) // Convert to 6 decimal places
-	}
-
-	return sdkRewards
+	return rewards
 }

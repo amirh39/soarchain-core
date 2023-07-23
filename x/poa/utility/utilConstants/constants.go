@@ -22,7 +22,7 @@ const (
 
 	V2NBX      = 3.0
 	Runner     = 1.0
-	Challenger = 1.0
+	Challenger = 1000000
 
 	AddressLength = 43
 )
