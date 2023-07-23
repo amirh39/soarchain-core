@@ -20,7 +20,7 @@ const (
 	V2VBlocksPerMinute          = 1
 	V2NBlocksPerMinute          = 1
 
-	V2NBX      = 3.0
+	V2NBX      = 3000000
 	Runner     = 1.0
 	Challenger = 1000000
 
