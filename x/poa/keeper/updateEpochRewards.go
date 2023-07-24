@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,7 +17,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	switch clientType {
 
-	case "v2v-rx":
+	case constants.V2VRX:
 		// Parse the current value into a sdk.Coin
 		epochV2VRXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
 		if err != nil {
@@ -47,7 +48,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		// Store the updated epoch data
 		k.SetEpochData(ctx, newEpochData)
 
-	case "v2v-bx":
+	case constants.V2VBX:
 		epochV2VBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VBX)
 		if err != nil {
 			return err
@@ -70,7 +71,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 		k.SetEpochData(ctx, newEpochData)
 
-	case "v2n-bx":
+	case constants.V2NBX:
 		epochV2NBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
 		if err != nil {
 			return err
@@ -93,7 +94,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 		k.SetEpochData(ctx, newEpochData)
 
-	case "runner":
+	case constants.Runner:
 		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
 		if err != nil {
 			return err
@@ -117,7 +118,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 		k.SetEpochData(ctx, newEpochData)
 
-	case "challenger":
+	case constants.Challenger:
 		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
 		if err != nil {
 			return err
@@ -140,7 +141,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 		k.SetEpochData(ctx, newEpochData)
 
-	case "runner_challenge":
+	case constants.V2NChallenge:
 
 		epochCnt := epochData.ChallengerTotalChallenges
 		newEpochCnt := epochCnt + 1

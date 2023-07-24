@@ -39,7 +39,7 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) e
 
 		totalEarnings = netEarnings.Add(earnedCoin)
 
-		if epochErr := k.UpdateEpochRewards(ctx, "challenger", earnedCoin); epochErr != nil {
+		if epochErr := k.UpdateEpochRewards(ctx, constants.Challenger, earnedCoin); epochErr != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochErr)
 		}
 	}
@@ -127,7 +127,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 		totalEarnings = netEarnings.Add(earnedCoin)
 
 		// Update the epoch rewards
-		if epochErr := k.UpdateEpochRewards(ctx, "runner", earnedCoin); epochErr != nil {
+		if epochErr := k.UpdateEpochRewards(ctx, constants.Runner, earnedCoin); epochErr != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochErr)
 		}
 	}
@@ -185,7 +185,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 
 		earnedCoin := sdk.NewCoin(param.BondDenom, earnedAmount)
 
-		if epochErr := k.UpdateEpochRewards(ctx, "v2n-bx", earnedCoin); epochErr != nil {
+		if epochErr := k.UpdateEpochRewards(ctx, constants.V2NBX, earnedCoin); epochErr != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochErr)
 		}
 

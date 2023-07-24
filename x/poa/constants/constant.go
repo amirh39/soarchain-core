@@ -16,10 +16,12 @@ const (
 )
 
 const (
-	V2VRX  = "v2v-rx"
-	V2VBX  = "v2v-bx"
-	V2NBX  = "v2n-bx"
-	Runner = "runner"
+	V2VRX        = "v2v-rx"
+	V2VBX        = "v2v-bx"
+	V2NBX        = "v2n-bx"
+	Runner       = "runner"
+	Challenger   = "challenger"
+	V2NChallenge = "runner_challenge"
 )
 
 const Multiplier = int(5)
