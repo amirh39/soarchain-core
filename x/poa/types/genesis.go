@@ -36,6 +36,12 @@ func DefaultGenesis() *GenesisState {
 			RunnerLastBlockChallenges:     0,
 			ChallengerLastBlockChallenges: 0,
 			TotalChallengesPrevDay:        0,
+			InitialPerChallengeValue:      9000000,
+			V2NBXPerChallengeValue:        3000000,
+			RunnerPerChallengeValue:       1000000,
+			ChallengerPerChallengeValue:   1000000,
+			V2VBXPerChallengeValue:        2000000,
+			V2VRXPerChallengeValue:        2000000,
 		},
 		MotusWalletList: []MotusWallet{},
 		MasterKey: MasterKey{

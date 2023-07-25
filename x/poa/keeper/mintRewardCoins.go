@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 
@@ -51,7 +50,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 			*c.target = coin
 			mintAndParseCoins(ctx, coin, k)
 			// Log the minted coin
-			k.Logger(ctx).Info(fmt.Sprintf("Minted coin: %s", coin.String()))
+			//k.Logger(ctx).Info(fmt.Sprintf("Minted coin: %s", coin.String()))
 		}
 
 		newEpochData := types.EpochData{
