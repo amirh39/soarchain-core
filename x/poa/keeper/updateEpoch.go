@@ -18,6 +18,11 @@ func (k Keeper) UpdateEpoch(ctx sdk.Context) {
 	// Increment the epoch count
 	newEpochCnt := epochData.TotalEpochs + 1
 
+	if epochData.TotalEpochs%192 == 0 && epochData.TotalEpochs != 0 {
+		k.ComputeAdaptiveHalving(ctx)
+
+	}
+
 	// Create the new epoch data with updated total challenges
 	newEpochData := types.EpochData{
 		TotalEpochs:               newEpochCnt,
@@ -38,7 +43,8 @@ func (k Keeper) UpdateEpoch(ctx sdk.Context) {
 	k.SetEpochData(ctx, newEpochData)
 }
 
-// calculateTotalChallenges calculates the total challenges for the previous day. v2v part will be added
+// calculateTotalChallenges calculates the total challenges for the previous day.
 func calculateTotalChallenges(epochData types.EpochData) uint64 {
-	return epochData.ChallengerTotalChallenges
+	epochData.TotalChallengesPrevDay += epochData.ChallengerTotalChallenges
+	return epochData.TotalChallengesPrevDay
 }

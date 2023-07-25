@@ -21,7 +21,7 @@ const (
 	V2NBlocksPerMinute          = 1
 
 	V2NBX      = 3000000
-	Runner     = 1.0
+	Runner     = 1000000
 	Challenger = 1000000
 
 	AddressLength = 43
