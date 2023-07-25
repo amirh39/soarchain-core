@@ -18,25 +18,31 @@ func (k Keeper) UpdateEpoch(ctx sdk.Context) {
 	// Increment the epoch count
 	newEpochCnt := epochData.TotalEpochs + 1
 
-	if epochData.TotalEpochs%192 == 0 && epochData.TotalEpochs != 0 {
-		k.ComputeAdaptiveHalving(ctx)
-
-	}
-
 	// Create the new epoch data with updated total challenges
 	newEpochData := types.EpochData{
-		TotalEpochs:               newEpochCnt,
-		EpochV2VRX:                sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		EpochV2VBX:                sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		EpochV2NBX:                sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		EpochRunner:               sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		EpochChallenger:           sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		V2VRXtotalChallenges:      0,
-		V2VBXtotalChallenges:      0,
-		V2NBXtotalChallenges:      0,
-		RunnerTotalChallenges:     0,
-		ChallengerTotalChallenges: 0,
-		TotalChallengesPrevDay:    totalChallengesPrevDay,
+		TotalEpochs:                   newEpochCnt,
+		EpochV2VRX:                    sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochV2VBX:                    sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochV2NBX:                    sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochRunner:                   sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		EpochChallenger:               sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
+		V2VRXtotalChallenges:          0,
+		V2VBXtotalChallenges:          0,
+		V2NBXtotalChallenges:          0,
+		RunnerTotalChallenges:         0,
+		ChallengerTotalChallenges:     0,
+		V2VRXLastBlockChallenges:      0,
+		V2VBXLastBlockChallenges:      0,
+		V2NBXLastBlockChallenges:      0,
+		RunnerLastBlockChallenges:     0,
+		ChallengerLastBlockChallenges: 0,
+		TotalChallengesPrevDay:        totalChallengesPrevDay,
+		InitialPerChallengeValue:      9000000,
+		V2NBXPerChallengeValue:        3000000,
+		RunnerPerChallengeValue:       1000000,
+		ChallengerPerChallengeValue:   1000000,
+		V2VBXPerChallengeValue:        2000000,
+		V2VRXPerChallengeValue:        2000000,
 	}
 
 	// Set the updated epoch data

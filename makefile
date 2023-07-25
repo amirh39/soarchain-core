@@ -4,7 +4,7 @@ remove:
 	rm -rf ~/.soarchain
 
 build:
-	CGO_ENABLED=$(CGO_ENABLED) go build ./cmd/soarchaind/main.go
+	ignite chain build
 
 reset:
 	soarchaind tendermint unsafe-reset-all

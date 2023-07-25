@@ -1,6 +1,7 @@
 package poa
 
 import (
+	"log"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/telemetry"
@@ -24,6 +25,12 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 		k.UpdateEpoch(ctx)
 	}
 
+	epochData, _ := k.GetEpochData(ctx)
+	if epochData.TotalEpochs%1 == 0 && epochData.TotalEpochs != 0 {
+		log.Println("ComputeAdaptiveHalving")
+		k.ComputeAdaptiveHalving(ctx)
+
+	}
 }
 
 func EndBlocker(ctx sdk.Context, k keeper.Keeper) []abci.ValidatorUpdate {

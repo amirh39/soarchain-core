@@ -10,21 +10,20 @@ import (
 	"soarchain/x/poa/errors"
 	"soarchain/x/poa/types"
 	"soarchain/x/poa/utility"
-	constant "soarchain/x/poa/utility/utilConstants"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger) error {
+func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger, epoch types.EpochData) error {
 	var totalEarnings sdk.Coin
 	var rewardMultiplier float64
 	newScore := make([]float64, 0)
 	rewardMultiplier, score := k.rewardAndScore(challenger.Score)
 	newScore = append(newScore, score)
 
-	totalAmount := big.NewInt(constant.Challenger)
+	totalAmount := big.NewInt(int64(epoch.ChallengerPerChallengeValue))
 	earnedRewardsBigInt := k.CalculateRewards(totalAmount, newScore)
 
 	if len(earnedRewardsBigInt) > 0 {
@@ -92,7 +91,7 @@ func (k Keeper) punish(score string) (float64, float64) {
 	return rewardMultiplier, newScore
 }
 
-func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey string, result string) error {
+func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey string, result string, epoch types.EpochData) error {
 	runner, found := k.GetRunnerUsingPubKey(ctx, runnerPubKey)
 	if !found {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundAValidRunner)
@@ -112,7 +111,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 	}
 	newScore = append(newScore, score)
 
-	earnedRewardsBigInt := k.CalculateRewards(big.NewInt(constant.Runner), newScore)
+	earnedRewardsBigInt := k.CalculateRewards(big.NewInt(int64(epoch.RunnerPerChallengeValue)), newScore)
 
 	if len(earnedRewardsBigInt) > 0 {
 		earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt[0])
@@ -148,7 +147,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 	return nil
 }
 
-func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) error {
+func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge, epoch types.EpochData) error {
 	v2nBxAddrCount := len(msg.ClientPubkeys)
 	if v2nBxAddrCount < 1 {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NoV2nBxAddrPubKeys)
@@ -170,7 +169,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge) err
 	}
 
 	// Calculate rewards for all scores
-	rewards := k.CalculateRewards(big.NewInt(constant.V2NBX), scores)
+	rewards := k.CalculateRewards(big.NewInt(int64(epoch.V2NBXPerChallengeValue)), scores)
 
 	for i := 0; i < v2nBxAddrCount; i++ {
 		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
@@ -236,7 +235,12 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
 
-	err := k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey, msg.ChallengeResult)
+	epochData, isFound := k.GetEpochData(ctx)
+	if !isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[computeAdaptiveHalving][GetEpochData] failed. Epoch data is not found!")
+	}
+
+	err := k.updateRunner(ctx, msg.Creator, msg.RunnerpubKey, msg.ChallengeResult, epochData)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
@@ -245,7 +249,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		logger.Info("Updating runner successfully done.", "transaction", "RunnerChallenge")
 	}
 
-	err = k.updateClient(ctx, msg)
+	err = k.updateClient(ctx, msg, epochData)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
@@ -255,7 +259,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	}
 
 	/** Update challenger info after the successfull reward session */
-	err = k.updateChallenger(ctx, challenger)
+	err = k.updateChallenger(ctx, challenger, epochData)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
@@ -265,7 +269,10 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	}
 
 	//update the challenge counts
-	if epochErr := k.UpdateEpochRewards(ctx, "runner_challenge", sdk.NewCoin(params.BondDenom, sdk.ZeroInt())); epochErr != nil {
+	if epochErr := k.UpdateEpochRewards(ctx, "runner_challenge", sdk.NewCoin(params.BondDenom, sdk.ZeroInt())); epochErr == nil {
+		log.Println("UpdateEpochRewards working")
+	} else {
+		// There was an error in the UpdateEpochRewards function, handle it here
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EpochErr)
 	}
 
