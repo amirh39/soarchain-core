@@ -12,9 +12,6 @@ func (k Keeper) UpdateEpoch(ctx sdk.Context) {
 	// Get the current epoch data
 	epochData, _ := k.GetEpochData(ctx)
 
-	// Calculate the total challenges for the previous day
-	totalChallengesPrevDay := calculateTotalChallenges(epochData)
-
 	// Increment the epoch count
 	newEpochCnt := epochData.TotalEpochs + 1
 
@@ -31,12 +28,12 @@ func (k Keeper) UpdateEpoch(ctx sdk.Context) {
 		V2NBXtotalChallenges:          0,
 		RunnerTotalChallenges:         0,
 		ChallengerTotalChallenges:     0,
-		V2VRXLastBlockChallenges:      0,
-		V2VBXLastBlockChallenges:      0,
-		V2NBXLastBlockChallenges:      0,
-		RunnerLastBlockChallenges:     0,
-		ChallengerLastBlockChallenges: 0,
-		TotalChallengesPrevDay:        totalChallengesPrevDay,
+		V2VRXLastBlockChallenges:      epochData.V2VRXLastBlockChallenges,
+		V2VBXLastBlockChallenges:      epochData.V2VBXLastBlockChallenges,
+		V2NBXLastBlockChallenges:      epochData.V2NBXLastBlockChallenges,
+		RunnerLastBlockChallenges:     epochData.RunnerLastBlockChallenges,
+		ChallengerLastBlockChallenges: epochData.ChallengerLastBlockChallenges,
+		TotalChallengesPrevDay:        epochData.TotalChallengesPrevDay,
 		InitialPerChallengeValue:      epochData.InitialPerChallengeValue,
 		V2NBXPerChallengeValue:        epochData.V2NBXPerChallengeValue,
 		RunnerPerChallengeValue:       epochData.RunnerPerChallengeValue,
@@ -47,10 +44,4 @@ func (k Keeper) UpdateEpoch(ctx sdk.Context) {
 
 	// Set the updated epoch data
 	k.SetEpochData(ctx, newEpochData)
-}
-
-// calculateTotalChallenges calculates the total challenges for the previous day.
-func calculateTotalChallenges(epochData types.EpochData) uint64 {
-	epochData.TotalChallengesPrevDay += epochData.ChallengerTotalChallenges
-	return epochData.TotalChallengesPrevDay
 }
