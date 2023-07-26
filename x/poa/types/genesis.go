@@ -36,7 +36,7 @@ func DefaultGenesis() *GenesisState {
 			RunnerLastBlockChallenges:     0,
 			ChallengerLastBlockChallenges: 0,
 			TotalChallengesPrevDay:        0,
-			InitialPerChallengeValue:      9000000,
+			InitialPerChallengeValue:      9000000.0,
 			V2NBXPerChallengeValue:        3000000,
 			RunnerPerChallengeValue:       1000000,
 			ChallengerPerChallengeValue:   1000000,
