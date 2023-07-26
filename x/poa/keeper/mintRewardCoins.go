@@ -26,36 +26,30 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	if epochData.V2NBXLastBlockChallenges != 0 {
 		log.Println(epochData.V2NBXLastBlockChallenges)
 		log.Println(epochData.V2NBXPerChallengeValue)
-		rewardToSet := epochData.V2NBXPerChallengeValue * epochData.V2NBXLastBlockChallenges
+		rewardToSet := parseUintAndCreateCoin(epochData.V2NBXPerChallengeValue, int(epochData.V2NBXLastBlockChallenges))
 		log.Println(rewardToSet)
-		coin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(rewardToSet))
-		log.Println(coin)
 		log.Println("V2NBXLastBlockChallenges=", epochData.V2NBXLastBlockChallenges)
-		mintAndParseCoins(ctx, coin, k)
+		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.V2NBXLastBlockChallenges = 0
 	}
 
 	if epochData.RunnerLastBlockChallenges != 0 {
 		log.Println(epochData.RunnerLastBlockChallenges)
 		log.Println(epochData.RunnerPerChallengeValue)
-		rewardToSet := epochData.RunnerPerChallengeValue * uint64(epochData.RunnerLastBlockChallenges)
+		rewardToSet := parseUintAndCreateCoin(epochData.RunnerPerChallengeValue, int(epochData.RunnerLastBlockChallenges))
 		log.Println(rewardToSet)
-		coin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(rewardToSet))
-		log.Println(coin)
 		log.Println("RunnerLastBlockChallenges=", epochData.RunnerLastBlockChallenges)
-		mintAndParseCoins(ctx, coin, k)
+		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.RunnerLastBlockChallenges = 0
 	}
 
 	if epochData.ChallengerLastBlockChallenges != 0 {
 		log.Println(epochData.ChallengerLastBlockChallenges)
 		log.Println(epochData.ChallengerPerChallengeValue)
-		rewardToSet := epochData.ChallengerPerChallengeValue * uint64(epochData.ChallengerLastBlockChallenges)
+		rewardToSet := parseUintAndCreateCoin(epochData.ChallengerPerChallengeValue, int(epochData.ChallengerLastBlockChallenges))
 		log.Println(rewardToSet)
-		coin := sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(rewardToSet))
-		log.Println(coin)
 		log.Println("ChallengerLastBlockChallenges=", epochData.ChallengerLastBlockChallenges)
-		mintAndParseCoins(ctx, coin, k)
+		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.ChallengerLastBlockChallenges = 0
 	}
 
