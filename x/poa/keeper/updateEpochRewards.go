@@ -46,6 +46,8 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
 			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
 			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 
 		// Store the updated epoch data
@@ -74,6 +76,8 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
 			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
 			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
@@ -100,6 +104,8 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
 			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
 			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
@@ -126,6 +132,8 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
 			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
 			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 
 		k.SetEpochData(ctx, newEpochData)
@@ -153,12 +161,16 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
 			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
 			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
 	case constants.V2NChallenge:
 
 		epochCnt := epochData.ChallengerTotalChallenges + 1
+
+		totalChallengeCount := epochData.TotalChallengesPrevDay + 1
 
 		challengeCountBlock := epochData.ChallengerLastBlockChallenges + 1
 
@@ -182,6 +194,10 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			ChallengerPerChallengeValue:   epochData.ChallengerPerChallengeValue,
 			V2NBXPerChallengeValue:        epochData.V2NBXPerChallengeValue,
 			RunnerPerChallengeValue:       epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:      epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:        totalChallengeCount,
+			V2VBXPerChallengeValue:        epochData.V2VBXPerChallengeValue,
+			V2VRXPerChallengeValue:        epochData.V2VRXPerChallengeValue,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
