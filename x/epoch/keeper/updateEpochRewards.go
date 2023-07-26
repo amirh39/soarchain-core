@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"soarchain/x/epoch/types"
+	"soarchain/x/poa/constants"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -12,22 +13,14 @@ import (
 func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToSet sdk.Coin) error {
 	logger := k.Logger(ctx)
 	log.Println("############## Update Epoch Rewards Started ##############")
-
 	epochData, isFound := k.GetEpochData(ctx)
 	if !isFound {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateEpochRewards][GetEpochData] failed. Epoch data is not found!")
 	}
-	if logger != nil {
-		logger.Info("Getting epoch data successfully done.", "transaction", "UpdateEpochRewards", "epochData", epochData, "isFound", isFound)
-	}
-
-	if logger != nil {
-		logger.Info("Print out the client type.", "transaction", "UpdateEpochRewards", "clientType", clientType)
-	}
 
 	switch clientType {
 
-	case "v2v-rx":
+	case constants.V2VRX:
 		// Parse the current value into a sdk.Coin
 		epochV2VRXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
 		if err != nil {
@@ -42,23 +35,28 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 		// Create a new EpochData object with the updated value
 		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                newEpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
+			TotalEpochs:                 epochData.TotalEpochs,
+			EpochV2VRX:                  newEpochV2VRX,
+			EpochV2VBX:                  epochData.EpochV2VBX,
+			EpochV2NBX:                  epochData.EpochV2NBX,
+			EpochRunner:                 epochData.EpochRunner,
+			EpochChallenger:             epochData.EpochChallenger,
+			V2VRXtotalChallenges:        epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:        epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:        epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:       epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges:   epochData.ChallengerTotalChallenges,
+			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
+			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
+			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 
 		// Store the updated epoch data
 		k.SetEpochData(ctx, newEpochData)
 
-	case "v2v-bx":
+	case constants.V2VBX:
 		epochV2VBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VBX)
 		if err != nil {
 			return err
@@ -67,25 +65,31 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochV2VBX := newEpochV2VBXCoin.String()
 
 		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                newEpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
+			TotalEpochs:                 epochData.TotalEpochs,
+			EpochV2VRX:                  epochData.EpochV2VRX,
+			EpochV2VBX:                  newEpochV2VBX,
+			EpochV2NBX:                  epochData.EpochV2NBX,
+			EpochRunner:                 epochData.EpochRunner,
+			EpochChallenger:             epochData.EpochChallenger,
+			V2VRXtotalChallenges:        epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:        epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:        epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:       epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges:   epochData.ChallengerTotalChallenges,
+			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
+			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
+			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
-	case "v2n-bx":
+	case constants.V2NBX:
 		epochV2NBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
 		if err != nil {
 			return err
 		}
+
 		if logger != nil {
 			logger.Info("Reward v2n-bx device started.", "transaction", "UpdateEpochRewards")
 		}
@@ -93,50 +97,60 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochV2NBX := newEpochV2NBXCoin.String()
 
 		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                newEpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
+			TotalEpochs:                 epochData.TotalEpochs,
+			EpochV2VRX:                  epochData.EpochV2VRX,
+			EpochV2VBX:                  epochData.EpochV2VBX,
+			EpochV2NBX:                  newEpochV2NBX,
+			EpochRunner:                 epochData.EpochRunner,
+			EpochChallenger:             epochData.EpochChallenger,
+			V2VRXtotalChallenges:        epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:        epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:        epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:       epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges:   epochData.ChallengerTotalChallenges,
+			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
+			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
+			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
-	case "runner":
+	case constants.Runner:
+		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
+		if err != nil {
+			return err
+		}
 		fmt.Print("0000000000000000000000")
 
 		if logger != nil {
 			logger.Info("Reward Runner device started.", "transaction", "UpdateEpochRewards")
 		}
-		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
-		if err != nil {
-			return err
-		}
 		newEpochRunnerCoin := epochRunnerCoin.Add(rewardToSet)
 		newEpochRunner := newEpochRunnerCoin.String()
 
 		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               newEpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
+			TotalEpochs:                 epochData.TotalEpochs,
+			EpochV2VRX:                  epochData.EpochV2VRX,
+			EpochV2VBX:                  epochData.EpochV2VBX,
+			EpochV2NBX:                  epochData.EpochV2NBX,
+			EpochRunner:                 newEpochRunner,
+			EpochChallenger:             epochData.EpochChallenger,
+			V2VRXtotalChallenges:        epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:        epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:        epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:       epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges:   epochData.ChallengerTotalChallenges,
+			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
+			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
+			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 
 		k.SetEpochData(ctx, newEpochData)
 
-	case "challenger":
+	case constants.Challenger:
 		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
 		if err != nil {
 			return err
@@ -145,39 +159,59 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochChallenger := newEpochChallengerCoin.String()
 
 		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           newEpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
+			TotalEpochs:                 epochData.TotalEpochs,
+			EpochV2VRX:                  epochData.EpochV2VRX,
+			EpochV2VBX:                  epochData.EpochV2VBX,
+			EpochV2NBX:                  epochData.EpochV2NBX,
+			EpochRunner:                 epochData.EpochRunner,
+			EpochChallenger:             newEpochChallenger,
+			V2VRXtotalChallenges:        epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:        epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:        epochData.V2NBXtotalChallenges,
+			RunnerTotalChallenges:       epochData.RunnerTotalChallenges,
+			ChallengerTotalChallenges:   epochData.ChallengerTotalChallenges,
+			ChallengerPerChallengeValue: epochData.ChallengerPerChallengeValue,
+			V2NBXPerChallengeValue:      epochData.V2NBXPerChallengeValue,
+			RunnerPerChallengeValue:     epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:    epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:      epochData.TotalChallengesPrevDay,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
-	case "runner_challenge":
+	case constants.V2NChallenge:
 		if logger != nil {
 			logger.Info("Reward runner_challenger device started.", "transaction", "UpdateEpochRewards")
 		}
-		epochCnt := epochData.ChallengerTotalChallenges
-		newEpochCnt := epochCnt + 1
+		epochCnt := epochData.ChallengerTotalChallenges + 1
+
+		totalChallengeCount := epochData.TotalChallengesPrevDay + 1
+
+		challengeCountBlock := epochData.ChallengerLastBlockChallenges + 1
 
 		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      newEpochCnt,
-			RunnerTotalChallenges:     newEpochCnt,
-			ChallengerTotalChallenges: newEpochCnt,
+			TotalEpochs:                   epochData.TotalEpochs,
+			EpochV2VRX:                    epochData.EpochV2VRX,
+			EpochV2VBX:                    epochData.EpochV2VBX,
+			EpochV2NBX:                    epochData.EpochV2NBX,
+			EpochRunner:                   epochData.EpochRunner,
+			EpochChallenger:               epochData.EpochChallenger,
+			V2VRXtotalChallenges:          epochData.V2VRXtotalChallenges,
+			V2VBXtotalChallenges:          epochData.V2VBXtotalChallenges,
+			V2NBXtotalChallenges:          epochCnt,
+			RunnerTotalChallenges:         epochCnt,
+			ChallengerTotalChallenges:     epochCnt,
+			V2VRXLastBlockChallenges:      epochData.V2VRXLastBlockChallenges,
+			V2VBXLastBlockChallenges:      epochData.V2VBXLastBlockChallenges,
+			V2NBXLastBlockChallenges:      challengeCountBlock,
+			RunnerLastBlockChallenges:     challengeCountBlock,
+			ChallengerLastBlockChallenges: challengeCountBlock,
+			ChallengerPerChallengeValue:   epochData.ChallengerPerChallengeValue,
+			V2NBXPerChallengeValue:        epochData.V2NBXPerChallengeValue,
+			RunnerPerChallengeValue:       epochData.RunnerPerChallengeValue,
+			InitialPerChallengeValue:      epochData.InitialPerChallengeValue,
+			TotalChallengesPrevDay:        totalChallengeCount,
+			V2VBXPerChallengeValue:        epochData.V2VBXPerChallengeValue,
+			V2VRXPerChallengeValue:        epochData.V2VRXPerChallengeValue,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
