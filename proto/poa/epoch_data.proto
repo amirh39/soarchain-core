@@ -21,7 +21,7 @@ message EpochData {
   uint64 RunnerLastBlockChallenges = 15;
   uint64 ChallengerLastBlockChallenges = 16;
   uint64 totalChallengesPrevDay = 17;
-  uint64 initialPerChallengeValue = 18;
+  double initialPerChallengeValue = 18;
   uint64 V2NBXPerChallengeValue = 19;
   uint64 RunnerPerChallengeValue = 20;
   uint64 ChallengerPerChallengeValue = 21;
