@@ -22,6 +22,13 @@ func CalculateMintedPerChallenge(prevMintedPerChallenge float64, totalChallenges
 		return 0, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "division by zero in CalculateMintedPerChallenge")
 	}
 
+	// Calculate mintedPerChallenge
 	mintedPerChallenge := prevMintedPerChallenge * A / denominator
+
+	// Ensure the result is not negative
+	if mintedPerChallenge < 0 {
+		return 0, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "mintedPerChallenge should not be negative")
+	}
+
 	return mintedPerChallenge, nil
 }
