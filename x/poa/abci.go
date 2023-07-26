@@ -26,7 +26,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) 
 	}
 
 	epochData, _ := k.GetEpochData(ctx)
-	if epochData.TotalEpochs%1 == 0 && epochData.TotalEpochs != 0 {
+	if (epochData.TotalEpochs%192 == 0) && (epochData.TotalEpochs != 0) {
 		log.Println("ComputeAdaptiveHalving")
 		k.ComputeAdaptiveHalving(ctx)
 
