@@ -28,9 +28,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetVrfData(ctx, elem)
 	}
 
-	// Set if defined
-	k.SetEpochData(ctx, genState.EpochData)
-
 	// Set all the motusWallet
 	for _, elem := range genState.MotusWalletList {
 		k.SetMotusWallet(ctx, elem)
@@ -58,11 +55,6 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.RunnerList = k.GetAllRunner(ctx)
 
 	genesis.VrfDataList = k.GetAllVrfData(ctx)
-	// Get all epochData
-	epochData, found := k.GetEpochData(ctx)
-	if found {
-		genesis.EpochData = epochData
-	}
 	genesis.MotusWalletList = k.GetAllMotusWallet(ctx)
 	// Get all masterKey
 	masterKey, found := k.GetMasterKey(ctx)

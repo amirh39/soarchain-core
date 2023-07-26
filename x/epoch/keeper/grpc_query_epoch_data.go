@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"soarchain/x/poa/types"
+	"soarchain/x/epoch/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"

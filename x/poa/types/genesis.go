@@ -2,10 +2,6 @@ package types
 
 import (
 	"fmt"
-
-	params "soarchain/app/params"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // DefaultIndex is the default capability global index
@@ -18,31 +14,7 @@ func DefaultGenesis() *GenesisState {
 		ChallengerList: []Challenger{},
 		RunnerList:     []Runner{},
 		VrfDataList:    []VrfData{},
-		EpochData: EpochData{
-			TotalEpochs:                   0,
-			EpochV2VRX:                    sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochV2VBX:                    sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochV2NBX:                    sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochRunner:                   sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			EpochChallenger:               sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			V2VRXtotalChallenges:          0,
-			V2VBXtotalChallenges:          0,
-			V2NBXtotalChallenges:          0,
-			RunnerTotalChallenges:         0,
-			ChallengerTotalChallenges:     0,
-			V2VRXLastBlockChallenges:      0,
-			V2VBXLastBlockChallenges:      0,
-			V2NBXLastBlockChallenges:      0,
-			RunnerLastBlockChallenges:     0,
-			ChallengerLastBlockChallenges: 0,
-			TotalChallengesPrevDay:        0,
-			InitialPerChallengeValue:      9000000.0,
-			V2NBXPerChallengeValue:        3000000,
-			RunnerPerChallengeValue:       1000000,
-			ChallengerPerChallengeValue:   1000000,
-			V2VBXPerChallengeValue:        2000000,
-			V2VRXPerChallengeValue:        2000000,
-		},
+
 		MotusWalletList: []MotusWallet{},
 		MasterKey: MasterKey{
 			MasterCertificate: "",

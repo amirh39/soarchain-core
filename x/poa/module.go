@@ -102,6 +102,7 @@ type AppModule struct {
 	keeper        keeper.Keeper
 	accountKeeper types.AccountKeeper
 	bankKeeper    types.BankKeeper
+	epochKeeper   types.EpochKeeper
 }
 
 func NewAppModule(
@@ -109,12 +110,14 @@ func NewAppModule(
 	keeper keeper.Keeper,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
+	epochKeeper types.EpochKeeper,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
 		keeper:         keeper,
 		accountKeeper:  accountKeeper,
 		bankKeeper:     bankKeeper,
+		epochKeeper:    epochKeeper,
 	}
 }
 
@@ -172,7 +175,7 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock executes all ABCI BeginBlock logic respective to the capability module.
 func (am AppModule) BeginBlock(ctx sdk.Context, req abci.RequestBeginBlock) {
-	BeginBlocker(ctx, req, am.keeper)
+	BeginBlocker(ctx, req, am)
 }
 
 // EndBlock executes all ABCI EndBlock logic respective to the capability module. It

@@ -26,9 +26,6 @@ const (
 
 const Multiplier = int(5)
 
-// EpochDuration defines how long one epoch lasts in minutes
-const EpochDuration = 30
-
 // DefaultIndex is the default capability global index
 const DefaultIndex uint64 = 1
 

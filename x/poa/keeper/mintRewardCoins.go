@@ -9,7 +9,7 @@ import (
 )
 
 func (k Keeper) MintRewardCoins(ctx sdk.Context) {
-	epochData, _ := k.GetEpochData(ctx)
+	epochData, _ := k.epochKeeper.GetEpochData(ctx)
 
 	if epochData.V2VRXLastBlockChallenges != 0 {
 		rewardToSet := parseUintAndCreateCoin(epochData.V2VRXLastBlockChallenges, int(epochData.V2VRXPerChallengeValue))
@@ -53,7 +53,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 		epochData.ChallengerLastBlockChallenges = 0
 	}
 
-	k.SetEpochData(ctx, epochData)
+	k.epochKeeper.SetEpochData(ctx, epochData)
 }
 func parseUintAndCreateCoin(value uint64, multiplier int) sdk.Coin {
 	amount := value * uint64(multiplier)

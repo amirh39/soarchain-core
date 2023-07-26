@@ -10,11 +10,11 @@ import (
 
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
-	"soarchain/x/poa/types"
+	"soarchain/x/epoch/types"
 )
 
 func Test_EpochDataQuery(t *testing.T) {
-	keeper, ctx := keepertest.PoaKeeper(t)
+	keeper, ctx := keepertest.EpochKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	item := CreateEpochData(keeper, ctx)
 	for _, tc := range []struct {
