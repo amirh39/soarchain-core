@@ -37,12 +37,12 @@ func (k Keeper) UpdateEpoch(ctx sdk.Context) {
 		RunnerLastBlockChallenges:     0,
 		ChallengerLastBlockChallenges: 0,
 		TotalChallengesPrevDay:        totalChallengesPrevDay,
-		InitialPerChallengeValue:      9000000,
-		V2NBXPerChallengeValue:        3000000,
-		RunnerPerChallengeValue:       1000000,
-		ChallengerPerChallengeValue:   1000000,
-		V2VBXPerChallengeValue:        2000000,
-		V2VRXPerChallengeValue:        2000000,
+		InitialPerChallengeValue:      epochData.InitialPerChallengeValue,
+		V2NBXPerChallengeValue:        epochData.V2NBXPerChallengeValue,
+		RunnerPerChallengeValue:       epochData.RunnerPerChallengeValue,
+		ChallengerPerChallengeValue:   epochData.ChallengerPerChallengeValue,
+		V2VBXPerChallengeValue:        epochData.V2VBXPerChallengeValue,
+		V2VRXPerChallengeValue:        epochData.V2VRXPerChallengeValue,
 	}
 
 	// Set the updated epoch data
