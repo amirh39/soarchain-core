@@ -28,7 +28,7 @@ func (k Keeper) ComputeAdaptiveHalving(ctx sdk.Context) error {
 	}
 
 	targetValue := 600000.0
-	totalChallengesTarget1 := 250_000_000
+	totalChallengesTarget1 := 250_000_000 //there will be exact values in the future, right now they are hardcoded here
 
 	A, B, C := utility.CalculateCoefficients(float64(epochData.InitialPerChallengeValue), targetValue, totalChallengesTarget1)
 	log.Println("A B C = ", A, B, C)
