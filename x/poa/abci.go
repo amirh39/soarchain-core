@@ -29,10 +29,6 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 
 	k.keeper.MintRewardCoins(ctx)
 
-	if logger != nil {
-		logger.Info("Mint Reward Coins successfully done.", "path", "BeginBlocker")
-	}
-
 	// check if a new epoch has started
 	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
 		if logger != nil {
@@ -52,7 +48,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 	epochData, _ := k.epochKeeper.GetEpochData(ctx)
 	if (epochData.TotalEpochs%192 == 0) && (epochData.TotalEpochs != 0) {
 		log.Println("ComputeAdaptiveHalving")
-		//k.ComputeAdaptiveHalving(ctx)
+		k.keeper.ComputeAdaptiveHalving(ctx)
 
 	}
 }
