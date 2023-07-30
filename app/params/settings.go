@@ -5,15 +5,15 @@ const (
 	Name                 = "soarchain"
 
 	// BondDenom defines the native staking token denomination.
-	BondDenom = "utmotus"
+	BondDenom = "udmotus"
 
 	MinDeposit = 10000000
 
 	// BondDenomAlias defines an alias for BondDenom.
-	BondDenomAlias = "microtmotus"
+	BondDenomAlias = "microdmotus"
 
 	// DisplayDenom defines the name, symbol, and display value of the motus token.
-	DisplayDenom = "tmotus"
+	DisplayDenom = "dmotus"
 
 	MotusExponent = 6
 
