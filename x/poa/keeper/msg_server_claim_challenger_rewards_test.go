@@ -45,12 +45,6 @@ func Test_ClaimChallengerRewards(t *testing.T) {
 	updatedChallenger, found := k.GetChallenger(ctx, Challenger_Address)
 	require.True(t, found)
 	require.Equal(t, "50udmotus", updatedChallenger.NetEarnings)
-
-	// Verify that the coins have been sent from the module to the account
-	//expectedCoins := sdk.NewCoins(sdk.NewCoin(params.BondDenom, sdk.NewInt(100)))
-	acc := sdk.AccAddress(Challenger_Address)
-	require.NotNil(t, acc)
-	//require.Equal(t, expectedCoins, acc.Equals())
 }
 
 /** Using an unknown challenger key should raise an error */
