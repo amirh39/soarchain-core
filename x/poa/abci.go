@@ -47,10 +47,15 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 
 	epochData, _ := k.epochKeeper.GetEpochData(ctx)
 	if (epochData.TotalEpochs%192 == 0) && (epochData.TotalEpochs != 0) {
-		log.Println("ComputeAdaptiveHalving")
+
 		k.keeper.ComputeAdaptiveHalving(ctx)
+		if logger != nil {
+			logger.Info("Compute Adaptive Halving successfully done.", "path", "BeginBlocker")
+		}
 
 	}
+
+	log.Println("############## End of Begin Blocker ##############")
 }
 
 func EndBlocker(ctx sdk.Context, k keeper.Keeper) []abci.ValidatorUpdate {
