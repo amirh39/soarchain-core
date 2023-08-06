@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"log"
 	"soarchain/x/epoch/types"
 	"soarchain/x/poa/constants"
@@ -16,6 +15,14 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	epochData, isFound := k.GetEpochData(ctx)
 	if !isFound {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateEpochRewards][GetEpochData] failed. Epoch data is not found!")
+	}
+
+	if logger != nil {
+		logger.Info("Getting epoch data successfully done.", "transaction", "UpdateEpochRewards", "epochData", epochData, "isFound", isFound)
+	}
+
+	if logger != nil {
+		logger.Info("Print out the client type.", "transaction", "UpdateEpochRewards", "clientType", clientType)
 	}
 
 	switch clientType {
@@ -85,14 +92,14 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	case constants.V2NBX:
+		if logger != nil {
+			logger.Info("Reward v2n-bx device started.", "transaction", "UpdateEpochRewards")
+		}
 		epochV2NBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
 		if err != nil {
 			return err
 		}
 
-		if logger != nil {
-			logger.Info("Reward v2n-bx device started.", "transaction", "UpdateEpochRewards")
-		}
 		newEpochV2NBXCoin := epochV2NBXCoin.Add(rewardToSet)
 		newEpochV2NBX := newEpochV2NBXCoin.String()
 
@@ -117,15 +124,16 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	case constants.Runner:
-		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
-		if err != nil {
-			return err
-		}
-		fmt.Print("0000000000000000000000")
 
 		if logger != nil {
 			logger.Info("Reward Runner device started.", "transaction", "UpdateEpochRewards")
 		}
+
+		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
+		if err != nil {
+			return err
+		}
+
 		newEpochRunnerCoin := epochRunnerCoin.Add(rewardToSet)
 		newEpochRunner := newEpochRunnerCoin.String()
 
@@ -151,6 +159,11 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	case constants.Challenger:
+
+		if logger != nil {
+			logger.Info("Reward challenger device started.", "transaction", "UpdateEpochRewards")
+		}
+
 		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
 		if err != nil {
 			return err
