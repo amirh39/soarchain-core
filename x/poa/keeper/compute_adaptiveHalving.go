@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"log"
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/utility"
 
 	epoch "soarchain/x/epoch/types"
@@ -27,10 +28,7 @@ func (k Keeper) ComputeAdaptiveHalving(ctx sdk.Context) error {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[computeAdaptiveHalving][GetEpochData] failed. Epoch data is not found!")
 	}
 
-	targetValue := 600000.0
-	totalChallengesTarget1 := 250_000_000 //there will be exact values in the future, right now they are hardcoded here
-
-	A, B, C := utility.CalculateCoefficients(float64(epochData.InitialPerChallengeValue), targetValue, totalChallengesTarget1)
+	A, B, C := utility.CalculateCoefficients(float64(epochData.InitialPerChallengeValue), constants.TargetValue, constants.TotalChallengesTarget1)
 	log.Println("A B C = ", A, B, C)
 	mintedPerChallenge, err := utility.CalculateMintedPerChallenge(epochData.InitialPerChallengeValue, int(epochData.TotalChallengesPrevDay), A, B, C)
 	if err != nil {
