@@ -24,6 +24,12 @@ const (
 	V2NChallenge = "runner_challenge"
 )
 
+const (
+	TargetValue = 600000.0
+
+	TotalChallengesTarget1 = 250_000_000
+)
+
 const Multiplier = int(5)
 
 // DefaultIndex is the default capability global index
