@@ -19,7 +19,7 @@ func CalculateMintedPerChallenge(prevMintedPerChallenge float64, totalChallenges
 	// Check for division by zero
 	denominator := B + float64(totalChallengesPrevDay) + C
 	if denominator == 0 {
-		return 0, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "division by zero in CalculateMintedPerChallenge")
+		return 0, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[CalculateMintedPerChallenge] [denominator] division by zero in CalculateMintedPerChallenge")
 	}
 
 	// Calculate mintedPerChallenge
@@ -27,7 +27,7 @@ func CalculateMintedPerChallenge(prevMintedPerChallenge float64, totalChallenges
 
 	// Ensure the result is not negative
 	if mintedPerChallenge < 0 {
-		return 0, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "mintedPerChallenge should not be negative")
+		return 0, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[CalculateMintedPerChallenge] [mintedPerChallenge] mintedPerChallenge should not be negative")
 	}
 
 	return mintedPerChallenge, nil
