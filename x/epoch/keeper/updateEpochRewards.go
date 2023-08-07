@@ -30,7 +30,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	case constants.V2VRX:
 
 		if logger != nil {
-			logger.Info("Reward v2v-rx device started.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating v2v-rx epochValue.", "transaction", "UpdateEpochRewards")
 		}
 		// Parse the current value into a sdk.Coin
 		epochV2VRXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
@@ -98,7 +98,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	case constants.V2NBX:
 		if logger != nil {
-			logger.Info("Reward v2n-bx device started.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating v2n-bx epochValue.", "transaction", "UpdateEpochRewards")
 		}
 		epochV2NBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
 		if err != nil {
@@ -131,7 +131,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	case constants.Runner:
 
 		if logger != nil {
-			logger.Info("Reward Runner device started.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating Runner epochValue.", "transaction", "UpdateEpochRewards")
 		}
 
 		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
@@ -167,7 +167,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	case constants.Challenger:
 
 		if logger != nil {
-			logger.Info("Reward challenger device started.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating challenger epochValue.", "transaction", "UpdateEpochRewards")
 		}
 
 		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
@@ -200,7 +200,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	case constants.V2NChallenge:
 		if logger != nil {
-			logger.Info("Reward runner_challenger device started.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating V2NChallenge epochValue.", "transaction", "UpdateEpochRewards")
 		}
 		epochCnt := epochData.ChallengerTotalChallenges + 1
 
