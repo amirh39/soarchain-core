@@ -28,10 +28,15 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	switch clientType {
 
 	case constants.V2VRX:
+
+		if logger != nil {
+			logger.Info("Reward v2v-rx device started.", "transaction", "UpdateEpochRewards")
+		}
 		// Parse the current value into a sdk.Coin
 		epochV2VRXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
 		if err != nil {
-			return err
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateEpochRewards][ParseCoinsNormalized] failed. Amount: [ %T ] couldn't be parsed. Error: [ %T ]", epochV2VRXCoin, err)
+
 		}
 
 		// Addition rewardToSet
@@ -66,7 +71,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	case constants.V2VBX:
 		epochV2VBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VBX)
 		if err != nil {
-			return err
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateEpochRewards][ParseCoinsNormalized] failed. Amount: [ %T ] couldn't be parsed. Error: [ %T ]", epochV2VBXCoin, err)
 		}
 		newEpochV2VBXCoin := epochV2VBXCoin.Add(rewardToSet)
 		newEpochV2VBX := newEpochV2VBXCoin.String()
@@ -97,7 +102,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 		epochV2NBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
 		if err != nil {
-			return err
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateEpochRewards][ParseCoinsNormalized] failed. Amount: [ %T ] couldn't be parsed. Error: [ %T ]", epochV2NBXCoin, err)
 		}
 
 		newEpochV2NBXCoin := epochV2NBXCoin.Add(rewardToSet)
@@ -131,7 +136,8 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
 		if err != nil {
-			return err
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateEpochRewards][ParseCoinsNormalized] failed. Amount: [ %T ] couldn't be parsed. Error: [ %T ]", epochRunnerCoin, err)
+
 		}
 
 		newEpochRunnerCoin := epochRunnerCoin.Add(rewardToSet)
@@ -166,7 +172,8 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
 		if err != nil {
-			return err
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateEpochRewards][ParseCoinsNormalized] failed. Amount: [ %T ] couldn't be parsed. Error: [ %T ]", epochChallengerCoin, err)
+
 		}
 		newEpochChallengerCoin := epochChallengerCoin.Add(rewardToSet)
 		newEpochChallenger := newEpochChallengerCoin.String()
