@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"fmt"
 	"log"
 	"soarchain/x/poa/constants"
 	"soarchain/x/poa/utility"
@@ -11,7 +12,12 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func divideMintedPerChallenge(mintedPerChallenge float64) (runner, challenger, v2nbx int64) {
+func divideMintedPerChallenge(mintedPerChallenge float64) (runner, challenger, v2nbx int64, err error) {
+	// Check if mintedPerChallenge is a non-negative value
+	if mintedPerChallenge < 0 {
+		return 0, 0, 0, fmt.Errorf("mintedPerChallenge cannot be negative")
+	}
+
 	// Calculate 10% of mintedPerChallenge for both runner and challenger
 	runner = int64(mintedPerChallenge * 0.10)
 	challenger = runner // challenger gets the same percentage as runner
@@ -19,25 +25,38 @@ func divideMintedPerChallenge(mintedPerChallenge float64) (runner, challenger, v
 	// Calculate 80% of mintedPerChallenge for v2nbx
 	v2nbx = int64(mintedPerChallenge * 0.80)
 
-	return runner, challenger, v2nbx
+	return runner, challenger, v2nbx, nil
 }
 
 func (k Keeper) ComputeAdaptiveHalving(ctx sdk.Context) error {
 	epochData, isFound := k.epochKeeper.GetEpochData(ctx)
+	logger := k.Logger(ctx)
+	log.Println("############## ComputeAdaptiveHalving Has Started ##############")
 	if !isFound {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[computeAdaptiveHalving][GetEpochData] failed. Epoch data is not found!")
 	}
 
 	A, B, C := utility.CalculateCoefficients(float64(epochData.InitialPerChallengeValue), constants.TargetValue, constants.TotalChallengesTarget1)
-	log.Println("A B C = ", A, B, C)
-	mintedPerChallenge, err := utility.CalculateMintedPerChallenge(epochData.InitialPerChallengeValue, int(epochData.TotalChallengesPrevDay), A, B, C)
-	if err != nil {
-		return sdkerrors.Wrap(err, "[computeAdaptiveHalving] failed to calculate minted per challenge")
+	if logger != nil {
+		logger.Info(" CalculateCoefficients successfully done.", A, B, C)
 	}
 
-	log.Println("mintedPerChallenge= ", mintedPerChallenge)
+	mintedPerChallenge, err := utility.CalculateMintedPerChallenge(epochData.InitialPerChallengeValue, int(epochData.TotalChallengesPrevDay), A, B, C)
+	if err != nil {
+		return sdkerrors.Wrap(err, "[computeAdaptiveHalving] failed to calculate minted per challenge.")
+	}
+	if logger != nil {
+		logger.Info(" mintedPerChallenge = ", mintedPerChallenge)
+	}
 
-	runner, challenger, v2nbx := divideMintedPerChallenge(mintedPerChallenge)
+	runner, challenger, v2nbx, err := divideMintedPerChallenge(mintedPerChallenge)
+	if err != nil {
+		return sdkerrors.Wrap(err, "[computeAdaptiveHalving] failed to calculate minted per challenge for objects")
+	}
+
+	if logger != nil {
+		logger.Info("divideMintedPerChallenge successfully done.")
+	}
 
 	//Update the initial per challenge value in epochData
 	newEpochData := epoch.EpochData{
@@ -66,6 +85,8 @@ func (k Keeper) ComputeAdaptiveHalving(ctx sdk.Context) error {
 		V2VRXPerChallengeValue:        2000000,
 	}
 	k.epochKeeper.SetEpochData(ctx, newEpochData)
+
+	log.Println("############## End of ComputeAdaptiveHalving ##############")
 
 	return nil
 }
