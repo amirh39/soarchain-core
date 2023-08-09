@@ -16,7 +16,7 @@ import (
 func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 	epochData, _ := k.epochKeeper.GetEpochData(ctx)
 
-	if epochData.V2VRXtotalChallenges != 0 || epochData.V2VBXtotalChallenges != 0 || epochData.V2NBXtotalChallenges != 0 || epochData.RunnerTotalChallenges != 0 || epochData.ChallengerTotalChallenges != 0 {
+	if epochData.V2VRXTotalChallenges != 0 || epochData.V2VBXTotalChallenges != 0 || epochData.V2NBXTotalChallenges != 0 || epochData.RunnerTotalChallenges != 0 || epochData.ChallengerTotalChallenges != 0 {
 		handleParsingError := func(err error) {
 			if err != nil {
 				sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Parsing error")
@@ -39,9 +39,9 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 			multiplier float64
 			target     *sdk.Coin
 		}{
-			{epochData.V2VRXtotalChallenges, 10.0, &ChallengeCountV2VRx},
-			{epochData.V2VBXtotalChallenges, 10.0, &ChallengeCountV2VBx},
-			{epochData.V2NBXtotalChallenges, constant.V2NBX, &ChallengeCountV2NBx},
+			{epochData.V2VRXTotalChallenges, 10.0, &ChallengeCountV2VRx},
+			{epochData.V2VBXTotalChallenges, 10.0, &ChallengeCountV2VBx},
+			{epochData.V2NBXTotalChallenges, constant.V2NBX, &ChallengeCountV2NBx},
 			{epochData.RunnerTotalChallenges, constant.Runner, &ChallengeCountRunner},
 			{epochData.ChallengerTotalChallenges, constant.Challenger, &ChallengeCountChallenger},
 		}
@@ -62,9 +62,9 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) {
 			EpochV2NBX:                epochData.EpochV2NBX,
 			EpochRunner:               epochData.EpochRunner,
 			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      0,
-			V2VBXtotalChallenges:      0,
-			V2NBXtotalChallenges:      0,
+			V2VRXTotalChallenges:      0,
+			V2VBXTotalChallenges:      0,
+			V2NBXTotalChallenges:      0,
 			RunnerTotalChallenges:     0,
 			ChallengerTotalChallenges: 0,
 		}
