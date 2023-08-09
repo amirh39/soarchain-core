@@ -11,11 +11,11 @@ const (
 
 // ChallengerKey returns the store key to retrieve a Challenger from the PubKey fields
 func ChallengerKey(
-	Address string,
+	address string,
 ) []byte {
 	var key []byte
 
-	indexBytes := []byte(Address)
+	indexBytes := []byte(address)
 	key = append(key, indexBytes...)
 	key = append(key, []byte("/")...)
 
