@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"log"
 	"soarchain/x/epoch/types"
 
@@ -20,11 +19,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	}
 
 	if logger != nil {
-		logger.Info("Getting epoch data successfully done.", "transaction", "UpdateEpochRewards", "epochData", epochData, "isFound", isFound)
-	}
-
-	if logger != nil {
-		logger.Info("Print out the client type.", "transaction", "UpdateEpochRewards", "clientType", clientType)
+		logger.Info("Getting epoch data successfully done.", "transaction", "UpdateEpochRewards", "epochData", epochData, "isFound", isFound, "Print out the client type.", clientType)
 	}
 
 	switch clientType {
@@ -50,9 +45,9 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochV2NBX:                epochData.EpochV2NBX,
 			EpochRunner:               epochData.EpochRunner,
 			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
+			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
+			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
 			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
 			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
@@ -75,9 +70,9 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochV2NBX:                epochData.EpochV2NBX,
 			EpochRunner:               epochData.EpochRunner,
 			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
+			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
+			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
 			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
 			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
@@ -101,17 +96,15 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochV2NBX:                newEpochV2NBX,
 			EpochRunner:               epochData.EpochRunner,
 			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
+			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
+			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
 			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
 			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
 		k.SetEpochData(ctx, newEpochData)
 
 	case "runner":
-
-		fmt.Print("0000000000000000000000")
 
 		if logger != nil {
 			logger.Info("Reward Runner device started.", "transaction", "UpdateEpochRewards")
@@ -124,8 +117,6 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		newEpochRunnerCoin := epochRunnerCoin.Add(rewardToSet)
 		newEpochRunner := newEpochRunnerCoin.String()
 
-		fmt.Print("111111111111111111111111111111111111", newEpochRunner)
-
 		newEpochData := types.EpochData{
 			TotalEpochs:               epochData.TotalEpochs,
 			EpochV2VRX:                epochData.EpochV2VRX,
@@ -133,14 +124,13 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochV2NBX:                epochData.EpochV2NBX,
 			EpochRunner:               newEpochRunner,
 			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
+			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
+			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
 			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
 			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
 
-		fmt.Print("222222222222222222222222", newEpochData)
 		k.SetEpochData(ctx, newEpochData)
 
 		if logger != nil {
@@ -148,8 +138,6 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		}
 
 		rst, found := k.GetEpochData(ctx)
-
-		fmt.Print("333333333333333333333333333333", rst)
 
 		if logger != nil {
 			logger.Info("Fetching epoch data successfuly done.", "transaction", "UpdateEpochRewards", "rst", rst, "found", found)
@@ -175,9 +163,9 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochV2NBX:                epochData.EpochV2NBX,
 			EpochRunner:               epochData.EpochRunner,
 			EpochChallenger:           newEpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      epochData.V2NBXtotalChallenges,
+			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
+			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
+			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
 			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
 			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
 		}
@@ -213,9 +201,9 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 			EpochV2NBX:                epochData.EpochV2NBX,
 			EpochRunner:               epochData.EpochRunner,
 			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXtotalChallenges:      epochData.V2VRXtotalChallenges,
-			V2VBXtotalChallenges:      epochData.V2VBXtotalChallenges,
-			V2NBXtotalChallenges:      newEpochCnt,
+			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
+			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
+			V2NBXTotalChallenges:      newEpochCnt,
 			RunnerTotalChallenges:     newEpochCnt,
 			ChallengerTotalChallenges: newEpochCnt,
 		}
@@ -237,6 +225,8 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	default:
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[UpdateEpochRewards] failed. Client type is not valid.")
 	}
+
+	log.Println("############## End of Update Epoch Rewards ##############")
 
 	return nil
 }
