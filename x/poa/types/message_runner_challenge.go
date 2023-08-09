@@ -14,7 +14,7 @@ var _ sdk.Msg = &MsgRunnerChallenge{}
 func NewMsgRunnerChallenge(creator string, runnerPubkey string, clientPubkeys []string, challengeResult string) *MsgRunnerChallenge {
 	return &MsgRunnerChallenge{
 		Creator:         creator,
-		RunnerpubKey:    runnerPubkey,
+		RunnerPubkey:    runnerPubkey,
 		ClientPubkeys:   clientPubkeys,
 		ChallengeResult: challengeResult,
 	}
