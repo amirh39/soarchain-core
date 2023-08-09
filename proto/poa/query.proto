@@ -113,11 +113,11 @@ service Query {
 	}
 // Queries a Challenger by pubKey 
 	rpc GetChallengerByPubKey(QueryGetChallengerByPubKeyRequest) returns (QueryGetChallengerByPubKeyResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_challenger_by_PubKey/{PubKey}";
+		option (google.api.http).get = "/soarchain/poa/get_challenger_by_PubKey/{pubkey}";
 	}
 // Queries a Runner by PubKey
 	rpc GetRunnerByPubKey(QueryGetRunnerByPubKeyRequest) returns (QueryGetRunnerByPubKeyResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_runner_by_PubKey/{PubKey}";
+		option (google.api.http).get = "/soarchain/poa/get_runner_by_PubKey/{pubkey}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -261,14 +261,14 @@ message QueryAllMotusWalletResponse {
 message QueryGetMasterKeyRequest {}
 
 message QueryGetMasterKeyResponse {
-	MasterKey MasterKey = 1 [(gogoproto.nullable) = false];
+	MasterKey masterKey = 1 [(gogoproto.nullable) = false];
 }
 message QueryGetFactoryKeysRequest {
 	uint64 id = 1;
 }
 
 message QueryGetFactoryKeysResponse {
-	FactoryKeys FactoryKeys = 1 [(gogoproto.nullable) = false];
+	FactoryKeys factoryKeys = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllFactoryKeysRequest {
@@ -276,7 +276,7 @@ message QueryAllFactoryKeysRequest {
 }
 
 message QueryAllFactoryKeysResponse {
-	repeated FactoryKeys FactoryKeys = 1 [(gogoproto.nullable) = false];
+	repeated FactoryKeys factoryKeys = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
@@ -289,7 +289,7 @@ message QueryGetRunnerByIpResponse {
 }
 
 message QueryGetChallengerByPubKeyRequest{
-	string PubKey = 1;
+	string pubkey = 1;
 }
 
 message QueryGetChallengerByPubKeyResponse{
@@ -297,7 +297,7 @@ message QueryGetChallengerByPubKeyResponse{
 }
 
 message QueryGetRunnerByPubKeyRequest{
-	string PubKey = 1;
+	string pubkey = 1;
 }
 
 message QueryGetRunnerByPubKeyResponse{
