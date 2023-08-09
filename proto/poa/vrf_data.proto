@@ -8,7 +8,7 @@ message VrfData {
   string creator = 2; 
   string count = 3; 
   string vrv = 4; 
-  string Multiplier = 5; 
+  string multiplier = 5; 
   string proof = 6; 
   string pubkey = 7; 
   string message = 8; 
