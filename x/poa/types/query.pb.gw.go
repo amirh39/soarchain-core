@@ -956,15 +956,15 @@ func request_Query_GetChallengerByPubKey_0(ctx context.Context, marshaler runtim
 		_   = err
 	)
 
-	val, ok = pathParams["PubKey"]
+	val, ok = pathParams["pubkey"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "PubKey")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "pubkey")
 	}
 
-	protoReq.PubKey, err = runtime.String(val)
+	protoReq.Pubkey, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "PubKey", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "pubkey", err)
 	}
 
 	msg, err := client.GetChallengerByPubKey(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -983,15 +983,15 @@ func local_request_Query_GetChallengerByPubKey_0(ctx context.Context, marshaler 
 		_   = err
 	)
 
-	val, ok = pathParams["PubKey"]
+	val, ok = pathParams["pubkey"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "PubKey")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "pubkey")
 	}
 
-	protoReq.PubKey, err = runtime.String(val)
+	protoReq.Pubkey, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "PubKey", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "pubkey", err)
 	}
 
 	msg, err := server.GetChallengerByPubKey(ctx, &protoReq)
@@ -1010,15 +1010,15 @@ func request_Query_GetRunnerByPubKey_0(ctx context.Context, marshaler runtime.Ma
 		_   = err
 	)
 
-	val, ok = pathParams["PubKey"]
+	val, ok = pathParams["pubkey"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "PubKey")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "pubkey")
 	}
 
-	protoReq.PubKey, err = runtime.String(val)
+	protoReq.Pubkey, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "PubKey", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "pubkey", err)
 	}
 
 	msg, err := client.GetRunnerByPubKey(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -1037,15 +1037,15 @@ func local_request_Query_GetRunnerByPubKey_0(ctx context.Context, marshaler runt
 		_   = err
 	)
 
-	val, ok = pathParams["PubKey"]
+	val, ok = pathParams["pubkey"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "PubKey")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "pubkey")
 	}
 
-	protoReq.PubKey, err = runtime.String(val)
+	protoReq.Pubkey, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "PubKey", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "pubkey", err)
 	}
 
 	msg, err := server.GetRunnerByPubKey(ctx, &protoReq)
@@ -2045,9 +2045,9 @@ var (
 
 	pattern_Query_GetRunnerByIp_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "poa", "get_runner_by_ip", "ipAddress"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetChallengerByPubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "poa", "get_challenger_by_PubKey", "PubKey"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetChallengerByPubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "poa", "get_challenger_by_PubKey", "pubkey"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetRunnerByPubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "poa", "get_runner_by_PubKey", "PubKey"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetRunnerByPubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "poa", "get_runner_by_PubKey", "pubkey"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
