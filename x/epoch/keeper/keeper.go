@@ -17,7 +17,7 @@ type (
 		cdc        codec.BinaryCodec
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
-		paramstore paramtypes.Subspace
+		paramStore paramtypes.Subspace
 
 		bankKeeper types.BankKeeper
 	}
@@ -40,7 +40,7 @@ func NewEpochKeeper(
 		cdc:        cdc,
 		storeKey:   storeKey,
 		memKey:     memKey,
-		paramstore: ps,
+		paramStore: ps,
 		bankKeeper: bankKeeper,
 	}
 }
