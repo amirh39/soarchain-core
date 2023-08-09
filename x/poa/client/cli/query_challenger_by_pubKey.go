@@ -28,7 +28,7 @@ func CmdGetChallengerByPubKey() *cobra.Command {
 
 			params := &types.QueryGetChallengerByPubKeyRequest{
 
-				PubKey: reqPubKey,
+				Pubkey: reqPubKey,
 			}
 			res, err := queryClient.GetChallengerByPubKey(cmd.Context(), params)
 			if err != nil {
