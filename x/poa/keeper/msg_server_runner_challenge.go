@@ -277,6 +277,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		// There was an error in the UpdateEpochRewards function, handle it here
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EpochErr)
 	}
+	log.Println("############## End of Runner Challenge Transaction ##############")
 
 	return &types.MsgRunnerChallengeResponse{}, nil
 }
