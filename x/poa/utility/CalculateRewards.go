@@ -8,7 +8,7 @@ import (
 )
 
 func CalculateRewards(totalAmount *big.Int, scores []float64) (resultRewards []*big.Int, err error) {
-	if totalAmount == big.NewInt(0) {
+	if totalAmount.Cmp(big.NewInt(0)) == 0 {
 		err = sdkerrors.Wrap(sdkerrors.ErrLogic, "[CalculateRewards] [totalAmount] cannot be 0")
 		return
 	}
