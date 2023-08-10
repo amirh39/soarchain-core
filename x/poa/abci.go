@@ -23,11 +23,10 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 	// BeginBlocker for the PoA module. It checks if a new epoch has started and if so,
 	// it mints coins from the banking module to the PoA module according to total rewards earned during the epoch.
 
-	if logger != nil {
-		logger.Info("Mint Reward Coins started.", "path", "BeginBlocker")
+	err := k.keeper.MintRewardCoins(ctx)
+	if err != nil {
+		logger.Info("Mint Reward Coins failed.", "path", "BeginBlocker")
 	}
-
-	k.keeper.MintRewardCoins(ctx)
 
 	// check if a new epoch has started
 	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
