@@ -26,7 +26,7 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger, e
 	newScore = append(newScore, score)
 
 	totalAmount := big.NewInt(int64(epoch.ChallengerPerChallengeValue))
-	earnedRewardsBigInt := k.CalculateRewards(totalAmount, newScore)
+	earnedRewardsBigInt := utility.CalculateRewards(totalAmount, newScore)
 
 	if len(earnedRewardsBigInt) > 0 {
 		earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt[0])
@@ -113,7 +113,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 	}
 	newScore = append(newScore, score)
 
-	earnedRewardsBigInt := k.CalculateRewards(big.NewInt(int64(epoch.RunnerPerChallengeValue)), newScore)
+	earnedRewardsBigInt := utility.CalculateRewards(big.NewInt(int64(epoch.RunnerPerChallengeValue)), newScore)
 
 	if len(earnedRewardsBigInt) > 0 {
 		earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt[0])
@@ -171,7 +171,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge, epo
 	}
 
 	// Calculate rewards for all scores
-	rewards := k.CalculateRewards(big.NewInt(int64(epoch.V2NBXPerChallengeValue)), scores)
+	rewards := utility.CalculateRewards(big.NewInt(int64(epoch.V2NBXPerChallengeValue)), scores)
 
 	for i := 0; i < v2nBxAddrCount; i++ {
 		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
