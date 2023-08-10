@@ -30,7 +30,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	case constants.V2VRX:
 
 		if logger != nil {
-			logger.Info("updating v2v-rx epochValue.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating v2v-rx epochValue.", "UpdateEpochRewards")
 		}
 		// Parse the current value into a sdk.Coin
 		epochV2VRXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
@@ -69,6 +69,9 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 		k.SetEpochData(ctx, newEpochData)
 
 	case constants.V2VBX:
+		if logger != nil {
+			logger.Info("updating v2v-bx epochValue.", "UpdateEpochRewards")
+		}
 		epochV2VBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VBX)
 		if err != nil {
 			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateEpochRewards][ParseCoinsNormalized] failed. Amount: [ %T ] couldn't be parsed. Error: [ %T ]", epochV2VBXCoin, err)
@@ -98,7 +101,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	case constants.V2NBX:
 		if logger != nil {
-			logger.Info("updating v2n-bx epochValue.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating v2n-bx epochValue.", "UpdateEpochRewards")
 		}
 		epochV2NBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
 		if err != nil {
@@ -131,7 +134,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	case constants.Runner:
 
 		if logger != nil {
-			logger.Info("updating Runner epochValue.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating Runner epochValue.", "UpdateEpochRewards")
 		}
 
 		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
@@ -167,7 +170,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	case constants.Challenger:
 
 		if logger != nil {
-			logger.Info("updating challenger epochValue.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating challenger epochValue.", "UpdateEpochRewards")
 		}
 
 		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
@@ -200,7 +203,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	case constants.V2NChallenge:
 		if logger != nil {
-			logger.Info("updating V2NChallenge epochValue.", "transaction", "UpdateEpochRewards")
+			logger.Info("updating V2NChallenge epochValue.", "UpdateEpochRewards")
 		}
 		epochCnt := epochData.ChallengerTotalChallenges + 1
 
