@@ -1,59 +1,70 @@
 package keeper
 
 import (
-	"log"
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) MintRewardCoins(ctx sdk.Context) {
-	epochData, _ := k.epochKeeper.GetEpochData(ctx)
+func (k Keeper) MintRewardCoins(ctx sdk.Context) error {
+	logger := k.Logger(ctx)
+	epochData, found := k.epochKeeper.GetEpochData(ctx)
+	if !found {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[MintRewardCoins][GetEpochData] failed. Epoch data is not found!")
+	}
 
 	if epochData.V2VRXLastBlockChallenges != 0 {
 		rewardToSet := parseUintAndCreateCoin(epochData.V2VRXLastBlockChallenges, int(epochData.V2VRXPerChallengeValue))
+		if logger != nil {
+			logger.Info("V2VRX minted coins = ", rewardToSet)
+		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.V2VRXLastBlockChallenges = 0
 	}
 
 	if epochData.V2VBXLastBlockChallenges != 0 {
 		rewardToSet := parseUintAndCreateCoin(epochData.V2VBXLastBlockChallenges, int(epochData.V2VBXPerChallengeValue))
+		if logger != nil {
+			logger.Info("V2VBX minted coins = ", rewardToSet)
+		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.V2VBXLastBlockChallenges = 0
 	}
 
 	if epochData.V2NBXLastBlockChallenges != 0 {
-		log.Println(epochData.V2NBXLastBlockChallenges)
-		log.Println(epochData.V2NBXPerChallengeValue)
 		rewardToSet := parseUintAndCreateCoin(epochData.V2NBXPerChallengeValue, int(epochData.V2NBXLastBlockChallenges))
-		log.Println(rewardToSet)
-		log.Println("V2NBXLastBlockChallenges=", epochData.V2NBXLastBlockChallenges)
+		if logger != nil {
+			logger.Info("V2NBX minted coins = ", rewardToSet)
+		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.V2NBXLastBlockChallenges = 0
 	}
 
 	if epochData.RunnerLastBlockChallenges != 0 {
-		log.Println(epochData.RunnerLastBlockChallenges)
-		log.Println(epochData.RunnerPerChallengeValue)
+
 		rewardToSet := parseUintAndCreateCoin(epochData.RunnerPerChallengeValue, int(epochData.RunnerLastBlockChallenges))
-		log.Println(rewardToSet)
-		log.Println("RunnerLastBlockChallenges=", epochData.RunnerLastBlockChallenges)
+
+		if logger != nil {
+			logger.Info("Runner minted coins = ", rewardToSet)
+		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.RunnerLastBlockChallenges = 0
 	}
 
 	if epochData.ChallengerLastBlockChallenges != 0 {
-		log.Println(epochData.ChallengerLastBlockChallenges)
-		log.Println(epochData.ChallengerPerChallengeValue)
 		rewardToSet := parseUintAndCreateCoin(epochData.ChallengerPerChallengeValue, int(epochData.ChallengerLastBlockChallenges))
-		log.Println(rewardToSet)
-		log.Println("ChallengerLastBlockChallenges=", epochData.ChallengerLastBlockChallenges)
+		if logger != nil {
+			logger.Info("Challenger minted coins = ", rewardToSet)
+		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.ChallengerLastBlockChallenges = 0
 	}
 
 	k.epochKeeper.SetEpochData(ctx, epochData)
+
+	return nil
 }
 func parseUintAndCreateCoin(value uint64, multiplier int) sdk.Coin {
 	amount := value * uint64(multiplier)
