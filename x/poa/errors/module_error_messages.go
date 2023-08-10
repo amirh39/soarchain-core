@@ -10,4 +10,5 @@ var (
 	NotFoundAClient         = "[RunnerChallenge][GetClient] failed.  V2nBx client is not registered in the store."
 	NotFoundAValidRunner    = "[RunnerChallenge][UpdateRunner] failed.  Couldn't find a valid runner."
 	InvaldChallengeResult   = "[RunnerChallenge][Punish] failed. Invalid challenge result."
+	EarnedRewardsBigInt     = "[RunnerChallenge][EarnedRewardsBigInt] failed."
 )

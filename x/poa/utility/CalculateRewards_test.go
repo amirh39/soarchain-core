@@ -10,7 +10,7 @@ func TestCalculateRewards(t *testing.T) {
 	totalAmount := big.NewInt(1000)             // Example total amount
 	scores := []float64{30.0, 40.0, 20.0, 10.0} // Example scores
 
-	rewards := CalculateRewards(totalAmount, scores)
+	rewards, _ := CalculateRewards(totalAmount, scores)
 
 	// Check if the number of rewards matches the number of scores
 	if len(rewards) != len(scores) {

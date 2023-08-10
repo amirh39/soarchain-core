@@ -3,9 +3,15 @@ package utility
 import (
 	"math/big"
 	"sync"
+
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func CalculateRewards(totalAmount *big.Int, scores []float64) []*big.Int {
+func CalculateRewards(totalAmount *big.Int, scores []float64) (resultRewards []*big.Int, err error) {
+	if totalAmount == big.NewInt(0) {
+		err = sdkerrors.Wrap(sdkerrors.ErrLogic, "[CalculateRewards] [totalAmount] cannot be 0")
+		return
+	}
 	numScores := len(scores)
 
 	// Calculate total score
@@ -31,5 +37,5 @@ func CalculateRewards(totalAmount *big.Int, scores []float64) []*big.Int {
 	}
 	wg.Wait()
 
-	return rewards
+	return rewards, nil
 }
