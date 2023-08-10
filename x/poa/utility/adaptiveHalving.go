@@ -1,18 +1,29 @@
 package utility
 
-import sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+import (
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
 
-func CalculateCoefficients(initialValue, targetValue float64, totalChallengesTarget int) (A, B, C float64) {
-	// achieve the target value
+func CalculateCoefficients(initialValue, targetValue float64, totalChallengesTarget int) (A, B, C float64, err error) {
+	// Check for division by zero
+	if initialValue == 0 {
+		err = sdkerrors.Wrap(sdkerrors.ErrLogic, "[CalculateCoefficients] [initialValue] cannot be 0")
+		return
+	}
+
+	// Calculate the decay factor
 	decayFactor := targetValue / initialValue
 
-	// Calculate C based on the total number of challenges at the target
+	// Set the value of C
 	C = float64(totalChallengesTarget)
 
-	A = decayFactor*(C+1) - 1
+	// Calculate coefficient A using the decay factor and C
+	A = decayFactor * (C)
+
+	// Calculate coefficient B by subtracting C from A
 	B = A - C
 
-	return A, B, C
+	return A, B, C, nil
 }
 
 func CalculateMintedPerChallenge(prevMintedPerChallenge float64, totalChallengesPrevDay int, A, B, C float64) (float64, error) {
