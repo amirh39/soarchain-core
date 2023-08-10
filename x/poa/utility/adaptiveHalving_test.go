@@ -11,7 +11,7 @@ func TestCalculateCoefficients(t *testing.T) {
 	targetValue := 200.0
 	totalChallengesTarget := 10
 
-	A, B, C := CalculateCoefficients(initialValue, targetValue, totalChallengesTarget)
+	A, B, C, _ := CalculateCoefficients(initialValue, targetValue, totalChallengesTarget)
 
 	assert.Equal(t, float64(21), A)
 	assert.Equal(t, float64(11), B)

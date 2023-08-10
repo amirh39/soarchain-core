@@ -33,17 +33,20 @@ func (k Keeper) ComputeAdaptiveHalving(ctx sdk.Context) error {
 	logger := k.Logger(ctx)
 	log.Println("############## ComputeAdaptiveHalving Has Started ##############")
 	if !isFound {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[computeAdaptiveHalving][GetEpochData] failed. Epoch data is not found!")
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[computeAdaptiveHalving] [GetEpochData] failed. Epoch data is not found!")
 	}
 
-	A, B, C := utility.CalculateCoefficients(float64(epochData.InitialPerChallengeValue), constants.TargetValue, constants.TotalChallengesTarget1)
+	A, B, C, err := utility.CalculateCoefficients(float64(epochData.InitialPerChallengeValue), constants.TargetValue, constants.TotalChallengesTarget1)
+	if err != nil {
+		return sdkerrors.Wrap(err, "[ComputeAdaptiveHalving] [CalculateCoefficients] failed")
+	}
 	if logger != nil {
 		logger.Info(" CalculateCoefficients successfully done.", A, B, C)
 	}
 
 	mintedPerChallenge, err := utility.CalculateMintedPerChallenge(epochData.InitialPerChallengeValue, int(epochData.TotalChallengesPrevDay), A, B, C)
 	if err != nil {
-		return sdkerrors.Wrap(err, "[computeAdaptiveHalving] failed to calculate minted per challenge.")
+		return sdkerrors.Wrap(err, "[computeAdaptiveHalving] [CalculateMintedPerChallenge] failed to calculate minted per challenge.")
 	}
 	if logger != nil {
 		logger.Info(" mintedPerChallenge = ", mintedPerChallenge)
