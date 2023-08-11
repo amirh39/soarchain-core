@@ -24,7 +24,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, errors.ErrInvalidAddress)
 	}
 
-	challengerType := strings.ToLower(msg.Challengertype)
+	challengerType := strings.ToLower(msg.ChallengerType)
 
 	if challengerType != constants.V2NChallengerType && challengerType != constants.V2XChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Invalid challenger type. Must be 'v2n' or 'v2x'.")
@@ -112,8 +112,8 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 		Score:        sdk.NewInt(50).String(), // Base Score
 		StakedAmount: ChallengerStake.String(),
 		NetEarnings:  sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		Type:         msg.Challengertype,
-		IpAddr:       msg.ChallengerIp,
+		Type:         msg.ChallengerType,
+		IpAddress:    msg.ChallengerIp,
 	}
 
 	k.SetChallenger(ctx, newChallenger)

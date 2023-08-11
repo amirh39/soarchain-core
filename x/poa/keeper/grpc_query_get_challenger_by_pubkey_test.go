@@ -28,7 +28,7 @@ func Test_GetChallengerByPubKey(t *testing.T) {
 		{
 			desc: "Valid Public Key",
 			request: &types.QueryGetChallengerByPubKeyRequest{
-				PubKey: msgs[0].PubKey,
+				Pubkey: msgs[0].PubKey,
 			},
 			response: &types.QueryGetChallengerByPubKeyResponse{Challenger: &msgs[0]},
 		},

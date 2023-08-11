@@ -25,7 +25,7 @@ func Test_GenChallenger(t *testing.T) {
 		Creator:         CREATOR,
 		ChallengerStake: Challenger_StakedAmount,
 		ChallengerIp:    Challenger_IPAddress,
-		Challengertype:  Challenger_Type,
+		ChallengerType:  Challenger_Type,
 		Certificate:     CERTIFICATE,
 		Signature:       Signature,
 	})
@@ -57,7 +57,7 @@ func Test_GenChallenger_NotValidCertificate(t *testing.T) {
 		Creator:         CREATOR,
 		ChallengerStake: Challenger_StakedAmount,
 		ChallengerIp:    Challenger_IPAddress,
-		Challengertype:  Challenger_Type,
+		ChallengerType:  Challenger_Type,
 		Certificate:     INValid_CertString,
 		Signature:       Signature,
 	})

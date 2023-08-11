@@ -34,7 +34,7 @@ message QueryParamsResponse {
 message QueryGetEpochDataRequest {}
 
 message QueryGetEpochDataResponse {
-	EpochData EpochData = 1 [(gogoproto.nullable) = false];
+	EpochData epochData = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

@@ -30,14 +30,14 @@ func (k Keeper) GetRunnerByIp(goCtx context.Context, req *types.QueryGetRunnerBy
 	targetRunner := types.Runner{}
 
 	for _, runner := range runners {
-		if req.IpAddress == runner.IpAddr {
+		if req.IpAddress == runner.IpAddress {
 			targetRunner = runner
 			break
 		}
 	}
 
-	if !utility.ValidString(targetRunner.IpAddr) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[GetRunnerByIp][ValidString] failed. Couldn't find a valid Ip Address from the target runner. got: [ %T ], Make sure IP Address is not empty OR invalid.", targetRunner.IpAddr)
+	if !utility.ValidString(targetRunner.IpAddress) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[GetRunnerByIp][ValidString] failed. Couldn't find a valid Ip Address from the target runner. got: [ %T ], Make sure IP Address is not empty OR invalid.", targetRunner.IpAddress)
 	}
 
 	return &types.QueryGetRunnerByIpResponse{Runner: &targetRunner}, nil

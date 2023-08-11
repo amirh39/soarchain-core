@@ -36,50 +36,50 @@ func (s *KeeperTestHelper) FundAcc(acc sdk.AccAddress, amounts sdk.Coins) {
 // SetupValidator sets up a validator and returns the ValAddress.
 func (s *KeeperTestHelper) SetupValidatorInvarient(bondStatus stakingtypes.BondStatus) sdk.ValAddress {
 
-	valPub := secp256k1.GenPrivKey().PubKey()
-	valAddr := sdk.ValAddress(valPub.Address())
+	valPubKey := secp256k1.GenPrivKey().PubKey()
+	valAddress := sdk.ValAddress(valPubKey.Address())
 	bondDenom := param.BondDenom
 	selfBond := sdk.NewCoins(sdk.Coin{Amount: sdk.NewInt(100), Denom: bondDenom})
 
-	s.FundAcc(sdk.AccAddress(valAddr), selfBond)
+	s.FundAcc(sdk.AccAddress(valAddress), selfBond)
 
 	stakingHandler := staking.NewHandler(s.app.StakingKeeper)
 	stakingCoin := sdk.NewCoin(sdk.DefaultBondDenom, selfBond[0].Amount)
 	ZeroCommission := stakingtypes.NewCommissionRates(sdk.ZeroDec(), sdk.ZeroDec(), sdk.ZeroDec())
-	msg, err := stakingtypes.NewMsgCreateValidator(valAddr, valPub, stakingCoin, stakingtypes.Description{}, ZeroCommission, sdk.OneInt())
+	msg, err := stakingtypes.NewMsgCreateValidator(valAddress, valPubKey, stakingCoin, stakingtypes.Description{}, ZeroCommission, sdk.OneInt())
 	s.Require().NoError(err)
 	res, err := stakingHandler(s.Ctx, msg)
 	s.Require().NoError(err)
 	s.Require().NotNil(res)
 
-	val, found := s.app.StakingKeeper.GetValidator(s.Ctx, valAddr)
+	val, found := s.app.StakingKeeper.GetValidator(s.Ctx, valAddress)
 	s.Require().True(found)
 
 	val = val.UpdateStatus(bondStatus)
 	s.app.StakingKeeper.SetValidator(s.Ctx, val)
 
-	consAddr, err := val.GetConsAddr()
+	consAddress, err := val.GetConsAddr()
 	s.Suite.Require().NoError(err)
 
 	signingInfo := slashingtypes.NewValidatorSigningInfo(
-		consAddr,
+		consAddress,
 		s.Ctx.BlockHeight(),
 		0,
 		time.Unix(0, 0),
 		false,
 		0,
 	)
-	s.app.SlashingKeeper.SetValidatorSigningInfo(s.Ctx, consAddr, signingInfo)
+	s.app.SlashingKeeper.SetValidatorSigningInfo(s.Ctx, consAddress, signingInfo)
 
-	return valAddr
+	return valAddress
 }
 
 // SetupMultipleValidators setups "numValidator" validators and returns their address in string
 func (s *KeeperTestHelper) SetupMultipleValidators(numValidator int) []string {
-	valAddrs := []string{}
+	valAddress := []string{}
 	for i := 0; i < numValidator; i++ {
 		valAddr := s.SetupValidatorInvarient(stakingtypes.Bonded)
-		valAddrs = append(valAddrs, valAddr.String())
+		valAddress = append(valAddress, valAddr.String())
 	}
-	return valAddrs
+	return valAddress
 }

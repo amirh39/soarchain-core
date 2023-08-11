@@ -42,10 +42,14 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 		item, found := k.epochKeeper.GetEpochData(ctx)
 
 		if logger != nil {
-			logger.Info("Update epoch  successfully done.", "path", "BeginBlocker", "epoch data", item, "found", found)
+			logger.Info("Fetching epoch data successfully done.", "path", "BeginBlocker", "found", found, "epoch data", item)
 		}
 
 		k.epochKeeper.UpdateEpoch(ctx)
+
+		if logger != nil {
+			logger.Info("Update epoch  successfully done.", "path", "BeginBlocker", "epoch data", item, "found", found)
+		}
 
 	}
 
