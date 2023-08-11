@@ -21,9 +21,9 @@ func DefaultGenesis() *GenesisState {
 			EpochV2NBX:                    sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 			EpochRunner:                   sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 			EpochChallenger:               sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-			V2VRXtotalChallenges:          0,
-			V2VBXtotalChallenges:          0,
-			V2NBXtotalChallenges:          0,
+			V2VRXTotalChallenges:          0,
+			V2VBXTotalChallenges:          0,
+			V2NBXTotalChallenges:          0,
 			RunnerTotalChallenges:         0,
 			ChallengerTotalChallenges:     0,
 			V2VRXLastBlockChallenges:      0,
@@ -38,7 +38,6 @@ func DefaultGenesis() *GenesisState {
 			ChallengerPerChallengeValue:   1000000,
 			V2VBXPerChallengeValue:        2000000,
 			V2VRXPerChallengeValue:        2000000,
-
 		},
 	}
 }
