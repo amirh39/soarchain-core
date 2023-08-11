@@ -31,7 +31,7 @@ func CreateNRunner(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner
 		items[i].RewardMultiplier = RunnerRewardMultiplier
 		items[i].StakedAmount = RunnerStakedAmount
 		items[i].NetEarnings = RunnerNetEarnings
-		items[i].IpAddr = "45.12.65.78"
+		items[i].IpAddress = "45.12.65.78"
 		items[i].LastTimeChallenged = RunnerLastTimeChallenged
 		items[i].CoolDownTolerance = RunnerCoolDownTolerance
 		keeper.SetRunner(ctx, items[i])
@@ -48,7 +48,7 @@ func SetupNRunner(n int) []types.Runner {
 		items[i].RewardMultiplier = RunnerRewardMultiplier
 		items[i].StakedAmount = RunnerStakedAmount
 		items[i].NetEarnings = RunnerNetEarnings
-		items[i].IpAddr = ""
+		items[i].IpAddress = ""
 		items[i].LastTimeChallenged = RunnerLastTimeChallenged
 		items[i].CoolDownTolerance = RunnerCoolDownTolerance
 	}
@@ -135,7 +135,7 @@ func CreateNChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Ch
 		items[i].Score = Challenger_Score
 		items[i].StakedAmount = Challenger_StakedAmount
 		items[i].NetEarnings = Challenger_NetEarnings
-		items[i].IpAddr = ""
+		items[i].IpAddress = ""
 		items[i].Type = Challenger_Type
 
 		keeper.SetChallenger(ctx, items[i])
@@ -152,7 +152,7 @@ func SetupNChallenger(n int) []types.Challenger {
 		items[i].Score = Challenger_Score
 		items[i].StakedAmount = Challenger_StakedAmount
 		items[i].NetEarnings = Challenger_NetEarnings
-		items[i].IpAddr = ""
+		items[i].IpAddress = ""
 		items[i].Type = Challenger_Type
 	}
 	return items

@@ -491,21 +491,6 @@ func NewsoarchainApp(
 		wasmOpts...,
 	)
 
-	// app.SoarmintKeeper = *soarmintmodulekeeper.NewKeeper(
-	// 	appCodec,
-	// 	keys[soarmintmoduletypes.StoreKey],
-	// 	keys[soarmintmoduletypes.MemStoreKey],
-	// 	app.GetSubspace(soarmintmoduletypes.ModuleName),
-
-	// 	app.StakingKeeper,
-	// 	app.AccountKeeper,
-	// 	app.BankKeeper,
-	// 	authtypes.FeeCollectorName,
-	// )
-	// soarmintModule := soarmintmodule.NewAppModule(appCodec, app.SoarmintKeeper, app.AccountKeeper, app.BankKeeper)
-
-	// this line is used by starport scaffolding # stargate/app/keeperDefinition
-
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferIBCModule)

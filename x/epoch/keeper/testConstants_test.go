@@ -15,9 +15,9 @@ func CreateEpochData(keeper *keeper.Keeper, ctx sdk.Context) types.EpochData {
 		EpochV2NBX:                "4utmotus",
 		EpochRunner:               "5utmotus",
 		EpochChallenger:           "6",
-		V2VRXtotalChallenges:      7,
-		V2VBXtotalChallenges:      8,
-		V2NBXtotalChallenges:      9,
+		V2VRXTotalChallenges:      7,
+		V2VBXTotalChallenges:      8,
+		V2NBXTotalChallenges:      9,
 		RunnerTotalChallenges:     10,
 		ChallengerTotalChallenges: 11,
 	}

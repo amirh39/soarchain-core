@@ -10,7 +10,7 @@ import (
 )
 
 func (k Keeper) GetRunnerByPubKey(goCtx context.Context, req *types.QueryGetRunnerByPubKeyRequest) (*types.QueryGetRunnerByPubKeyResponse, error) {
-	if req == nil || req.PubKey == "" {
+	if req == nil || req.Pubkey == "" {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
@@ -21,7 +21,7 @@ func (k Keeper) GetRunnerByPubKey(goCtx context.Context, req *types.QueryGetRunn
 	targetRunner := types.Runner{}
 
 	for _, runner := range runners {
-		if req.PubKey == runner.PubKey {
+		if req.Pubkey == runner.PubKey {
 			targetRunner = runner
 			break
 		}

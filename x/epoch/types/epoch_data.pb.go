@@ -24,6 +24,7 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type EpochData struct {
+
 	TotalEpochs                   uint64  `protobuf:"varint,1,opt,name=totalEpochs,proto3" json:"totalEpochs,omitempty"`
 	EpochV2VRX                    string  `protobuf:"bytes,2,opt,name=epochV2VRX,proto3" json:"epochV2VRX,omitempty"`
 	EpochV2VBX                    string  `protobuf:"bytes,3,opt,name=epochV2VBX,proto3" json:"epochV2VBX,omitempty"`
@@ -47,6 +48,7 @@ type EpochData struct {
 	ChallengerPerChallengeValue   uint64  `protobuf:"varint,21,opt,name=challengerPerChallengeValue,proto3" json:"challengerPerChallengeValue,omitempty"`
 	V2VBXPerChallengeValue        uint64  `protobuf:"varint,22,opt,name=V2VBXPerChallengeValue,proto3" json:"V2VBXPerChallengeValue,omitempty"`
 	V2VRXPerChallengeValue        uint64  `protobuf:"varint,23,opt,name=V2VRXPerChallengeValue,proto3" json:"V2VRXPerChallengeValue,omitempty"`
+
 }
 
 func (m *EpochData) Reset()         { *m = EpochData{} }
@@ -124,23 +126,23 @@ func (m *EpochData) GetEpochChallenger() string {
 	return ""
 }
 
-func (m *EpochData) GetV2VRXtotalChallenges() uint64 {
+func (m *EpochData) GetV2VRXTotalChallenges() uint64 {
 	if m != nil {
-		return m.V2VRXtotalChallenges
+		return m.V2VRXTotalChallenges
 	}
 	return 0
 }
 
-func (m *EpochData) GetV2VBXtotalChallenges() uint64 {
+func (m *EpochData) GetV2VBXTotalChallenges() uint64 {
 	if m != nil {
-		return m.V2VBXtotalChallenges
+		return m.V2VBXTotalChallenges
 	}
 	return 0
 }
 
-func (m *EpochData) GetV2NBXtotalChallenges() uint64 {
+func (m *EpochData) GetV2NBXTotalChallenges() uint64 {
 	if m != nil {
-		return m.V2NBXtotalChallenges
+		return m.V2NBXTotalChallenges
 	}
 	return 0
 }
@@ -250,6 +252,7 @@ func init() {
 func init() { proto.RegisterFile("epoch/epoch_data.proto", fileDescriptor_fd1e39962d742c95) }
 
 var fileDescriptor_fd1e39962d742c95 = []byte{
+
 	// 445 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x94, 0xcf, 0x6a, 0xdb, 0x40,
 	0x10, 0x87, 0xbd, 0xad, 0xeb, 0x56, 0xeb, 0xb6, 0x6e, 0xb7, 0xfe, 0xb3, 0xa5, 0x54, 0x88, 0x9e,
@@ -279,6 +282,7 @@ var fileDescriptor_fd1e39962d742c95 = []byte{
 	0x5c, 0xeb, 0xe8, 0x76, 0xa3, 0x37, 0x56, 0x1b, 0xbd, 0xf1, 0xb0, 0xd1, 0x1b, 0xa7, 0x83, 0xfc,
 	0x9a, 0x1b, 0xdd, 0x64, 0x97, 0xe0, 0x48, 0x2e, 0xe7, 0x22, 0x39, 0x6f, 0xc1, 0x35, 0xf8, 0xed,
 	0x29, 0x00, 0x00, 0xff, 0xff, 0x5c, 0x2c, 0x9f, 0x27, 0x20, 0x05, 0x00, 0x00,
+
 }
 
 func (m *EpochData) Marshal() (dAtA []byte, err error) {
@@ -388,18 +392,18 @@ func (m *EpochData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x50
 	}
-	if m.V2NBXtotalChallenges != 0 {
-		i = encodeVarintEpochData(dAtA, i, uint64(m.V2NBXtotalChallenges))
+	if m.V2NBXTotalChallenges != 0 {
+		i = encodeVarintEpochData(dAtA, i, uint64(m.V2NBXTotalChallenges))
 		i--
 		dAtA[i] = 0x48
 	}
-	if m.V2VBXtotalChallenges != 0 {
-		i = encodeVarintEpochData(dAtA, i, uint64(m.V2VBXtotalChallenges))
+	if m.V2VBXTotalChallenges != 0 {
+		i = encodeVarintEpochData(dAtA, i, uint64(m.V2VBXTotalChallenges))
 		i--
 		dAtA[i] = 0x40
 	}
-	if m.V2VRXtotalChallenges != 0 {
-		i = encodeVarintEpochData(dAtA, i, uint64(m.V2VRXtotalChallenges))
+	if m.V2VRXTotalChallenges != 0 {
+		i = encodeVarintEpochData(dAtA, i, uint64(m.V2VRXTotalChallenges))
 		i--
 		dAtA[i] = 0x38
 	}
@@ -486,14 +490,14 @@ func (m *EpochData) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovEpochData(uint64(l))
 	}
-	if m.V2VRXtotalChallenges != 0 {
-		n += 1 + sovEpochData(uint64(m.V2VRXtotalChallenges))
+	if m.V2VRXTotalChallenges != 0 {
+		n += 1 + sovEpochData(uint64(m.V2VRXTotalChallenges))
 	}
-	if m.V2VBXtotalChallenges != 0 {
-		n += 1 + sovEpochData(uint64(m.V2VBXtotalChallenges))
+	if m.V2VBXTotalChallenges != 0 {
+		n += 1 + sovEpochData(uint64(m.V2VBXTotalChallenges))
 	}
-	if m.V2NBXtotalChallenges != 0 {
-		n += 1 + sovEpochData(uint64(m.V2NBXtotalChallenges))
+	if m.V2NBXTotalChallenges != 0 {
+		n += 1 + sovEpochData(uint64(m.V2NBXTotalChallenges))
 	}
 	if m.RunnerTotalChallenges != 0 {
 		n += 1 + sovEpochData(uint64(m.RunnerTotalChallenges))
@@ -756,9 +760,9 @@ func (m *EpochData) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 7:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field V2VRXtotalChallenges", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field V2VRXTotalChallenges", wireType)
 			}
-			m.V2VRXtotalChallenges = 0
+			m.V2VRXTotalChallenges = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEpochData
@@ -768,16 +772,16 @@ func (m *EpochData) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.V2VRXtotalChallenges |= uint64(b&0x7F) << shift
+				m.V2VRXTotalChallenges |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 8:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field V2VBXtotalChallenges", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field V2VBXTotalChallenges", wireType)
 			}
-			m.V2VBXtotalChallenges = 0
+			m.V2VBXTotalChallenges = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEpochData
@@ -787,16 +791,16 @@ func (m *EpochData) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.V2VBXtotalChallenges |= uint64(b&0x7F) << shift
+				m.V2VBXTotalChallenges |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 9:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field V2NBXtotalChallenges", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field V2NBXTotalChallenges", wireType)
 			}
-			m.V2NBXtotalChallenges = 0
+			m.V2NBXTotalChallenges = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEpochData
@@ -806,7 +810,7 @@ func (m *EpochData) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.V2NBXtotalChallenges |= uint64(b&0x7F) << shift
+				m.V2NBXTotalChallenges |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

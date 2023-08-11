@@ -14,6 +14,7 @@ func DefaultGenesis() *GenesisState {
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 		EpochData: EpochData{
+
 			TotalEpochs:                   0,
 			EpochV2VRX:                    sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
 			EpochV2VBX:                    sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
@@ -37,6 +38,7 @@ func DefaultGenesis() *GenesisState {
 			ChallengerPerChallengeValue:   1000000,
 			V2VBXPerChallengeValue:        2000000,
 			V2VRXPerChallengeValue:        2000000,
+
 		},
 	}
 }

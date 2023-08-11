@@ -32,7 +32,7 @@ func IsChallengeable(ctx sdk.Context, score string, lastChallengeTime string, co
 	}
 
 	// Convert lastChallengeTime to int
-	t, err := time.Parse("2006-01-02 15:04:05.999999 -0700 MST", lastChallengeTime)
+	t, err := time.Parse(utilConstants.ConstantLayoutForPresentingTime, lastChallengeTime)
 	if err != nil {
 		return false, 0, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[IsChallengeable] failed. Couldn't parse lastChallengeTime. Error: [ %T ]", err)
 	}

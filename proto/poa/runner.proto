@@ -10,7 +10,7 @@ message Runner {
   string rewardMultiplier = 4;
   string stakedAmount = 5; 
   string netEarnings = 6; 
-  string ipAddr = 7;
+  string ipAddress = 7;
   string lastTimeChallenged = 8;
   string coolDownTolerance = 9;
 }

@@ -38,7 +38,7 @@ func (msg *MsgClaimChallengerRewards) GetSignBytes() []byte {
 func (msg *MsgClaimChallengerRewards) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[NewMsgClaimChallengerRewards][ValidateBasic] failed. Invalid creator address (%s)", err)
 	}
 	return nil
 }

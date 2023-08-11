@@ -31,7 +31,7 @@ func Test_GetRunnerByIp(t *testing.T) {
 		{
 			desc: "Valid IP Address",
 			request: &types.QueryGetRunnerByIpRequest{
-				IpAddress: msgs[0].IpAddr,
+				IpAddress: msgs[0].IpAddress,
 			},
 			response: &types.QueryGetRunnerByIpResponse{Runner: &msgs[0]},
 		},
