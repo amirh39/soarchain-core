@@ -8,11 +8,9 @@ import (
 )
 
 func TestMintRewardCoins(t *testing.T) {
-	_, k, context, ctrl, bankMock, epochMock := SetupMsgServerClaimMotusRewards(t)
+	_, k, context, ctrl, _, epochMock := SetupMsgServerClaimMotusRewards(t)
 	// Set up the bank expectations
-	bankMock.ExpectAny(context)
-	epochMock.ExpectAny(context)
-	defer ctrl.Finish()
+	epochMock.EpochMocks(context)
 
 	// Set up the context
 	ctx := sdk.UnwrapSDKContext(context)
@@ -50,13 +48,6 @@ func TestMintRewardCoins(t *testing.T) {
 	// Call the MintRewardCoins function
 	k.MintRewardCoins(ctx)
 
-	//Verify that the epoch data values are reset to 0
-	// updatedEpochData, found := epochMock.GetEpochData(ctx)
-	// require.True(t, found)
-	// require.Zero(t, updatedEpochData.V2VRXLastBlockChallenges)
-	// require.Zero(t, updatedEpochData.V2VBXLastBlockChallenges)
-	// require.Zero(t, updatedEpochData.V2NBXLastBlockChallenges)
-	// require.Zero(t, updatedEpochData.RunnerLastBlockChallenges)
-	// require.Zero(t, updatedEpochData.ChallengerLastBlockChallenges)
+	ctrl.Finish()
 
 }

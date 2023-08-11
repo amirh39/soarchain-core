@@ -14,7 +14,7 @@ func NewMsgGenChallenger(creator string, challengerStake string, challengerIp st
 		Creator:         creator,
 		ChallengerStake: challengerStake,
 		ChallengerIp:    challengerIp,
-		Challengertype:  challengerType,
+		ChallengerType:  challengerType,
 		Certificate:     certificate,
 		Signature:       signature,
 	}
@@ -31,7 +31,7 @@ func (msg *MsgGenChallenger) Type() string {
 func (msg *MsgGenChallenger) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[AccAddressFromBech32] failed. Empty address string is not allowed.")
+		sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[NewMsgGenChallenger][AccAddressFromBech32] failed. Empty address string is not allowed.")
 		return nil
 	}
 	return []sdk.AccAddress{creator}
@@ -46,7 +46,7 @@ func (msg *MsgGenChallenger) GetSignBytes() []byte {
 func (msg *MsgGenChallenger) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[NewMsgGenChallenger][ValidateBasic] failed. Invalid creator address (%s)", err)
 	}
 	return nil
 }

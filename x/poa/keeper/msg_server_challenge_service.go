@@ -255,7 +255,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		StakedAmount: challenger.StakedAmount,
 		NetEarnings:  challenger.NetEarnings, // TBD
 		Type:         challenger.Type,
-		IpAddr:       challenger.IpAddr,
+		IpAddress:    challenger.IpAddress,
 	}
 
 	k.SetChallenger(ctx, updatedChallenger)

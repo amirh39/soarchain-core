@@ -70,7 +70,7 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 		RewardMultiplier:   runner.RewardMultiplier,
 		StakedAmount:       runner.StakedAmount,
 		NetEarnings:        netEarnings.String(),
-		IpAddr:             runner.IpAddr,
+		IpAddress:          runner.IpAddress,
 		LastTimeChallenged: runner.LastTimeChallenged,
 		CoolDownTolerance:  runner.CoolDownTolerance,
 	}

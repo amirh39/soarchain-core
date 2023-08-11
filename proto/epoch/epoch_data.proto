@@ -10,9 +10,9 @@ message EpochData {
   string epochV2NBX = 4; 
   string epochRunner = 5; 
   string epochChallenger = 6;
-  uint64 V2VRXtotalChallenges = 7;
-  uint64 V2VBXtotalChallenges = 8;
-  uint64 V2NBXtotalChallenges = 9;
+  uint64 v2vRXTotalChallenges = 7;
+  uint64 v2vBXTotalChallenges = 8;
+  uint64 v2nBXTotalChallenges = 9;
   uint64 runnerTotalChallenges = 10;
   uint64 challengerTotalChallenges = 11;
   uint64 V2VRXLastBlockChallenges = 12;

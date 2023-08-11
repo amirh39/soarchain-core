@@ -14,8 +14,8 @@ func (k Keeper) GetChallengerByPubKey(goCtx context.Context, req *types.QueryGet
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "[GetChallengerByPubKey] failed. Invalid request: %T.", req)
 	}
 
-	if !utility.ValidPubkey(req.PubKey ) {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidPubKey, "[GetChallengerByPubKey][ValidPubkey] failed. Couldn't find a valid public key from the request. got: [ %T ], Make sure public key is not empty OR invalid.", req.PubKey)
+	if !utility.ValidPubkey(req.Pubkey) {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidPubKey, "[GetChallengerByPubKey][ValidPubkey] failed. Couldn't find a valid public key from the request. got: [ %T ], Make sure public key is not empty OR invalid.", req.Pubkey)
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -28,7 +28,7 @@ func (k Keeper) GetChallengerByPubKey(goCtx context.Context, req *types.QueryGet
 	targetChallenger := types.Challenger{}
 
 	for _, challenger := range challengers {
-		if req.PubKey == challenger.PubKey {
+		if req.Pubkey == challenger.PubKey {
 			targetChallenger = challenger
 			break
 		}

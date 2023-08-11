@@ -78,9 +78,9 @@ message MsgGenRunnerResponse{
 
 message MsgGenChallenger{
   string creator = 1;
-  string ChallengerStake = 2;
-  string ChallengerIp = 3;
-  string Challengertype = 4;
+  string challengerStake = 2;
+  string challengerIp = 3;
+  string challengerType = 4;
   string certificate = 5;
   string signature = 6;
 }
@@ -100,7 +100,7 @@ message MsgUnregisterRunnerResponse {
 
 message MsgRunnerChallenge {
   string creator = 1;
-  string runnerpubKey = 2;
+  string runnerPubkey = 2;
   repeated string clientPubkeys = 3;
   string challengeResult = 4;
 }

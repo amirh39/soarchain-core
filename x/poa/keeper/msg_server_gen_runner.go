@@ -108,7 +108,7 @@ func (k msgServer) GenRunner(goctx context.Context, msg *types.MsgGenRunner) (*t
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		StakedAmount:       runnerStake.String(),
 		NetEarnings:        sdk.NewCoin(params.BondDenom, sdk.ZeroInt()).String(),
-		IpAddr:             msg.RunnerIp,
+		IpAddress:          msg.RunnerIp,
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 	}

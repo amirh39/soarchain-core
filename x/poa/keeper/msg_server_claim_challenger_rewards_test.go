@@ -27,7 +27,7 @@ func Test_ClaimChallengerRewards(t *testing.T) {
 		StakedAmount: Challenger_StakedAmount,
 		NetEarnings:  "100udmotus",
 		Type:         Challenger_Type,
-		IpAddr:       Challenger_IPAddress,
+		IpAddress:    Challenger_IPAddress,
 	}
 	k.SetChallenger(ctx, challenger)
 
@@ -83,7 +83,7 @@ func Test_ClaimChallengerRewards_InsufficientFunds(t *testing.T) {
 		StakedAmount: Challenger_StakedAmount,
 		NetEarnings:  "100udmotus",
 		Type:         Challenger_Type,
-		IpAddr:       Challenger_IPAddress,
+		IpAddress:    Challenger_IPAddress,
 	}
 	k.SetChallenger(ctx, challenger)
 

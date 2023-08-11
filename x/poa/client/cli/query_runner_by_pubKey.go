@@ -28,7 +28,7 @@ func CmdGetRunnerByPubKey() *cobra.Command {
 
 			params := &types.QueryGetRunnerByPubKeyRequest{
 
-				PubKey: reqPubKey,
+				Pubkey: reqPubKey,
 			}
 			res, err := queryClient.GetRunnerByPubKey(cmd.Context(), params)
 			if err != nil {
