@@ -10,7 +10,7 @@ import (
 func TestMintRewardCoins(t *testing.T) {
 	_, k, context, ctrl, _, epochMock := SetupMsgServerClaimMotusRewards(t)
 	// Set up the bank expectations
-	epochMock.EpochMocks(context)
+	epochMock.ExpectAny(context)
 
 	// Set up the context
 	ctx := sdk.UnwrapSDKContext(context)
@@ -23,9 +23,9 @@ func TestMintRewardCoins(t *testing.T) {
 		EpochV2NBX:                    "0udmotus",
 		EpochRunner:                   "0udmotus",
 		EpochChallenger:               "0udmotus",
-		V2VRXtotalChallenges:          0,
-		V2VBXtotalChallenges:          0,
-		V2NBXtotalChallenges:          0,
+		V2VRXTotalChallenges:          0,
+		V2VBXTotalChallenges:          0,
+		V2NBXTotalChallenges:          0,
 		ChallengerTotalChallenges:     0,
 		RunnerTotalChallenges:         0,
 		TotalChallengesPrevDay:        0,

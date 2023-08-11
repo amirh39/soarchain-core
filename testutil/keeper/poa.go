@@ -20,10 +20,10 @@ import (
 )
 
 func PoaKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	return PoaKeeperWithMocks(t, nil)
+	return PoaKeeperWithMocks(t, nil, nil)
 }
 
-func PoaKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Keeper, sdk.Context) {
+func PoaKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper, epoch *testutil.MockEpochKeeper) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -48,7 +48,7 @@ func PoaKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Ke
 		memStoreKey,
 		paramsSubspace,
 		bank,
-		nil,
+		epoch,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
