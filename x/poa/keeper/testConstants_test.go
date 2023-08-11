@@ -196,15 +196,17 @@ func SetupMotusWalletEntityByClient(client types.Client) types.MotusWallet {
 }
 
 func SetupMsgServerClaimMotusRewards(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context,
-	*gomock.Controller, *testutil.MockBankKeeper) {
+	*gomock.Controller, *testutil.MockBankKeeper, *testutil.MockEpochKeeper) {
 	ctrl := gomock.NewController(t)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.PoaKeeperWithMocks(t, bankMock)
+	epochMock := testutil.NewMockEpochKeeper(ctrl)
+	k, ctx := keepertest.PoaKeeperWithMocks(t, bankMock, epochMock)
+
 	poa.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
 
-	return server, *k, context, ctrl, bankMock
+	return server, *k, context, ctrl, bankMock, epochMock
 }
 
 func CreateNVrfData(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.VrfData {
