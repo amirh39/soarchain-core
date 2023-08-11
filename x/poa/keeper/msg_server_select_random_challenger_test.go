@@ -9,7 +9,7 @@ import (
 )
 
 func Test_SelectRandomChallenger(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -29,7 +29,7 @@ func Test_SelectRandomChallenger(t *testing.T) {
 
 /** Using not valid runner, response should raise proper error message*/
 func Test_SelectRandomChallenger_NotValidCreator(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)

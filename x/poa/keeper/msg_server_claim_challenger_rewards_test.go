@@ -9,7 +9,7 @@ import (
 )
 
 func Test_ClaimChallengerRewards(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	// Set up the bank expectations
@@ -49,7 +49,7 @@ func Test_ClaimChallengerRewards(t *testing.T) {
 
 /** Using an unknown challenger key should raise an error */
 func Test_ClaimChallengerRewards_KeyNotFound(t *testing.T) {
-	msgServer, _, context, ctrl, _ := SetupMsgServerClaimMotusRewards(t)
+	msgServer, _, context, ctrl, _, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	// Create a test message with an unknown challenger key
@@ -69,7 +69,7 @@ func Test_ClaimChallengerRewards_KeyNotFound(t *testing.T) {
 
 /** Using an insufficient funds amount should raise an error */
 func Test_ClaimChallengerRewards_InsufficientFunds(t *testing.T) {
-	msgServer, k, context, ctrl, _ := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, _, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	// Set up the context

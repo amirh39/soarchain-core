@@ -8,32 +8,30 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_RunnerChallengey(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+func TestRunnerChallenge(t *testing.T) {
+
+	// Create a new instance of the msgServer
+	msgServer, k, context, ctrl, _, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
-
-	bank.ExpectAny(context)
-
 	ctx := sdk.UnwrapSDKContext(context)
-
 	client := SetupClientEntity(1)
 	k.SetClient(ctx, client[0])
-
-	runner := SetupNRunner(1)
-	k.SetRunner(ctx, runner[0])
-
-	challenger := SetupNChallenger(1)
-	k.SetChallenger(ctx, challenger[0])
-
 	clientPubkeys := []string{client[0].Index}
 
-	resp, err := msgServer.RunnerChallenge(context, &types.MsgRunnerChallenge{
+	// Create a new message for the RunnerChallenge
+	msg := &types.MsgRunnerChallenge{
 		Creator:         Challenger_Address,
-		RunnerpubKey:    runner[0].PubKey,
+		RunnerpubKey:    RunnerPubKey,
 		ClientPubkeys:   clientPubkeys,
-		ChallengeResult: "punish",
-	})
+		ChallengeResult: "reward",
+	}
 
+	// Call the RunnerChallenge function
+	res, err := msgServer.RunnerChallenge(context, msg)
+
+	// Check if there was an error
 	require.NoError(t, err)
-	require.NotNil(t, resp)
+
+	// Check if the response is not nil
+	require.NotNil(t, res)
 }

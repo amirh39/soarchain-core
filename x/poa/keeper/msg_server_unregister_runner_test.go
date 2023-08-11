@@ -9,7 +9,7 @@ import (
 )
 
 func Test_UnregisterRunner(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -35,7 +35,7 @@ func Test_UnregisterRunner(t *testing.T) {
 
 /** Using not valid guard, response should raise proper error message*/
 func Test_UnregisterRunner_NotValidGuard(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)

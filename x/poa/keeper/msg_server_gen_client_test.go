@@ -9,7 +9,7 @@ import (
 )
 
 func Test_GenClient(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -41,7 +41,7 @@ func Test_GenClient(t *testing.T) {
 }
 
 func Test_GenClient1(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -74,7 +74,7 @@ func Test_GenClient1(t *testing.T) {
 
 func Test_UniqueClient(t *testing.T) {
 
-	_, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	_, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -90,7 +90,7 @@ func Test_UniqueClient(t *testing.T) {
 }
 
 func Test_GenClient_NotValidCertificate(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)

@@ -9,7 +9,7 @@ import (
 )
 
 func Test_GenChallenger(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -41,7 +41,7 @@ func Test_GenChallenger(t *testing.T) {
 
 /** Using not valid certificate, response should raise proper error message*/
 func Test_GenChallenger_NotValidCertificate(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)

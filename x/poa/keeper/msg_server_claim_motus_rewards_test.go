@@ -10,7 +10,7 @@ import (
 )
 
 func Test_ClaimMotusRewards(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)

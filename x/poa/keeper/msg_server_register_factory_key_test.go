@@ -9,7 +9,7 @@ import (
 )
 
 func Test_RegisterFactoryKey(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -32,7 +32,7 @@ func Test_RegisterFactoryKey(t *testing.T) {
 
 /** Using not valid master certificate, response should raise proper error message*/
 func Test_RegisterNotValidFactoryKey(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
