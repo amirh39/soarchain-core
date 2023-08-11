@@ -58,7 +58,6 @@ func TestCalculateMintedPerChallengeDeterminism(t *testing.T) {
 	A, B, C := 6.6666666666666664e+07, -3.3333333333333336e+07, 100_000_000.0
 
 	var differentResultsCount int
-	var mintedPerChallenge float64
 
 	for i := 0; i < 1000; i++ {
 		mintedPerChallenge, err := CalculateMintedPerChallenge(prevMintedPerChallenge, totalChallengesPrevDay, A, B, C)
@@ -68,7 +67,7 @@ func TestCalculateMintedPerChallengeDeterminism(t *testing.T) {
 			continue
 		}
 
-		if mintedPerChallenge != +8.998650e+000 {
+		if mintedPerChallenge != +8.99865020246963 {
 			differentResultsCount++
 		}
 	}
@@ -76,5 +75,4 @@ func TestCalculateMintedPerChallengeDeterminism(t *testing.T) {
 	fmt.Printf("Number of runs with different results: %d\n", differentResultsCount)
 
 	assert.Equal(t, 0, differentResultsCount)
-	assert.Equal(t, 0, mintedPerChallenge)
 }
