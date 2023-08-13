@@ -15,16 +15,16 @@ message EpochData {
   uint64 v2nBXTotalChallenges = 9;
   uint64 runnerTotalChallenges = 10;
   uint64 challengerTotalChallenges = 11;
-  uint64 V2VRXLastBlockChallenges = 12;
-  uint64 V2VBXLastBlockChallenges = 13;
-  uint64 V2NBXLastBlockChallenges = 14;
+  uint64 v2vRXLastBlockChallenges = 12;
+  uint64 v2vBXLastBlockChallenges = 13;
+  uint64 v2nBXLastBlockChallenges = 14;
   uint64 runnerLastBlockChallenges = 15;
   uint64 challengerLastBlockChallenges = 16;
   uint64 totalChallengesPrevDay = 17;
   double initialPerChallengeValue = 18;
-  uint64 V2NBXPerChallengeValue = 19;
+  uint64 v2nBXPerChallengeValue = 19;
   uint64 runnerPerChallengeValue = 20;
   uint64 challengerPerChallengeValue = 21;
-  uint64 V2VBXPerChallengeValue = 22;
-  uint64 V2VRXPerChallengeValue = 23;
+  uint64 v2vBXPerChallengeValue = 22;
+  uint64 v2vRXPerChallengeValue = 23;
 }
