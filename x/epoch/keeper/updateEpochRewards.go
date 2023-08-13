@@ -134,7 +134,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	case constants.Runner:
 
 		if logger != nil {
-			logger.Info("updating Runner epochValue.", "UpdateEpochRewards")
+			logger.Info("updating Runner in epoch data.", "UpdateEpochRewards")
 		}
 
 		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
@@ -170,7 +170,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	case constants.Challenger:
 
 		if logger != nil {
-			logger.Info("updating challenger epochValue.", "UpdateEpochRewards")
+			logger.Info("updating challenger in epoch data.", "UpdateEpochRewards")
 		}
 
 		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
@@ -203,7 +203,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	case constants.V2NChallenge:
 		if logger != nil {
-			logger.Info("updating V2NChallenge epochValue.", "UpdateEpochRewards")
+			logger.Info("updating V2NChallenge in epoch data.", "UpdateEpochRewards")
 		}
 		epochCnt := epochData.ChallengerTotalChallenges + 1
 
@@ -241,6 +241,8 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	default:
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[UpdateEpochRewards] failed. Client type is not valid.")
 	}
+
+	log.Println("############## End of Update Epoch Rewards ##############")
 
 	return nil
 }
