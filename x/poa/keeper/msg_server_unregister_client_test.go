@@ -9,7 +9,7 @@ import (
 )
 
 func Test_UnregisterClient(t *testing.T) {
-	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -44,7 +44,7 @@ func Test_UnregisterClient(t *testing.T) {
 
 /** Using not valid client, response should raise proper error message*/
 func Test_UnregisterChallenger_NotValidClient(t *testing.T) {
-	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)

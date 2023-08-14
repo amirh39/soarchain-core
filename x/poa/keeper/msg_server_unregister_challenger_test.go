@@ -9,7 +9,7 @@ import (
 )
 
 func Test_UnregisterChallenger(t *testing.T) {
-	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)
@@ -35,7 +35,7 @@ func Test_UnregisterChallenger(t *testing.T) {
 
 /** Using not valid challenger, response should raise proper error message*/
 func Test_RegisterClaimRunnerReward_NotValidChallenger(t *testing.T) {
-	msgServer, k, context, ctrl, bank, _ := SetupMsgServerClaimMotusRewards(t)
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
 	bank.ExpectAny(context)

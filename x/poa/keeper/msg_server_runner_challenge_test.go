@@ -1,37 +1,30 @@
 package keeper_test
 
-import (
-	"testing"
-)
+// func Test_RunnerChallengey(t *testing.T) {
+// msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+// defer ctrl.Finish()
 
+// bank.ExpectAny(context)
 
-func Test_RunnerChallengey(t *testing.T) {
-	// msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
-	// defer ctrl.Finish()
+// ctx := sdk.UnwrapSDKContext(context)
 
-	// bank.ExpectAny(context)
+// client := SetupClientEntity(1)
+// k.SetClient(ctx, client[0])
 
-	// ctx := sdk.UnwrapSDKContext(context)
+// runner := SetupNRunner(1)
+// k.SetRunner(ctx, runner[0])
 
-	// client := SetupClientEntity(1)
-	// k.SetClient(ctx, client[0])
+// challenger := SetupNChallenger(1)
+// k.SetChallenger(ctx, challenger[0])
 
-	// runner := SetupNRunner(1)
-	// k.SetRunner(ctx, runner[0])
+// clientPubkeys := []string{client[0].Index}
 
-	// challenger := SetupNChallenger(1)
-	// k.SetChallenger(ctx, challenger[0])
+// resp, err := msgServer.RunnerChallenge(context, &types.MsgRunnerChallenge{
+// 	Creator:         Challenger_Address,
+// 	RunnerPubkey:    runner[0].PubKey,
+// 	ClientPubkeys:   clientPubkeys,
+// 	ChallengeResult: "punish",
+// })
 
-	// clientPubkeys := []string{client[0].Index}
-
-	// resp, err := msgServer.RunnerChallenge(context, &types.MsgRunnerChallenge{
-	// 	Creator:         Challenger_Address,
-	// 	RunnerPubkey:    runner[0].PubKey,
-	// 	ClientPubkeys:   clientPubkeys,
-	// 	ChallengeResult: "punish",
-	// })
-
-	// require.NoError(t, err)
-	// require.NotNil(t, resp)
-
-}
+// require.NoError(t, err)
+// require.NotNil(t, resp)
