@@ -17,27 +17,26 @@ func (k Keeper) updateEpochDataForClientType(
 ) (types.EpochData, error) {
 	logger := k.Logger(ctx)
 
+	var err error
 	switch clientType {
 	case constants.V2VRX:
-		epochData.EpochV2VRX = updateCoin(epochData.EpochV2VRX, rewardToSet)
+		epochData.EpochV2VRX, err = updateCoin(epochData.EpochV2VRX, rewardToSet)
 	case constants.V2VBX:
-		epochData.EpochV2VBX = updateCoin(epochData.EpochV2VBX, rewardToSet)
+		epochData.EpochV2VBX, err = updateCoin(epochData.EpochV2VBX, rewardToSet)
 	case constants.V2NBX:
-		epochData.EpochV2NBX = updateCoin(epochData.EpochV2NBX, rewardToSet)
+		epochData.EpochV2NBX, err = updateCoin(epochData.EpochV2NBX, rewardToSet)
 	case constants.Runner:
-		epochData.EpochRunner = updateCoin(epochData.EpochRunner, rewardToSet)
+		epochData.EpochRunner, err = updateCoin(epochData.EpochRunner, rewardToSet)
 	case constants.Challenger:
-		epochData.EpochChallenger = updateCoin(epochData.EpochChallenger, rewardToSet)
+		epochData.EpochChallenger, err = updateCoin(epochData.EpochChallenger, rewardToSet)
 	case constants.V2NChallenge:
-		epochData.V2NBXTotalChallenges++
-		epochData.RunnerTotalChallenges++
-		epochData.ChallengerTotalChallenges++
-		epochData.V2NBXLastBlockChallenges++
-		epochData.RunnerLastBlockChallenges++
-		epochData.ChallengerLastBlockChallenges++
-		epochData.TotalChallengesPrevDay++
+		epochData, err = updateChallenges(epochData)
 	default:
 		return epochData, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[UpdateEpochRewards] failed. Client type is not valid.")
+	}
+
+	if err != nil {
+		return epochData, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[UpdateEpochRewards] failed. UpdateCoin function failed.")
 	}
 
 	if logger != nil {
@@ -47,14 +46,25 @@ func (k Keeper) updateEpochDataForClientType(
 	return epochData, nil
 }
 
-func updateCoin(existingCoinStr string, rewardToAdd sdk.Coin) string {
+func updateCoin(existingCoinStr string, rewardToAdd sdk.Coin) (string, error) {
 	existingCoin, err := sdk.ParseCoinNormalized(existingCoinStr)
 	if err != nil {
-		return existingCoinStr
+		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateEpochRewards][ParseCoinsNormalized] failed. Amount: [%s] couldn't be parsed. Error: %s", existingCoinStr, err)
 	}
 
 	newCoin := existingCoin.Add(rewardToAdd)
-	return newCoin.String()
+	return newCoin.String(), nil
+}
+
+func updateChallenges(epochData types.EpochData) (types.EpochData, error) {
+	epochData.V2NBXTotalChallenges++
+	epochData.RunnerTotalChallenges++
+	epochData.ChallengerTotalChallenges++
+	epochData.V2NBXLastBlockChallenges++
+	epochData.RunnerLastBlockChallenges++
+	epochData.ChallengerLastBlockChallenges++
+	epochData.TotalChallengesPrevDay++
+	return epochData, nil
 }
 
 func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToSet sdk.Coin) error {
@@ -72,7 +82,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	updatedEpochData, err := k.updateEpochDataForClientType(ctx, clientType, rewardToSet, epochData)
 	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateEpochRewards][updateEpochDataForClientType] failed.")
+		return sdkerrors.Wrap(err, "[UpdateEpochRewards][updateEpochDataForClientType] failed.")
 	}
 
 	k.SetEpochData(ctx, updatedEpochData)
