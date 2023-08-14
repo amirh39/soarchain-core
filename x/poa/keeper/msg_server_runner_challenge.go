@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"math/big"
-	param "soarchain/app/params"
 	params "soarchain/app/params"
 	epoch "soarchain/x/epoch/types"
 	"soarchain/x/poa/constants"
@@ -34,7 +33,7 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger, e
 	if len(earnedRewardsBigInt) > 0 {
 		earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt[0])
 
-		earnedCoin := sdk.NewCoin(param.BondDenom, earnedAmount)
+		earnedCoin := sdk.NewCoin(params.BondDenom, earnedAmount)
 
 		netEarnings, err := sdk.ParseCoinNormalized(challenger.NetEarnings)
 		if err != nil {
@@ -124,7 +123,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 	if len(earnedRewardsBigInt) > 0 {
 		earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt[0])
 
-		earnedCoin := sdk.NewCoin(param.BondDenom, earnedAmount)
+		earnedCoin := sdk.NewCoin(params.BondDenom, earnedAmount)
 
 		netEarnings, err := sdk.ParseCoinNormalized(runner.NetEarnings)
 		if err != nil {
@@ -193,7 +192,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge, epo
 
 		earnedAmount := sdk.NewIntFromBigInt(rewards[i])
 
-		earnedCoin := sdk.NewCoin(param.BondDenom, earnedAmount)
+		earnedCoin := sdk.NewCoin(params.BondDenom, earnedAmount)
 
 		if epochErr := k.epochKeeper.UpdateEpochRewards(ctx, constants.V2NBX, earnedCoin); epochErr != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochError)
