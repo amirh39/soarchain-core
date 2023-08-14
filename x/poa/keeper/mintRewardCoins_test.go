@@ -3,16 +3,17 @@ package keeper_test
 import (
 	"soarchain/x/epoch/types"
 	"testing"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func TestMintRewardCoins(t *testing.T) {
-	_, k, context, ctrl, _, epochMock := SetupMsgServerClaimMotusRewards(t)
+	_, k, context, ctrl, _, epochMock := SetupMsgServerForPoa(t)
 	// Set up the bank expectations
 	epochMock.ExpectAny(context)
 
-	// // Execute the function to be tested
 	// keeper.MintRewardCoins(ctx)
-
+	ctx := sdk.UnwrapSDKContext(context)
 	//Set up some example epoch data
 	epochData := types.EpochData{
 		TotalEpochs:                   1,
