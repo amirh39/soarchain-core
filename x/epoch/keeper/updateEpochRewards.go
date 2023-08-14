@@ -82,7 +82,7 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 
 	updatedEpochData, err := k.updateEpochDataForClientType(ctx, clientType, rewardToSet, epochData)
 	if err != nil {
-		return sdkerrors.Wrap(err, "[UpdateEpochRewards][updateEpochDataForClientType] failed. updateEpochDataForClientType function failed.")
+		return sdkerrors.Wrap(err, "[UpdateEpochRewards][updateEpochDataForClientType] failed. Couldn't parse reward OR client type is not valid.")
 	}
 
 	k.SetEpochData(ctx, updatedEpochData)
