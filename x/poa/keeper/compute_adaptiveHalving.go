@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"log"
 	"soarchain/x/poa/constants"
 	"soarchain/x/poa/utility"
@@ -15,7 +14,7 @@ import (
 func divideMintedPerChallenge(mintedPerChallenge float64) (runner, challenger, v2nbx int64, err error) {
 	// Check if mintedPerChallenge is a non-negative value
 	if mintedPerChallenge < 0 {
-		return 0, 0, 0, fmt.Errorf("mintedPerChallenge cannot be negative")
+		return 0, 0, 0, sdkerrors.Wrap(err, "mintedPerChallenge cannot be negative")
 	}
 
 	// Calculate 10% of mintedPerChallenge for both runner and challenger
@@ -38,7 +37,7 @@ func (k Keeper) ComputeAdaptiveHalving(ctx sdk.Context) error {
 
 	A, B, C, err := utility.CalculateCoefficients(float64(epochData.InitialPerChallengeValue), constants.TargetValue, constants.TotalChallengesTarget1)
 	if err != nil {
-		return sdkerrors.Wrap(err, "[ComputeAdaptiveHalving] [CalculateCoefficients] failed")
+		return sdkerrors.Wrap(err, "[ComputeAdaptiveHalving] [CalculateCoefficients] failed to calculate coefficients")
 	}
 	if logger != nil {
 		logger.Info(" CalculateCoefficients successfully done.", A, B, C)
@@ -49,7 +48,7 @@ func (k Keeper) ComputeAdaptiveHalving(ctx sdk.Context) error {
 		return sdkerrors.Wrap(err, "[computeAdaptiveHalving] [CalculateMintedPerChallenge] failed to calculate minted per challenge.")
 	}
 	if logger != nil {
-		logger.Info(" mintedPerChallenge = ", mintedPerChallenge)
+		logger.Info(" Updated mintedPerChallenge value for today = ", mintedPerChallenge)
 	}
 
 	runner, challenger, v2nbx, err := divideMintedPerChallenge(mintedPerChallenge)
