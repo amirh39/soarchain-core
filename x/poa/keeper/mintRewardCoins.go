@@ -18,7 +18,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) error {
 	if epochData.V2VRXLastBlockChallenges != 0 {
 		rewardToSet := parseUintAndCreateCoin(epochData.V2VRXLastBlockChallenges, int(epochData.V2VRXPerChallengeValue))
 		if logger != nil {
-			logger.Info("V2VRX minted coins = ", rewardToSet)
+			logger.Info("V2VRXLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.V2VRXLastBlockChallenges = 0
@@ -27,7 +27,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) error {
 	if epochData.V2VBXLastBlockChallenges != 0 {
 		rewardToSet := parseUintAndCreateCoin(epochData.V2VBXLastBlockChallenges, int(epochData.V2VBXPerChallengeValue))
 		if logger != nil {
-			logger.Info("V2VBX minted coins = ", rewardToSet)
+			logger.Info("V2VBXLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.V2VBXLastBlockChallenges = 0
@@ -36,7 +36,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) error {
 	if epochData.V2NBXLastBlockChallenges != 0 {
 		rewardToSet := parseUintAndCreateCoin(epochData.V2NBXPerChallengeValue, int(epochData.V2NBXLastBlockChallenges))
 		if logger != nil {
-			logger.Info("V2NBX minted coins = ", rewardToSet)
+			logger.Info("V2NBXLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.V2NBXLastBlockChallenges = 0
@@ -47,7 +47,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) error {
 		rewardToSet := parseUintAndCreateCoin(epochData.RunnerPerChallengeValue, int(epochData.RunnerLastBlockChallenges))
 
 		if logger != nil {
-			logger.Info("Runner minted coins = ", rewardToSet)
+			logger.Info("RunnerLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.RunnerLastBlockChallenges = 0
@@ -56,7 +56,7 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context) error {
 	if epochData.ChallengerLastBlockChallenges != 0 {
 		rewardToSet := parseUintAndCreateCoin(epochData.ChallengerPerChallengeValue, int(epochData.ChallengerLastBlockChallenges))
 		if logger != nil {
-			logger.Info("Challenger minted coins = ", rewardToSet)
+			logger.Info("ChallengerLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
 		mintAndParseCoins(ctx, rewardToSet, k)
 		epochData.ChallengerLastBlockChallenges = 0
