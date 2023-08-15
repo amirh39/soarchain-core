@@ -20,10 +20,46 @@ import (
 )
 
 func PoaKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	return PoaKeeperWithMocks(t, nil, nil)
+	return PoaKeeperWithMocks(t, nil)
 }
 
-func PoaKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper, epoch *testutil.MockEpochKeeper) (*keeper.Keeper, sdk.Context) {
+func PoaKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Keeper, sdk.Context) {
+	storeKey := sdk.NewKVStoreKey(types.StoreKey)
+	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
+
+	db := tmdb.NewMemDB()
+	stateStore := store.NewCommitMultiStore(db)
+	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(memStoreKey, sdk.StoreTypeMemory, nil)
+	require.NoError(t, stateStore.LoadLatestVersion())
+
+	registry := codectypes.NewInterfaceRegistry()
+	cdc := codec.NewProtoCodec(registry)
+
+	paramsSubspace := typesparams.NewSubspace(cdc,
+		types.Amino,
+		storeKey,
+		memStoreKey,
+		"PoaParams",
+	)
+	k := keeper.NewKeeper(
+		cdc,
+		storeKey,
+		memStoreKey,
+		paramsSubspace,
+		bank,
+		nil,
+	)
+
+	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
+
+	// Initialize params
+	k.SetParams(ctx, types.DefaultParams())
+
+	return k, ctx
+}
+
+func PoaKeeperWithMocksEpoch(t testing.TB, bank *testutil.MockBankKeeper, epoch *testutil.MockEpochKeeper) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 

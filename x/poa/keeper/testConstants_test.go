@@ -199,7 +199,7 @@ func SetupMsgServerForPoa(t testing.TB) (types.MsgServer, keeper.Keeper, context
 	ctrl := gomock.NewController(t)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
 	epochMock := testutil.NewMockEpochKeeper(ctrl)
-	k, ctx := keepertest.PoaKeeperWithMocks(t, bankMock, epochMock)
+	k, ctx := keepertest.PoaKeeperWithMocksEpoch(t, bankMock, epochMock)
 
 	poa.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
@@ -212,9 +212,7 @@ func SetupMsgServerClaimMotusRewards(t testing.TB) (types.MsgServer, keeper.Keep
 	*gomock.Controller, *testutil.MockBankKeeper) {
 	ctrl := gomock.NewController(t)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	epochMock := testutil.NewMockEpochKeeper(ctrl)
-	k, ctx := keepertest.PoaKeeperWithMocks(t, bankMock, epochMock)
-
+	k, ctx := keepertest.PoaKeeperWithMocks(t, bankMock)
 	poa.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
