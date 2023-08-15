@@ -194,6 +194,19 @@ func SetupMotusWalletEntityByClient(client types.Client) types.MotusWallet {
 	}
 	return motusWallet
 }
+func SetupMsgServerForPoa(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context,
+	*gomock.Controller, *testutil.MockBankKeeper, *testutil.MockEpochKeeper) {
+	ctrl := gomock.NewController(t)
+	bankMock := testutil.NewMockBankKeeper(ctrl)
+	epochMock := testutil.NewMockEpochKeeper(ctrl)
+	k, ctx := keepertest.PoaKeeperWithMocksEpoch(t, bankMock, epochMock)
+
+	poa.InitGenesis(ctx, *k, *types.DefaultGenesis())
+	server := keeper.NewMsgServerImpl(*k)
+	context := sdk.WrapSDKContext(ctx)
+
+	return server, *k, context, ctrl, bankMock, epochMock
+}
 
 func SetupMsgServerClaimMotusRewards(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context,
 	*gomock.Controller, *testutil.MockBankKeeper) {

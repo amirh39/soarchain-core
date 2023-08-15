@@ -10,10 +10,11 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		ClientList:      []Client{},
-		ChallengerList:  []Challenger{},
-		RunnerList:      []Runner{},
-		VrfDataList:     []VrfData{},
+		ClientList:     []Client{},
+		ChallengerList: []Challenger{},
+		RunnerList:     []Runner{},
+		VrfDataList:    []VrfData{},
+
 		MotusWalletList: []MotusWallet{},
 		MasterKey: MasterKey{
 			MasterCertificate: "",

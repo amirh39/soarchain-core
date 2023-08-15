@@ -9,5 +9,8 @@ var (
 	NoV2nBxAddressPubKeys   = "[RunnerChallenge][v2nBxAddrCount] failed. Couldn't find client pubkeys in the tx body."
 	NotFoundAClient         = "[RunnerChallenge][GetClient] failed.  V2nBx client is not registered in the store."
 	NotFoundAValidRunner    = "[RunnerChallenge][UpdateRunner] failed.  Couldn't find a valid runner."
-	InvalidChallengeResult  = "[RunnerChallenge][Punish] failed. Invalid challenge result."
+
+	InvaldChallengeResult   = "[RunnerChallenge][Punish] failed. Invalid challenge result."
+	EarnedRewardsBigInt     = "[RunnerChallenge][EarnedRewardsBigInt] failed."
+
 )

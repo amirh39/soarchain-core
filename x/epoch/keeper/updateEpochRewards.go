@@ -3,13 +3,71 @@ package keeper
 import (
 	"log"
 	"soarchain/x/epoch/types"
+	"soarchain/x/poa/constants"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToSet sdk.Coin) (err error) {
+func (k Keeper) updateEpochDataForClientType(
+	ctx sdk.Context,
+	clientType string,
+	rewardToSet sdk.Coin,
+	epochData types.EpochData,
+) (types.EpochData, error) {
+	logger := k.Logger(ctx)
 
+	var err error
+	switch clientType {
+	case constants.V2VRX:
+		epochData.EpochV2VRX, err = updateCoin(epochData.EpochV2VRX, rewardToSet)
+	case constants.V2VBX:
+		epochData.EpochV2VBX, err = updateCoin(epochData.EpochV2VBX, rewardToSet)
+	case constants.V2NBX:
+		epochData.EpochV2NBX, err = updateCoin(epochData.EpochV2NBX, rewardToSet)
+	case constants.Runner:
+		epochData.EpochRunner, err = updateCoin(epochData.EpochRunner, rewardToSet)
+	case constants.Challenger:
+		epochData.EpochChallenger, err = updateCoin(epochData.EpochChallenger, rewardToSet)
+	case constants.V2NChallenge:
+		epochData, err = updateChallenges(epochData)
+	default:
+		return epochData, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[UpdateEpochRewards] failed. Client type is not valid.")
+	}
+
+	if err != nil {
+		return epochData, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[UpdateEpochRewards] failed. UpdateCoin function failed.")
+	}
+
+	if logger != nil {
+		logger.Info("Updating epoch data for client type.", "transaction", "UpdateEpochRewards", "clientType", clientType)
+	}
+
+	return epochData, nil
+}
+
+func updateCoin(existingCoinStr string, rewardToAdd sdk.Coin) (string, error) {
+	existingCoin, err := sdk.ParseCoinNormalized(existingCoinStr)
+	if err != nil {
+		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[UpdateEpochRewards][ParseCoinsNormalized] failed. Amount: [%s] couldn't be parsed. Error: %s", existingCoinStr, err)
+	}
+
+	newCoin := existingCoin.Add(rewardToAdd)
+	return newCoin.String(), nil
+}
+
+func updateChallenges(epochData types.EpochData) (types.EpochData, error) {
+	epochData.V2NBXTotalChallenges++
+	epochData.RunnerTotalChallenges++
+	epochData.ChallengerTotalChallenges++
+	epochData.V2NBXLastBlockChallenges++
+	epochData.RunnerLastBlockChallenges++
+	epochData.ChallengerLastBlockChallenges++
+	epochData.TotalChallengesPrevDay++
+	return epochData, nil
+}
+
+func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToSet sdk.Coin) error {
 	logger := k.Logger(ctx)
 	log.Println("############## Update Epoch Rewards Started ##############")
 
@@ -19,212 +77,15 @@ func (k Keeper) UpdateEpochRewards(ctx sdk.Context, clientType string, rewardToS
 	}
 
 	if logger != nil {
-		logger.Info("Getting epoch data successfully done.", "transaction", "UpdateEpochRewards", "epochData", epochData, "isFound", isFound, "Print out the client type.", clientType)
+		logger.Info("Getting epoch data successfully done.", "transaction", "UpdateEpochRewards", "epochData", epochData, "isFound", isFound)
 	}
 
-	switch clientType {
-
-	case "v2v-rx":
-		// Parse the current value into a sdk.Coin
-		epochV2VRXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VRX)
-		if err != nil {
-			return err
-		}
-
-		// Addition rewardToSet
-		newEpochV2VRXCoin := epochV2VRXCoin.Add(rewardToSet)
-
-		// Convert the result back to a string representation
-		newEpochV2VRX := newEpochV2VRXCoin.String()
-
-		// Create a new EpochData object with the updated value
-		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                newEpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
-			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
-			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
-		}
-
-		// Store the updated epoch data
-		k.SetEpochData(ctx, newEpochData)
-
-	case "v2v-bx":
-		epochV2VBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2VBX)
-		if err != nil {
-			return err
-		}
-		newEpochV2VBXCoin := epochV2VBXCoin.Add(rewardToSet)
-		newEpochV2VBX := newEpochV2VBXCoin.String()
-
-		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                newEpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
-			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
-			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
-		}
-		k.SetEpochData(ctx, newEpochData)
-
-	case "v2n-bx":
-		epochV2NBXCoin, err := sdk.ParseCoinNormalized(epochData.EpochV2NBX)
-		if err != nil {
-			return err
-		}
-		if logger != nil {
-			logger.Info("Reward v2n-bx device started.", "transaction", "UpdateEpochRewards")
-		}
-		newEpochV2NBXCoin := epochV2NBXCoin.Add(rewardToSet)
-		newEpochV2NBX := newEpochV2NBXCoin.String()
-
-		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                newEpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
-			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
-			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
-		}
-		k.SetEpochData(ctx, newEpochData)
-
-	case "runner":
-
-		if logger != nil {
-			logger.Info("Reward Runner device started.", "transaction", "UpdateEpochRewards")
-		}
-
-		epochRunnerCoin, err := sdk.ParseCoinNormalized(epochData.EpochRunner)
-		if err != nil {
-			return err
-		}
-		newEpochRunnerCoin := epochRunnerCoin.Add(rewardToSet)
-		newEpochRunner := newEpochRunnerCoin.String()
-
-		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               newEpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
-			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
-			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
-		}
-
-		k.SetEpochData(ctx, newEpochData)
-
-		if logger != nil {
-			logger.Info("Reward Runner device successfuly done.", "transaction", "UpdateEpochRewards", "Runner Epoch Data", newEpochData)
-		}
-
-		rst, found := k.GetEpochData(ctx)
-
-		if logger != nil {
-			logger.Info("Fetching epoch data successfuly done.", "transaction", "UpdateEpochRewards", "rst", rst, "found", found)
-		}
-
-	case "challenger":
-
-		if logger != nil {
-			logger.Info("Reward challenger device started.", "transaction", "UpdateEpochRewards")
-		}
-
-		epochChallengerCoin, err := sdk.ParseCoinNormalized(epochData.EpochChallenger)
-		if err != nil {
-			return err
-		}
-		newEpochChallengerCoin := epochChallengerCoin.Add(rewardToSet)
-		newEpochChallenger := newEpochChallengerCoin.String()
-
-		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           newEpochChallenger,
-			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
-			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
-			V2NBXTotalChallenges:      epochData.V2NBXTotalChallenges,
-			RunnerTotalChallenges:     epochData.RunnerTotalChallenges,
-			ChallengerTotalChallenges: epochData.ChallengerTotalChallenges,
-		}
-		k.SetEpochData(ctx, newEpochData)
-
-		if logger != nil {
-			logger.Info("Reward challenger device successfuly done.", "transaction", "UpdateEpochRewards", "Challenger Epoch Data", newEpochData)
-		}
-
-		rst, found := k.GetEpochData(ctx)
-
-		if logger != nil {
-			logger.Info("Fetching epoch data successfuly done.", "transaction", "UpdateEpochRewards", "rst", rst, "found", found)
-		}
-
-	case "runner_challenge":
-
-		if logger != nil {
-			logger.Info("Reward runner_challenger device started.", "transaction", "UpdateEpochRewards")
-		}
-
-		epochCnt := epochData.ChallengerTotalChallenges
-		newEpochCnt := epochCnt + 1
-
-		if logger != nil {
-			logger.Info("newE poch Cnt.", "transaction", "UpdateEpochRewards", "newEpochCnt", newEpochCnt)
-		}
-
-		newEpochData := types.EpochData{
-			TotalEpochs:               epochData.TotalEpochs,
-			EpochV2VRX:                epochData.EpochV2VRX,
-			EpochV2VBX:                epochData.EpochV2VBX,
-			EpochV2NBX:                epochData.EpochV2NBX,
-			EpochRunner:               epochData.EpochRunner,
-			EpochChallenger:           epochData.EpochChallenger,
-			V2VRXTotalChallenges:      epochData.V2VRXTotalChallenges,
-			V2VBXTotalChallenges:      epochData.V2VBXTotalChallenges,
-			V2NBXTotalChallenges:      newEpochCnt,
-			RunnerTotalChallenges:     newEpochCnt,
-			ChallengerTotalChallenges: newEpochCnt,
-		}
-		if logger != nil {
-			logger.Info("newEpochData - runner-challenger.", "transaction", "UpdateEpochRewards", "newEpochData", newEpochData)
-		}
-		k.SetEpochData(ctx, newEpochData)
-
-		if logger != nil {
-			logger.Info("Reward challenger device successfuly done.", "transaction", "UpdateEpochRewards", "runner_challenger Epoch Data", newEpochData)
-		}
-
-		rst, found := k.GetEpochData(ctx)
-
-		if logger != nil {
-			logger.Info("Fetching epoch data successfuly done.", "transaction", "UpdateEpochRewards", "rst", rst, "found", found)
-		}
-
-	default:
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[UpdateEpochRewards] failed. Client type is not valid.")
+	updatedEpochData, err := k.updateEpochDataForClientType(ctx, clientType, rewardToSet, epochData)
+	if err != nil {
+		return sdkerrors.Wrap(err, "[UpdateEpochRewards][updateEpochDataForClientType] failed. Couldn't parse reward OR client type is not valid.")
 	}
+
+	k.SetEpochData(ctx, updatedEpochData)
 
 	log.Println("############## End of Update Epoch Rewards ##############")
 

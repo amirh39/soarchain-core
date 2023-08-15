@@ -23,14 +23,9 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 	// BeginBlocker for the PoA module. It checks if a new epoch has started and if so,
 	// it mints coins from the banking module to the PoA module according to total rewards earned during the epoch.
 
-	if logger != nil {
-		logger.Info("Mint Reward Coins started.", "path", "BeginBlocker")
-	}
-
-	k.keeper.MintRewardCoins(ctx)
-
-	if logger != nil {
-		logger.Info("Mint Reward Coins successfully done.", "path", "BeginBlocker")
+	err := k.keeper.MintRewardCoins(ctx)
+	if err != nil {
+		logger.Info("Mint Reward Coins failed.", "path", "BeginBlocker")
 	}
 
 	// check if a new epoch has started
@@ -53,8 +48,19 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 
 	}
 
-	log.Println("############## End of Begin Blocker ##############")
+	epochData, _ := k.epochKeeper.GetEpochData(ctx)
+	if (epochData.TotalEpochs%192 == 0) && (epochData.TotalEpochs != 0) {
 
+		epochData, err = k.keeper.ComputeAdaptiveHalving(ctx, epochData)
+		if logger != nil && err == nil {
+			logger.Info("Compute Adaptive Halving successfully done.", "path", "BeginBlocker")
+		}
+
+		k.epochKeeper.SetEpochData(ctx, epochData)
+
+	}
+
+	log.Println("############## End of Begin Blocker ##############")
 }
 
 func EndBlocker(ctx sdk.Context, k keeper.Keeper) []abci.ValidatorUpdate {

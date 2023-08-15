@@ -19,7 +19,7 @@ func Test_Updatev2vREpochRewards(t *testing.T) {
 	t.Log("created epoch item in store", epoch)
 	earnedRewardsInt := sdk.NewIntFromUint64((uint64(23)))
 	earnedCoin := sdk.NewCoin(params.BondDenom, earnedRewardsInt)
-	err := keeper.UpdateEpochRewards(ctx, constants.Runner, earnedCoin)
+	err := keeper.UpdateEpochRewards(ctx, constants.V2VRX, earnedCoin)
 	rst, found := keeper.GetEpochData(ctx)
 	t.Log("found---->", found)
 	t.Log("rst---->", rst)

@@ -21,10 +21,10 @@ func NewDefaultGenesisState() GenesisState {
 	encCfg := MakeEncodingConfig()
 	gen := ModuleBasics.DefaultGenesis(encCfg.Marshaler)
 
-	// here we override wasm config to make it permissioned by default
+	// here we override wasm config
 	wasmGen := wasm.GenesisState{
 		Params: wasmtypes.Params{
-			CodeUploadAccess:             wasmtypes.AllowNobody,
+			CodeUploadAccess:             wasmtypes.DefaultUploadAccess,
 			InstantiateDefaultPermission: wasmtypes.AccessTypeEverybody,
 		},
 	}

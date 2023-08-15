@@ -21,9 +21,9 @@ const (
 	V2NBlocksPerMinute              = 1
 	ConstantLayoutForPresentingTime = "2006-01-02 15:04:05.999999 -0700 MST"
 
-	V2NBX      = 3.0
-	Runner     = 1.0
-	Challenger = 1.0
+	V2NBX      = 3000000
+	Runner     = 1000000
+	Challenger = 1000000
 
 	AddressLength = 43
 )

@@ -25,14 +25,14 @@ func Test_ClaimChallengerRewards(t *testing.T) {
 		Address:      Challenger_Address,
 		Score:        Challenger_Score,
 		StakedAmount: Challenger_StakedAmount,
-		NetEarnings:  "100utmotus",
+		NetEarnings:  "100udmotus",
 		Type:         Challenger_Type,
 		IpAddress:    Challenger_IPAddress,
 	}
 	k.SetChallenger(ctx, challenger)
 
 	// Create a test message
-	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "50utmotus")
+	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "50udmotus")
 
 	// Run the ClaimChallengerRewards function
 	res, err := msgServer.ClaimChallengerRewards(context, msg)
@@ -44,13 +44,7 @@ func Test_ClaimChallengerRewards(t *testing.T) {
 	// Verify that the challenger's net earnings have been updated
 	updatedChallenger, found := k.GetChallenger(ctx, Challenger_Address)
 	require.True(t, found)
-	require.Equal(t, "50utmotus", updatedChallenger.NetEarnings)
-
-	// Verify that the coins have been sent from the module to the account
-	//expectedCoins := sdk.NewCoins(sdk.NewCoin(params.BondDenom, sdk.NewInt(100)))
-	acc := sdk.AccAddress(Challenger_Address)
-	require.NotNil(t, acc)
-	//require.Equal(t, expectedCoins, acc.Equals())
+	require.Equal(t, "50udmotus", updatedChallenger.NetEarnings)
 }
 
 /** Using an unknown challenger key should raise an error */
@@ -59,7 +53,7 @@ func Test_ClaimChallengerRewards_KeyNotFound(t *testing.T) {
 	defer ctrl.Finish()
 
 	// Create a test message with an unknown challenger key
-	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "100motus")
+	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "100udmotus")
 
 	// Run the ClaimChallengerRewards function
 	res, err := msgServer.ClaimChallengerRewards(context, msg)
@@ -87,14 +81,14 @@ func Test_ClaimChallengerRewards_InsufficientFunds(t *testing.T) {
 		Address:      Challenger_Address,
 		Score:        Challenger_Score,
 		StakedAmount: Challenger_StakedAmount,
-		NetEarnings:  "100utmotus",
+		NetEarnings:  "100udmotus",
 		Type:         Challenger_Type,
 		IpAddress:    Challenger_IPAddress,
 	}
 	k.SetChallenger(ctx, challenger)
 
 	// Create a test message with an amount greater than the net earnings
-	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "1000utmotus")
+	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "1000udmotus")
 
 	// Run the ClaimChallengerRewards function
 	res, err := msgServer.ClaimChallengerRewards(context, msg)
