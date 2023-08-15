@@ -51,10 +51,12 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 	epochData, _ := k.epochKeeper.GetEpochData(ctx)
 	if (epochData.TotalEpochs%192 == 0) && (epochData.TotalEpochs != 0) {
 
-		k.keeper.ComputeAdaptiveHalving(ctx)
-		if logger != nil {
+		epochData, err = k.keeper.ComputeAdaptiveHalving(ctx, epochData)
+		if logger != nil && err == nil {
 			logger.Info("Compute Adaptive Halving successfully done.", "path", "BeginBlocker")
 		}
+
+		k.epochKeeper.SetEpochData(ctx, epochData)
 
 	}
 
