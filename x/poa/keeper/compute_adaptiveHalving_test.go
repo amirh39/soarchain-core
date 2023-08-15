@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestComputeAdaptiveHlaving(t *testing.T) {
@@ -23,8 +24,5 @@ func TestComputeAdaptiveHlaving(t *testing.T) {
 
 	expectedValueStr := "99.99999666666677456"
 
-	if fmt.Sprintf("%.17f", updatedEpochData.InitialPerChallengeValue) != expectedValueStr {
-		t.Errorf("Expected InitialPerChallengeValue to be %s, but got %.17f", expectedValueStr, updatedEpochData.InitialPerChallengeValue)
-	}
-
+	assert.Equal(t, expectedValueStr, fmt.Sprintf("%.17f", updatedEpochData.InitialPerChallengeValue), "InitialPerChallengeValue doesn't match expected value")
 }
