@@ -90,7 +90,7 @@ func CreateRandomAccounts(numAccts int) []sdk.AccAddress {
 	return testAddrs
 }
 
-func (s *KeeperTestSuite) FundAcc(acc sdk.AccAddress, amounts sdk.Coins) {
+func (s *KeeperTestSuite) FundAccount(acc sdk.AccAddress, amounts sdk.Coins) {
 
 	ctx := s.App.NewContext(true, tmproto.Header{Height: s.App.LastBlockHeight()})
 
@@ -106,12 +106,6 @@ func (s *KeeperTestSuite) FundModuleAcc(moduleName string, amounts sdk.Coins) {
 func (s *KeeperTestSuite) MintCoins(coins sdk.Coins) {
 	err := s.App.BankKeeper.MintCoins(s.Ctx, poatypes.ModuleName, coins)
 	s.Require().NoError(err)
-}
-
-// CreateTestContext creates a test context.
-func (s *KeeperTestSuite) CreateTestContext() sdk.Context {
-	ctx, _ := s.CreateTestContextWithMultiStore()
-	return ctx
 }
 
 // CreateTestContextWithMultiStore creates a test context and returns it together with multi store.
@@ -135,14 +129,14 @@ func (s *KeeperTestSuite) Commit() {
 }
 
 // SetupValidator sets up a validator and returns the ValAddress.
-func (s *KeeperTestSuite) SetupValidatorInvarient(bondStatus stakingtypes.BondStatus) sdk.ValAddress {
+func (s *KeeperTestSuite) SetupValidatorInvariant(bondStatus stakingtypes.BondStatus) sdk.ValAddress {
 
 	valPubKey := secp256k1.GenPrivKey().PubKey()
 	valAddress := sdk.ValAddress(valPubKey.Address())
 	bondDenom := param.BondDenom
 	selfBond := sdk.NewCoins(sdk.Coin{Amount: sdk.NewInt(100), Denom: bondDenom})
 
-	s.FundAcc(sdk.AccAddress(valAddress), selfBond)
+	s.FundAccount(sdk.AccAddress(valAddress), selfBond)
 
 	stakingHandler := staking.NewHandler(s.App.StakingKeeper)
 	stakingCoin := sdk.NewCoin(sdk.DefaultBondDenom, selfBond[0].Amount)
@@ -179,7 +173,7 @@ func (s *KeeperTestSuite) SetupValidatorInvarient(bondStatus stakingtypes.BondSt
 func (s *KeeperTestSuite) SetupMultipleValidators(numValidator int) []string {
 	valAddress := []string{}
 	for i := 0; i < numValidator; i++ {
-		valAddr := s.SetupValidatorInvarient(stakingtypes.Bonded)
+		valAddr := s.SetupValidatorInvariant(stakingtypes.Bonded)
 		valAddress = append(valAddress, valAddr.String())
 	}
 	return valAddress
