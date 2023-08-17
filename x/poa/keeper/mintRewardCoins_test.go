@@ -6,9 +6,8 @@ import (
 
 func (helper *KeeperTestHelper) TestMintRewardCoins() {
 
-	helper.Setup()
-
 	helper.Run("TestMintRewardCoins", func() {
+		helper.Setup()
 		keeper := helper.App.PoaKeeper
 		epochKeeper := helper.App.EpochKeeper
 
@@ -45,7 +44,8 @@ func (helper *KeeperTestHelper) TestMintRewardCoins() {
 		// Call the MintRewardCoins function
 		keeper.MintRewardCoins(helper.Ctx, epochData)
 
-		epochData, _ = epochKeeper.GetEpochData(helper.Ctx)
+		epochData, isFound := epochKeeper.GetEpochData(helper.Ctx)
+		helper.Require().NotEmpty(isFound)
 
 		// Check that all LastBlockChallenges fields are set to zero
 		helper.Require().Equal(uint64(0), epochData.V2VRXLastBlockChallenges)
