@@ -15,6 +15,7 @@ import (
 
 func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 	defer telemetry.ModuleMeasureSince(types.ModuleName, time.Now(), telemetry.MetricKeyBeginBlocker)
+	epochData, found := k.epochKeeper.GetEpochData(ctx)
 
 	logger := k.keeper.Logger(ctx)
 
@@ -23,7 +24,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 	// BeginBlocker for the PoA module. It checks if a new epoch has started and if so,
 	// it mints coins from the banking module to the PoA module according to total rewards earned during the epoch.
 
-	err := k.keeper.MintRewardCoins(ctx)
+	err := k.keeper.MintRewardCoins(ctx, epochData)
 	if err != nil {
 		logger.Info("Mint Reward Coins failed.", "path", "BeginBlocker")
 	}
@@ -34,21 +35,18 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 			logger.Info("Update epoch started.", "path", "BeginBlocker")
 		}
 
-		item, found := k.epochKeeper.GetEpochData(ctx)
-
 		if logger != nil {
-			logger.Info("Fetching epoch data successfully done.", "path", "BeginBlocker", "found", found, "epoch data", item)
+			logger.Info("Fetching epoch data successfully done.", "path", "BeginBlocker", "found", found, "epoch data", epochData)
 		}
 
 		k.epochKeeper.UpdateEpoch(ctx)
 
 		if logger != nil {
-			logger.Info("Update epoch  successfully done.", "path", "BeginBlocker", "epoch data", item, "found", found)
+			logger.Info("Update epoch  successfully done.", "path", "BeginBlocker", "epoch data", epochData, "found", found)
 		}
 
 	}
 
-	epochData, _ := k.epochKeeper.GetEpochData(ctx)
 	if (epochData.TotalEpochs%192 == 0) && (epochData.TotalEpochs != 0) {
 
 		epochData, err = k.keeper.ComputeAdaptiveHalving(ctx, epochData)

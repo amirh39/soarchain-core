@@ -2,18 +2,15 @@ package keeper_test
 
 import (
 	"soarchain/x/epoch/types"
-	"testing"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func TestMintRewardCoins(t *testing.T) {
-	_, k, context, ctrl, _, epochMock := SetupMsgServerForPoa(t)
-	// Set up the bank expectations
-	epochMock.ExpectAny(context)
+func (helper *KeeperTestHelper) TestMintRewardCoins() {
 
-	// keeper.MintRewardCoins(ctx)
-	ctx := sdk.UnwrapSDKContext(context)
+	helper.Setup()
+	keeper := helper.App.PoaKeeper
+	epochKeeper := helper.App.EpochKeeper
+
+	//helper.FundModuleAcc(types.ModuleName, sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(1000000))))
 	//Set up some example epoch data
 	epochData := types.EpochData{
 		TotalEpochs:                   1,
@@ -41,12 +38,17 @@ func TestMintRewardCoins(t *testing.T) {
 		ChallengerPerChallengeValue:   6,
 	}
 
-	// Set the epoch data in the keeper
-	epochMock.SetEpochData(ctx, epochData)
+	epochKeeper.SetEpochData(helper.Ctx, epochData)
 
 	// Call the MintRewardCoins function
-	k.MintRewardCoins(ctx)
+	keeper.MintRewardCoins(helper.Ctx, epochData)
 
-	ctrl.Finish()
+	epochData, _ = epochKeeper.GetEpochData(helper.Ctx)
 
+	// Check that all LastBlockChallenges fields are set to zero
+	helper.Require().Equal(uint64(0), epochData.V2VRXLastBlockChallenges)
+	helper.Require().Equal(uint64(0), epochData.V2VBXLastBlockChallenges)
+	helper.Require().Equal(uint64(0), epochData.V2NBXLastBlockChallenges)
+	helper.Require().Equal(uint64(0), epochData.RunnerLastBlockChallenges)
+	helper.Require().Equal(uint64(0), epochData.ChallengerLastBlockChallenges)
 }
