@@ -9,18 +9,13 @@ import (
 	dbm "github.com/tendermint/tm-db"
 )
 
-var defaultGenesisBz []byte
-
 func getDefaultGenesisStateBytes() []byte {
-	if len(defaultGenesisBz) == 0 {
-		genesisState := NewDefaultGenesisState()
-		stateBytes, err := json.MarshalIndent(genesisState, "", " ")
-		if err != nil {
-			panic(err)
-		}
-		defaultGenesisBz = stateBytes
+	genesisState := NewDefaultGenesisState()
+	stateBytes, err := json.MarshalIndent(genesisState, "", " ")
+	if err != nil {
+		return nil
 	}
-	return defaultGenesisBz
+	return stateBytes
 }
 
 func Setup(isCheckTx bool) *SoarchainApp {
