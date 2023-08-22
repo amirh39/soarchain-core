@@ -6,6 +6,7 @@ import (
 	"soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func (k Keeper) MintRewardCoins(ctx sdk.Context, epoch epoch.EpochData) error {
@@ -16,7 +17,10 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context, epoch epoch.EpochData) error {
 		if logger != nil {
 			logger.Info("V2VRXLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
-		mintAndParseCoins(ctx, rewardToSet, k)
+		err := mintAndParseCoins(ctx, rewardToSet, k)
+		if err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[MintRewardCoins][mintAndParseCoins] couldn't parse the string")
+		}
 		epoch.V2VRXLastBlockChallenges = 0
 	}
 
@@ -25,7 +29,10 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context, epoch epoch.EpochData) error {
 		if logger != nil {
 			logger.Info("V2VBXLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
-		mintAndParseCoins(ctx, rewardToSet, k)
+		err := mintAndParseCoins(ctx, rewardToSet, k)
+		if err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[MintRewardCoins][mintAndParseCoins] couldn't parse the string")
+		}
 		epoch.V2VBXLastBlockChallenges = 0
 	}
 
@@ -34,7 +41,10 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context, epoch epoch.EpochData) error {
 		if logger != nil {
 			logger.Info("V2NBXLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
-		mintAndParseCoins(ctx, rewardToSet, k)
+		err := mintAndParseCoins(ctx, rewardToSet, k)
+		if err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[MintRewardCoins][mintAndParseCoins] couldn't parse the string")
+		}
 		epoch.V2NBXLastBlockChallenges = 0
 	}
 
@@ -45,7 +55,10 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context, epoch epoch.EpochData) error {
 		if logger != nil {
 			logger.Info("RunnerLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
-		mintAndParseCoins(ctx, rewardToSet, k)
+		err := mintAndParseCoins(ctx, rewardToSet, k)
+		if err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[MintRewardCoins][mintAndParseCoins] couldn't parse the string")
+		}
 		epoch.RunnerLastBlockChallenges = 0
 	}
 
@@ -54,7 +67,10 @@ func (k Keeper) MintRewardCoins(ctx sdk.Context, epoch epoch.EpochData) error {
 		if logger != nil {
 			logger.Info("ChallengerLastBlockChallenges successfully minted.", "transaction", "MintRewardCoins", "Minted amount", rewardToSet)
 		}
-		mintAndParseCoins(ctx, rewardToSet, k)
+		err := mintAndParseCoins(ctx, rewardToSet, k)
+		if err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[MintRewardCoins][mintAndParseCoins] couldn't parse the string")
+		}
 		epoch.ChallengerLastBlockChallenges = 0
 	}
 
@@ -67,7 +83,12 @@ func parseUintAndCreateCoin(value uint64, multiplier int) sdk.Coin {
 	return sdk.NewCoin(params.BondDenom, sdk.NewIntFromUint64(amount))
 }
 
-func mintAndParseCoins(ctx sdk.Context, coin sdk.Coin, k Keeper) {
-	parsedCoin, _ := sdk.ParseCoinNormalized(coin.String())
+func mintAndParseCoins(ctx sdk.Context, coin sdk.Coin, k Keeper) error {
+	parsedCoin, err := sdk.ParseCoinNormalized(coin.String())
+	if err != nil {
+		return sdkerrors.Wrap(err, "[MintRewardCoins][mintAndParseCoins] couldn't parse the string")
+	}
 	k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{parsedCoin})
+
+	return nil
 }
