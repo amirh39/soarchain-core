@@ -300,7 +300,7 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 		iavlCacheSize = 390_625 // 50mb ToDo = what is this?
 	}
 
-	return soar.NewsoarchainApp(
+	return soar.NewSoarchainApp(
 		logger, db, traceStore, true, skipUpgradeHeights,
 		cast.ToString(appOpts.Get(flags.FlagHome)),
 		cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)),
@@ -331,7 +331,7 @@ func createSoarchainAppAndExport(
 	encCfg.Marshaler = codec.NewProtoCodec(encCfg.InterfaceRegistry)
 	loadLatest := height == -1
 	homeDir := cast.ToString(appOpts.Get(flags.FlagHome))
-	app := soar.NewsoarchainApp(logger, db, traceStore, loadLatest, map[int64]bool{}, homeDir, 0, appOpts, soar.GetWasmEnabledProposals(), soar.EmptyWasmOpts)
+	app := soar.NewSoarchainApp(logger, db, traceStore, loadLatest, map[int64]bool{}, homeDir, 0, appOpts, soar.GetWasmEnabledProposals(), soar.EmptyWasmOpts)
 
 	if !loadLatest {
 		if err := app.LoadHeight(height); err != nil {

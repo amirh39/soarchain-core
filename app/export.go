@@ -13,7 +13,7 @@ import (
 
 // ExportAppStateAndValidators exports the state of the application for a genesis
 // file.
-func (app *soarchainApp) ExportAppStateAndValidators(
+func (app *SoarchainApp) ExportAppStateAndValidators(
 	forZeroHeight bool, jailAllowedAddrs []string,
 ) (servertypes.ExportedApp, error) {
 	// as if they could withdraw from the start of the next block
@@ -41,6 +41,6 @@ func (app *soarchainApp) ExportAppStateAndValidators(
 	}, err
 }
 
-func (app *soarchainApp) ExportState(ctx sdk.Context) map[string]json.RawMessage {
+func (app *SoarchainApp) ExportState(ctx sdk.Context) map[string]json.RawMessage {
 	return app.mm.ExportGenesis(ctx, app.AppCodec())
 }

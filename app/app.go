@@ -220,7 +220,7 @@ func init() {
 // App extends an ABCI application, but with most of its parameters exported.
 // They are exported for convenience in creating helper functions, as object
 // capabilities aren't needed for testing.
-type soarchainApp struct {
+type SoarchainApp struct {
 	*baseapp.BaseApp
 
 	cdc               *codec.LegacyAmino
@@ -276,7 +276,7 @@ type soarchainApp struct {
 }
 
 // New returns a reference to an initialized blockchain app
-func NewsoarchainApp(
+func NewSoarchainApp(
 	logger log.Logger,
 	db dbm.DB,
 	traceStore io.Writer,
@@ -288,7 +288,7 @@ func NewsoarchainApp(
 	wasmEnabledProposals []wasm.ProposalType,
 	wasmOpts []wasm.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
-) *soarchainApp {
+) *SoarchainApp {
 	encodingConfig := GetEncodingConfig()
 	appCodec := encodingConfig.Marshaler
 	cdc := encodingConfig.Amino
@@ -312,7 +312,7 @@ func NewsoarchainApp(
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
 
-	app := &soarchainApp{
+	app := &SoarchainApp{
 		BaseApp:           bApp,
 		cdc:               cdc,
 		appCodec:          appCodec,
@@ -721,23 +721,23 @@ func NewsoarchainApp(
 }
 
 // Name returns the name of the App
-func (app *soarchainApp) Name() string { return app.BaseApp.Name() }
+func (app *SoarchainApp) Name() string { return app.BaseApp.Name() }
 
 // GetBaseApp returns the base app of the application
-func (app soarchainApp) GetBaseApp() *baseapp.BaseApp { return app.BaseApp }
+func (app SoarchainApp) GetBaseApp() *baseapp.BaseApp { return app.BaseApp }
 
 // BeginBlocker application updates every begin block
-func (app *soarchainApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *SoarchainApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
 
 // EndBlocker application updates every end block
-func (app *soarchainApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *SoarchainApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
 
 // InitChainer application update at chain initialization
-func (app *soarchainApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *SoarchainApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState GenesisState
 	if err := tmjson.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ReadUpgradeInfoFromDisk] failed. The upgrade path directory cannot be created or if the file exists and cannot be read or if the upgrade info fails to unmarshal.")
@@ -748,12 +748,12 @@ func (app *soarchainApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain)
 }
 
 // LoadHeight loads a particular height
-func (app *soarchainApp) LoadHeight(height int64) error {
+func (app *SoarchainApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height)
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (app *soarchainApp) ModuleAccountAddrs() map[string]bool {
+func (app *SoarchainApp) ModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		modAccAddrs[authtypes.NewModuleAddress(acc).String()] = true
@@ -766,7 +766,7 @@ func (app *soarchainApp) ModuleAccountAddrs() map[string]bool {
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *soarchainApp) LegacyAmino() *codec.LegacyAmino {
+func (app *SoarchainApp) LegacyAmino() *codec.LegacyAmino {
 	return app.cdc
 }
 
@@ -774,47 +774,47 @@ func (app *soarchainApp) LegacyAmino() *codec.LegacyAmino {
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *soarchainApp) AppCodec() codec.Codec {
+func (app *SoarchainApp) AppCodec() codec.Codec {
 	return app.appCodec
 }
 
 // InterfaceRegistry returns an InterfaceRegistry
-func (app *soarchainApp) InterfaceRegistry() types.InterfaceRegistry {
+func (app *SoarchainApp) InterfaceRegistry() types.InterfaceRegistry {
 	return app.interfaceRegistry
 }
 
 // GetKey returns the KVStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *soarchainApp) GetKey(storeKey string) *sdk.KVStoreKey {
+func (app *SoarchainApp) GetKey(storeKey string) *sdk.KVStoreKey {
 	return app.keys[storeKey]
 }
 
 // GetTKey returns the TransientStoreKey for the provided store key.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *soarchainApp) GetTKey(storeKey string) *sdk.TransientStoreKey {
+func (app *SoarchainApp) GetTKey(storeKey string) *sdk.TransientStoreKey {
 	return app.tkeys[storeKey]
 }
 
 // GetMemKey returns the MemStoreKey for the provided mem key.
 //
 // NOTE: This is solely used for testing purposes.
-func (app *soarchainApp) GetMemKey(storeKey string) *sdk.MemoryStoreKey {
+func (app *SoarchainApp) GetMemKey(storeKey string) *sdk.MemoryStoreKey {
 	return app.memKeys[storeKey]
 }
 
 // GetSubspace returns a param subspace for a given module name.
 //
 // NOTE: This is solely to be used for testing purposes.
-func (app *soarchainApp) GetSubspace(moduleName string) paramstypes.Subspace {
+func (app *SoarchainApp) GetSubspace(moduleName string) paramstypes.Subspace {
 	subspace, _ := app.ParamsKeeper.GetSubspace(moduleName)
 	return subspace
 }
 
 // RegisterAPIRoutes registers all application module routes with the provided
 // API server.
-func (app *soarchainApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
+func (app *SoarchainApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
 	clientCtx := apiSvr.ClientCtx
 	rpc.RegisterRoutes(clientCtx, apiSvr.Router)
 	// Register legacy tx routes.
@@ -834,12 +834,12 @@ func (app *soarchainApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
-func (app *soarchainApp) RegisterTxService(clientCtx client.Context) {
+func (app *SoarchainApp) RegisterTxService(clientCtx client.Context) {
 	authtx.RegisterTxService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.BaseApp.Simulate, app.interfaceRegistry)
 }
 
 // RegisterTendermintService implements the Application.RegisterTendermintService method.
-func (app *soarchainApp) RegisterTendermintService(clientCtx client.Context) {
+func (app *SoarchainApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.interfaceRegistry)
 }
 
@@ -877,7 +877,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 }
 
 // RegisterUpgradeHandlers returns upgrade handlers
-func (app *soarchainApp) RegisterUpgradeHandlers(cfg module.Configurator) {
+func (app *SoarchainApp) RegisterUpgradeHandlers(cfg module.Configurator) {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		param.Upgrade1_0_0,
 		v1_0_0.CreateUpgradeHandler(app.mm, app.configurator),
@@ -885,6 +885,6 @@ func (app *soarchainApp) RegisterUpgradeHandlers(cfg module.Configurator) {
 }
 
 // SimulationManager implements the SimulationApp interface
-func (app *soarchainApp) SimulationManager() *module.SimulationManager {
+func (app *SoarchainApp) SimulationManager() *module.SimulationManager {
 	return app.sm
 }
