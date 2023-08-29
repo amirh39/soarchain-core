@@ -21,7 +21,7 @@ func getDefaultGenesisStateBytes() []byte {
 
 func Setup(isCheckTx bool) *SoarchainApp {
 	db := dbm.NewMemDB()
-	app := NewSoarchainApp(log.NewTMLogger(log.NewSyncWriter(os.Stdout)), db, nil, true, map[int64]bool{}, DefaultNodeHome, 0, simapp.EmptyAppOptions{}, GetWasmEnabledProposals(), EmptyWasmOpts)
+	app := NewSoarchainApp(log.NewTMLogger(log.NewSyncWriter(os.Stdout)), db, nil, true, map[int64]bool{}, DefaultNodeHome, 0, simapp.EmptyAppOptions{}, GetWasmEnabledProposals(), WasmOptions)
 	if !isCheckTx {
 		stateBytes := getDefaultGenesisStateBytes()
 
