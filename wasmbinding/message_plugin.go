@@ -47,7 +47,7 @@ func (m *CustomMessenger) DispatchMsg(ctx sdk.Context, contractAddress sdk.AccAd
 
 func GetClientByIndex(ctx sdk.Context, index string, poa poaKeepers.Keeper) (res bindings.ClientByIndexResponse, err error) {
 
-	log.Println("############## Smart contract query for fetching a clinet is Started ##############")
+	log.Println("############## Smart contract query for fetching a client is Started ##############")
 
 	var response bindings.ClientByIndexResponse
 
@@ -66,7 +66,7 @@ func GetClientByIndex(ctx sdk.Context, index string, poa poaKeepers.Keeper) (res
 	response.Index = client.Index
 	response.Score = client.Score
 
-	log.Println("############## End of Smart contract query for fetching a clinet ##############")
+	log.Println("############## End of Smart contract query for fetching a client ##############")
 
 	return response, nil
 }

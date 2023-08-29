@@ -24,7 +24,7 @@ func NewQueryPlugin(
 
 func (qp QueryPlugin) GetClientByIndex(ctx sdk.Context, index string) (*wasmbindings.ClientByIndex, error) {
 
-	log.Println("############## Smart contract query for fetching a clinet is Started ##############")
+	log.Println("############## Smart contract query for fetching a client is Started ##############")
 
 	client, found := qp.keeper.GetClient(ctx, index)
 	if !found {
@@ -33,7 +33,7 @@ func (qp QueryPlugin) GetClientByIndex(ctx sdk.Context, index string) (*wasmbind
 	var clientByIndex wasmbindings.ClientByIndex
 	clientByIndex.Index = client.Index
 
-	log.Println("############## End of Smart contract query for fetching a clinet ##############")
+	log.Println("############## End of Smart contract query for fetching a client ##############")
 
 	return &clientByIndex, nil
 }
