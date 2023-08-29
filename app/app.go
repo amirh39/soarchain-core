@@ -9,6 +9,8 @@ import (
 	"soarchain/version"
 	"strings"
 
+	"soarchain/wasmbinding"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/grpc/tmservice"
@@ -148,8 +150,8 @@ var (
 	// DefaultNodeHome default home directories for the application daemon
 	DefaultNodeHome      string
 	WasmProposalsEnabled = "true"
-	// EmptyWasmOpts defines a type alias for a list of wasm options.
-	EmptyWasmOpts []wasm.Option
+	// WasmOpts defines a type alias for a list of wasm options.
+	WasmOptions []wasm.Option
 	// EnableSpecificWasmProposals, if set, must be comma-separated list of values
 	// that are all a subset of "EnableAllProposals", which takes precedence over
 	// WasmProposalsEnabled.
@@ -286,7 +288,7 @@ func NewSoarchainApp(
 	invCheckPeriod uint,
 	appOpts servertypes.AppOptions,
 	wasmEnabledProposals []wasm.ProposalType,
-	wasmOpts []wasm.Option,
+	WasmOptions []wasm.Option,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) *SoarchainApp {
 	encodingConfig := GetEncodingConfig()
@@ -471,6 +473,11 @@ func NewSoarchainApp(
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
 	availableCapabilities := "iterator,staking,stargate,cosmwasm_1_1"
+
+	var bankKeeper *bankkeeper.BaseKeeper
+
+	WasmOptions = append(wasmbinding.RegisterCustomPlugins(bankKeeper, &app.PoaKeeper), WasmOptions...)
+
 	app.WasmKeeper = wasm.NewKeeper(
 		appCodec,
 		keys[wasm.StoreKey],
@@ -488,7 +495,7 @@ func NewSoarchainApp(
 		wasmDir,
 		wasmConfig,
 		availableCapabilities,
-		wasmOpts...,
+		WasmOptions...,
 	)
 
 	// Create static IBC router, add transfer route, then set and seal it
