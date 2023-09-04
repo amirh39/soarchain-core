@@ -33,23 +33,6 @@ func CreateNRunner(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner
 		items[i].Address = RunnerAddress
 		items[i].Score = RunnerScore
 		items[i].RewardMultiplier = RunnerRewardMultiplier
-		items[i].StakedAmount = RunnerStakedAmount
-		items[i].NetEarnings = RunnerNetEarnings
-		items[i].IpAddress = "45.12.65.78"
-		items[i].LastTimeChallenged = RunnerLastTimeChallenged
-		items[i].CoolDownTolerance = RunnerCoolDownTolerance
-		keeper.SetRunner(ctx, items[i])
-	}
-	return items
-}
-
-func CreateNRunnerWithDifferentDenom(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner {
-	items := make([]types.Runner, n)
-	for i := range items {
-		items[i].PubKey = RunnerPubKey
-		items[i].Address = RunnerAddress
-		items[i].Score = RunnerScore
-		items[i].RewardMultiplier = RunnerRewardMultiplier
 		items[i].StakedAmount = RunnerStakedAmount2
 		items[i].NetEarnings = RunnerNetEarnings2
 		items[i].IpAddress = "45.12.65.78"
