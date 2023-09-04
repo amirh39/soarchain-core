@@ -16,7 +16,7 @@ func (helper *KeeperTestHelper) TestRunnerChallenge() {
 		client := CreateTwoClientsWithAllFields(&keeper, helper.Ctx)
 		CreateNChallengerWithNormalScore(&keeper, helper.Ctx, 1)
 
-		CreateNRunnerWithDifferentDenom(&keeper, helper.Ctx, 1)
+		CreateNRunner(&keeper, helper.Ctx, 1)
 
 		msgServer := k.NewMsgServerImpl(keeper)
 
@@ -29,10 +29,14 @@ func (helper *KeeperTestHelper) TestRunnerChallenge() {
 		helper.NoError(err)
 		helper.Empty(res)
 
-		clientUpdated, _ := keeper.GetClient(helper.Ctx, ClientPubKeys[1])
-		clientUpdated2, _ := keeper.GetClient(helper.Ctx, ClientPubKeys[0])
-		runnerUpdated, _ := keeper.GetRunner(helper.Ctx, RunnerAddress)
-		challengerUpdated, _ := keeper.GetChallenger(helper.Ctx, Challenger_Address)
+		clientUpdated, isFound0 := keeper.GetClient(helper.Ctx, ClientPubKeys[1])
+		clientUpdated2, isFound1 := keeper.GetClient(helper.Ctx, ClientPubKeys[0])
+		runnerUpdated, isFound2 := keeper.GetRunner(helper.Ctx, RunnerAddress)
+		challengerUpdated, isFound3 := keeper.GetChallenger(helper.Ctx, Challenger_Address)
+		helper.Require().NotEmpty(isFound0)
+		helper.Require().NotEmpty(isFound1)
+		helper.Require().NotEmpty(isFound2)
+		helper.Require().NotEmpty(isFound3)
 		helper.Equal("88.259", clientUpdated.Score)
 		helper.Equal(clientUpdated.NetEarnings, "1767859udmotus")
 		helper.Equal(clientUpdated2.NetEarnings, "1232140udmotus")
