@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Run these on your local to enable the use of this pre-push hook for the git repository
+# ln -s <project_directory>/git-hooks/pre-push .git/hooks/pre-push
+# chmod +x .git/hooks/pre-push
+
+echo "Running tests..."
+go test ./...
+if [ $? -ne 0 ]; then
+    echo "Tests failed. Push aborted."
+    exit 1
+fi
+
+echo "Running staticcheck..."
+staticcheck ./...
+if [ $? -ne 0 ]; then
+    echo "staticcheck failed. Push aborted."
+    exit 1
+fi
+
+exit 0
+
+
