@@ -1,9 +1,32 @@
 #!/bin/sh
 
 # Run these on your local to enable the use of this pre-push hook for the git repository
-# ln -s <project_directory>/git-hooks/pre-push .git/hooks/pre-push
+# ln -s ../../git-hooks/pre-push ./.git/hooks/pre-push
 # chmod +x .git/hooks/pre-push
 
+git fetch
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+REMOTE_NAME=$(git remote show)
+
+echo "Current branch: $CURRENT_BRANCH"
+echo "Remote name: $REMOTE_NAME"
+
+# Check if the remote branch exists
+git ls-remote --heads $REMOTE_NAME $CURRENT_BRANCH | grep -q $CURRENT_BRANCH
+if [ $? -ne 0 ]; then
+    echo "Remote branch for $CURRENT_BRANCH does not exist on $REMOTE_NAME. Pushing will create it."
+    exit 0
+fi
+
+# If the remote branch exists, then check if the local branch is behind
+BEHIND=$(git rev-list HEAD...$REMOTE_NAME/$CURRENT_BRANCH --count)
+if [ "$BEHIND" -ne 0 ]; then
+    echo "Your branch is behind the remote branch on $REMOTE_NAME. Please pull the latest changes before pushing."
+    exit 1
+fi
+
+# Run tests
 echo "Running tests..."
 go test ./...
 if [ $? -ne 0 ]; then
@@ -11,6 +34,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Run staticcheck (https://staticcheck.dev)
 echo "Running staticcheck..."
 staticcheck ./...
 if [ $? -ne 0 ]; then
@@ -19,5 +43,3 @@ if [ $? -ne 0 ]; then
 fi
 
 exit 0
-
-
