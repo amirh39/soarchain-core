@@ -3,36 +3,37 @@ package keeper_test
 import (
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
+	"soarchain/app/apptesting"
 
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
-	"soarchain/x/soarmint/keeper"
-	"soarchain/x/soarmint/types"
+	"github.com/stretchr/testify/suite"
 )
 
-func createTestMinter(keeper *keeper.Keeper, ctx sdk.Context) types.Minter {
-	item := types.Minter{}
-	keeper.SetMinter(ctx, item)
-	return item
+type KeeperTestHelper struct {
+	apptesting.KeeperTestSuite
 }
 
-func TestMinterGet(t *testing.T) {
-	keeper, ctx := keepertest.SoarmintKeeper(t)
-	item := createTestMinter(keeper, ctx)
-	rst, found := keeper.GetMinter(ctx)
-	require.True(t, found)
-	require.Equal(t,
-		nullify.Fill(&item),
-		nullify.Fill(&rst),
-	)
+func (suite *KeeperTestHelper) SetupTest() {
+	suite.Setup()
+}
+func TestKeeperTestHelper(t *testing.T) {
+	suite.Run(t, new(KeeperTestHelper))
 }
 
-func TestMinterRemove(t *testing.T) {
-	keeper, ctx := keepertest.SoarmintKeeper(t)
-	createTestMinter(keeper, ctx)
-	keeper.RemoveMinter(ctx)
-	_, found := keeper.GetMinter(ctx)
-	require.False(t, found)
+func (helper *KeeperTestHelper) TestMinterGet() {
+	helper.Setup()
+	keeper := helper.App.MintKeeper
+	minter, isFound := keeper.GetMinter(helper.Ctx)
+	helper.NotEmpty(minter)
+	helper.True(isFound)
+
+}
+
+func (helper *KeeperTestHelper) TestMinterRemove() {
+	helper.Setup()
+	keeper := helper.App.MintKeeper
+	// no need for setting since it is being set in abci.go
+	keeper.RemoveMinter(helper.Ctx)
+	minter, isFound := keeper.GetMinter(helper.Ctx)
+	helper.Empty(minter)
+	helper.False(isFound)
 }
