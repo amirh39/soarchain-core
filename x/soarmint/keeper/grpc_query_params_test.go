@@ -1,21 +1,21 @@
 package keeper_test
 
 import (
-	"testing"
+	"soarchain/x/soarmint/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
-	testkeeper "soarchain/testutil/keeper"
-	"soarchain/x/soarmint/types"
 )
 
-func TestParamsQuery(t *testing.T) {
-	keeper, ctx := testkeeper.SoarmintKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
+func (helper *KeeperTestHelper) TestParamsQuery() {
+
+	helper.Setup()
+
+	keeper := helper.App.MintKeeper
+	wctx := sdk.WrapSDKContext(helper.Ctx)
 	params := types.DefaultParams()
-	keeper.SetParams(ctx, params)
+	keeper.SetParams(helper.Ctx, params)
 
 	response, err := keeper.Params(wctx, &types.QueryParamsRequest{})
-	require.NoError(t, err)
-	require.Equal(t, &types.QueryParamsResponse{Params: params}, response)
+	helper.NoError(err)
+	helper.Equal(&types.QueryParamsResponse{Params: params}, response)
 }
