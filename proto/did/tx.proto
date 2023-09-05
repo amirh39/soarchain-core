@@ -1,0 +1,52 @@
+syntax = "proto3";
+package soarchain.did;
+
+import "did/did.proto";
+
+option go_package = "soarchain/x/did/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc GenDid(MsgGenDid) returns (MsgGenDidResponse);
+
+  // UpdateDID defines a method for updating a DID.
+  rpc UpdateDid(MsgUpdateDid) returns (MsgUpdateDidResponse);
+
+  // DeactivateDID defines a method for deactivating a DID.
+  rpc DeactivateDid(MsgDeactivateDid) returns (MsgDeactivateDidResponse);
+
+}
+
+message MsgGenDid {
+  string did = 1;
+  DidDocument document = 2;
+  string verificationMethodId = 3;
+  bytes signature = 4;
+  string fromAddress = 5;
+}
+
+message MsgGenDidResponse {}
+
+// MsgUpdateDid defines the Msg/UpdateDID request type.
+message MsgUpdateDid {
+  string did = 1;
+  DidDocument document = 2;
+  string verificationMethodId = 3;
+  bytes signature = 4;
+  string fromAddress = 5;
+}
+
+// MsgUpdateDIDResponse defines the Msg/UpdateDID response type.
+message MsgUpdateDidResponse {}
+
+// MsgDeactivateDid defines the Msg/DeactivateDID request type.
+message MsgDeactivateDid {
+  string did = 1;
+  string verificationMethodId = 2;
+  bytes signature = 3;
+  string fromAddress = 4;
+}
+
+// MsgDeactivateDIDResponse defines the Msg/DeactivateDID response type.
+message MsgDeactivateDidResponse {}
+
