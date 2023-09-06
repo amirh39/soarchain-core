@@ -1,11 +1,9 @@
 package types
 
 import (
-	"crypto/sha256"
 	fmt "fmt"
 	"log"
 	"regexp"
-	"soarchain/x/did/errors"
 	"strings"
 
 	"github.com/btcsuite/btcutil/base58"
@@ -15,6 +13,8 @@ import (
 
 	sdkcodec "github.com/cosmos/cosmos-sdk/codec"
 	"github.com/tendermint/tendermint/crypto"
+
+	"soarchain/x/did/errors"
 )
 
 const (
@@ -69,32 +69,29 @@ func ValidateKeyType(keyType string) bool {
 
 type JSONStringOrStrings []string
 
-func NewDid(pubKey []byte) string {
-	hash := sha256.New()
-	_, err := hash.Write(pubKey)
-	if err != nil {
-		panic("failed to calculate SHA256 for Did")
-	}
-	idStr := base58.Encode(hash.Sum(nil))
-	return fmt.Sprintf("did:%s:%s", DIDMethod, idStr)
-}
-
 func ParseDid(str string) (string, error) {
 	did := str
 	if !ValidateDid(did) {
-		return "", sdkerrors.Wrapf(errors.ErrInvalidDid, "did: %v", str)
+		return "", sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ParseDid] failed. Make sure you are using a valid did format.")
 	}
 	return did, nil
 }
 
 func ValidateDid(did string) bool {
 	pattern := fmt.Sprintf("^%s$", didRegex())
-	matched, _ := regexp.MatchString(pattern, did)
+	matched, err := regexp.MatchString(pattern, did)
+	if err != nil {
+		return false
+	}
 	return matched
 }
 
 func Sign(signableData sdkcodec.ProtoMarshaler, seq uint64, privKey crypto.PrivKey) ([]byte, error) {
-	return privKey.Sign(mustGetSignBytesWithSeq(signableData, seq))
+	signBytes, err := mustGetSignBytesWithSeq(signableData, seq)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[Sign] failed. Make sure you are using a valid signable data.")
+	}
+	return privKey.Sign(signBytes)
 }
 
 func (strings JSONStringOrStrings) protoType() *Strings {
@@ -132,7 +129,7 @@ func (strings JSONStringOrStrings) Size() int {
 func ParseDidDocument(str string) (string, error) {
 	did := str
 	if !ValidateDid(did) {
-		return "", sdkerrors.Wrapf(errors.ErrInvalidDid, "did: %v", str)
+		return "", sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ParseDidDocument] failed. Make sure you are using a valid did format.")
 	}
 	return did, nil
 }
@@ -212,7 +209,10 @@ func ValidateVerificationMethodID(verificationMethodID string, did string) bool 
 	}
 
 	suffix := verificationMethodID[len(prefix):]
-	matched, _ := regexp.MatchString(`^\S+$`, suffix)
+	matched, err := regexp.MatchString(`^\S+$`, suffix)
+	if err != nil {
+		return false
+	}
 	return matched
 }
 
@@ -222,7 +222,10 @@ func (pk VerificationMethod) Valid(did string) bool {
 	}
 
 	pattern := fmt.Sprintf("^[%s]+$", Base58Charset)
-	matched, _ := regexp.MatchString(pattern, pk.PubKey)
+	matched, err := regexp.MatchString(pattern, pk.PubKey)
+	if err != nil {
+		return false
+	}
 	return matched
 }
 
@@ -410,17 +413,20 @@ type PubKey interface {
 
 func Verify(signature []byte, signableData sdkcodec.ProtoMarshaler, seq uint64, pubKey crypto.PubKey) (uint64, bool) {
 
-	signBytes := mustGetSignBytesWithSeq(signableData, seq)
+	signBytes, err := mustGetSignBytesWithSeq(signableData, seq)
+	if err != nil {
+		return 0, false
+	}
 	if !pubKey.VerifySignature(signBytes, signature) {
 		return 0, false
 	}
 	return nextSequence(seq), true
 }
 
-func mustGetSignBytesWithSeq(signableData sdkcodec.ProtoMarshaler, seq uint64) []byte {
+func mustGetSignBytesWithSeq(signableData sdkcodec.ProtoMarshaler, seq uint64) ([]byte, error) {
 	dAtA, err := signableData.Marshal()
 	if err != nil {
-		panic(fmt.Sprintf("marshal failed: %s, signableData: %s", err.Error(), signableData))
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[mustGetSignBytesWithSeq][Marshal] failed. SignableData is not valid.")
 	}
 	dataWithSeq := DataWithSeq{
 		Data:     dAtA,
@@ -430,10 +436,9 @@ func mustGetSignBytesWithSeq(signableData sdkcodec.ProtoMarshaler, seq uint64) [
 	dAtA, err = dataWithSeq.Marshal()
 
 	if err != nil {
-		panic(fmt.Sprintf("marshal failed: %s, dAtA: %v", err.Error(), dAtA))
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.ErrInvalidDidDocument)
 	}
-
-	return dAtA
+	return dAtA, nil
 }
 
 func nextSequence(seq uint64) uint64 {
@@ -443,15 +448,7 @@ func nextSequence(seq uint64) uint64 {
 func ParseVerificationMethodId(id string, did string) (string, error) {
 	methodId := id
 	if !ValidateVerificationMethodID(id, did) {
-		return "", sdkerrors.Wrapf(ErrIntOverflowDid, "verificationMethodID: %v, did: %v", id, did)
+		return "", sdkerrors.Wrapf(ErrIntOverflowDid, "[ParseVerificationMethodId][ValidateVerificationMethodID] failed for verificationMethodID: %v, did: %v", id, did)
 	}
 	return methodId, nil
-}
-
-func ParseVerificationMethodID(id string, did string) (string, error) {
-	methodID := id
-	if !ValidateVerificationMethodID(id, did) {
-		return "", sdkerrors.Wrapf(ErrIntOverflowDid, "verificationMethodID: %v, did: %v", id, did)
-	}
-	return methodID, nil
 }
