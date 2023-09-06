@@ -23,7 +23,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// GenesisState defines the poa module's genesis state.
+// GenesisState defines the did module's genesis state.
 type GenesisState struct {
 	Params  Params   `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
 	DidList []string `protobuf:"bytes,2,rep,name=DidList,proto3" json:"DidList,omitempty"`
