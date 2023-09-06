@@ -33,8 +33,8 @@ func CreateNRunner(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner
 		items[i].Address = RunnerAddress
 		items[i].Score = RunnerScore
 		items[i].RewardMultiplier = RunnerRewardMultiplier
-		items[i].StakedAmount = RunnerStakedAmount
-		items[i].NetEarnings = RunnerNetEarnings
+		items[i].StakedAmount = RunnerStakedAmount2
+		items[i].NetEarnings = RunnerNetEarnings2
 		items[i].IpAddress = "45.12.65.78"
 		items[i].LastTimeChallenged = RunnerLastTimeChallenged
 		items[i].CoolDownTolerance = RunnerCoolDownTolerance
@@ -67,6 +67,47 @@ func CreateNClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client
 
 		keeper.SetClient(ctx, items[i])
 	}
+	return items
+}
+func CreateTwoClientsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) []types.Client {
+	items := make([]types.Client, 2)
+
+	// Create the first client
+	firstClient := types.Client{
+		Index:              ClientPubKey,
+		Address:            ClientAddress,
+		Score:              ClientScore,
+		RewardMultiplier:   ClientRewardMultiplier,
+		NetEarnings:        ClientNetEarnings2,
+		LastTimeChallenged: ClientLastTimeChallenged,
+		CoolDownTolerance:  ClientCoolDownTolerance,
+		Type:               ClientType,
+	}
+
+	// Create the second client
+	secondClient := types.Client{
+		Index:              ClientPubKey2,
+		Address:            CommunityWallet,
+		Score:              ClientScore2,
+		RewardMultiplier:   ClientRewardMultiplier,
+		NetEarnings:        ClientNetEarnings2,
+		LastTimeChallenged: ClientLastTimeChallenged,
+		CoolDownTolerance:  ClientCoolDownTolerance,
+		Type:               ClientType,
+	}
+
+	// Adjust the address for the second client if it matches the first
+	if firstClient.Address == secondClient.Address {
+		secondClient.Address = CommunityWallet
+	}
+
+	// Set the clients and return them
+	keeper.SetClient(ctx, firstClient)
+	keeper.SetClient(ctx, secondClient)
+
+	items[0] = firstClient
+	items[1] = secondClient
+
 	return items
 }
 
@@ -139,6 +180,23 @@ func CreateNChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Ch
 		items[i].Score = Challenger_Score
 		items[i].StakedAmount = Challenger_StakedAmount
 		items[i].NetEarnings = Challenger_NetEarnings
+		items[i].IpAddress = ""
+		items[i].Type = Challenger_Type
+
+		keeper.SetChallenger(ctx, items[i])
+	}
+	return items
+
+}
+
+func CreateNChallengerWithNormalScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
+	items := make([]types.Challenger, n)
+	for i := range items {
+		items[i].PubKey = Challenger_PubKey
+		items[i].Address = Challenger_Address
+		items[i].Score = Challenger_Score2
+		items[i].StakedAmount = Challenger_StakedAmount2
+		items[i].NetEarnings = Challenger_NetEarnings2
 		items[i].IpAddress = ""
 		items[i].Type = Challenger_Type
 
@@ -256,8 +314,10 @@ func CreatesRunnerForPagination(keeper *keeper.Keeper, ctx sdk.Context, n int) [
 
 const (
 	ClientScore              = "61.472555534405885"
+	ClientScore2             = "88.2"
 	ClientRewardMultiplier   = "3778.8750839306153"
 	ClientNetEarnings        = "107755123utmotus"
+	ClientNetEarnings2       = "0udmotus"
 	ClientLastTimeChallenged = "2023-05-08 19:14:55.666272303 +0000 UTC"
 	ClientCoolDownTolerance  = "1"
 	ClientType               = "mini"
@@ -275,6 +335,7 @@ const (
 
 const (
 	ClientPubKey                = "3059301306072a8648ce3d020106082a8648ce3d0301070342000402a530fa9267e1518e4d9069de38f2aecd3b508a2aca8b6d9cbd1b36b3b412e6db603ba6230728a7803acfdc8e57a21d24f648e10db24b4c957a2b2dad9a5817"
+	ClientPubKey2               = "3059301306072a8648ce3d020106082a8648ce3d0301070342000402a530fa9267e1518e4d9069de38f2aecd3b508a2aca8b6d9cbd1b36b3b412e6db603ba6230728a7803acfdc8e57a21d24f648e10db24b4c957a2b2dad9a5819"
 	ClientAddress               = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
 	ClientScroe                 = "80"
 	LastTimeChallenged          = "2023-01-06 11:05:17.40125 +0000 UTC"
@@ -305,6 +366,8 @@ const (
 	RunnerRewardMultiplier   = "4901.905050421021"
 	RunnerStakedAmount       = "1000000000utmotus"
 	RunnerNetEarnings        = "4268402637utmotus"
+	RunnerStakedAmount2      = "1000000000udmotus"
+	RunnerNetEarnings2       = "0udmotus"
 	RunnerIP                 = "45.12.65.78"
 	RunnerLastTimeChallenged = "2023-05-08 14:33:56.656465058 +0000 UTC"
 	RunnerCoolDownTolerance  = "2"
@@ -344,15 +407,18 @@ const (
 )
 
 const (
-	Challenger_PubKey       = "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251"
-	Challenger_Address      = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
-	Challenger_Score        = "189"
-	Challenger_StakedAmount = "2000000000utmotus"
-	Challenger_NetEarnings  = "0utmotus"
-	Challenger_IpAddr       = ""
-	Challenger_IPAddress    = "104.248.142.45"
-	Challenger_Type         = "v2n"
-	Challenger_Creator      = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
+	Challenger_PubKey        = "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251"
+	Challenger_Address       = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
+	Challenger_Score         = "189"
+	Challenger_StakedAmount  = "2000000000utmotus"
+	Challenger_NetEarnings   = "0utmotus"
+	Challenger_StakedAmount2 = "2000000000udmotus"
+	Challenger_NetEarnings2  = "0udmotus"
+	Challenger_IpAddr        = ""
+	Challenger_IPAddress     = "104.248.142.45"
+	Challenger_Type          = "v2n"
+	Challenger_Creator       = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
+	Challenger_Score2        = "82"
 )
 
 const (

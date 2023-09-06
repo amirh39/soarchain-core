@@ -1,30 +1,47 @@
 package keeper_test
 
-// func Test_RunnerChallengey(t *testing.T) {
-// msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
-// defer ctrl.Finish()
+import (
+	k "soarchain/x/poa/keeper"
+	"soarchain/x/poa/types"
 
-// bank.ExpectAny(context)
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
 
-// ctx := sdk.UnwrapSDKContext(context)
+func (helper *KeeperTestHelper) TestRunnerChallenge() {
 
-// client := SetupClientEntity(1)
-// k.SetClient(ctx, client[0])
+	helper.Run("TestRunnerChallenge", func() {
+		helper.Setup()
+		keeper := helper.App.PoaKeeper
 
-// runner := SetupNRunner(1)
-// k.SetRunner(ctx, runner[0])
+		client := CreateTwoClientsWithAllFields(&keeper, helper.Ctx)
+		CreateNChallengerWithNormalScore(&keeper, helper.Ctx, 1)
 
-// challenger := SetupNChallenger(1)
-// k.SetChallenger(ctx, challenger[0])
+		CreateNRunner(&keeper, helper.Ctx, 1)
 
-// clientPubkeys := []string{client[0].Index}
+		msgServer := k.NewMsgServerImpl(keeper)
 
-// resp, err := msgServer.RunnerChallenge(context, &types.MsgRunnerChallenge{
-// 	Creator:         Challenger_Address,
-// 	RunnerPubkey:    runner[0].PubKey,
-// 	ClientPubkeys:   clientPubkeys,
-// 	ChallengeResult: "punish",
-// })
+		ClientPubKeys := []string{
+			client[0].Index,
+			client[1].Index,
+		}
 
-// require.NoError(t, err)
-// require.NotNil(t, resp)
+		res, err := msgServer.RunnerChallenge(sdk.WrapSDKContext(helper.Ctx), &types.MsgRunnerChallenge{Creator: Challenger_Address, RunnerPubkey: RunnerPubKey, ClientPubkeys: ClientPubKeys, ChallengeResult: "reward"})
+		helper.NoError(err)
+		helper.Empty(res)
+
+		clientUpdated, isFound0 := keeper.GetClient(helper.Ctx, ClientPubKeys[1])
+		clientUpdated2, isFound1 := keeper.GetClient(helper.Ctx, ClientPubKeys[0])
+		runnerUpdated, isFound2 := keeper.GetRunner(helper.Ctx, RunnerAddress)
+		challengerUpdated, isFound3 := keeper.GetChallenger(helper.Ctx, Challenger_Address)
+		helper.Require().NotEmpty(isFound0)
+		helper.Require().NotEmpty(isFound1)
+		helper.Require().NotEmpty(isFound2)
+		helper.Require().NotEmpty(isFound3)
+		helper.Equal("88.259", clientUpdated.Score)
+		helper.Equal(clientUpdated.NetEarnings, "1767859udmotus")
+		helper.Equal(clientUpdated2.NetEarnings, "1232140udmotus")
+		helper.Equal(runnerUpdated.NetEarnings, "1000000udmotus")
+		helper.Equal(challengerUpdated.NetEarnings, "1000000udmotus")
+
+	})
+}

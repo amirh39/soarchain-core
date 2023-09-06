@@ -31,19 +31,11 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger, e
 	}
 
 	if len(earnedRewardsBigInt) > 0 {
-		earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt[0])
-
-		earnedCoin := sdk.NewCoin(params.BondDenom, earnedAmount)
-
-		netEarnings, err := sdk.ParseCoinNormalized(challenger.NetEarnings)
-		if err != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, errors.NetEarnings)
-		}
-
-		totalEarnings = netEarnings.Add(earnedCoin)
-
-		if epochErr := k.epochKeeper.UpdateEpochRewards(ctx, constants.Challenger, earnedCoin); epochErr != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochError)
+		if len(earnedRewardsBigInt) > 0 {
+			totalEarnings, err = k.calculateTotalEarnings(ctx, challenger.NetEarnings, earnedRewardsBigInt[0], epoch, constants.Runner)
+			if err != nil {
+				return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
+			}
 		}
 	}
 
@@ -119,22 +111,10 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 	if err != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrLogic, errors.EarnedRewardsBigInt)
 	}
-
 	if len(earnedRewardsBigInt) > 0 {
-		earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt[0])
-
-		earnedCoin := sdk.NewCoin(params.BondDenom, earnedAmount)
-
-		netEarnings, err := sdk.ParseCoinNormalized(runner.NetEarnings)
+		totalEarnings, err = k.calculateTotalEarnings(ctx, runner.NetEarnings, earnedRewardsBigInt[0], epoch, constants.Runner)
 		if err != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, errors.NetEarnings)
-		}
-
-		totalEarnings = netEarnings.Add(earnedCoin)
-
-		// Update the epoch rewards
-		if epochErr := k.epochKeeper.UpdateEpochRewards(ctx, constants.Runner, earnedCoin); epochErr != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochError)
+			return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
 		}
 	}
 
@@ -176,11 +156,11 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge, epo
 	}
 
 	// Calculate rewards for all scores
-	rewards, err := utility.CalculateRewards(big.NewInt(int64(epoch.V2NBXPerChallengeValue)), scores)
+	earnedRewardsBigInt, err := utility.CalculateRewards(big.NewInt(int64(epoch.V2NBXPerChallengeValue)), scores)
 	if err != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrLogic, errors.EarnedRewardsBigInt)
 	}
-
+	var totalEarnings sdk.Coin
 	for i := 0; i < v2nBxAddrCount; i++ {
 		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
 		if !isFound {
@@ -190,20 +170,12 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge, epo
 		// RewardAndScore functionality
 		rewardMultiplier, score := k.rewardAndScore(v2nBxClient.Score)
 
-		earnedAmount := sdk.NewIntFromBigInt(rewards[i])
-
-		earnedCoin := sdk.NewCoin(params.BondDenom, earnedAmount)
-
-		if epochErr := k.epochKeeper.UpdateEpochRewards(ctx, constants.V2NBX, earnedCoin); epochErr != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochError)
+		if len(earnedRewardsBigInt) > 0 {
+			totalEarnings, err = k.calculateTotalEarnings(ctx, v2nBxClient.NetEarnings, earnedRewardsBigInt[i], epoch, constants.Runner)
+			if err != nil {
+				return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
+			}
 		}
-
-		netEarnings, err := sdk.ParseCoinNormalized(v2nBxClient.NetEarnings)
-		if err != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, errors.NetEarnings)
-		}
-
-		totalEarnings := netEarnings.Add(earnedCoin)
 
 		updatedClient := types.Client{
 			Index:              v2nBxClient.Index,
@@ -233,6 +205,24 @@ func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.
 	}
 
 	k.SetMotusWallet(ctx, newMotusWallet)
+}
+func (k Keeper) calculateTotalEarnings(ctx sdk.Context, currentEarnings string, earnedRewardsBigInt *big.Int, epoch epoch.EpochData, entityType string) (sdk.Coin, error) {
+	earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt)
+	earnedCoin := sdk.NewCoin(params.BondDenom, earnedAmount)
+
+	netEarnings, err := sdk.ParseCoinNormalized(currentEarnings)
+	if err != nil {
+		return sdk.Coin{}, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, errors.NetEarnings)
+	}
+
+	totalEarnings := netEarnings.Add(earnedCoin)
+
+	// Update the epoch rewards
+	if epochErr := k.epochKeeper.UpdateEpochRewards(ctx, entityType, earnedCoin); epochErr != nil {
+		return sdk.Coin{}, sdkerrors.Wrap(sdkerrors.ErrInvalidType, errors.EpochError)
+	}
+
+	return totalEarnings, nil
 }
 
 func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerChallenge) (*types.MsgRunnerChallengeResponse, error) {
