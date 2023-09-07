@@ -3,7 +3,6 @@ package keepers
 import (
 	"github.com/CosmWasm/wasmd/x/wasm"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authzkeeper "github.com/cosmos/cosmos-sdk/x/authz/keeper"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
@@ -30,11 +29,6 @@ import (
 )
 
 type AppKeepers struct {
-	//keys to access the substores
-
-	keys    map[string]*sdk.KVStoreKey
-	tkeys   map[string]*sdk.TransientStoreKey
-	memKeys map[string]*sdk.MemoryStoreKey
 
 	// keepers
 	AccountKeeper    authkeeper.AccountKeeper
