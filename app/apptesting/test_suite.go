@@ -21,8 +21,7 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	tmtypes "github.com/tendermint/tendermint/proto/tendermint/types"
+	tenderminttypes "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 )
 
@@ -37,7 +36,7 @@ type KeeperTestSuite struct {
 // Setup sets up basic environment for suite (App, Ctx, and test accounts)
 func (s *KeeperTestSuite) Setup() {
 	s.App = app.Setup(false)
-	s.Ctx = s.App.BaseApp.NewContext(false, tmtypes.Header{Height: 1, ChainID: "soarchain", Time: time.Now().UTC()})
+	s.Ctx = s.App.BaseApp.NewContext(false, tenderminttypes.Header{Height: 1, ChainID: "soarchain", Time: time.Now().UTC()})
 	s.QueryHelper = &baseapp.QueryServiceTestHelper{
 		GRPCQueryRouter: s.App.GRPCQueryRouter(),
 		Ctx:             s.Ctx,
@@ -59,7 +58,7 @@ func CreateRandomAccounts(numAccts int) []sdk.AccAddress {
 
 func (s *KeeperTestSuite) FundAccount(acc sdk.AccAddress, amounts sdk.Coins) {
 
-	ctx := s.App.NewContext(true, tmproto.Header{Height: s.App.LastBlockHeight()})
+	ctx := s.App.NewContext(true, tenderminttypes.Header{Height: s.App.LastBlockHeight()})
 
 	err := simapp.FundAccount(s.App.BankKeeper, ctx, acc, amounts)
 	s.Require().NoError(err)
@@ -82,7 +81,7 @@ func (s *KeeperTestSuite) CreateTestContextWithMultiStore() (sdk.Context, sdk.Co
 
 	ms := rootmulti.NewStore(db)
 
-	return sdk.NewContext(ms, tmtypes.Header{}, false, logger), ms
+	return sdk.NewContext(ms, tenderminttypes.Header{}, false, logger), ms
 }
 
 // CreateTestContext creates a test context.
@@ -90,7 +89,7 @@ func (s *KeeperTestSuite) Commit() {
 	oldHeight := s.Ctx.BlockHeight()
 	oldHeader := s.Ctx.BlockHeader()
 	s.App.Commit()
-	newHeader := tmtypes.Header{Height: oldHeight + 1, ChainID: oldHeader.ChainID, Time: oldHeader.Time.Add(time.Second)}
+	newHeader := tenderminttypes.Header{Height: oldHeight + 1, ChainID: oldHeader.ChainID, Time: oldHeader.Time.Add(time.Second)}
 	s.App.BeginBlock(abci.RequestBeginBlock{Header: newHeader})
 	s.Ctx = s.App.GetBaseApp().NewContext(false, newHeader)
 }
