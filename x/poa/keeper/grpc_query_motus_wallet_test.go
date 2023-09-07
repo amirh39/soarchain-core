@@ -12,19 +12,8 @@ import (
 
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
-	"soarchain/x/poa/keeper"
 	"soarchain/x/poa/types"
 )
-
-func createNMotusWallet(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.MotusWallet {
-	items := make([]types.MotusWallet, n)
-	for i := range items {
-		items[i].Index = strconv.Itoa(i)
-
-		keeper.SetMotusWallet(ctx, items[i])
-	}
-	return items
-}
 
 func Test_MotusWalletQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
