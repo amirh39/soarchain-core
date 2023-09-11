@@ -1,0 +1,18 @@
+syntax = "proto3";
+package soarchain.dpr;
+
+import "dpr/dpr.proto";
+
+option go_package = "soarchain/x/dpr/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc GenDpr(MsgGenDpr) returns (MsgGenDprResponse);
+
+}
+
+message MsgGenDpr {
+  string id = 1;
+}
+
+message MsgGenDprResponse {}
