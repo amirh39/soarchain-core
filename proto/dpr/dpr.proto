@@ -1,0 +1,10 @@
+syntax = "proto3";
+package soarchain.dpr;
+
+option java_multiple_files = true;
+
+option go_package = "soarchain/x/dpr/types";
+
+message Dpr {
+  string id = 2;
+}
