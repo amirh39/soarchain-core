@@ -79,7 +79,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgGenDid,
-		didsimulation.SimulateMsgGenDid(am.accountKeeper, am.bankKeeper, am.keeper),
+		didsimulation.SimulateMsgGenDid(am.accountKeeper, am.keeper),
 	))
 
 	var weightMsgUpdateDid int
@@ -90,7 +90,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgUpdateDid,
-		didsimulation.SimulateMsgUpdateDid(am.accountKeeper, am.bankKeeper, am.keeper),
+		didsimulation.SimulateMsgUpdateDid(am.accountKeeper, am.keeper),
 	))
 
 	var weightMsgdeactivateDid int
@@ -101,7 +101,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgdeactivateDid,
-		didsimulation.SimulateMsgDeactivateDid(am.accountKeeper, am.bankKeeper, am.keeper),
+		didsimulation.SimulateMsgDeactivateDid(am.accountKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

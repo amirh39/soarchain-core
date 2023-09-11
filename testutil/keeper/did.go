@@ -47,7 +47,6 @@ func DidKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Ke
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		bank,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
@@ -82,7 +81,6 @@ func DidKeeperWithMocksEpoch(t testing.TB, bank *testutil.MockBankKeeper) (*keep
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		bank,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

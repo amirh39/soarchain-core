@@ -477,10 +477,8 @@ func NewSoarchainApp(
 		keys[didmoduletypes.StoreKey],
 		keys[didmoduletypes.MemStoreKey],
 		app.GetSubspace(didmoduletypes.ModuleName),
-
-		app.BankKeeper,
 	)
-	didModule := didmodule.NewAppModule(appCodec, app.DidKeeper, app.AccountKeeper, app.BankKeeper)
+	didModule := didmodule.NewAppModule(appCodec, app.DidKeeper, app.AccountKeeper)
 
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
