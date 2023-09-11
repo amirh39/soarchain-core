@@ -60,8 +60,8 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 		return nil
 	}
 	return ctx.Logger().With(
-		"timestamp", fmt.Sprintf("%s", time.Now().String()),
+		"timestamp", time.Now().String(),
 		"module", fmt.Sprintf("x/%s", types.ModuleName),
-		"height", fmt.Sprintf("%s", strconv.FormatInt(ctx.BlockHeight(), 10)),
+		"height", strconv.FormatInt(ctx.BlockHeight(), 10),
 	)
 }
