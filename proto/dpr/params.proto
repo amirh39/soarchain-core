@@ -1,0 +1,12 @@
+syntax = "proto3";
+package soarchain.dpr;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "soarchain/x/dpr/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}
