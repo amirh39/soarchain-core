@@ -29,10 +29,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgGenClient int = 100
 
-	opWeightMsgGenChallenger = "op_weight_msg_gen_challenger"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgGenChallenger int = 100
-
 	opWeightMsgChallengeService = "op_weight_msg_challenge_service"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgChallengeService int = 100
@@ -60,14 +56,6 @@ const (
 	opWeightMsgSelectRandomRunner = "op_weight_msg_select_random_runner"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSelectRandomRunner int = 100
-
-	opWeightMsgV2VChallenge = "op_weight_msg_v_2_v_challenge"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgV2VChallenge int = 100
-
-	opWeightMsgV2NChallenge = "op_weight_msg_v_2_n_challenge"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgV2NChallenge int = 100
 
 	opWeightMsgClaimMotusRewards = "op_weight_msg_claim_motus_rewards"
 	// TODO: Determine the simulation weight value

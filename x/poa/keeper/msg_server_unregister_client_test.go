@@ -25,6 +25,7 @@ func Test_UnregisterClient(t *testing.T) {
 		Creator:     CREATOR,
 		FactoryCert: FACTORY_CERT,
 	})
+	require.NoError(t, err)
 	require.NotNil(t, registeredFactoryKey)
 
 	clients := SetupClientToUnregistration(1)
@@ -37,7 +38,6 @@ func Test_UnregisterClient(t *testing.T) {
 		Creator: CREATOR,
 		Pubkey:  ClientPubKey,
 	})
-
 	require.NoError(t, err)
 	require.NotNil(t, res)
 }
@@ -60,7 +60,6 @@ func Test_UnregisterChallenger_NotValidClient(t *testing.T) {
 		Creator: ClientAddress,
 		Pubkey:  ClientPubKey,
 	})
-
 	require.Error(t, err)
 	require.Nil(t, res)
 }
