@@ -25,6 +25,8 @@ func Test_GenClient(t *testing.T) {
 		Creator:     CREATOR,
 		FactoryCert: FACTORY_CERT,
 	})
+	require.Nil(t, err)
+	require.NoError(t, err)
 	require.NotNil(t, registeredFactoryKey)
 
 	res, err := msgServer.GenClient(context, &types.MsgGenClient{
@@ -57,6 +59,8 @@ func Test_GenClient1(t *testing.T) {
 		Creator:     CREATOR,
 		FactoryCert: FACTORY_CERT,
 	})
+	require.Nil(t, err)
+	require.NoError(t, err)
 	require.NotNil(t, registeredFactoryKey)
 
 	res, err := msgServer.GenClient(context, &types.MsgGenClient{
@@ -69,6 +73,7 @@ func Test_GenClient1(t *testing.T) {
 	t.Log("clients------------------->", clients)
 
 	require.NotNil(t, res)
+	require.NoError(t, err)
 	require.NoError(t, err)
 }
 
