@@ -144,7 +144,7 @@
           "address": "soar1qyhtcgw54973l3tz7fag27480q5qzt7cmsv9th",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "47500000000000"
             }
           ]
@@ -153,7 +153,7 @@
           "address": "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "10000000"
             }
           ]
@@ -162,7 +162,7 @@
           "address": "soar1paaxlh6luwlxvv9smf935nj53hz0yk7wna2hu2",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "285000000000000"
             }
           ]
@@ -171,7 +171,7 @@
           "address": "soar1wfly3s05fvtuqs7lpesr8nas6rydm96jh88m9v",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "100700000000000"
             }
           ]
@@ -180,7 +180,7 @@
           "address": "soar1s6n8jr600zhnefzdgv0d5z5mdhkx7au8k0glh0",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "36100000000000"
             }
           ]
@@ -189,7 +189,7 @@
           "address": "soar13fn4x22x9dq9n995jfwgy4ytku55xl80em84p4",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "10000000"
             }
           ]
@@ -198,7 +198,7 @@
           "address": "soar1nz5tc5q4fr7xcwwwr0j4nvh4nhynptqvwvk903",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "10000000"
             }
           ]
@@ -207,7 +207,7 @@
           "address": "soar1hcr2r7v54gdus8ud7u7vm0wggt9y7pp2qfxssc",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "36100000000000"
             }
           ]
@@ -216,7 +216,7 @@
           "address": "soar1hmj5fccg6nuns2scxz0pvwqgyy44ntp2knvnfa",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "36100000000000"
             }
           ]
@@ -225,7 +225,7 @@
           "address": "soar1c9k0cjhq0sma2mskl6re9mx93lxkavzzm6xdj4",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "36100000000000"
             }
           ]
@@ -234,7 +234,7 @@
           "address": "soar1caffzw6akr97yxrj4c82thrnttwtsszgtl5azq",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "10000000"
             }
           ]
@@ -243,7 +243,7 @@
           "address": "soar1m6u0zxu4hkg4ycqawgrvmnlqhudqr32ydgal0m",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "36100000000000"
             }
           ]
@@ -252,7 +252,7 @@
           "address": "soar1avu0w07kp8jujzpr530frjx4uafxts32ahvu8s",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "10000000"
             }
           ]
@@ -261,7 +261,7 @@
           "address": "soar1743qv44dgty0zv4t7vnnzdfhd7ftjfsmpreggg",
           "coins": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "amount": "77425000000000"
             }
           ]
@@ -273,7 +273,7 @@
           "description": "The native staking token of the Soarchain-core.",
           "denom_units": [
             {
-              "denom": "utmotus",
+              "denom": "udmotus",
               "exponent": 0,
               "aliases": [
                 "microtmotus"
@@ -285,7 +285,7 @@
               "aliases": []
             }
           ],
-          "base": "utmotus",
+          "base": "udmotus",
           "display": "tmotus",
           "name": "tmotus",
           "symbol": "tmotus"
@@ -298,7 +298,7 @@
     },
     "crisis": {
       "constant_fee": {
-        "denom": "utmotus",
+        "denom": "udmotus",
         "amount": "1000"
       }
     },
@@ -354,7 +354,7 @@
                   "key": "tsb9sjEtlO766xsTtxYWFIv3xz0Pn8/x7TlPn20P1AU="
                 },
                 "value": {
-                  "denom": "utmotus",
+                  "denom": "udmotus",
                   "amount": "2000000"
                 }
               }
@@ -400,7 +400,7 @@
       "deposit_params": {
         "min_deposit": [
           {
-            "denom": "utmotus",
+            "denom": "udmotus",
             "amount": "10000000"
           }
         ],
@@ -450,7 +450,7 @@
     },
     "mint": {
       "params": {
-        "mint_denom": "utmotus"
+        "mint_denom": "udmotus"
       }
     },
     "monitoringp": {
@@ -481,10 +481,10 @@
       "vrfDataList": [],
       "epochData": {
         "totalEpochs": "0",
-        "epochV2VRX": "0utmotus",
-        "epochV2VBX": "0utmotus",
-        "epochV2NBX": "0utmotus",
-        "epochRunner": "0utmotus"
+        "epochV2VRX": "0udmotus",
+        "epochV2VBX": "0udmotus",
+        "epochV2NBX": "0udmotus",
+        "epochRunner": "0udmotus"
       },
       "motusWalletList": [],
       "masterKey": {
@@ -507,7 +507,7 @@
     },
     "soarmint": {
       "params": {
-        "mint_denom": "utmotus",
+        "mint_denom": "udmotus",
         "blocks_per_year": "525600"
       },
       "minter": {
@@ -524,7 +524,7 @@
         "max_validators": 100,
         "max_entries": 7,
         "historical_entries": 10000,
-        "bond_denom": "utmotus"
+        "bond_denom": "udmotus"
       },
       "last_total_power": "0",
       "last_validator_powers": [],

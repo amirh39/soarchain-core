@@ -1,0 +1,58 @@
+syntax = "proto3";
+package soarchain.did;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "did/params.proto";
+import "did/did.proto";
+
+option go_package = "soarchain/x/did/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/soarchain/did/params";
+  }
+
+	rpc DidAll(QueryAllDidRequest) returns (QueryAllDidResponse) {
+		option (google.api.http).get = "/soarchain/did/did";
+	}
+
+	rpc Did(QueryGetDidRequest) returns (QueryGetDidResponse) {
+		option (google.api.http).get = "/soarchain/did/did/{id}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetClientRequest {
+	  string index = 1;
+
+}
+
+message QueryGetDidRequest {
+	string id = 1;
+}
+
+message QueryGetDidResponse {
+	DidDocumentWithSeq didDocument = 1;
+}
+
+message QueryAllDidRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDidResponse {
+	repeated string did = 1  [(gogoproto.nullable) = false];
+}
