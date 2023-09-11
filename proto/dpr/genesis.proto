@@ -1,0 +1,16 @@
+syntax = "proto3";
+package soarchain.dpr;
+
+import "gogoproto/gogo.proto";
+import "dpr/params.proto";
+import "dpr/dpr.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "soarchain/x/dpr/types";
+
+// GenesisState defines the drp module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  repeated string DprList = 2;
+  // this line is used by starport scaffolding # genesis/proto/state
+}
