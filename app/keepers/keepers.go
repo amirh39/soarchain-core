@@ -60,4 +60,4 @@ type AppKeepers struct {
 	EpochKeeper epochmodulekeeper.Keeper
 }
 
-func NewAppKeepers()
+func NewAppKeepers() {}
