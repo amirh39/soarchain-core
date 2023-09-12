@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgGenDpr{}, "drp/GenDpr", nil)
+	cdc.RegisterConcrete(&MsgGenDpr{}, "dpr/GenDpr", nil)
 
 	// this line is used by starport scaffolding # 2
 }
