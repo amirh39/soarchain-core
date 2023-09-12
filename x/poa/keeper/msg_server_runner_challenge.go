@@ -31,11 +31,9 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger, e
 	}
 
 	if len(earnedRewardsBigInt) > 0 {
-		if len(earnedRewardsBigInt) > 0 {
-			totalEarnings, err = k.calculateTotalEarnings(ctx, challenger.NetEarnings, earnedRewardsBigInt[0], constants.Runner)
-			if err != nil {
-				return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
-			}
+		totalEarnings, err = k.calculateTotalEarnings(ctx, challenger.NetEarnings, earnedRewardsBigInt[0], constants.Runner)
+		if err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
 		}
 	}
 
