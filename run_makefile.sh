@@ -13,5 +13,5 @@ make sign_genesis_transaction
 make collect_genesis_tx
 make validate_genesis
 if [ "$1" = "start" ]; then
-    soarchaind start --log_level info --minimum-gas-prices=0.0001utmotus 
+    soarchaind start --log_level info --minimum-gas-prices=0.0001udmotus 
 fi

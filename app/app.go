@@ -103,6 +103,10 @@ import (
 	poamodulekeeper "soarchain/x/poa/keeper"
 	poamoduletypes "soarchain/x/poa/types"
 
+	didmodule "soarchain/x/did"
+	didmodulekeeper "soarchain/x/did/keeper"
+	didmoduletypes "soarchain/x/did/types"
+
 	epochmodule "soarchain/x/epoch"
 	epochmodulekeeper "soarchain/x/epoch/keeper"
 	epochmoduletypes "soarchain/x/epoch/types"
@@ -191,6 +195,7 @@ var (
 		monitoringp.AppModuleBasic{},
 		wasm.AppModuleBasic{},
 		poamodule.AppModuleBasic{},
+		didmodule.AppModuleBasic{},
 		epochmodule.AppModuleBasic{},
 		dprmodule.AppModuleBasic{},
 		// soarmintmodule.AppModuleBasic{},
@@ -207,6 +212,7 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		poamoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		didmoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		wasm.ModuleName:                {authtypes.Burner},
 		epochmoduletypes.ModuleName:    {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		dprmoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
@@ -272,6 +278,8 @@ type SoarchainApp struct {
 
 	PoaKeeper poamodulekeeper.Keeper
 
+	DidKeeper didmodulekeeper.Keeper
+
 	EpochKeeper epochmodulekeeper.Keeper
 
 	DprKeeper dprmodulekeeper.Keeper
@@ -314,6 +322,7 @@ func NewSoarchainApp(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		poamoduletypes.StoreKey,
+		didmoduletypes.StoreKey,
 		epochmoduletypes.StoreKey,
 		dprmoduletypes.StoreKey,
 		wasm.StoreKey,
@@ -482,6 +491,14 @@ func NewSoarchainApp(
 	)
 	dprModule := dprmodule.NewAppModule(appCodec, app.DprKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.DidKeeper = *didmodulekeeper.NewKeeper(
+		appCodec,
+		keys[didmoduletypes.StoreKey],
+		keys[didmoduletypes.MemStoreKey],
+		app.GetSubspace(didmoduletypes.ModuleName),
+	)
+	didModule := didmodule.NewAppModule(appCodec, app.DidKeeper, app.AccountKeeper)
+
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
 	if err != nil {
@@ -558,6 +575,7 @@ func NewSoarchainApp(
 		transferModule,
 		monitoringModule,
 		poaModule,
+		didModule,
 		epochModule,
 		dprModule,
 		// soarmintModule,
@@ -590,6 +608,7 @@ func NewSoarchainApp(
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
+		didmoduletypes.ModuleName,
 		epochmoduletypes.ModuleName,
 		dprmoduletypes.ModuleName,
 		// soarmintmoduletypes.ModuleName,
@@ -618,6 +637,7 @@ func NewSoarchainApp(
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
+		didmoduletypes.ModuleName,
 		epochmoduletypes.ModuleName,
 		dprmoduletypes.ModuleName,
 		// soarmintmoduletypes.ModuleName,
@@ -651,6 +671,7 @@ func NewSoarchainApp(
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
 		poamoduletypes.ModuleName,
+		didmoduletypes.ModuleName,
 		epochmoduletypes.ModuleName,
 		dprmoduletypes.ModuleName,
 		// soarmintmoduletypes.ModuleName,
@@ -684,6 +705,7 @@ func NewSoarchainApp(
 		transferModule,
 		monitoringModule,
 		poaModule,
+		didModule,
 		epochModule,
 		dprModule,
 		// soarmintModule,
@@ -899,6 +921,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(poamoduletypes.ModuleName)
+	paramsKeeper.Subspace(didmoduletypes.ModuleName)
 	paramsKeeper.Subspace(epochmoduletypes.ModuleName)
 	paramsKeeper.Subspace(dprmoduletypes.ModuleName)
 	// paramsKeeper.Subspace(soarmintmoduletypes.ModuleName)

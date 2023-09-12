@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/CosmWasm/wasmd v0.27.0
 	github.com/CosmWasm/wasmvm v1.0.0
+	github.com/btcsuite/btcutil v1.0.3-0.20201208143702-a53e38424cce
 	github.com/cosmos/cosmos-sdk v0.45.5
 	github.com/cosmos/ibc-go/v3 v3.0.1
 	github.com/gogo/protobuf v1.3.3
