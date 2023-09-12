@@ -42,7 +42,7 @@ message QueryGetDprRequest {
 }
 
 message QueryGetDprResponse {
-	Dpr dpr = 1;
+	Dpr dpr = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllDprRequest {
@@ -50,5 +50,6 @@ message QueryAllDprRequest {
 }
 
 message QueryAllDprResponse {
-	repeated Dpr dpr = 1  [(gogoproto.nullable) = false];
+	repeated Dpr dpr = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

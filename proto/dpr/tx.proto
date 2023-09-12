@@ -12,7 +12,12 @@ service Msg {
 }
 
 message MsgGenDpr {
-  string id = 1;
+  string creator = 1;
+  bool pidSupported_1_to_20 = 2; 
+  bool pidSupported_21_to_40 = 3; 
+  bool pidSupported_41_to_60 = 4; 
+  repeated string vin = 5; 
+  uint64 lengthOfDpr = 6;
 }
 
 message MsgGenDprResponse {}
