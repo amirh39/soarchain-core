@@ -1,22 +1,21 @@
 package keeper_test
 
 import (
-	"testing"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	keepertest "soarchain/testutil/keeper"
 	"soarchain/testutil/nullify"
 	"soarchain/x/soarmint/types"
 )
 
-func TestMinterQuery(t *testing.T) {
-	keeper, ctx := keepertest.SoarmintKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	item := createTestMinter(keeper, ctx)
+func (helper *KeeperTestHelper) TestMinterQuery() {
+	helper.Setup()
+
+	keeper := helper.App.MintKeeper
+	wctx := sdk.WrapSDKContext(helper.Ctx)
+	item, isFound := keeper.GetMinter(helper.Ctx)
+	helper.True(isFound)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetMinterRequest
@@ -33,13 +32,13 @@ func TestMinterQuery(t *testing.T) {
 			err:  status.Error(codes.InvalidArgument, "invalid request"),
 		},
 	} {
-		t.Run(tc.desc, func(t *testing.T) {
+		helper.Run(tc.desc, func() {
 			response, err := keeper.Minter(wctx, tc.request)
 			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
+				helper.ErrorIs(err, tc.err)
 			} else {
-				require.NoError(t, err)
-				require.Equal(t,
+				helper.NoError(err)
+				helper.Equal(
 					nullify.Fill(tc.response),
 					nullify.Fill(response),
 				)

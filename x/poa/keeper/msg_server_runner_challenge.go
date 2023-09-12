@@ -31,11 +31,9 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger, e
 	}
 
 	if len(earnedRewardsBigInt) > 0 {
-		if len(earnedRewardsBigInt) > 0 {
-			totalEarnings, err = k.calculateTotalEarnings(ctx, challenger.NetEarnings, earnedRewardsBigInt[0], epoch, constants.Runner)
-			if err != nil {
-				return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
-			}
+		totalEarnings, err = k.calculateTotalEarnings(ctx, challenger.NetEarnings, earnedRewardsBigInt[0], constants.Runner)
+		if err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
 		}
 	}
 
@@ -112,7 +110,7 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 		return sdkerrors.Wrap(sdkerrors.ErrLogic, errors.EarnedRewardsBigInt)
 	}
 	if len(earnedRewardsBigInt) > 0 {
-		totalEarnings, err = k.calculateTotalEarnings(ctx, runner.NetEarnings, earnedRewardsBigInt[0], epoch, constants.Runner)
+		totalEarnings, err = k.calculateTotalEarnings(ctx, runner.NetEarnings, earnedRewardsBigInt[0], constants.Runner)
 		if err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
 		}
@@ -171,7 +169,7 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge, epo
 		rewardMultiplier, score := k.rewardAndScore(v2nBxClient.Score)
 
 		if len(earnedRewardsBigInt) > 0 {
-			totalEarnings, err = k.calculateTotalEarnings(ctx, v2nBxClient.NetEarnings, earnedRewardsBigInt[i], epoch, constants.Runner)
+			totalEarnings, err = k.calculateTotalEarnings(ctx, v2nBxClient.NetEarnings, earnedRewardsBigInt[i], constants.Runner)
 			if err != nil {
 				return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
 			}
@@ -206,7 +204,7 @@ func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.
 
 	k.SetMotusWallet(ctx, newMotusWallet)
 }
-func (k Keeper) calculateTotalEarnings(ctx sdk.Context, currentEarnings string, earnedRewardsBigInt *big.Int, epoch epoch.EpochData, entityType string) (sdk.Coin, error) {
+func (k Keeper) calculateTotalEarnings(ctx sdk.Context, currentEarnings string, earnedRewardsBigInt *big.Int, entityType string) (sdk.Coin, error) {
 	earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt)
 	earnedCoin := sdk.NewCoin(params.BondDenom, earnedAmount)
 
