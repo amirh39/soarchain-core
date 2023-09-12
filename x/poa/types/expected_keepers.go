@@ -32,3 +32,7 @@ type EpochKeeper interface {
 	UpdateEpochRewards(ctx sdk.Context, serviceName string, coin sdk.Coin) error
 	UpdateEpoch(ctx sdk.Context)
 }
+
+type DprKeeper interface {
+	DeactivateDpr(ctx sdk.Context, totalEpoch uint64)
+}
