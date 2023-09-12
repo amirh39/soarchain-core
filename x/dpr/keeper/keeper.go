@@ -23,7 +23,6 @@ type (
 		paramstore paramtypes.Subspace
 
 		bankKeeper types.BankKeeper
-		authKeeper types.AccountKeeper
 	}
 )
 
