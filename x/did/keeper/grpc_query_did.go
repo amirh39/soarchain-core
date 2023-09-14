@@ -41,7 +41,7 @@ func (k Keeper) Did(c context.Context, req *types.QueryGetDidRequest) (*types.Qu
 	}
 
 	did := string(req.Id)
-	didDocument, found := k.GetDidDocument(ctx, did)
+	didDocument, found := k.GetDidDocumentWithSequence(ctx, did)
 
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.ErrDidNotFound)
