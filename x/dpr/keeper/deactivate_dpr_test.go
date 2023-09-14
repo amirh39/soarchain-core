@@ -3,6 +3,8 @@ package keeper_test
 import (
 	keepertest "soarchain/testutil/keeper"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func Test_DeactivateDpr(t *testing.T) {
@@ -15,12 +17,13 @@ func Test_DeactivateDpr(t *testing.T) {
 	keeper.SetDpr(ctx, dprsDif[0])
 	keeper.SetDpr(ctx, deactiveDprs[0])
 
-	// allDprs := keeper.GetAllDpr(ctx)
-	// t.Log("0000000000000", allDprs)
+	allDprs, found := keeper.GetAllDpr(ctx)
+	require.Equal(t, found, true)
+	require.NotNil(t, allDprs)
 
 	keeper.DeactivateDpr(ctx, 4)
 
-	// allDprs1 := keeper.GetAllDpr(ctx)
-	// t.Log("1111111111111111", allDprs1)
-
+	allDprsAfterDeactivating := keeper.GetAllActiveDpr(ctx)
+	// require.Equal(t, found, true)
+	require.NotNil(t, allDprsAfterDeactivating)
 }

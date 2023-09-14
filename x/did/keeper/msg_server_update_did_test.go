@@ -40,7 +40,7 @@ func TestHandleMsgUpdateDID(t *testing.T) {
 	require.Nil(t, err)
 	require.NotNil(t, updateRes)
 
-	updatedDoc, found := k.GetDidDocument(ctx, did)
+	updatedDoc, found := k.GetDidDocumentWithSequence(ctx, did)
 	require.Equal(t, true, found)
 	require.NotNil(t, updatedDoc)
 }

@@ -8,9 +8,9 @@ option go_package = "soarchain/x/dpr/types";
 message Dpr {
   string id = 1;
   string creator = 2;
-  bool pidSupported_1_to_20 = 3;
-  bool pidSupported_21_to_40 = 4;
-  bool pidSupported_41_to_60 = 5;
+  bool pidSupportedOneToTwnety = 3;
+  bool pidSupportedTwentyOneToForthy = 4;
+  bool pidSupportedForthyOneToSixty = 5;
   bool isActive = 6;
   repeated string vin = 7;
   repeated string clientPubkeys = 8;

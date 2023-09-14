@@ -17,7 +17,7 @@ func (k msgServer) UpdateDid(goCtx context.Context, msg *types.MsgUpdateDid) (*t
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
-	documentWithSeq, found := k.GetDidDocument(ctx, msg.Did)
+	documentWithSeq, found := k.GetDidDocumentWithSequence(ctx, msg.Did)
 	if documentWithSeq.Empty() || !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateDid][GetDidDocument] failed. Did is not registered.")
 	}

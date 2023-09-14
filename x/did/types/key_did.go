@@ -11,12 +11,12 @@ const (
 
 // DidKey returns the store key to retrieve a did from the index fields
 func DidKey(
-	index string,
+	id string,
 ) []byte {
 	var key []byte
 
-	indexBytes := []byte(index)
-	key = append(key, indexBytes...)
+	idBytes := []byte(id)
+	key = append(key, idBytes...)
 	key = append(key, []byte("/")...)
 
 	return key

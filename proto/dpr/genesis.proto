@@ -11,6 +11,7 @@ option go_package = "soarchain/x/dpr/types";
 // GenesisState defines the drp module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
-  repeated Dpr DprList = 2;
+  repeated Dpr DprList = 2 [(gogoproto.nullable) = false];
+  Dpr dpr = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

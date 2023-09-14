@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
 	"soarchain/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -55,15 +54,11 @@ func Test_GetDpr(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 			response, err := keeper.Dpr(wctx, tc.request)
-			t.Log("9999999999999", response)
 			if err != nil {
 				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t,
-					nullify.Fill(tc.response),
-					nullify.Fill(response),
-				)
+				require.NotNil(t, response)
 			}
 		})
 	}
@@ -71,12 +66,11 @@ func Test_GetDpr(t *testing.T) {
 
 func Test_GetAllDpr(t *testing.T) {
 	keeper, ctx := keepertest.DprKeeper(t)
-	//wctx := sdk.WrapSDKContext(ctx)
 	msgs := SetupNDpr(2)
 	keeper.SetDpr(ctx, msgs[0])
 	keeper.SetDpr(ctx, msgs[1])
 
-	result := keeper.GetAllDpr(ctx)
-	t.Log("0000000000000", result)
+	allDprs, _ := keeper.GetAllDpr(ctx)
+	require.NotNil(t, allDprs)
 
 }

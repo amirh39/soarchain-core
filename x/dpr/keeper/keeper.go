@@ -22,7 +22,9 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 
-		bankKeeper types.BankKeeper
+		bankKeeper  types.BankKeeper
+		didKeeper   types.DidKeeper
+		epochKeeper types.EpochKeeper
 	}
 )
 
@@ -33,6 +35,8 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 
 	bankKeeper types.BankKeeper,
+	didKeeper types.DidKeeper,
+	epochKeeper types.EpochKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -41,11 +45,13 @@ func NewKeeper(
 
 	return &Keeper{
 
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
-		bankKeeper: bankKeeper,
+		cdc:         cdc,
+		storeKey:    storeKey,
+		memKey:      memKey,
+		paramstore:  ps,
+		bankKeeper:  bankKeeper,
+		didKeeper:   didKeeper,
+		epochKeeper: epochKeeper,
 	}
 }
 
@@ -63,4 +69,9 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 		"module", fmt.Sprintf("x/%s", types.ModuleName),
 		"height", strconv.FormatInt(ctx.BlockHeight(), 10),
 	)
+}
+
+func (k Keeper) FindSum() {
+
+	fmt.Print("767676767676")
 }

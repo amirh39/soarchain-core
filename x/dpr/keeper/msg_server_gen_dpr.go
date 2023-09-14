@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"soarchain/x/dpr/types"
@@ -14,72 +13,58 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) validateProperties(msg *types.MsgGenDpr) bool {
-
-	result := true
-
-	if msg.Creator == "" {
-		result = false
-	}
-
-	fmt.Print("22222222222222", result)
-
-	if msg.Vin == nil {
-		result = false
-	}
-
-	fmt.Print("333333333333", result)
-
-	if !msg.PidSupported_1To_20 && !msg.PidSupported_21To_40 && !msg.PidSupported_41To_60 {
-		result = false
-	}
-
-	fmt.Print("44444444444444", result)
-
-	return result
-}
-
 func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.MsgGenDprResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
-	log.Println("############## Generating a dpr Transaction Started ##############")
+	log.Println("############## Generating a dpr Transaction is Started ##############")
 
-	result := k.validateProperties(msg)
-	if !result {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][validateProperties] failed. Make sure you are using valid properties for creating Dpr object.")
-	}
-
-	isActive, err := utility.CalculateDprValidity(msg.LengthOfDpr)
-	if !isActive {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][CalculateDprValidity] failed. Dpr is not active.")
-	}
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][CalculateDprValidity] failed. Couldn't calculate the time of activation for a Dpr.")
+	epochDtata, found := k.epochKeeper.GetEpochData(ctx)
+	if !found {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][GetEpochData] failed. Couldn't find epoch data.")
 	}
 
 	if logger != nil {
-		logger.Info("Dpr is vali and active", "transaction", "GenDpr")
+		logger.Info("epochDtata.TotalEpochs--===>", "transaction", "GenDpr", "epochDtata.TotalEpochs", epochDtata.TotalEpochs)
+	}
+
+	result := k.VerifyDPRInputs(msg, epochDtata.TotalEpochs)
+	if !result {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][VerifyDPRInputs] failed. Make sure you are using valid properties for creating Dpr object.")
+	}
+
+	if logger != nil {
+		logger.Info("Verifying a received DPR sucessfully done.", "transaction", "GenDpr")
+	}
+
+	found = k.didKeeper.FindEligibleDid(ctx, utility.CalculatePinNumber(msg))
+	if !found {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][FindEligibleDid] failed. There is no eligible client to serve this DPR.")
+	}
+
+	if logger != nil {
+		logger.Info("Finding eligible client for serving DPR sucessfully done.", "transaction", "GenDpr", "found", found)
 	}
 
 	// Save dpr into storage
 	newDpr := types.Dpr{
-		Id:                   uuid.NewRandom().String(),
-		Creator:              msg.Creator,
-		PidSupported_1To_20:  msg.PidSupported_1To_20,
-		PidSupported_21To_40: msg.PidSupported_21To_40,
-		PidSupported_41To_60: msg.PidSupported_41To_60,
-		IsActive:             true,
-		Vin:                  msg.Vin,
-		ClientPubkeys:        []string{},
+		Id:                            uuid.NewRandom().String(),
+		Creator:                       msg.Creator,
+		PidSupportedOneToTwnety:       msg.PidSupportedOneToTwnety,
+		PidSupportedTwentyOneToForthy: msg.PidSupportedTwentyOneToForthy,
+		PidSupportedForthyOneToSixty:  msg.PidSupportedForthyOneToSixty,
+		IsActive:                      true,
+		Vin:                           []string{},
+		ClientPubkeys:                 []string{},
+		LengthOfDpr:                   msg.LengthOfDpr,
 	}
 
 	k.SetDpr(ctx, newDpr)
 
-	xx := k.GetAllDpr(ctx)
+	xx, _ := k.GetDpr(ctx, newDpr.Id)
 
 	if logger != nil {
-		logger.Info("Dpr is vali and active", "transaction", "GenDpr", "dpr-objects", xx)
+		logger.Info("saved dpr id fetched.", "transaction", "GenDpr", "xx", xx)
 	}
 
 	log.Println("############## End of Generating dpr Transaction ##############")

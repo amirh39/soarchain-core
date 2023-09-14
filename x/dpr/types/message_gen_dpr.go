@@ -1,8 +1,6 @@
 package types
 
 import (
-	"log"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -11,15 +9,13 @@ const TypeMsgGenDpr = "gen_dpr"
 
 var _ sdk.Msg = &MsgGenDpr{}
 
-func NewMsgGenDpr(creator string, pidSupported_1_to_20 bool, pidSupported_21_to_40 bool, pidSupported_41_to_60 bool, vin []string, lengthOfDpr uint64) *MsgGenDpr {
-	log.Println("444444444444444444444")
+func NewMsgGenDpr(creator string, pidSupportedOneToTwnety bool, pidSupportedTwentyOneToForthy bool, pidSupportedForthyOneToSixty bool, vin []string, lengthOfDpr uint64) *MsgGenDpr {
 	return &MsgGenDpr{
-		Creator:              creator,
-		PidSupported_1To_20:  pidSupported_1_to_20,
-		PidSupported_21To_40: pidSupported_21_to_40,
-		PidSupported_41To_60: pidSupported_41_to_60,
-		Vin:                  vin,
-		LengthOfDpr:          lengthOfDpr,
+		Creator:                       creator,
+		PidSupportedOneToTwnety:       pidSupportedOneToTwnety,
+		PidSupportedTwentyOneToForthy: pidSupportedTwentyOneToForthy,
+		PidSupportedForthyOneToSixty:  pidSupportedForthyOneToSixty,
+		LengthOfDpr:                   lengthOfDpr,
 	}
 }
 

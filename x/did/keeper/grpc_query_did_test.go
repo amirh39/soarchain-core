@@ -21,7 +21,7 @@ func Test_DidDocumentGet(t *testing.T) {
 	require.NotNil(t, privkey)
 	keeper.SetDidDocument(ctx, SecondDid, didDocument2)
 
-	got, found := keeper.GetDidDocument(ctx, Did)
+	got, found := keeper.GetDidDocumentWithSequence(ctx, Did)
 	t.Log("Fetched Did", got)
 	require.True(t, found)
 	require.Equal(t,

@@ -21,8 +21,6 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 
 	log.Println("############## Begin Blocker Started ##############")
 
-	k.dprKeeper.DeactivateDpr(ctx, epochData.TotalEpochs)
-
 	// BeginBlocker for the PoA module. It checks if a new epoch has started and if so,
 	// it mints coins from the banking module to the PoA module according to total rewards earned during the epoch.
 

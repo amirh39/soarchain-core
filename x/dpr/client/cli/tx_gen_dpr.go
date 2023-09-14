@@ -13,18 +13,18 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdGenClient() *cobra.Command {
+func CmdGenDpr() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "gen-dpr [pidSupported_1_to_20] [pidSupported_1_to_20] [pidSupported_1_to_20] [vin] [lengthOfDpr]",
 		Short: "Broadcast message gen-dpr",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-			argPidSupport1, _ := strconv.ParseBool(args[0])
-			argPidSupport2, _ := strconv.ParseBool(args[1])
-			argPidSupport3, _ := strconv.ParseBool(args[2])
-			argVin := []string{args[3]}
-			argLengthOfDpr, _ := strconv.ParseUint(args[4], 10, 64)
+			argPidSupport1, _ := strconv.ParseBool(args[1])
+			argPidSupport2, _ := strconv.ParseBool(args[2])
+			argPidSupport3, _ := strconv.ParseBool(args[3])
+			argVin := []string{args[4]}
+			argLengthOfDpr, _ := strconv.ParseUint(args[5], 10, 64)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

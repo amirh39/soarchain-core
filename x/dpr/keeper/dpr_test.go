@@ -20,7 +20,7 @@ func Test_SetDprObject(t *testing.T) {
 	require.NotNil(t, dpr)
 	require.Equal(t, found, true)
 
-	allDprs := keeper.GetAllDpr(ctx)
+	allDprs, _ := keeper.GetAllDpr(ctx)
 	require.NotNil(t, allDprs)
 	require.Equal(t, 2, len(allDprs))
 
@@ -36,7 +36,7 @@ func Test_AllActiveDpr(t *testing.T) {
 	keeper.SetDpr(ctx, dprs[1])
 	keeper.SetDpr(ctx, deactiveDprs[0])
 
-	allDprs := keeper.GetAllDpr(ctx)
+	allDprs, _ := keeper.GetAllDpr(ctx)
 	require.NotNil(t, allDprs)
 
 	require.Equal(t, 3, len(allDprs))

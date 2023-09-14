@@ -8,16 +8,40 @@ option go_package = "soarchain/x/dpr/types";
 // Msg defines the Msg service.
 service Msg {
   rpc GenDpr(MsgGenDpr) returns (MsgGenDprResponse);
-
+  rpc EnterDpr(MsgEnterDpr) returns (MsgEnterDprResponse);
+  rpc ActivateDpr(MsgActivateDpr) returns (MsgActivateDprResponse);
+  rpc LeaveDpr(MsgLeaveDpr) returns (MsgLeaveDprResponse);
 }
 
 message MsgGenDpr {
   string creator = 1;
-  bool pidSupported_1_to_20 = 2; 
-  bool pidSupported_21_to_40 = 3; 
-  bool pidSupported_41_to_60 = 4; 
-  repeated string vin = 5; 
-  uint64 lengthOfDpr = 6;
+  bool pidSupportedOneToTwnety = 2; 
+  bool pidSupportedTwentyOneToForthy = 3; 
+  bool pidSupportedForthyOneToSixty = 4; 
+  uint64 lengthOfDpr = 5;
 }
 
 message MsgGenDprResponse {}
+
+message MsgEnterDpr {
+  string pubKey =1;
+  string sender = 2;
+  string dprId = 3;
+}
+
+message MsgEnterDprResponse {}
+
+message MsgActivateDpr {
+  string dprId = 1; 
+  string sender = 2;
+}
+
+message MsgActivateDprResponse {}
+
+message MsgLeaveDpr {
+  string pubKey = 1;
+  string sender = 2;
+  string dprId = 3;
+}
+
+message MsgLeaveDprResponse {}

@@ -15,7 +15,7 @@ func (k Keeper) SetDidDocument(ctx sdk.Context, id string, doc types.DidDocument
 	store.Set(key, bz)
 }
 
-func (k Keeper) GetDidDocument(ctx sdk.Context, id string) (val types.DidDocumentWithSeq, found bool) {
+func (k Keeper) GetDidDocumentWithSequence(ctx sdk.Context, id string) (val types.DidDocumentWithSeq, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
 	key := []byte(id)
 	bz := store.Get(key)
@@ -25,6 +25,22 @@ func (k Keeper) GetDidDocument(ctx sdk.Context, id string) (val types.DidDocumen
 	var doc types.DidDocumentWithSeq
 	k.cdc.MustUnmarshalLengthPrefixed(bz, &doc)
 	return doc, true
+}
+
+func (k Keeper) GetDidDocumentByPubkey(ctx sdk.Context, pubkey string) (didDocument types.DidDocumentWithSeq, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.DidDocumentWithSeq
+		k.cdc.MustUnmarshalLengthPrefixed(iterator.Value(), &val)
+		if val.Document.ClientPublicKey == pubkey {
+			return val, true
+		}
+	}
+	return types.DidDocumentWithSeq{}, false
 }
 
 func (k Keeper) GetAllDid(ctx sdk.Context) []string {
@@ -38,4 +54,43 @@ func (k Keeper) GetAllDid(ctx sdk.Context) []string {
 		dids = append(dids, did)
 	}
 	return dids
+}
+
+func (k Keeper) FindEligibleDid(ctx sdk.Context, pins []uint) (found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.DidDocumentWithSeq
+		k.cdc.MustUnmarshalLengthPrefixed(iterator.Value(), &val)
+		switch len(pins) {
+		case 1:
+			if val.Document.PidSupportedOneToTwnety {
+				return true
+			}
+			if val.Document.PidSupportedTwentyOneToForthy {
+				return true
+			}
+			if val.Document.PidSupportedForthyOneToSixty {
+				return true
+			}
+		case 2:
+			if val.Document.PidSupportedOneToTwnety && val.Document.PidSupportedTwentyOneToForthy {
+				return true
+			}
+			if val.Document.PidSupportedTwentyOneToForthy && val.Document.PidSupportedForthyOneToSixty {
+				return true
+			}
+			if val.Document.PidSupportedOneToTwnety && val.Document.PidSupportedForthyOneToSixty {
+				return true
+			}
+		case 3:
+			if val.Document.PidSupportedOneToTwnety && val.Document.PidSupportedTwentyOneToForthy && val.Document.PidSupportedForthyOneToSixty {
+				return true
+			}
+		}
+	}
+	return false
 }

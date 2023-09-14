@@ -488,8 +488,10 @@ func NewSoarchainApp(
 		app.GetSubspace(dprmoduletypes.ModuleName),
 
 		app.BankKeeper,
+		app.DidKeeper,
+		app.EpochKeeper,
 	)
-	dprModule := dprmodule.NewAppModule(appCodec, app.DprKeeper, app.AccountKeeper, app.BankKeeper)
+	dprModule := dprmodule.NewAppModule(appCodec, app.DprKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper)
 
 	app.DidKeeper = *didmodulekeeper.NewKeeper(
 		appCodec,

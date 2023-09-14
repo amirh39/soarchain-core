@@ -38,7 +38,7 @@ func NewDIDDocumentWithSeq(did string) (types.DidDocumentWithSeq, tendermintcryp
 	authentications := []types.VerificationRelationship{
 		verificationRelationship,
 	}
-	doc := types.NewDidDocument(did, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications))
+	doc := types.NewDidDocument(did, PUBKEY, VIN, PIDS, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications))
 	docWithSeq := types.NewDidDocumentWithSeq(
 		&doc,
 		types.InitialSequence,
@@ -81,4 +81,8 @@ const (
 
 const (
 	ADDRESS = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
+	PUBKEY  = "3059301306072a8648ce3d020106082a8648ce3d030107034200046c28e2efdf94600435dbba5ae7f195cb619e3dd128b7e0e2877f9a1da489027819001c3e0141cb579dc3d9e913a45644401bd2458313dc37d15dd58adcaff154"
+	VIN     = "1HGCM82636c678d14c93ad5bf14448da57f4f241b77e30a013d54f5d76c8126a7029aeb86"
 )
+
+var PIDS = []bool{true, false, false}
