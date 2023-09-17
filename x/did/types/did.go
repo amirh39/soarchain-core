@@ -320,12 +320,12 @@ func NewVerificationMethodID(did string, name string) string {
 	return fmt.Sprintf("%v#%s", did, name)
 }
 
-func NewVerificationMethod(id string, keyType string, controller string, pubKey []byte) VerificationMethod {
+func NewVerificationMethod(id string, keyType string, controller string, publicKeyBase58 []byte) VerificationMethod {
 	return VerificationMethod{
 		Id:              id,
 		Type:            keyType,
 		Controller:      controller,
-		PublicKeyBase58: base58.Encode(pubKey),
+		PublicKeyBase58: base58.Encode(publicKeyBase58),
 	}
 }
 
@@ -452,12 +452,7 @@ func nextSequence(seq uint64) uint64 {
 func ParseVerificationMethodId(id string, did string) (string, error) {
 	methodId := id
 	if !ValidateVerificationMethodID(id, did) {
-		return "", sdkerrors.Wrapf(ErrIntOverflowDid, "[ParseVerificationMethodId][ValidateVerificationMethodID] failed for verificationMethodID: %v, did: %v", id, did)
+		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[ParseVerificationMethodId][ValidateVerificationMethodID] failed for verificationMethodID: %v, did: %v", id, did)
 	}
 	return methodId, nil
-}
-
-type PinSupported struct {
-	Name  string
-	Value bool
 }
