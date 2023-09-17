@@ -1,12 +1,12 @@
 package did_test
 
 import (
+	"soarchain/testutil/nullify"
+	"soarchain/x/did"
+	"soarchain/x/did/types"
 	"testing"
 
 	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
-	did "soarchain/x/did"
-	"soarchain/x/did/types"
 
 	"github.com/stretchr/testify/require"
 )
@@ -14,6 +14,8 @@ import (
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
+
+		DidList: []string{"0", "1"},
 	}
 
 	k, ctx := keepertest.DidKeeper(t)
@@ -24,5 +26,5 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
-	// this line is used by starport scaffolding # genesis/test/assert
+	require.ElementsMatch(t, genesisState.DidList, got.DidList)
 }
