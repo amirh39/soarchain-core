@@ -27,9 +27,11 @@ type BankKeeper interface {
 }
 
 type DidKeeper interface {
-	FindEligibleDid(ctx sdk.Context, pins []uint) (found bool)
-	GetDidDocumentWithSequence(ctx sdk.Context, id string) (val didtypes.DidDocumentWithSeq, found bool)
-	GetDidDocumentByPubkey(ctx sdk.Context, pubkey string) (didDocument didtypes.DidDocumentWithSeq, found bool)
+	SetDidDocument(ctx sdk.Context, id string, ddrData didtypes.DidDocumentWithSeq)
+	GetDidDocument(ctx sdk.Context, id string) (val didtypes.DidDocumentWithSeq, found bool)
+	GetEligibleDidByPubkey(ctx sdk.Context, pubkey string) (didDocument didtypes.DidDocumentWithSeq, eligible bool)
+	GetAllDid(ctx sdk.Context) (list []string)
+	GetEligibleDids(ctx sdk.Context, pins []uint) (found bool)
 }
 
 type EpochKeeper interface {
