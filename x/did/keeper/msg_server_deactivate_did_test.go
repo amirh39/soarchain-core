@@ -21,18 +21,19 @@ func TestHandleMsgDeactivateDID(t *testing.T) {
 	require.NotNil(t, createRes)
 	require.Nil(t, err)
 
-	docWithSequence, found := k.GetDidDocumentWithSequence(ctx, did)
+	didDocument, found := k.GetDidDocument(ctx, did)
 	require.Equal(t, true, found)
-	require.NotNil(t, docWithSequence)
+	require.NotNil(t, didDocument)
+
 	// deactivate
-	deactivateMsg := NewMsgDeactivateDID(*docWithSequence.Document, did, verificationMethodID, privKey, types.InitialSequence)
+	deactivateMsg := NewMsgDeactivateDID(*didDocument.Document, did, verificationMethodID, privKey, types.InitialSequence)
 	deactivateRes, err := msgServer.DeactivateDid(context, &deactivateMsg)
 
 	require.NoError(t, err)
 	require.NotNil(t, deactivateRes)
 
 	// check if it's really deactivated
-	got, found := k.GetDidDocumentWithSequence(ctx, did)
+	got, found := k.GetDidDocument(ctx, did)
 	require.False(t, got.Empty())
 	require.True(t, found)
 	require.True(t, got.Deactivated())
