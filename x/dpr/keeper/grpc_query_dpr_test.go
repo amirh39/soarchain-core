@@ -1,11 +1,10 @@
 package keeper_test
 
 import (
-	"strconv"
-	"testing"
-
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/x/dpr/types"
+	"strconv"
+	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -16,7 +15,7 @@ import (
 func Test_GetDpr(t *testing.T) {
 	keeper, ctx := keepertest.DprKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := SetupNDpr(2)
+	msgs := SetupSecondDpr(2)
 	keeper.SetDpr(ctx, msgs[0])
 	keeper.SetDpr(ctx, msgs[1])
 
@@ -66,11 +65,10 @@ func Test_GetDpr(t *testing.T) {
 
 func Test_GetAllDpr(t *testing.T) {
 	keeper, ctx := keepertest.DprKeeper(t)
-	msgs := SetupNDpr(2)
+	msgs := SetupSecondDpr(2)
 	keeper.SetDpr(ctx, msgs[0])
 	keeper.SetDpr(ctx, msgs[1])
 
-	allDprs, _ := keeper.GetAllDpr(ctx)
+	allDprs := keeper.GetAllDpr(ctx)
 	require.NotNil(t, allDprs)
-
 }
