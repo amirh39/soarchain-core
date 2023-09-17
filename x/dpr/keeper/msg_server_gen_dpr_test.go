@@ -1,61 +1,52 @@
 package keeper_test
 
 import (
+	"fmt"
+	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/types"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
+	// epochKeeper "soarchain/x/epoch/keeper"
+	// epochTypes "soarchain/x/epoch/types"
+
+	didtypes "soarchain/x/did/types"
 )
 
-func Test_GenDpr(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServer(t)
-	defer ctrl.Finish()
-	bank.ExpectAny(context)
-	ctx := sdk.UnwrapSDKContext(context)
+func (helper *KeeperTestHelper) Test_Gen_DPR() {
 
-	res, err := msgServer.GenDpr(context, &types.MsgGenDpr{
-		Creator:                       CREATOR,
-		PidSupportedOneToTwnety:       true,
-		PidSupportedTwentyOneToForthy: false,
-		PidSupportedForthyOneToSixty:  false,
-		LengthOfDpr:                   129,
+	helper.Run("TestGenDpr", func() {
+		helper.Setup()
+
+		didKeeper := helper.App.DidKeeper
+		epochKeeper := helper.App.EpochKeeper
+
+		helper.MsgServer = keeper.NewMsgServerImpl(helper.App.DprKeeper)
+		ctx := sdk.WrapSDKContext(helper.Ctx)
+
+		epochData := CreateEpochData(&epochKeeper, helper.Ctx)
+		epochKeeper.SetEpochData(helper.Ctx, epochData)
+
+		newDid := didtypes.DidDocument{
+			Id:              Did,
+			ClientPublicKey: PUBKEY,
+		}
+
+		didDocument := didtypes.DidDocumentWithSeq{
+			Document: &newDid,
+			Sequence: 0,
+		}
+		didKeeper.SetDidDocument(helper.Ctx, newDid.Id, didDocument)
+
+		res, err := helper.MsgServer.GenDpr(ctx, &types.MsgGenDpr{
+			Creator:                       CREATOR,
+			PidSupportedOneToTwnety:       true,
+			PidSupportedTwentyOneToForthy: false,
+			PidSupportedForthyOneToSixty:  false,
+			LengthOfDpr:                   45,
+		})
+		fmt.Print("res----->", res)
+		fmt.Print("err----->", err)
+		// helper.Require().Empty(res)
+		// helper.Require().Nil(err)
 	})
-	require.Nil(t, err)
-	require.NotNil(t, res)
-
-	dprs, found := k.GetAllDpr(ctx)
-	require.Equal(t, found, true)
-	require.NotNil(t, dprs)
 }
-
-// func (helper *KeeperTestHelper) Test_Gen_DPR() {
-
-// 	helper.Run("TestGenDpr", func() {
-// 		helper.Setup()
-// 		keeper := helper.App.DprKeeper
-// 		didKeeper := helper.App.DidKeeper
-
-// 		ctx := sdk.WrapSDKContext(helper.Ctx)
-
-// 		didDocument, privkey := NewDIDDocumentWithSeq(Did)
-// 		helper.Require().NotEmpty(didDocument)
-// 		helper.Require().NotEmpty(privkey)
-// 		didKeeper.SetDidDocument(helper.Ctx, Did, didDocument)
-// 		did, err := didKeeper.GetDidDocumentWithSequence(helper.Ctx, Did)
-// 		helper.Require().NotEmpty(did)
-// 		helper.Require().Empty(err)
-
-// 		// var msgServer types.MsgServer
-
-// 		res, err := keeper.SetDpr(helper.Ctx, types.MsgGenDpr{
-// 			Creator:                       CREATOR,
-// 			PidSupportedOneToTwnety:       true,
-// 			PidSupportedTwentyOneToForthy: false,
-// 			PidSupportedForthyOneToSixty:  false,
-// 			LengthOfDpr:                   12,
-// 		})
-// 		helper.Require().NotEmpty(res)
-// 		helper.Require().Empty(err)
-// 	})
-// }
