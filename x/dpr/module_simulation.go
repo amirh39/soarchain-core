@@ -29,6 +29,18 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgGenDpr int = 100
 
+	opWeightMsgEnterDPR = "op_weight_msg_enter_dpr"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgEnterDpr int = 100
+
+	opWeightMsgLeaveDPR = "op_weight_msg_leave_dpr"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgLeaveDpr int = 100
+
+	opWeightMsgActivateDPR = "op_weight_msg_activate_dpr"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgActivateDpr int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -72,6 +84,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgGenDpr,
 		dprsimulation.SimulateMsgGenDpr(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgEnterDpr int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgEnterDPR, &weightMsgEnterDpr, nil,
+		func(_ *rand.Rand) {
+			weightMsgEnterDpr = defaultWeightMsgEnterDpr
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgEnterDpr,
+		dprsimulation.SimulateMsgGenDpr(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgLeaveDpr int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgLeaveDPR, &weightMsgLeaveDpr, nil,
+		func(_ *rand.Rand) {
+			weightMsgLeaveDpr = defaultWeightMsgLeaveDpr
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgLeaveDpr,
+		dprsimulation.SimulateMsgLeaveDpr(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgActivateDpr int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgActivateDPR, &weightMsgActivateDpr, nil,
+		func(_ *rand.Rand) {
+			weightMsgActivateDpr = defaultWeightMsgActivateDpr
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgActivateDpr,
+		dprsimulation.SimulateMsgActivateDpr(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
