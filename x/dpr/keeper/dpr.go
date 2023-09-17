@@ -9,16 +9,14 @@ import (
 
 // Set Dpr object in the store
 func (k Keeper) SetDpr(ctx sdk.Context, dpr types.Dpr) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DprDataKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DprKeyPrefix))
 	b := k.cdc.MustMarshal(&dpr)
-	store.Set([]byte{0}, b)
+	store.Set(types.DprKey(
+		dpr.Id,
+	), b)
 }
 
-func (k Keeper) GetDpr(
-	ctx sdk.Context,
-	id string,
-
-) (val types.Dpr, found bool) {
+func (k Keeper) GetDpr(ctx sdk.Context, id string) (val types.Dpr, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DprKeyPrefix))
 
 	b := store.Get(types.DprKey(
@@ -32,20 +30,8 @@ func (k Keeper) GetDpr(
 	return val, true
 }
 
-func (k Keeper) GetDprData(ctx sdk.Context) (val types.Dpr, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DprDataKey))
-
-	b := store.Get([]byte{0})
-	if b == nil {
-		return val, false
-	}
-
-	k.cdc.MustUnmarshal(b, &val)
-	return val, true
-}
-
-func (k Keeper) GetAllDpr(ctx sdk.Context) (list []types.Dpr, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DprDataKey))
+func (k Keeper) GetAllDpr(ctx sdk.Context) (list []types.Dpr) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DprKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
@@ -56,11 +42,11 @@ func (k Keeper) GetAllDpr(ctx sdk.Context) (list []types.Dpr, found bool) {
 		list = append(list, val)
 	}
 
-	return list, true
+	return
 }
 
 func (k Keeper) GetAllActiveDpr(ctx sdk.Context) (list []types.Dpr) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DprDataKey))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DprKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
@@ -72,6 +58,5 @@ func (k Keeper) GetAllActiveDpr(ctx sdk.Context) (list []types.Dpr) {
 			list = append(list, val)
 		}
 	}
-
 	return
 }
