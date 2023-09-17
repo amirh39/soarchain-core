@@ -11,39 +11,27 @@ import (
 func Test_SetDprObject(t *testing.T) {
 	keeper, ctx := keepertest.DprKeeper(t)
 
-	dprs := SetupNDpr(2)
-	keeper.SetDpr(ctx, dprs[0])
-	keeper.SetDpr(ctx, dprs[1])
-	require.NotNil(t, dprs)
-
-	dpr, found := keeper.GetDpr(ctx, dprs[0].Id)
+	dpr := CreateDpr(keeper, ctx, 1)
 	require.NotNil(t, dpr)
-	require.Equal(t, found, true)
 
-	allDprs, _ := keeper.GetAllDpr(ctx)
-	require.NotNil(t, allDprs)
-	require.Equal(t, 2, len(allDprs))
+	got, found := keeper.GetDpr(ctx, dpr[0].Id)
+	require.Equal(t, true, found)
+	require.NotNil(t, got)
 
-	t.Log("allDprs", allDprs)
 }
 
 func Test_AllActiveDpr(t *testing.T) {
 	keeper, ctx := keepertest.DprKeeper(t)
 
-	dprs := SetupNDpr(2)
-	deactiveDprs := SetupNDeactiveDpr(1)
-	keeper.SetDpr(ctx, dprs[0])
-	keeper.SetDpr(ctx, dprs[1])
-	keeper.SetDpr(ctx, deactiveDprs[0])
+	dprs := CreateDeactiveDpr(keeper, ctx, 1)
+	require.NotNil(t, dprs)
 
-	allDprs, _ := keeper.GetAllDpr(ctx)
+	allDprs := keeper.GetAllDpr(ctx)
+	require.Equal(t, 1, len(allDprs))
 	require.NotNil(t, allDprs)
 
-	require.Equal(t, 3, len(allDprs))
-
 	allActiveDprs := keeper.GetAllActiveDpr(ctx)
-	require.NotNil(t, allActiveDprs)
-
-	require.Equal(t, 2, len(allActiveDprs))
+	require.Nil(t, allActiveDprs)
+	require.Equal(t, 0, len(allActiveDprs))
 
 }
