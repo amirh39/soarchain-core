@@ -475,10 +475,8 @@ func NewSoarchainApp(
 		keys[didmoduletypes.StoreKey],
 		keys[didmoduletypes.MemStoreKey],
 		app.GetSubspace(didmoduletypes.ModuleName),
-
-		app.BankKeeper,
 	)
-	didModule := didmodule.NewAppModule(appCodec, app.DidKeeper, app.AccountKeeper, app.BankKeeper)
+	didModule := didmodule.NewAppModule(appCodec, app.DidKeeper, app.AccountKeeper)
 
 	app.PoaKeeper = *poamodulekeeper.NewKeeper(
 		appCodec,
