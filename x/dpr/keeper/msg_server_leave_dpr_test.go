@@ -1,27 +1,43 @@
 package keeper_test
 
 import (
+	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/types"
-	"testing"
+
+	didtypes "soarchain/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 )
 
-func Test_LeaveDpr(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServer(t)
-	defer ctrl.Finish()
-	bank.ExpectAny(context)
-	ctx := sdk.UnwrapSDKContext(context)
+func (helper *KeeperTestHelper) Test_Leave_DPR() {
+	helper.Run("TestLeaveDpr", func() {
+		helper.Setup()
+		didKeeper := helper.App.DidKeeper
+		dprKeeper := helper.App.DprKeeper
+		helper.MsgServer = keeper.NewMsgServerImpl(helper.App.DprKeeper)
+		ctx := sdk.WrapSDKContext(helper.Ctx)
 
-	res, err := msgServer.LeaveDpr(context, &types.MsgLeaveDpr{
-		PubKey: "",
-		Sender: "",
-		DprId:  "123",
+		dpr := SetupSecondDpr(1)
+		dprKeeper.SetDpr(helper.Ctx, dpr[0])
+		helper.Require().NotEmpty(dpr)
+
+		newDid := didtypes.DidDocument{
+			Id:              Did,
+			ClientPublicKey: PUBKEY,
+			Vin:             VIN,
+		}
+
+		didDocument := didtypes.DidDocumentWithSeq{
+			Document: &newDid,
+			Sequence: 0,
+		}
+		didKeeper.SetDidDocument(helper.Ctx, newDid.Id, didDocument)
+		res, err := helper.MsgServer.LeaveDpr(ctx, &types.MsgLeaveDpr{
+			PubKey: PUBKEY,
+			Sender: CREATOR,
+			DprId:  DprId,
+		})
+		helper.Require().Empty(res)
+		helper.Require().Nil(err)
 	})
-	require.Nil(t, err)
-	require.NotNil(t, res)
-
-	dprs, _ := k.GetAllDpr(ctx)
-	require.NotNil(t, dprs)
 }
