@@ -1,26 +1,29 @@
 package keeper_test
 
 import (
+	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/types"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 )
 
-func Test_ActivateDpr(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServer(t)
-	defer ctrl.Finish()
-	bank.ExpectAny(context)
-	ctx := sdk.UnwrapSDKContext(context)
+func (helper *KeeperTestHelper) Test_Activate_DPR() {
+	helper.Run("TestActivateDpr", func() {
+		helper.Setup()
 
-	res, err := msgServer.ActivateDpr(context, &types.MsgActivateDpr{
-		Sender: CREATOR,
-		DprId:  "123",
+		dprKeeper := helper.App.DprKeeper
+		helper.MsgServer = keeper.NewMsgServerImpl(helper.App.DprKeeper)
+		ctx := sdk.WrapSDKContext(helper.Ctx)
+
+		dpr := SetupSecondDpr(1)
+		dprKeeper.SetDpr(helper.Ctx, dpr[0])
+		helper.Require().NotEmpty(dpr)
+
+		res, err := helper.MsgServer.ActivateDpr(ctx, &types.MsgActivateDpr{
+			Sender: CREATOR,
+			DprId:  DprId,
+		})
+		helper.Require().Empty(res)
+		helper.Require().Nil(err)
 	})
-	require.Nil(t, err)
-	require.NotNil(t, res)
-
-	dprs, _ := k.GetAllDpr(ctx)
-	require.NotNil(t, dprs)
 }
