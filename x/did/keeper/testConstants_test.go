@@ -4,8 +4,8 @@ package keeper_test
 import (
 	"context"
 	"soarchain/x/did/keeper"
-	"soarchain/x/did/testutil"
 	"soarchain/x/did/types"
+	"soarchain/x/dpr/testutil"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -65,8 +65,7 @@ func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Conte
 	*gomock.Controller, *testutil.MockBankKeeper) {
 	ctrl := gomock.NewController(t)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.DidKeeperWithMocks(t, bankMock)
-	//did.InitGenesis(ctx, *k, *types.DefaultGenesis())
+	k, ctx := keepertest.DidKeeper(t)
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
 
@@ -75,7 +74,7 @@ func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Conte
 
 const (
 	Did                  = "did:soar:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm"
-	SecondDid            = "did1:soar:1Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgap"
+	SecondDid            = "did:soar:1Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgap"
 	VerificationMethodId = Did + "#key1"
 )
 
