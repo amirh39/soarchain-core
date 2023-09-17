@@ -11,10 +11,11 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 
-	k.SetDpr(ctx, genState.Dpr)
-
-	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
+
+	for _, elem := range genState.DprList {
+		k.SetDpr(ctx, elem)
+	}
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -23,12 +24,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.Params = k.GetParams(ctx)
 
 	// Get all dpr
-	dpr, found := k.GetDprData(ctx)
-	if found {
-		genesis.Dpr = dpr
-	}
-
-	//genesis.DprList, _ = k.GetAllDpr(ctx)
+	genesis.DprList = k.GetAllDpr(ctx)
 
 	return genesis
 }
