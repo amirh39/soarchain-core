@@ -18,8 +18,6 @@ type (
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
 		paramStore paramtypes.Subspace
-
-		bankKeeper types.BankKeeper
 	}
 )
 
@@ -28,7 +26,6 @@ func NewDidKeeper(
 	storeKey,
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
-	bankKeeper types.BankKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -41,7 +38,6 @@ func NewDidKeeper(
 		storeKey:   storeKey,
 		memKey:     memKey,
 		paramStore: ps,
-		bankKeeper: bankKeeper,
 	}
 }
 
