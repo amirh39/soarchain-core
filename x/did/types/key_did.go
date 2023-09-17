@@ -15,8 +15,8 @@ func DidKey(
 ) []byte {
 	var key []byte
 
-	idBytes := []byte(id)
-	key = append(key, idBytes...)
+	indexBytes := []byte(id)
+	key = append(key, indexBytes...)
 	key = append(key, []byte("/")...)
 
 	return key
