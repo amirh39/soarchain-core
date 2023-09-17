@@ -2,9 +2,6 @@ package keeper
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-	"time"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -20,18 +17,18 @@ type (
 		cdc        codec.BinaryCodec
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
-		paramstore paramtypes.Subspace
+		paramStore paramtypes.Subspace
 
-		authKeeper types.AccountKeeper
+		bankKeeper types.BankKeeper
 	}
 )
 
-func NewKeeper(
+func NewDidKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
-
+	bankKeeper types.BankKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -43,22 +40,11 @@ func NewKeeper(
 		cdc:        cdc,
 		storeKey:   storeKey,
 		memKey:     memKey,
-		paramstore: ps,
+		paramStore: ps,
+		bankKeeper: bankKeeper,
 	}
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
-	printLogs, err := strconv.ParseBool(os.Getenv("PrintLogs"))
-	if err != nil {
-		fmt.Print("[keeper][Logger] failed. Couldn't parse int to string.")
-	}
-
-	if !printLogs {
-		return nil
-	}
-	return ctx.Logger().With(
-		"timestamp", fmt.Sprintf("%s", time.Now().String()),
-		"module", fmt.Sprintf("x/%s", types.ModuleName),
-		"height", fmt.Sprintf("%s", strconv.FormatInt(ctx.BlockHeight(), 10)),
-	)
+	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
