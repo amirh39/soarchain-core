@@ -5,7 +5,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgEnterDpr = "gen_enter"
+const TypeMsgEnterDpr = "enter_dpr"
 
 var _ sdk.Msg = &MsgGenDpr{}
 
