@@ -2,8 +2,7 @@ package keeper
 
 import "soarchain/x/dpr/types"
 
-func (k Keeper) VerifyDPRInputs(msg *types.MsgGenDpr, totalEpoch uint64) bool {
-
+func (k Keeper) VerifyDprInputs(msg *types.MsgGenDpr, totalEpoch uint64) bool {
 	if msg.Creator == "" {
 		return false
 	}
