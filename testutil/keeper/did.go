@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"soarchain/x/did/keeper"
-	"soarchain/x/did/testutil"
 	"soarchain/x/did/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -20,10 +19,6 @@ import (
 )
 
 func DidKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	return DidKeeperWithMocks(t, nil)
-}
-
-func DidKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -42,45 +37,12 @@ func DidKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Ke
 		memStoreKey,
 		"DidParams",
 	)
-	k := keeper.NewKeeper(
+	k := keeper.NewDidKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-	)
-
-	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
-
-	// Initialize params
-	k.SetParams(ctx, types.DefaultParams())
-
-	return k, ctx
-}
-
-func DidKeeperWithMocksEpoch(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Keeper, sdk.Context) {
-	storeKey := sdk.NewKVStoreKey(types.StoreKey)
-	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
-
-	db := tmdb.NewMemDB()
-	stateStore := store.NewCommitMultiStore(db)
-	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
-	stateStore.MountStoreWithDB(memStoreKey, sdk.StoreTypeMemory, nil)
-	require.NoError(t, stateStore.LoadLatestVersion())
-
-	registry := codectypes.NewInterfaceRegistry()
-	cdc := codec.NewProtoCodec(registry)
-
-	paramsSubspace := typesparams.NewSubspace(cdc,
-		types.Amino,
-		storeKey,
-		memStoreKey,
-		"DidParams",
-	)
-	k := keeper.NewKeeper(
-		cdc,
-		storeKey,
-		memStoreKey,
-		paramsSubspace,
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
