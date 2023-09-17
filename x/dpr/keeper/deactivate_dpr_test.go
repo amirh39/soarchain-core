@@ -10,20 +10,11 @@ import (
 func Test_DeactivateDpr(t *testing.T) {
 	keeper, ctx := keepertest.DprKeeper(t)
 
-	dprs := SetupNDpr(1)
-	dprsDif := SetupNDifDpr(1)
-	deactiveDprs := SetupNDeactiveDpr(1)
-	keeper.SetDpr(ctx, dprs[0])
-	keeper.SetDpr(ctx, dprsDif[0])
-	keeper.SetDpr(ctx, deactiveDprs[0])
-
-	allDprs, found := keeper.GetAllDpr(ctx)
-	require.Equal(t, found, true)
-	require.NotNil(t, allDprs)
+	dprs := CreateAeactiveDpr(keeper, ctx, 1)
+	require.NotNil(t, dprs)
 
 	keeper.DeactivateDpr(ctx, 4)
 
-	allDprsAfterDeactivating := keeper.GetAllActiveDpr(ctx)
-	// require.Equal(t, found, true)
-	require.NotNil(t, allDprsAfterDeactivating)
+	allDprs := keeper.GetAllDpr(ctx)
+	require.NotNil(t, allDprs)
 }
