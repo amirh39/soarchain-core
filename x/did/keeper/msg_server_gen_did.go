@@ -16,11 +16,10 @@ func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.M
 
 	log.Println("############## Generating a did Transaction Started ##############")
 
-	documentWithSequence, found := k.GetDidDocumentWithSequence(ctx, msg.Did)
+	documentWithSequence, found := k.GetDidDocument(ctx, msg.Did)
 	if found || !documentWithSequence.Empty() {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDid][GetDidDocument] failed. Did is already registered.")
 	}
-	log.Println("############## Generating 1111 a did Transaction Started ##############")
 
 	seq := types.InitialSequence
 	if logger != nil {
@@ -31,12 +30,8 @@ func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.M
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDid][VerifyDidOwnership] failed. Did not belong to the creator.")
 	}
 
-	log.Println("############## Generating a 222222 Transaction Started ##############")
-
 	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetDidDocument(ctx, msg.Did, didDocument)
-
-	log.Println("############## Generating a 33333333333333333 Transaction Started ##############")
+	k.SetDidDocument(ctx, didDocument.Document.Id, didDocument)
 
 	if logger != nil {
 		logger.Info("Generating did successfully done.", "transaction", "GenDid", "document", didDocument)
