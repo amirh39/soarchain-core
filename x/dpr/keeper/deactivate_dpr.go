@@ -11,7 +11,7 @@ func (k Keeper) DeactivateDpr(ctx sdk.Context, totalEpoch uint64) {
 	logger := k.Logger(ctx)
 	activeDprs := k.GetAllActiveDpr(ctx)
 
-	if len(activeDprs) == 0 {
+	if activeDprs == nil {
 		logger.Info("There is no active DPR to be deactivated.", "path", "DeactivateDpr")
 		return
 	}
