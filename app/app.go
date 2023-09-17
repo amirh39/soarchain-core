@@ -470,6 +470,16 @@ func NewSoarchainApp(
 	)
 	epochModule := epochmodule.NewAppModule(appCodec, app.EpochKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.DidKeeper = *didmodulekeeper.NewDidKeeper(
+		appCodec,
+		keys[didmoduletypes.StoreKey],
+		keys[didmoduletypes.MemStoreKey],
+		app.GetSubspace(didmoduletypes.ModuleName),
+
+		app.BankKeeper,
+	)
+	didModule := didmodule.NewAppModule(appCodec, app.DidKeeper, app.AccountKeeper, app.BankKeeper)
+
 	app.PoaKeeper = *poamodulekeeper.NewKeeper(
 		appCodec,
 		keys[poamoduletypes.StoreKey],
@@ -479,27 +489,19 @@ func NewSoarchainApp(
 		app.BankKeeper,
 		app.EpochKeeper,
 	)
-	poaModule := poamodule.NewAppModule(appCodec, app.PoaKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper, app.DprKeeper)
+	poaModule := poamodule.NewAppModule(appCodec, app.PoaKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper)
 
-	app.DprKeeper = *dprmodulekeeper.NewKeeper(
+	app.DprKeeper = *dprmodulekeeper.NewDprKeeper(
 		appCodec,
 		keys[dprmoduletypes.StoreKey],
 		keys[dprmoduletypes.MemStoreKey],
 		app.GetSubspace(dprmoduletypes.ModuleName),
 
 		app.BankKeeper,
-		app.DidKeeper,
 		app.EpochKeeper,
+		app.DidKeeper,
 	)
-	dprModule := dprmodule.NewAppModule(appCodec, app.DprKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper)
-
-	app.DidKeeper = *didmodulekeeper.NewKeeper(
-		appCodec,
-		keys[didmoduletypes.StoreKey],
-		keys[didmoduletypes.MemStoreKey],
-		app.GetSubspace(didmoduletypes.ModuleName),
-	)
-	didModule := didmodule.NewAppModule(appCodec, app.DidKeeper, app.AccountKeeper)
+	dprModule := dprmodule.NewAppModule(appCodec, app.DprKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper, app.DidKeeper)
 
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
