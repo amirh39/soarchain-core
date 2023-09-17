@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"soarchain/x/dpr/types"
@@ -11,6 +12,7 @@ import (
 )
 
 func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr) (*types.MsgActivateDprResponse, error) {
+	fmt.Print("ppppppppppppppppppppppppppp")
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
@@ -18,7 +20,7 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 
 	dpr, found := k.GetDpr(ctx, msg.DprId)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ActivateDpr][GetDpr] failed. There is no eligible client to serve this DPR.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ActivateDpr][GetDpr] failed. Dpr not registered.")
 	}
 	if dpr.Creator != msg.Sender {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[ActivateDpr] failed. There is no valid owner for this DPR [ %T ]", msg.DprId)
@@ -30,6 +32,10 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 
 	if dpr.IsActive {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. DPR is already active.")
+	}
+
+	if len(dpr.ClientPubkeys) == 0 || dpr.ClientPubkeys == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. There is no client to activate Dpr.")
 	}
 
 	//Save dpr into storage
@@ -44,10 +50,7 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 		ClientPubkeys:                 dpr.ClientPubkeys,
 		LengthOfDpr:                   dpr.LengthOfDpr,
 	}
-
 	k.SetDpr(ctx, newDpr)
-
-	// xx := k.GetAllDpr(ctx)
 
 	if logger != nil {
 		logger.Info("Dpr activation successfully Done.", "transaction", "ActivateDpr")
