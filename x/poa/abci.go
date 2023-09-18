@@ -31,12 +31,20 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 
 	// check if a new epoch has started
 	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
+		if logger != nil {
+			logger.Info("Update epoch started.", "path", "BeginBlocker")
+		}
+
+		if logger != nil {
+			logger.Info("Fetching epoch data successfully done.", "path", "BeginBlocker", "found", found, "epoch data", epochData)
+		}
 
 		k.epochKeeper.UpdateEpoch(ctx)
 
 		if logger != nil {
 			logger.Info("Update epoch  successfully done.", "path", "BeginBlocker", "epoch data", epochData, "found", found)
 		}
+
 	}
 
 	if (epochData.TotalEpochs%192 == 0) && (epochData.TotalEpochs != 0) {
@@ -47,11 +55,13 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 		}
 
 		k.epochKeeper.SetEpochData(ctx, epochData)
+
 	}
 
 	log.Println("############## End of Begin Blocker ##############")
 }
 
 func EndBlocker(ctx sdk.Context, k keeper.Keeper) []abci.ValidatorUpdate {
+
 	return []abci.ValidatorUpdate{}
 }
