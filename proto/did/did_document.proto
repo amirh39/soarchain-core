@@ -1,8 +1,6 @@
 syntax = "proto3";
 package soarchain.did;
 
-option java_multiple_files = true;
-
 option go_package = "soarchain/x/did/types";
 
 import "gogoproto/gogo.proto";
