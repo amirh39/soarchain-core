@@ -9,13 +9,13 @@ const TypeMsgGenDpr = "gen_dpr"
 
 var _ sdk.Msg = &MsgGenDpr{}
 
-func NewMsgGenDpr(creator string, pidSupportedOneToTwnety bool, pidSupportedTwentyOneToForthy bool, pidSupportedForthyOneToSixty bool, lengthOfDpr uint64) *MsgGenDpr {
+func NewMsgGenDpr(creator string, pidSupportedOneToTwnety bool, pidSupportedTwentyOneToForthy bool, pidSupportedForthyOneToSixty bool, duration uint64) *MsgGenDpr {
 	return &MsgGenDpr{
 		Creator:                       creator,
 		PidSupportedOneToTwnety:       pidSupportedOneToTwnety,
 		PidSupportedTwentyOneToForthy: pidSupportedTwentyOneToForthy,
 		PidSupportedForthyOneToSixty:  pidSupportedForthyOneToSixty,
-		LengthOfDpr:                   lengthOfDpr,
+		Duration:                      duration,
 	}
 }
 

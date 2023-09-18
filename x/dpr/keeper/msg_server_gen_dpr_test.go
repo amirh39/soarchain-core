@@ -42,7 +42,7 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 			PidSupportedOneToTwnety:       true,
 			PidSupportedTwentyOneToForthy: false,
 			PidSupportedForthyOneToSixty:  false,
-			LengthOfDpr:                   45,
+			Duration:                      45,
 		})
 		fmt.Print("res----->", res)
 		fmt.Print("err----->", err)

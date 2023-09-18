@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"soarchain/x/dpr/types"
@@ -51,8 +50,6 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetDpr] failed. Dpr not registered.")
 	}
 
-	fmt.Print("dprdprdprdpr", dpr)
-
 	// Save dpr into storage
 	newDpr := types.Dpr{
 		Id:                            dpr.Id,
@@ -63,12 +60,9 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 		IsActive:                      dpr.IsActive,
 		Vin:                           remainedVins(did.Document.Vin, dpr.Vin),
 		ClientPubkeys:                 remainedPubKeys(msg.PubKey, dpr.ClientPubkeys),
-		LengthOfDpr:                   dpr.LengthOfDpr,
+		Duration:                      dpr.Duration,
 	}
 	k.SetDpr(ctx, newDpr)
-
-	xx := k.GetAllDpr(ctx)
-	fmt.Print("vvvvvvvvvvvvvvvvvvvvvvvvvvvvv", xx)
 
 	if logger != nil {
 		logger.Info("Dpr is vali and active", "transaction", "LeaveDpr", "dpr-objects")

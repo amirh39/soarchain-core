@@ -11,7 +11,7 @@ func (k Keeper) VerifyDprInputs(msg *types.MsgGenDpr, totalEpoch uint64) bool {
 		return false
 	}
 
-	if msg.LengthOfDpr < totalEpoch {
+	if msg.Duration < totalEpoch {
 		return false
 	}
 

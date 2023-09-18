@@ -18,7 +18,7 @@ message MsgGenDpr {
   bool pidSupportedOneToTwnety = 2; 
   bool pidSupportedTwentyOneToForthy = 3; 
   bool pidSupportedForthyOneToSixty = 4; 
-  uint64 lengthOfDpr = 5;
+  uint64 duration = 5;
 }
 
 message MsgGenDprResponse {}

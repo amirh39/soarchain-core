@@ -48,7 +48,7 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 		IsActive:                      true,
 		Vin:                           dpr.Vin,
 		ClientPubkeys:                 dpr.ClientPubkeys,
-		LengthOfDpr:                   dpr.LengthOfDpr,
+		Duration:                      dpr.Duration,
 	}
 	k.SetDpr(ctx, newDpr)
 

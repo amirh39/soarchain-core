@@ -14,7 +14,7 @@ message Dpr {
   bool isActive = 6;
   repeated string vin = 7;
   repeated string clientPubkeys = 8;
-  uint64 lengthOfDpr = 9;
+  uint64 duration = 9;
 }
 
 

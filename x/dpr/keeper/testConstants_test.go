@@ -25,7 +25,7 @@ func CreateDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dpr {
 		items[i].Id = DprId
 		items[i].ClientPubkeys = []string{PUBKEY}
 		items[i].Creator = CREATOR
-		items[i].LengthOfDpr = 12
+		items[i].Duration = 12
 		items[i].IsActive = false
 		items[i].Vin = []string{VIN}
 
@@ -39,7 +39,7 @@ func SetupDpr(n int) []types.Dpr {
 	for i := range items {
 		items[i].Id = DprId
 		items[i].Creator = CREATOR
-		items[i].LengthOfDpr = 12
+		items[i].Duration = 12
 		items[i].IsActive = false
 
 	}
@@ -52,7 +52,7 @@ func SetupSecondDpr(n int) []types.Dpr {
 		items[i].Id = DprId
 		items[i].ClientPubkeys = []string{PUBKEY}
 		items[i].Creator = CREATOR
-		items[i].LengthOfDpr = 12
+		items[i].Duration = 12
 		items[i].IsActive = false
 		items[i].Vin = []string{VIN}
 
@@ -65,7 +65,7 @@ func CreateDeactiveDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dp
 	for i := range items {
 		items[i].Id = strconv.Itoa(i)
 		items[i].Creator = strconv.Itoa(i)
-		items[i].LengthOfDpr = 12
+		items[i].Duration = 12
 		items[i].IsActive = false
 
 		keeper.SetDpr(ctx, items[i])
@@ -78,7 +78,7 @@ func CreateAeactiveDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dp
 	for i := range items {
 		items[i].Id = strconv.Itoa(i)
 		items[i].Creator = strconv.Itoa(i)
-		items[i].LengthOfDpr = 12
+		items[i].Duration = 12
 		items[i].IsActive = true
 
 		keeper.SetDpr(ctx, items[i])
