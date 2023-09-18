@@ -482,7 +482,7 @@
       "IsActive":                      false,
       "Vin":                           [],
       "ClientPubkeys":                 [],
-      "LengthOfDpr":                   0
+      "Duration":                   0
     },
     "poa": {
       "params": {},
@@ -490,18 +490,6 @@
       "challengerList": [],
       "runnerList": [],
       "vrfDataList": [],
-      "DprList": [],
-      "Dpr": {
-        "Id":                            "",
-        "Creator":                       "",
-        "PidSupportedOneToTwnety":       false,
-        "PidSupportedTwentyOneToForthy": false,
-        "PidSupportedForthyOneToSixty":  false,
-        "IsActive":                      false,
-        "Vin":                           [],
-        "ClientPubkeys":                 [],
-        "LengthOfDpr":                   0
-      },
       "epochData": {
         "totalEpochs": "0",
         "epochV2VRX": "0udmotus",
