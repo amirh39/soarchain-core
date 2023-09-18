@@ -11,6 +11,7 @@ service Msg {
   rpc EnterDpr(MsgEnterDpr) returns (MsgEnterDprResponse);
   rpc ActivateDpr(MsgActivateDpr) returns (MsgActivateDprResponse);
   rpc LeaveDpr(MsgLeaveDpr) returns (MsgLeaveDprResponse);
+  rpc DeactivateDpr(MsgDeactivateDpr) returns (MsgDeactivateDprResponse);
 }
 
 message MsgGenDpr {
@@ -45,3 +46,11 @@ message MsgLeaveDpr {
 }
 
 message MsgLeaveDprResponse {}
+
+message MsgDeactivateDpr {
+  string dprId = 1; 
+  string sender = 2;
+  uint64 duration = 3;
+}
+
+message MsgDeactivateDprResponse {}
