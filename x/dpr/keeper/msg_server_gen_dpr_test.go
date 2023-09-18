@@ -1,13 +1,10 @@
 package keeper_test
 
 import (
-	"fmt"
 	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	// epochKeeper "soarchain/x/epoch/keeper"
-	// epochTypes "soarchain/x/epoch/types"
 
 	didtypes "soarchain/x/did/types"
 )
@@ -27,8 +24,11 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		epochKeeper.SetEpochData(helper.Ctx, epochData)
 
 		newDid := didtypes.DidDocument{
-			Id:              Did,
-			ClientPublicKey: PUBKEY,
+			Id:                            Did,
+			ClientPublicKey:               PUBKEY,
+			PidSupportedOneToTwnety:       true,
+			PidSupportedTwentyOneToForthy: false,
+			PidSupportedForthyOneToSixty:  false,
 		}
 
 		didDocument := didtypes.DidDocumentWithSeq{
@@ -44,9 +44,7 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 			PidSupportedForthyOneToSixty:  false,
 			Duration:                      45,
 		})
-		fmt.Print("res----->", res)
-		fmt.Print("err----->", err)
-		// helper.Require().Empty(res)
-		// helper.Require().Nil(err)
+		helper.Require().Empty(res)
+		helper.Require().Nil(err)
 	})
 }
