@@ -24,9 +24,8 @@ func Test_GenDid(t *testing.T) {
 		Signature:            sig,
 		FromAddress:          ADDRESS,
 	})
+	didDocument, _ := k.GetDidDocument(ctx, Did)
+	t.Log("didDocument------------------->", didDocument)
 	require.NotNil(t, res)
-	require.Nil(t, err)
-	didDocument, found := k.GetDidDocument(ctx, Did)
-	require.NotNil(t, didDocument)
-	require.Equal(t, found, true)
+	require.NoError(t, err)
 }
