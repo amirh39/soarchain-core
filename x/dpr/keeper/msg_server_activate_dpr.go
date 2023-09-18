@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"soarchain/x/dpr/types"
@@ -12,7 +11,6 @@ import (
 )
 
 func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr) (*types.MsgActivateDprResponse, error) {
-	fmt.Print("ppppppppppppppppppppppppppp")
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
