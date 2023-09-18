@@ -1,7 +1,6 @@
 package simulation
 
 import (
-	"log"
 	"math/rand"
 
 	"soarchain/x/dpr/keeper"
@@ -19,7 +18,6 @@ func SimulateMsgLeaveDpr(
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
-		log.Println("7777777777777777777777")
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 		msg := &types.MsgLeaveDpr{
 			Sender: simAccount.Address.String(),
