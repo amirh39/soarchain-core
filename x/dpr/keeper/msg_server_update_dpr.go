@@ -19,6 +19,10 @@ func (k msgServer) UpdateDpr(goCtx context.Context, msg *types.MsgUpdateDpr) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateDpr][GetDpr] failed. There is no valid Dpr.")
 	}
 
+	if msg.Sender != dpr.Creator {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateDpr] failed. Dpr not belong to the sender.")
+	}
+
 	//Update dpr into storage
 	newDpr := types.Dpr{
 		Id:                            msg.DprId,
