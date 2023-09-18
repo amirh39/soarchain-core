@@ -37,6 +37,4 @@ type DidKeeper interface {
 type EpochKeeper interface {
 	GetEpochData(ctx sdk.Context) (epochtypes.EpochData, bool)
 	SetEpochData(ctx sdk.Context, epochData epochtypes.EpochData)
-	UpdateEpochRewards(ctx sdk.Context, serviceName string, coin sdk.Coin) error
-	UpdateEpoch(ctx sdk.Context)
 }
