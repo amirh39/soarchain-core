@@ -17,7 +17,7 @@ func (k Keeper) DeactivateDpr(ctx sdk.Context, totalEpoch uint64) {
 	}
 
 	for _, dpr := range activeDprs {
-		if totalEpoch > dpr.Duration {
+		if totalEpoch > totalEpoch+dpr.Duration+1 {
 			newDpr := types.Dpr{
 				Id:                            dpr.Id,
 				Creator:                       dpr.Creator,
