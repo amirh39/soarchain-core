@@ -16,13 +16,14 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 	defer telemetry.ModuleMeasureSince(types.ModuleName, time.Now(), telemetry.MetricKeyBeginBlocker)
 	logger := k.keeper.Logger(ctx)
 
-	epochData, found := k.epochKeeper.GetEpochData(ctx)
-	if !found {
-		logger.Error("Fetching epoch data failed.", "path", "BeginBlocker")
+	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
+
+		epochData, found := k.epochKeeper.GetEpochData(ctx)
+		if !found {
+			logger.Error("[Dpr Module][BeginBlocker] Fetching epoch data failed.", "path", "BeginBlocker")
+		}
+		k.keeper.DeactivateDpr(ctx, epochData.TotalEpochs)
 	}
-
-	k.keeper.DeactivateDpr(ctx, epochData.TotalEpochs)
-
 }
 
 func EndBlocker(ctx sdk.Context, k keeper.Keeper) []abci.ValidatorUpdate {
