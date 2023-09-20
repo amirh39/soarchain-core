@@ -1,0 +1,18 @@
+syntax = "proto3";
+package soarchain.dpr;
+
+option go_package = "soarchain/x/dpr/types";
+
+message Dpr {
+  string id = 1;
+  string creator = 2;
+  bool pidSupportedOneToTwnety = 3;
+  bool pidSupportedTwentyOneToForthy = 4;
+  bool pidSupportedForthyOneToSixty = 5;
+  bool isActive = 6;
+  repeated string vin = 7;
+  repeated string clientPubkeys = 8;
+  uint64 duration = 9;
+}
+
+

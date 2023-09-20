@@ -18,7 +18,7 @@ func (k Keeper) VerifyDidOwnership(signData *types.DidDocument, seq uint64, doc 
 		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[VerifyDIDOwnership] failed. Make sure using valid verification method. Use ES256K_2019 OR ES256K_2018 methods.")
 	}
 
-	pubKeySecp256k1, err := crypto.PubKeyFromBase58(verificationMethod.PubKey)
+	pubKeySecp256k1, err := crypto.PubKeyFromBase58(verificationMethod.PublicKeyBase58)
 	if err != nil {
 		return 0, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[VerifyDIDOwnership][PubKeyFromBase58] failed. Make sure using a valid pubkey.")
 	}

@@ -31,7 +31,7 @@ func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.M
 	}
 
 	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetDidDocument(ctx, msg.Did, didDocument)
+	k.SetDidDocument(ctx, didDocument.Document.Id, didDocument)
 
 	if logger != nil {
 		logger.Info("Generating did successfully done.", "transaction", "GenDid", "document", didDocument)

@@ -1,13 +1,10 @@
 syntax = "proto3";
 package soarchain.did;
 
-option java_multiple_files = true;
-
 option go_package = "soarchain/x/did/types";
 
 import "gogoproto/gogo.proto";
 
-// Strings defines a JSON-LD string array format which is marshalled to a single string if the array length is 1.
 message Strings {
   repeated string values = 1;
 }
@@ -23,14 +20,18 @@ message DidDocument {
   repeated VerificationRelationship capabilityInvocations = 8 [json_name = "capabilityInvocation", (gogoproto.customtype) = "VerificationRelationship"];
   repeated VerificationRelationship capabilityDelegations = 9 [json_name = "capabilityDelegation", (gogoproto.customtype) = "VerificationRelationship"];
   repeated Service services = 10 [json_name = "service"];
+  string clientPublicKey = 11;
+  string vin = 12;
+  bool pidSupportedOneToTwnety = 13;
+  bool pidSupportedTwentyOneToForthy = 14;
+  bool pidSupportedForthyOneToSixty = 15;
 }
 
-// VerificationMethod defines a W3C verification method
 message VerificationMethod {
   string id = 1;
   string type = 2;
   string controller = 3;
-  string pubKey = 4;
+  string publicKeyBase58 = 4;
 }
 
 // VerificationRelationship defines a W3C verification relationship

@@ -2,7 +2,6 @@ package cli
 
 import (
 	"context"
-
 	"soarchain/x/did/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -43,7 +42,7 @@ func CmdListDid() *cobra.Command {
 	return cmd
 }
 
-func CmdShowDid() *cobra.Command {
+func CmdShowDidDocument() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-did [id]",
 		Short: "shows a did",
@@ -59,7 +58,7 @@ func CmdShowDid() *cobra.Command {
 				Id: argId,
 			}
 
-			res, err := queryClient.Did(context.Background(), params)
+			res, err := queryClient.DidDocument(context.Background(), params)
 			if err != nil {
 				return err
 			}

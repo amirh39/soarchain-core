@@ -222,7 +222,7 @@ func (pk VerificationMethod) Valid(did string) bool {
 	}
 
 	pattern := fmt.Sprintf("^[%s]+$", Base58Charset)
-	matched, err := regexp.MatchString(pattern, pk.PubKey)
+	matched, err := regexp.MatchString(pattern, pk.PublicKeyBase58)
 	if err != nil {
 		return false
 	}
@@ -320,12 +320,12 @@ func NewVerificationMethodID(did string, name string) string {
 	return fmt.Sprintf("%v#%s", did, name)
 }
 
-func NewVerificationMethod(id string, keyType string, controller string, pubKey []byte) VerificationMethod {
+func NewVerificationMethod(id string, keyType string, controller string, publicKeyBase58 []byte) VerificationMethod {
 	return VerificationMethod{
-		Id:         id,
-		Type:       keyType,
-		Controller: controller,
-		PubKey:     base58.Encode(pubKey),
+		Id:              id,
+		Type:            keyType,
+		Controller:      controller,
+		PublicKeyBase58: base58.Encode(publicKeyBase58),
 	}
 }
 
@@ -337,16 +337,20 @@ func NewVerificationRelationship(verificationMethodID string) VerificationRelati
 
 type DidDocumentOption func(opts *DidDocument)
 
-func NewDidDocument(id string, opts ...DidDocumentOption) DidDocument {
+func NewDidDocument(id string, pubkey string, vin string, pids []bool, opts ...DidDocumentOption) DidDocument {
 	doc := DidDocument{
-		Contexts: &JSONStringOrStrings{ContextDidV1},
-		Id:       id,
+		Contexts:                      &JSONStringOrStrings{ContextDidV1},
+		Id:                            id,
+		ClientPublicKey:               pubkey,
+		Vin:                           vin,
+		PidSupportedOneToTwnety:       pids[0],
+		PidSupportedTwentyOneToForthy: pids[1],
+		PidSupportedForthyOneToSixty:  pids[2],
 	}
 
 	for _, opt := range opts {
 		opt(&doc)
 	}
-
 	return doc
 }
 
@@ -448,7 +452,7 @@ func nextSequence(seq uint64) uint64 {
 func ParseVerificationMethodId(id string, did string) (string, error) {
 	methodId := id
 	if !ValidateVerificationMethodID(id, did) {
-		return "", sdkerrors.Wrapf(ErrIntOverflowDid, "[ParseVerificationMethodId][ValidateVerificationMethodID] failed for verificationMethodID: %v, did: %v", id, did)
+		return "", sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[ParseVerificationMethodId][ValidateVerificationMethodID] failed for verificationMethodID: %v, did: %v", id, did)
 	}
 	return methodId, nil
 }

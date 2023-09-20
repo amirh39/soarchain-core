@@ -3,7 +3,7 @@ package testutil
 import (
 	"context"
 
-	"soarchain/x/did/types"
+	"soarchain/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

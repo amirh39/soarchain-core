@@ -14,6 +14,7 @@ import (
 	"soarchain/app"
 	param "soarchain/app/params"
 
+	dprtypes "soarchain/x/dpr/types"
 	poatypes "soarchain/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
@@ -31,6 +32,7 @@ type KeeperTestSuite struct {
 	App         *app.SoarchainApp
 	QueryHelper *baseapp.QueryServiceTestHelper
 	TestAccs    []sdk.AccAddress
+	MsgServer   dprtypes.MsgServer
 }
 
 // Setup sets up basic environment for suite (App, Ctx, and test accounts)
