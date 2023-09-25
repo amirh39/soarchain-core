@@ -15,14 +15,6 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
-		ClientList: []types.Client{
-			{
-				Index: "0",
-			},
-			{
-				Index: "1",
-			},
-		},
 		ChallengerList: []types.Challenger{
 			{
 				PubKey: "0",
@@ -40,14 +32,6 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		VrfDataList: []types.VrfData{
-			{
-				Index: "0",
-			},
-			{
-				Index: "1",
-			},
-		},
-		MotusWalletList: []types.MotusWallet{
 			{
 				Index: "0",
 			},
@@ -79,11 +63,9 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
-	require.ElementsMatch(t, genesisState.ClientList, got.ClientList)
 	require.ElementsMatch(t, genesisState.ChallengerList, got.ChallengerList)
 	require.ElementsMatch(t, genesisState.RunnerList, got.RunnerList)
 	require.ElementsMatch(t, genesisState.VrfDataList, got.VrfDataList)
-	require.ElementsMatch(t, genesisState.MotusWalletList, got.MotusWalletList)
 	require.Equal(t, genesisState.MasterKey, got.MasterKey)
 	require.ElementsMatch(t, genesisState.FactoryKeysList, got.FactoryKeysList)
 	require.Equal(t, genesisState.FactoryKeysCount, got.FactoryKeysCount)
