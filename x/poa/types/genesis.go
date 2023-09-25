@@ -10,12 +10,10 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		ClientList:     []Client{},
 		ChallengerList: []Challenger{},
 		RunnerList:     []Runner{},
 		VrfDataList:    []VrfData{},
 
-		MotusWalletList: []MotusWallet{},
 		MasterKey: MasterKey{
 			MasterCertificate: "",
 			MasterAccount:     "",
@@ -29,16 +27,7 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	// Check for duplicated index in client
-	clientIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.ClientList {
-		index := string(ClientKey(elem.Index))
-		if _, ok := clientIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for client")
-		}
-		clientIndexMap[index] = struct{}{}
-	}
 	// Check for duplicated index in challenger
 	challengerIndexMap := make(map[string]struct{})
 
@@ -69,16 +58,6 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for vrfData")
 		}
 		vrfDataIndexMap[index] = struct{}{}
-	}
-	// Check for duplicated index in motusWallet
-	motusWalletIndexMap := make(map[string]struct{})
-
-	for _, elem := range gs.MotusWalletList {
-		index := string(MotusWalletKey(elem.Index))
-		if _, ok := motusWalletIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for motusWallet")
-		}
-		motusWalletIndexMap[index] = struct{}{}
 	}
 	// Check for duplicated ID in factoryKeys
 	factoryKeysIdMap := make(map[uint64]bool)
