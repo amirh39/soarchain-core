@@ -18,12 +18,12 @@ func CustomQuerier(qp *QueryPlugin) func(ctx sdk.Context, request json.RawMessag
 		switch {
 		case contractQuery.ClientByIndex != nil:
 			index := contractQuery.ClientByIndex.Index
-			client, err := GetClientByIndex(ctx, index, *qp.keeper)
+			challenger, err := GetChallenger(ctx, index, *qp.keeper)
 			if err != nil {
 				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidPubKey, "[CustomQuerier][GetClientList] failed. Client pubkey: [ %T ] is not valid, couldn't be fetched.", index)
 			}
 
-			response := bindings.ClientByIndexResponse{Address: client.Address, Index: client.Index, Score: client.Score}
+			response := bindings.ClientByIndexResponse{Address: challenger.Address, Index: challenger.Index, Score: challenger.Score}
 
 			bz, err := json.Marshal(response)
 			if err != nil {

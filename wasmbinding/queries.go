@@ -6,7 +6,6 @@ import (
 	keeper "soarchain/x/poa/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 type QueryPlugin struct {
@@ -26,12 +25,12 @@ func (qp QueryPlugin) GetClientByIndex(ctx sdk.Context, index string) (*wasmbind
 
 	log.Println("############## Smart contract query for fetching a client is Started ##############")
 
-	client, found := qp.keeper.GetClient(ctx, index)
-	if !found {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[Querier][GetClientByIndex] failed. Client with the index: [ %T ] for query wasm contract is not found.", index)
-	}
+	// client, found := qp.keeper.GetReputation(ctx, index)
+	// if !found {
+	// 	return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[Querier][GetClientByIndex] failed. Client with the index: [ %T ] for query wasm contract is not found.", index)
+	// }
 	var clientByIndex wasmbindings.ClientByIndex
-	clientByIndex.Index = client.Index
+	// clientByIndex.Index = client.Index
 
 	log.Println("############## End of Smart contract query for fetching a client ##############")
 

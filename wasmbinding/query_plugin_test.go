@@ -12,25 +12,24 @@ func Test_ClientByIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
-	clients := SetupClientEntity(1)
-	require.NotEmpty(t, 1, clients)
-	k.SetClient(ctx, clients[0])
+	challenger := CreateNChallenger(1)
+	k.SetChallenger(ctx, challenger[0])
 
-	client, found := k.GetClient(ctx, Index)
+	got, found := k.GetChallenger(ctx, Challenger_Address)
 
-	require.Equal(t, Score, client.Score)
+	require.Equal(t, Score, got.Score)
 	require.Equal(t, true, found)
-	require.NotEmpty(t, 1, client)
+	require.NotEmpty(t, 1, got)
 }
 
 func Test_ClientByNotValidIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
-	clients := SetupClientEntity(1)
-	k.SetClient(ctx, clients[0])
+	challenger := CreateNChallenger(1)
+	k.SetChallenger(ctx, challenger[0])
 
-	client, err := wasmbinding.GetClientByIndex(ctx, NotValidndex, k)
+	client, err := wasmbinding.GetChallenger(ctx, NotValidndex, k)
 	require.Error(t, err)
 	require.Empty(t, client)
 }

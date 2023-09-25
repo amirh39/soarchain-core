@@ -30,7 +30,6 @@ type CustomMessenger struct {
 	wasm wasmkeeper.Messenger
 	bank *bankkeeper.BaseKeeper
 	poa  *poaKeepers.Keeper
-	//poaKeeper poaKeepers.Keeper
 }
 
 var _ wasmkeeper.Messenger = (*CustomMessenger)(nil)
@@ -45,7 +44,7 @@ func (m *CustomMessenger) DispatchMsg(ctx sdk.Context, contractAddress sdk.AccAd
 	return m.wasm.DispatchMsg(ctx, contractAddress, contractIBCPortID, msg)
 }
 
-func GetClientByIndex(ctx sdk.Context, index string, poa poaKeepers.Keeper) (res bindings.ClientByIndexResponse, err error) {
+func GetChallenger(ctx sdk.Context, index string, poa poaKeepers.Keeper) (res bindings.ClientByIndexResponse, err error) {
 
 	log.Println("############## Smart contract query for fetching a client is Started ##############")
 
@@ -53,7 +52,7 @@ func GetClientByIndex(ctx sdk.Context, index string, poa poaKeepers.Keeper) (res
 
 	logger := poa.Logger(ctx)
 
-	client, found := poa.GetClient(ctx, index)
+	challenger, found := poa.GetChallenger(ctx, index)
 	if !found {
 		return response, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[Message_PlugIn][GetClientByIndex] failed. Client with the index: [ %T ] for query wasm contract not found.", index)
 	}
@@ -62,9 +61,9 @@ func GetClientByIndex(ctx sdk.Context, index string, poa poaKeepers.Keeper) (res
 		logger.Info("Fetching smart contract query for a client successfully done.", "query", "GetClientByIndex", "ClientPublicKey:", index)
 	}
 
-	response.Address = client.Address
-	response.Index = client.Index
-	response.Score = client.Score
+	response.Address = challenger.Address
+	response.Index = challenger.PubKey
+	response.Score = challenger.Score
 
 	log.Println("############## End of Smart contract query for fetching a client ##############")
 
