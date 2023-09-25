@@ -289,6 +289,278 @@ func (m *QueryAllDidResponse) GetDid() []string {
 	return nil
 }
 
+type QueryGetReputationRequest struct {
+	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (m *QueryGetReputationRequest) Reset()         { *m = QueryGetReputationRequest{} }
+func (m *QueryGetReputationRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetReputationRequest) ProtoMessage()    {}
+func (*QueryGetReputationRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_31228b4ee4821623, []int{6}
+}
+func (m *QueryGetReputationRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetReputationRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetReputationRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetReputationRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetReputationRequest.Merge(m, src)
+}
+func (m *QueryGetReputationRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetReputationRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetReputationRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetReputationRequest proto.InternalMessageInfo
+
+func (m *QueryGetReputationRequest) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+type QueryGetReputationResponse struct {
+	Reputation Reputation `protobuf:"bytes,1,opt,name=reputation,proto3" json:"reputation"`
+}
+
+func (m *QueryGetReputationResponse) Reset()         { *m = QueryGetReputationResponse{} }
+func (m *QueryGetReputationResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetReputationResponse) ProtoMessage()    {}
+func (*QueryGetReputationResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_31228b4ee4821623, []int{7}
+}
+func (m *QueryGetReputationResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetReputationResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetReputationResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetReputationResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetReputationResponse.Merge(m, src)
+}
+func (m *QueryGetReputationResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetReputationResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetReputationResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetReputationResponse proto.InternalMessageInfo
+
+func (m *QueryGetReputationResponse) GetReputation() Reputation {
+	if m != nil {
+		return m.Reputation
+	}
+	return Reputation{}
+}
+
+type QueryAllReputationRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllReputationRequest) Reset()         { *m = QueryAllReputationRequest{} }
+func (m *QueryAllReputationRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllReputationRequest) ProtoMessage()    {}
+func (*QueryAllReputationRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_31228b4ee4821623, []int{8}
+}
+func (m *QueryAllReputationRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllReputationRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllReputationRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllReputationRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllReputationRequest.Merge(m, src)
+}
+func (m *QueryAllReputationRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllReputationRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllReputationRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllReputationRequest proto.InternalMessageInfo
+
+func (m *QueryAllReputationRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllReputationResponse struct {
+	Reputation []Reputation        `protobuf:"bytes,1,rep,name=reputation,proto3" json:"reputation"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllReputationResponse) Reset()         { *m = QueryAllReputationResponse{} }
+func (m *QueryAllReputationResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllReputationResponse) ProtoMessage()    {}
+func (*QueryAllReputationResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_31228b4ee4821623, []int{9}
+}
+func (m *QueryAllReputationResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllReputationResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllReputationResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllReputationResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllReputationResponse.Merge(m, src)
+}
+func (m *QueryAllReputationResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllReputationResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllReputationResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllReputationResponse proto.InternalMessageInfo
+
+func (m *QueryAllReputationResponse) GetReputation() []Reputation {
+	if m != nil {
+		return m.Reputation
+	}
+	return nil
+}
+
+func (m *QueryAllReputationResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryGetReputationByAddressRequest struct {
+	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (m *QueryGetReputationByAddressRequest) Reset()         { *m = QueryGetReputationByAddressRequest{} }
+func (m *QueryGetReputationByAddressRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetReputationByAddressRequest) ProtoMessage()    {}
+func (*QueryGetReputationByAddressRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_31228b4ee4821623, []int{10}
+}
+func (m *QueryGetReputationByAddressRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetReputationByAddressRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetReputationByAddressRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetReputationByAddressRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetReputationByAddressRequest.Merge(m, src)
+}
+func (m *QueryGetReputationByAddressRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetReputationByAddressRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetReputationByAddressRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetReputationByAddressRequest proto.InternalMessageInfo
+
+func (m *QueryGetReputationByAddressRequest) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+type QueryGetReputationByAddressResponse struct {
+	Reputation *Reputation `protobuf:"bytes,1,opt,name=reputation,proto3" json:"reputation,omitempty"`
+}
+
+func (m *QueryGetReputationByAddressResponse) Reset()         { *m = QueryGetReputationByAddressResponse{} }
+func (m *QueryGetReputationByAddressResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetReputationByAddressResponse) ProtoMessage()    {}
+func (*QueryGetReputationByAddressResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_31228b4ee4821623, []int{11}
+}
+func (m *QueryGetReputationByAddressResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetReputationByAddressResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetReputationByAddressResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetReputationByAddressResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetReputationByAddressResponse.Merge(m, src)
+}
+func (m *QueryGetReputationByAddressResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetReputationByAddressResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetReputationByAddressResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetReputationByAddressResponse proto.InternalMessageInfo
+
+func (m *QueryGetReputationByAddressResponse) GetReputation() *Reputation {
+	if m != nil {
+		return m.Reputation
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "soarchain.did.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "soarchain.did.QueryParamsResponse")
@@ -296,42 +568,63 @@ func init() {
 	proto.RegisterType((*QueryGetDidResponse)(nil), "soarchain.did.QueryGetDidResponse")
 	proto.RegisterType((*QueryAllDidRequest)(nil), "soarchain.did.QueryAllDidRequest")
 	proto.RegisterType((*QueryAllDidResponse)(nil), "soarchain.did.QueryAllDidResponse")
+	proto.RegisterType((*QueryGetReputationRequest)(nil), "soarchain.did.QueryGetReputationRequest")
+	proto.RegisterType((*QueryGetReputationResponse)(nil), "soarchain.did.QueryGetReputationResponse")
+	proto.RegisterType((*QueryAllReputationRequest)(nil), "soarchain.did.QueryAllReputationRequest")
+	proto.RegisterType((*QueryAllReputationResponse)(nil), "soarchain.did.QueryAllReputationResponse")
+	proto.RegisterType((*QueryGetReputationByAddressRequest)(nil), "soarchain.did.QueryGetReputationByAddressRequest")
+	proto.RegisterType((*QueryGetReputationByAddressResponse)(nil), "soarchain.did.QueryGetReputationByAddressResponse")
 }
 
 func init() { proto.RegisterFile("did/query.proto", fileDescriptor_31228b4ee4821623) }
 
 var fileDescriptor_31228b4ee4821623 = []byte{
-	// 471 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x93, 0xdd, 0x6a, 0x13, 0x41,
-	0x14, 0xc7, 0xb3, 0xa9, 0x06, 0x3a, 0xc1, 0x0f, 0xc6, 0xa6, 0x4a, 0xb4, 0x6b, 0x1d, 0x45, 0x82,
-	0xe0, 0x0c, 0x6d, 0x9f, 0xa0, 0x25, 0x28, 0x7a, 0x55, 0xe3, 0x85, 0x20, 0x82, 0x4e, 0x32, 0xc3,
-	0x76, 0x60, 0x33, 0xb3, 0xd9, 0x99, 0x88, 0x45, 0xf4, 0xc2, 0x27, 0x10, 0x7c, 0xa9, 0x5e, 0x16,
-	0xbc, 0xf1, 0x4a, 0x24, 0xf1, 0xd6, 0x77, 0x90, 0x9d, 0x39, 0x71, 0x77, 0xe3, 0xd2, 0xbb, 0xe5,
-	0xcc, 0xff, 0x9c, 0xdf, 0xff, 0x7c, 0x2c, 0xba, 0x26, 0x94, 0x60, 0xb3, 0xb9, 0xcc, 0x4f, 0x69,
-	0x96, 0x1b, 0x67, 0xf0, 0x15, 0x6b, 0x78, 0x3e, 0x39, 0xe1, 0x4a, 0x53, 0xa1, 0x44, 0x7f, 0x2b,
-	0x31, 0x89, 0xf1, 0x2f, 0xac, 0xf8, 0x0a, 0xa2, 0xfe, 0x9d, 0xc4, 0x98, 0x24, 0x95, 0x8c, 0x67,
-	0x8a, 0x71, 0xad, 0x8d, 0xe3, 0x4e, 0x19, 0x6d, 0xe1, 0xf5, 0xd1, 0xc4, 0xd8, 0xa9, 0xb1, 0x6c,
-	0xcc, 0xad, 0x0c, 0xb5, 0xd9, 0xfb, 0xbd, 0xb1, 0x74, 0x7c, 0x8f, 0x65, 0x3c, 0x51, 0xda, 0x8b,
-	0x41, 0x7b, 0xbd, 0xe0, 0x67, 0x3c, 0xe7, 0xd3, 0x55, 0xf6, 0x76, 0x11, 0x11, 0x4a, 0xbc, 0x15,
-	0x66, 0x32, 0x9f, 0x4a, 0xed, 0x42, 0x9c, 0x6c, 0x21, 0xfc, 0xa2, 0xa8, 0x75, 0xec, 0xc5, 0x23,
-	0x39, 0x9b, 0x4b, 0xeb, 0xc8, 0x73, 0x74, 0xa3, 0x16, 0xb5, 0x99, 0xd1, 0x56, 0xe2, 0x03, 0xd4,
-	0x09, 0x45, 0x6f, 0x45, 0xbb, 0xd1, 0xa0, 0xbb, 0xdf, 0xa3, 0xb5, 0xb6, 0x68, 0x90, 0x1f, 0x5d,
-	0x3a, 0xfb, 0x79, 0xb7, 0x35, 0x02, 0x29, 0x79, 0x00, 0x84, 0xa7, 0xd2, 0x0d, 0x95, 0x00, 0x02,
-	0xbe, 0x8a, 0xda, 0x4a, 0xf8, 0x32, 0x9b, 0xa3, 0xb6, 0x12, 0xe4, 0x1d, 0x10, 0x57, 0x2a, 0x20,
-	0x3e, 0x43, 0x5d, 0xa1, 0xc4, 0x10, 0x3c, 0x03, 0xf6, 0xde, 0x1a, 0x76, 0x58, 0x2a, 0x5e, 0x29,
-	0x77, 0xf2, 0x52, 0xce, 0xc0, 0x42, 0x35, 0x97, 0xbc, 0x01, 0x1f, 0x87, 0x69, 0x5a, 0xf1, 0xf1,
-	0x04, 0xa1, 0x72, 0x7a, 0x50, 0xff, 0x21, 0x0d, 0xa3, 0xa6, 0xc5, 0xa8, 0x69, 0x58, 0x23, 0x8c,
-	0x9a, 0x1e, 0xf3, 0x44, 0x42, 0xee, 0xa8, 0x92, 0x49, 0x1e, 0x83, 0xff, 0x55, 0x75, 0xf0, 0xbf,
-	0x8d, 0x36, 0x84, 0xef, 0x73, 0x63, 0xb0, 0x09, 0xa6, 0x8a, 0xc0, 0xfe, 0x9f, 0x36, 0xba, 0xec,
-	0xf5, 0x58, 0xa3, 0x4e, 0x18, 0x1b, 0x5e, 0x6f, 0xeb, 0xff, 0xbd, 0xf4, 0xc9, 0x45, 0x92, 0x80,
-	0x24, 0x3b, 0x5f, 0xbe, 0xff, 0xfe, 0xd6, 0xbe, 0x89, 0x7b, 0xec, 0x9f, 0x96, 0x95, 0xe7, 0x80,
-	0x1d, 0xea, 0x0c, 0x95, 0x38, 0x4c, 0xd3, 0x66, 0x5e, 0x6d, 0x3a, 0xcd, 0xbc, 0x7a, 0x8b, 0xe4,
-	0xbe, 0xe7, 0xed, 0xe0, 0xdb, 0x6b, 0xbc, 0xea, 0xb1, 0xe1, 0xcf, 0xa8, 0x5b, 0xd9, 0x52, 0x33,
-	0xba, 0x76, 0x20, 0xcd, 0xe8, 0xfa, 0x75, 0x90, 0x81, 0x47, 0x13, 0xbc, 0x7b, 0x01, 0x9a, 0x7d,
-	0x54, 0xe2, 0xd3, 0x11, 0x3b, 0x5b, 0xc4, 0xd1, 0xf9, 0x22, 0x8e, 0x7e, 0x2d, 0xe2, 0xe8, 0xeb,
-	0x32, 0x6e, 0x9d, 0x2f, 0xe3, 0xd6, 0x8f, 0x65, 0xdc, 0x7a, 0xdd, 0x2b, 0x53, 0x3f, 0xf8, 0x64,
-	0x77, 0x9a, 0x49, 0x3b, 0xee, 0xf8, 0xdf, 0xe3, 0xe0, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x2d,
-	0x59, 0xcc, 0x6b, 0xca, 0x03, 0x00, 0x00,
+	// 715 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x95, 0xbf, 0x6f, 0x13, 0x4b,
+	0x10, 0xc7, 0x7d, 0xce, 0x8b, 0x9f, 0xb2, 0x51, 0xde, 0x7b, 0xda, 0xe7, 0x84, 0xc4, 0x21, 0x26,
+	0xd9, 0x20, 0x70, 0x90, 0xb8, 0x95, 0x1d, 0x1a, 0x28, 0x40, 0x8e, 0x2c, 0x22, 0xa8, 0x82, 0x29,
+	0x90, 0x10, 0xc8, 0x39, 0x7b, 0x57, 0x97, 0x95, 0x2e, 0xb7, 0x17, 0xdf, 0x19, 0xc5, 0x8a, 0x42,
+	0x41, 0x43, 0x43, 0x81, 0xc4, 0xff, 0xc0, 0x3f, 0x41, 0x4b, 0x91, 0x32, 0x12, 0x0d, 0x15, 0x42,
+	0x09, 0x7f, 0x08, 0xba, 0xdd, 0xb9, 0xdc, 0x0f, 0x9f, 0xf3, 0x43, 0xa2, 0x5b, 0xcf, 0xcd, 0xcc,
+	0xf7, 0x33, 0x33, 0x3b, 0x6b, 0xf4, 0x2f, 0x13, 0x8c, 0xee, 0x0d, 0x78, 0x7f, 0x68, 0x7a, 0x7d,
+	0x19, 0x48, 0x3c, 0xe3, 0x4b, 0xab, 0xdf, 0xdb, 0xb1, 0x84, 0x6b, 0x32, 0xc1, 0x2a, 0xe5, 0xf0,
+	0x7b, 0x9f, 0x7b, 0x83, 0xc0, 0x0a, 0x84, 0x74, 0xb5, 0x53, 0xa5, 0x6c, 0x4b, 0x5b, 0xaa, 0x23,
+	0x0d, 0x4f, 0x60, 0xbd, 0x6e, 0x4b, 0x69, 0x3b, 0x9c, 0x5a, 0x9e, 0xa0, 0x96, 0xeb, 0x4a, 0x1d,
+	0xe2, 0xc3, 0xd7, 0x3b, 0x3d, 0xe9, 0xef, 0x4a, 0x9f, 0x76, 0x2d, 0x9f, 0x6b, 0x45, 0xfa, 0xa6,
+	0xde, 0xe5, 0x81, 0x55, 0xa7, 0x9e, 0x65, 0x0b, 0x37, 0x99, 0xff, 0xbf, 0x50, 0xd5, 0xb3, 0xfa,
+	0xd6, 0x6e, 0x14, 0x3d, 0x17, 0x5a, 0x98, 0x60, 0x1d, 0x26, 0x7b, 0x83, 0x5d, 0xee, 0x06, 0xda,
+	0x4e, 0xca, 0x08, 0x3f, 0x0b, 0x73, 0x6d, 0x29, 0xe7, 0x36, 0xdf, 0x1b, 0x70, 0x3f, 0x20, 0x4f,
+	0xd1, 0xff, 0x29, 0xab, 0xef, 0x49, 0xd7, 0xe7, 0x78, 0x1d, 0x95, 0x74, 0xd2, 0x79, 0x63, 0xd9,
+	0xa8, 0x4d, 0x37, 0x66, 0xcd, 0x54, 0xb1, 0xa6, 0x76, 0xdf, 0xf8, 0xeb, 0xe8, 0xc7, 0x8d, 0x42,
+	0x1b, 0x5c, 0xc9, 0x4d, 0x50, 0xd8, 0xe4, 0x41, 0x4b, 0x30, 0x50, 0xc0, 0xff, 0xa0, 0xa2, 0x60,
+	0x2a, 0xcd, 0x54, 0xbb, 0x28, 0x18, 0xd9, 0x06, 0xc5, 0xc8, 0x0b, 0x14, 0x9f, 0xa0, 0x69, 0x26,
+	0x58, 0x0b, 0x98, 0x41, 0x76, 0x25, 0x23, 0xdb, 0x8a, 0x3d, 0x5e, 0x88, 0x60, 0xe7, 0x39, 0xdf,
+	0x03, 0x84, 0x64, 0x2c, 0x79, 0x05, 0x1c, 0x4d, 0xc7, 0x49, 0x70, 0x3c, 0x46, 0x28, 0xee, 0x1e,
+	0xe4, 0xbf, 0x65, 0xea, 0x56, 0x9b, 0x61, 0xab, 0x4d, 0x3d, 0x5c, 0x68, 0xb5, 0xb9, 0x65, 0xd9,
+	0x1c, 0x62, 0xdb, 0x89, 0x48, 0x72, 0x17, 0xf8, 0xa3, 0xec, 0xc0, 0x3f, 0x87, 0x26, 0x98, 0xaa,
+	0x73, 0xa2, 0x36, 0x05, 0x50, 0xa1, 0x81, 0xd4, 0xd1, 0x42, 0x54, 0x6e, 0xfb, 0xec, 0x72, 0x44,
+	0x4c, 0x65, 0x34, 0x29, 0x5c, 0xc6, 0xf7, 0xa1, 0x3d, 0xfa, 0x07, 0x79, 0x8d, 0x2a, 0x79, 0x21,
+	0x20, 0xf4, 0x08, 0xa1, 0xf8, 0x96, 0x41, 0x1d, 0x0b, 0x99, 0x3e, 0xc5, 0x61, 0x80, 0x92, 0x08,
+	0x21, 0x3d, 0x20, 0x6a, 0x3a, 0xce, 0x28, 0xd1, 0x9f, 0xea, 0xd2, 0x67, 0x03, 0x8a, 0xc8, 0xa8,
+	0x8c, 0x29, 0x62, 0xe2, 0x8a, 0x45, 0xe0, 0xcd, 0x14, 0x67, 0x51, 0x71, 0xde, 0xbe, 0x90, 0x53,
+	0xab, 0xa7, 0x40, 0x1f, 0x22, 0x32, 0xda, 0xec, 0x8d, 0x61, 0x93, 0xb1, 0x3e, 0xf7, 0xa3, 0x35,
+	0xc1, 0xf3, 0xe8, 0x6f, 0x4b, 0x5b, 0x60, 0x54, 0xd1, 0x4f, 0xb2, 0x8d, 0x56, 0xcf, 0x8d, 0x87,
+	0x82, 0xef, 0x5f, 0x69, 0x6a, 0xc9, 0x52, 0x1b, 0x5f, 0x4b, 0x68, 0x52, 0x49, 0x60, 0x17, 0x95,
+	0xf4, 0xe2, 0xe1, 0xec, 0x62, 0x8c, 0x6e, 0x76, 0x85, 0x9c, 0xe7, 0xa2, 0xa9, 0xc8, 0xd2, 0xbb,
+	0x6f, 0xbf, 0x3e, 0x15, 0xaf, 0xe1, 0x59, 0x7a, 0xe6, 0x4b, 0xe3, 0x07, 0x05, 0x07, 0xa8, 0xd4,
+	0x12, 0xac, 0xe9, 0x38, 0xf9, 0x7a, 0xa9, 0xfd, 0xca, 0xd7, 0x4b, 0x2f, 0x09, 0x59, 0x55, 0x7a,
+	0x4b, 0x78, 0x31, 0xa3, 0x97, 0x7c, 0xae, 0xf0, 0x5b, 0x34, 0x9d, 0xd8, 0xf3, 0x7c, 0xe9, 0xd4,
+	0x13, 0x93, 0x2f, 0x9d, 0x7e, 0x5f, 0x48, 0x4d, 0x49, 0x13, 0xbc, 0x7c, 0x8e, 0x34, 0x3d, 0x10,
+	0xec, 0x10, 0x7f, 0x30, 0x10, 0x8a, 0x47, 0x81, 0x6b, 0x63, 0x92, 0x8f, 0xec, 0x4e, 0x65, 0xed,
+	0x12, 0x9e, 0x40, 0xb3, 0xa6, 0x68, 0x56, 0xf1, 0x4a, 0x86, 0x26, 0x1e, 0x3b, 0x3d, 0x50, 0x8f,
+	0xc1, 0x21, 0x7e, 0x6f, 0xa0, 0x99, 0x38, 0x43, 0x38, 0x8c, 0xda, 0x98, 0x4e, 0x5f, 0x92, 0x28,
+	0x77, 0x23, 0xc9, 0x8a, 0x22, 0x5a, 0xc4, 0x0b, 0x63, 0x89, 0xf0, 0x17, 0x03, 0xcd, 0xe5, 0x5f,
+	0x73, 0x5c, 0xbf, 0xb0, 0xf4, 0xec, 0x4a, 0x55, 0x1a, 0x57, 0x09, 0x01, 0xc8, 0x07, 0x0a, 0xf2,
+	0x1e, 0x6e, 0x24, 0x20, 0x3d, 0x69, 0x51, 0x9b, 0x07, 0x9d, 0x18, 0xb4, 0xd3, 0x1d, 0x76, 0x60,
+	0x3d, 0xe9, 0x01, 0x1c, 0x0e, 0x37, 0xe8, 0xd1, 0x49, 0xd5, 0x38, 0x3e, 0xa9, 0x1a, 0x3f, 0x4f,
+	0xaa, 0xc6, 0xc7, 0xd3, 0x6a, 0xe1, 0xf8, 0xb4, 0x5a, 0xf8, 0x7e, 0x5a, 0x2d, 0xbc, 0x9c, 0x8d,
+	0x93, 0xed, 0xab, 0x9a, 0x83, 0xa1, 0xc7, 0xfd, 0x6e, 0x49, 0xfd, 0x6f, 0xae, 0xff, 0x0e, 0x00,
+	0x00, 0xff, 0xff, 0x65, 0x39, 0x30, 0xd0, 0xf9, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -350,6 +643,9 @@ type QueryClient interface {
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	DidAll(ctx context.Context, in *QueryAllDidRequest, opts ...grpc.CallOption) (*QueryAllDidResponse, error)
 	DidDocument(ctx context.Context, in *QueryGetDidRequest, opts ...grpc.CallOption) (*QueryGetDidResponse, error)
+	Reputation(ctx context.Context, in *QueryGetReputationRequest, opts ...grpc.CallOption) (*QueryGetReputationResponse, error)
+	ReputationAll(ctx context.Context, in *QueryAllReputationRequest, opts ...grpc.CallOption) (*QueryAllReputationResponse, error)
+	GetReputationByAddress(ctx context.Context, in *QueryGetReputationByAddressRequest, opts ...grpc.CallOption) (*QueryGetReputationByAddressResponse, error)
 }
 
 type queryClient struct {
@@ -387,12 +683,42 @@ func (c *queryClient) DidDocument(ctx context.Context, in *QueryGetDidRequest, o
 	return out, nil
 }
 
+func (c *queryClient) Reputation(ctx context.Context, in *QueryGetReputationRequest, opts ...grpc.CallOption) (*QueryGetReputationResponse, error) {
+	out := new(QueryGetReputationResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.did.Query/Reputation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) ReputationAll(ctx context.Context, in *QueryAllReputationRequest, opts ...grpc.CallOption) (*QueryAllReputationResponse, error) {
+	out := new(QueryAllReputationResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.did.Query/ReputationAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) GetReputationByAddress(ctx context.Context, in *QueryGetReputationByAddressRequest, opts ...grpc.CallOption) (*QueryGetReputationByAddressResponse, error) {
+	out := new(QueryGetReputationByAddressResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.did.Query/GetReputationByAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	DidAll(context.Context, *QueryAllDidRequest) (*QueryAllDidResponse, error)
 	DidDocument(context.Context, *QueryGetDidRequest) (*QueryGetDidResponse, error)
+	Reputation(context.Context, *QueryGetReputationRequest) (*QueryGetReputationResponse, error)
+	ReputationAll(context.Context, *QueryAllReputationRequest) (*QueryAllReputationResponse, error)
+	GetReputationByAddress(context.Context, *QueryGetReputationByAddressRequest) (*QueryGetReputationByAddressResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -407,6 +733,15 @@ func (*UnimplementedQueryServer) DidAll(ctx context.Context, req *QueryAllDidReq
 }
 func (*UnimplementedQueryServer) DidDocument(ctx context.Context, req *QueryGetDidRequest) (*QueryGetDidResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DidDocument not implemented")
+}
+func (*UnimplementedQueryServer) Reputation(ctx context.Context, req *QueryGetReputationRequest) (*QueryGetReputationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Reputation not implemented")
+}
+func (*UnimplementedQueryServer) ReputationAll(ctx context.Context, req *QueryAllReputationRequest) (*QueryAllReputationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReputationAll not implemented")
+}
+func (*UnimplementedQueryServer) GetReputationByAddress(ctx context.Context, req *QueryGetReputationByAddressRequest) (*QueryGetReputationByAddressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReputationByAddress not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -467,6 +802,60 @@ func _Query_DidDocument_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_Reputation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetReputationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Reputation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.did.Query/Reputation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Reputation(ctx, req.(*QueryGetReputationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_ReputationAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllReputationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).ReputationAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.did.Query/ReputationAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).ReputationAll(ctx, req.(*QueryAllReputationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_GetReputationByAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetReputationByAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).GetReputationByAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/soarchain.did.Query/GetReputationByAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).GetReputationByAddress(ctx, req.(*QueryGetReputationByAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "soarchain.did.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -482,6 +871,18 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DidDocument",
 			Handler:    _Query_DidDocument_Handler,
+		},
+		{
+			MethodName: "Reputation",
+			Handler:    _Query_Reputation_Handler,
+		},
+		{
+			MethodName: "ReputationAll",
+			Handler:    _Query_ReputationAll_Handler,
+		},
+		{
+			MethodName: "GetReputationByAddress",
+			Handler:    _Query_GetReputationByAddress_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -674,6 +1075,218 @@ func (m *QueryAllDidResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetReputationRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetReputationRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetReputationRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetReputationResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetReputationResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetReputationResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Reputation.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllReputationRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllReputationRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllReputationRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllReputationResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllReputationResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllReputationResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Reputation) > 0 {
+		for iNdEx := len(m.Reputation) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Reputation[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetReputationByAddressRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetReputationByAddressRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetReputationByAddressRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetReputationByAddressResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetReputationByAddressResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetReputationByAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Reputation != nil {
+		{
+			size, err := m.Reputation.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -753,6 +1366,88 @@ func (m *QueryAllDidResponse) Size() (n int) {
 			l = len(s)
 			n += 1 + l + sovQuery(uint64(l))
 		}
+	}
+	return n
+}
+
+func (m *QueryGetReputationRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetReputationResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Reputation.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllReputationRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllReputationResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Reputation) > 0 {
+		for _, e := range m.Reputation {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetReputationByAddressRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetReputationByAddressResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Reputation != nil {
+		l = m.Reputation.Size()
+		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
@@ -1207,6 +1902,545 @@ func (m *QueryAllDidResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Did = append(m.Did, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetReputationRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetReputationRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetReputationRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetReputationResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetReputationResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetReputationResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Reputation", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Reputation.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllReputationRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllReputationRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllReputationRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllReputationResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllReputationResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllReputationResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Reputation", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Reputation = append(m.Reputation, Reputation{})
+			if err := m.Reputation[len(m.Reputation)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetReputationByAddressRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetReputationByAddressRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetReputationByAddressRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetReputationByAddressResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetReputationByAddressResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetReputationByAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Reputation", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Reputation == nil {
+				m.Reputation = &Reputation{}
+			}
+			if err := m.Reputation.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
