@@ -6,12 +6,10 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "poa/params.proto";
 import "poa/vrf_data.proto";
-import "poa/motus_wallet.proto";
 import "poa/master_key.proto";
 import "poa/factory_keys.proto";
 // this line is used by starport scaffolding # 1
 import "poa/runner.proto";
-import "poa/client.proto";
 import "poa/challenger.proto";
 
 option go_package = "soarchain/x/poa/types";
@@ -22,15 +20,6 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/soarchain/poa/params";
   }
-  // Queries a Client by index.
-	rpc Client(QueryGetClientRequest) returns (QueryGetClientResponse) {
-		option (google.api.http).get = "/soarchain/poa/client/{index}";
-	}
-
-	// Queries a list of Client items.
-	rpc ClientAll(QueryAllClientRequest) returns (QueryAllClientResponse) {
-		option (google.api.http).get = "/soarchain/poa/client";
-	}
 
 // Queries a Challenger by index.
 	rpc Challenger(QueryGetChallengerRequest) returns (QueryGetChallengerResponse) {
@@ -50,12 +39,6 @@ service Query {
 	// Queries a list of Runner items.
 	rpc RunnerAll(QueryAllRunnerRequest) returns (QueryAllRunnerResponse) {
 		option (google.api.http).get = "/soarchain/poa/runner";
-	}
-
-
-// Queries a list of GetClientByAddress items.
-	rpc GetClientByAddress(QueryGetClientByAddressRequest) returns (QueryGetClientByAddressResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_client_by_address/{address}";
 	}
 
 // Queries a list of GetChallengerByAddress items.
@@ -81,16 +64,6 @@ service Query {
 // Queries a list of IsChallengeable items.
 	rpc IsChallengeable(QueryIsChallengeableRequest) returns (QueryIsChallengeableResponse) {
 		option (google.api.http).get = "/soarchain/poa/is_challengeable/{clientAddr}";
-	}
-
-// Queries a MotusWallet by index.
-	rpc MotusWallet(QueryGetMotusWalletRequest) returns (QueryGetMotusWalletResponse) {
-		option (google.api.http).get = "/soarchain/poa/motus_wallet/{index}";
-	}
-
-	// Queries a list of MotusWallet items.
-	rpc MotusWalletAll(QueryAllMotusWalletRequest) returns (QueryAllMotusWalletResponse) {
-		option (google.api.http).get = "/soarchain/poa/motus_wallet";
 	}
 
 // Queries a MasterKey by index.
@@ -132,24 +105,6 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryGetClientRequest {
-	  string index = 1;
-
-}
-
-message QueryGetClientResponse {
-	Client client = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllClientRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllClientResponse {
-	repeated Client client = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
 message QueryGetChallengerRequest {
 	  string address = 1;
 
@@ -184,14 +139,6 @@ message QueryAllRunnerRequest {
 message QueryAllRunnerResponse {
 	repeated Runner runner = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetClientByAddressRequest {
-  string address = 1;
-}
-
-message QueryGetClientByAddressResponse {
-  Client client = 1;
 }
 
 message QueryGetChallengerByAddressRequest {
@@ -238,24 +185,6 @@ message QueryIsChallengeableRequest {
 message QueryIsChallengeableResponse {
   string resultBool = 1;
   string challengeabilityScore = 2;
-}
-
-message QueryGetMotusWalletRequest {
-	  string index = 1;
-
-}
-
-message QueryGetMotusWalletResponse {
-	MotusWallet motusWallet = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllMotusWalletRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllMotusWalletResponse {
-	repeated MotusWallet motusWallet = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryGetMasterKeyRequest {}
