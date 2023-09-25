@@ -3,17 +3,27 @@ package app
 import (
 	"encoding/json"
 	param "soarchain/app/params"
+	dprmoduletypes "soarchain/x/dpr/types"
+	epochmoduletypes "soarchain/x/epoch/types"
+	poamoduletypes "soarchain/x/poa/types"
 	mint "soarchain/x/soarmint"
 	minttypes "soarchain/x/soarmint/types"
 
+	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmclient "github.com/CosmWasm/wasmd/x/wasm/client"
+	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	crisistypes "github.com/cosmos/cosmos-sdk/x/crisis/types"
 	distrclient "github.com/cosmos/cosmos-sdk/x/distribution/client"
+	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
+	evidencetypes "github.com/cosmos/cosmos-sdk/x/evidence/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	paramsclient "github.com/cosmos/cosmos-sdk/x/params/client"
+	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
+	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 	ibcclientclient "github.com/cosmos/ibc-go/v3/modules/core/02-client/client"
+	ibchost "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -22,6 +32,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+
+	partialorder "soarchain/utils"
 )
 
 type bankModule struct {
@@ -120,4 +132,29 @@ func (govModule) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 	genState.DepositParams.MinDeposit = sdk.NewCoins(sdk.NewCoin(param.BondDenom, sdk.NewInt(param.MinDeposit)))
 
 	return cdc.MustMarshalJSON(genState)
+}
+
+// orderBeginBlockers returns the order of BeginBlockers, by module name.
+func OrderBeginBlockers(allModuleNames []string) []string {
+	ord := partialorder.NewPartialOrdering(allModuleNames)
+	// Upgrades should be run VERY first
+	ord.FirstElements(upgradetypes.ModuleName, minttypes.ModuleName, poamoduletypes.ModuleName, epochmoduletypes.ModuleName, capabilitytypes.ModuleName)
+	// Staking ordering
+	ord.Sequence(distrtypes.ModuleName, slashingtypes.ModuleName, evidencetypes.ModuleName, stakingtypes.ModuleName)
+	// IBChost came after staking
+	ord.Sequence(stakingtypes.ModuleName, ibchost.ModuleName)
+
+	ord.LastElements(dprmoduletypes.ModuleName, wasm.ModuleName)
+	return ord.TotalOrdering()
+}
+
+// OrderEndBlockers returns EndBlockers (crisis, govtypes, staking) with no relative order.
+func OrderEndBlockers(allModuleNames []string) []string {
+	ord := partialorder.NewPartialOrdering(allModuleNames)
+
+	// Staking must be after gov.
+	ord.FirstElements(govtypes.ModuleName)
+	ord.LastElements(stakingtypes.ModuleName)
+
+	return ord.TotalOrdering()
 }

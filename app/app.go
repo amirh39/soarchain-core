@@ -590,61 +590,11 @@ func NewSoarchainApp(
 	// CanWithdrawInvariant invariant.
 	// NOTE: staking module is required if HistoricalEntries param > 0
 	app.mm.SetOrderBeginBlockers(
-		upgradetypes.ModuleName,
-		capabilitytypes.ModuleName,
-		minttypes.ModuleName,
-		distrtypes.ModuleName,
-		slashingtypes.ModuleName,
-		evidencetypes.ModuleName,
-		stakingtypes.ModuleName,
-		vestingtypes.ModuleName,
-		ibchost.ModuleName,
-		ibctransfertypes.ModuleName,
-		authtypes.ModuleName,
-		authz.ModuleName,
-		banktypes.ModuleName,
-		govtypes.ModuleName,
-		crisistypes.ModuleName,
-		genutiltypes.ModuleName,
-		feegrant.ModuleName,
-		paramstypes.ModuleName,
-		monitoringptypes.ModuleName,
-		poamoduletypes.ModuleName,
-		didmoduletypes.ModuleName,
-		epochmoduletypes.ModuleName,
-		dprmoduletypes.ModuleName,
-		// soarmintmoduletypes.ModuleName,
-		// this line is used by starport scaffolding # stargate/app/beginBlockers
-		wasm.ModuleName,
+		OrderBeginBlockers(app.mm.ModuleNames())...,
 	)
 
 	app.mm.SetOrderEndBlockers(
-		crisistypes.ModuleName,
-		govtypes.ModuleName,
-		stakingtypes.ModuleName,
-		capabilitytypes.ModuleName,
-		authtypes.ModuleName,
-		authz.ModuleName,
-		banktypes.ModuleName,
-		distrtypes.ModuleName,
-		slashingtypes.ModuleName,
-		vestingtypes.ModuleName,
-		minttypes.ModuleName,
-		genutiltypes.ModuleName,
-		evidencetypes.ModuleName,
-		feegrant.ModuleName,
-		paramstypes.ModuleName,
-		upgradetypes.ModuleName,
-		ibchost.ModuleName,
-		ibctransfertypes.ModuleName,
-		monitoringptypes.ModuleName,
-		poamoduletypes.ModuleName,
-		didmoduletypes.ModuleName,
-		epochmoduletypes.ModuleName,
-		dprmoduletypes.ModuleName,
-		// soarmintmoduletypes.ModuleName,
-		// this line is used by starport scaffolding # stargate/app/endBlockers
-		wasm.ModuleName,
+		OrderEndBlockers(app.mm.ModuleNames())...,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
