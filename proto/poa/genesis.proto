@@ -3,11 +3,9 @@ package soarchain.poa;
 
 import "gogoproto/gogo.proto";
 import "poa/params.proto";
-import "poa/client.proto";
 import "poa/challenger.proto";
 import "poa/runner.proto";
 import "poa/vrf_data.proto";
-import "poa/motus_wallet.proto";
 import "poa/master_key.proto";
 import "poa/factory_keys.proto";
 // this line is used by starport scaffolding # genesis/proto/import
@@ -17,11 +15,9 @@ option go_package = "soarchain/x/poa/types";
 // GenesisState defines the poa module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
-  repeated Client clientList = 2 [(gogoproto.nullable) = false];
   repeated Challenger challengerList = 3 [(gogoproto.nullable) = false];
   repeated Runner runnerList = 4 [(gogoproto.nullable) = false];
   repeated VrfData vrfDataList = 6 [(gogoproto.nullable) = false];
-  repeated MotusWallet motusWalletList = 9 [(gogoproto.nullable) = false];
   MasterKey masterKey = 10 [(gogoproto.nullable) = false];
   repeated FactoryKeys factoryKeysList = 11 [(gogoproto.nullable) = false];
   uint64 factoryKeysCount = 12;
