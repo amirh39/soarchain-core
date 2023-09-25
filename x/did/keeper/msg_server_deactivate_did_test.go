@@ -15,11 +15,7 @@ func TestHandleMsgDeactivateDID(t *testing.T) {
 	ctx := sdk.UnwrapSDKContext(context)
 	//
 	did, docWithSeq, privKey, verificationMethodID := MakeTestData()
-
-	createMsg := NewMsgCreateDID(*docWithSeq.Document, verificationMethodID, privKey)
-	createRes, err := msgServer.GenDid(context, &createMsg)
-	require.NotNil(t, createRes)
-	require.Nil(t, err)
+	k.SetDidDocument(ctx, did, docWithSeq)
 
 	didDocument, found := k.GetDidDocument(ctx, did)
 	require.Equal(t, true, found)

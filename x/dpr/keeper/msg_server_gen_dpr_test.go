@@ -25,7 +25,7 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 
 		newDid := didtypes.DidDocument{
 			Id:                            Did,
-			ClientPublicKey:               PUBKEY,
+			Index:                         PUBKEY,
 			PidSupportedOneToTwnety:       true,
 			PidSupportedTwentyOneToForthy: false,
 			PidSupportedForthyOneToSixty:  false,

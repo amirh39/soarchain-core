@@ -273,14 +273,6 @@ func (doc DidDocument) Valid() bool {
 		return false
 	}
 
-	if doc.Controller != nil && !EmptyDids(*doc.Controller) && !ValidateDIDs(*doc.Controller) {
-		return false
-	}
-
-	if doc.Contexts != nil && !ValidateContexts(*doc.Contexts) {
-		return false
-	}
-
 	for _, verificationMethod := range doc.VerificationMethods {
 		if !verificationMethod.Valid(doc.Id) {
 			return false
@@ -288,18 +280,6 @@ func (doc DidDocument) Valid() bool {
 	}
 
 	if !doc.validVerificationRelationships(doc.Authentications) {
-		return false
-	}
-	if !doc.validVerificationRelationships(doc.AssertionMethods) {
-		return false
-	}
-	if !doc.validVerificationRelationships(doc.KeyAgreements) {
-		return false
-	}
-	if !doc.validVerificationRelationships(doc.CapabilityInvocations) {
-		return false
-	}
-	if !doc.validVerificationRelationships(doc.CapabilityDelegations) {
 		return false
 	}
 
@@ -337,12 +317,12 @@ func NewVerificationRelationship(verificationMethodID string) VerificationRelati
 
 type DidDocumentOption func(opts *DidDocument)
 
-func NewDidDocument(id string, pubkey string, vin string, pids []bool, opts ...DidDocumentOption) DidDocument {
+func NewDidDocument(id string, index string, address string, soarchainType string, pids []bool, opts ...DidDocumentOption) DidDocument {
 	doc := DidDocument{
-		Contexts:                      &JSONStringOrStrings{ContextDidV1},
 		Id:                            id,
-		ClientPublicKey:               pubkey,
-		Vin:                           vin,
+		Index:                         index,
+		Address:                       address,
+		Type:                          soarchainType,
 		PidSupportedOneToTwnety:       pids[0],
 		PidSupportedTwentyOneToForthy: pids[1],
 		PidSupportedForthyOneToSixty:  pids[2],
@@ -352,6 +332,46 @@ func NewDidDocument(id string, pubkey string, vin string, pids []bool, opts ...D
 		opt(&doc)
 	}
 	return doc
+}
+
+func NewSoarchainPublicKey(id string, pubkeyType string, controller string, publicKeyPem string) SoarchainPublicKey {
+	return SoarchainPublicKey{
+		Id:           id,
+		PubkeyType:   pubkeyType,
+		Controller:   controller,
+		PublicKeyPem: publicKeyPem,
+	}
+}
+
+func NewVehicle(vin string) Vehicle {
+	return Vehicle{
+		Vin: vin,
+	}
+}
+
+func NewOwner(id string, purchaseDate string) Owner {
+	return Owner{
+		Id:           id,
+		PurchaseDate: purchaseDate,
+	}
+}
+
+func WithSoarchainPublicKey(soarchainPublicKey *SoarchainPublicKey) DidDocumentOption {
+	return func(opts *DidDocument) {
+		opts.SoarchainPublicKey = soarchainPublicKey
+	}
+}
+
+func WithVehicle(vehicle *Vehicle) DidDocumentOption {
+	return func(opts *DidDocument) {
+		opts.Vehicle = vehicle
+	}
+}
+
+func WithOwner(owner *Owner) DidDocumentOption {
+	return func(opts *DidDocument) {
+		opts.Owner = owner
+	}
 }
 
 func WithVerificationMethods(verificationMethods []*VerificationMethod) DidDocumentOption {

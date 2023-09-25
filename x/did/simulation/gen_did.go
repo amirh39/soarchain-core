@@ -17,13 +17,12 @@ func SimulateMsgGenDid(
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
-		simAccount, _ := simtypes.RandomAcc(r, accs)
 		msg := &types.MsgGenDid{
-			Did:                  "",
-			Document:             nil,
-			VerificationMethodId: "",
-			Signature:            nil,
-			FromAddress:          string(simAccount.Address),
+			Document:        nil,
+			Signature:       nil,
+			ClientSignature: "",
+			Certificate:     "",
+			Creator:         "",
 		}
 
 		// TODO: Handling the GenClient simulation

@@ -18,12 +18,7 @@ func TestHandleMsgUpdateDID(t *testing.T) {
 	ctx := sdk.UnwrapSDKContext(context)
 
 	did, origDocWithSeq, privKey, verificationMethodID := MakeTestData()
-	createMsg := NewMsgCreateDID(*origDocWithSeq.Document, verificationMethodID, privKey)
-
-	res, err := msgServer.GenDid(context, &createMsg)
-	require.Nil(t, err)
-	require.NotNil(t, res)
-	require.Equal(t, 1, len(k.GetAllDid(ctx)))
+	k.SetDidDocument(ctx, did, origDocWithSeq)
 
 	newDoc := origDocWithSeq.Document
 	verificationMethod := types.NewVerificationMethod(
