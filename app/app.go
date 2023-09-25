@@ -486,6 +486,7 @@ func NewSoarchainApp(
 
 		app.BankKeeper,
 		app.EpochKeeper,
+		app.DidKeeper,
 	)
 	poaModule := poamodule.NewAppModule(appCodec, app.PoaKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper)
 
