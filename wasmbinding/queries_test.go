@@ -10,7 +10,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func TestClientByIndex(t *testing.T) {
+func TestChallengerByIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
@@ -23,14 +23,14 @@ func TestClientByIndex(t *testing.T) {
 	require.Equal(t, nil, err)
 }
 
-func TestClientByNotValidIndex(t *testing.T) {
+func TestChallengerByNotValidIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
 	challengers := CreateNChallenger(1)
 	k.SetChallenger(ctx, challengers[0])
 
-	client, err := wasmbinding.GetChallenger(ctx, NotValidndex, k)
+	challenger, err := wasmbinding.GetChallenger(ctx, NotValidndex, k)
 	require.Error(t, err)
-	require.Empty(t, client)
+	require.Empty(t, challenger)
 }

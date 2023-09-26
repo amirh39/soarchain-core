@@ -16,24 +16,24 @@ func CustomQuerier(qp *QueryPlugin) func(ctx sdk.Context, request json.RawMessag
 		}
 
 		switch {
-		case contractQuery.ClientByIndex != nil:
-			index := contractQuery.ClientByIndex.Index
+		case contractQuery.ChallengerByIndex != nil:
+			index := contractQuery.ChallengerByIndex.Index
 			challenger, err := GetChallenger(ctx, index, *qp.keeper)
 			if err != nil {
-				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidPubKey, "[CustomQuerier][GetClientList] failed. Client pubkey: [ %T ] is not valid, couldn't be fetched.", index)
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidPubKey, "[CustomQuerier][GetChallengerList] failed. Challenger pubkey: [ %T ] is not valid, couldn't be fetched.", index)
 			}
 
-			response := bindings.ClientByIndexResponse{Address: challenger.Address, Index: challenger.Index, Score: challenger.Score}
+			response := bindings.ChallengerByIndexResponse{Address: challenger.Address, Index: challenger.Index, Score: challenger.Score}
 
 			bz, err := json.Marshal(response)
 			if err != nil {
-				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[CustomQuerier][Marshal] failed. Client couldn't be marshaled for the publickey [ %T ].", index)
+				return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[CustomQuerier][Marshal] failed. Challenger couldn't be marshaled for the publickey [ %T ].", index)
 			}
 
 			return bz, nil
 
 		default:
-			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[CustomQuerier][GetClientByIndex] failed. unknown soarchain query variante.")
+			return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[CustomQuerier][GetChallengerByIndex] failed. unknown soarchain query variante.")
 		}
 	}
 }

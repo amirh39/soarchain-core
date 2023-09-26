@@ -6,6 +6,7 @@ import (
 	keeper "soarchain/x/poa/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 type QueryPlugin struct {
@@ -21,18 +22,18 @@ func NewQueryPlugin(
 	}
 }
 
-func (qp QueryPlugin) GetClientByIndex(ctx sdk.Context, index string) (*wasmbindings.ClientByIndex, error) {
+func (qp QueryPlugin) GetChallengerByIndex(ctx sdk.Context, index string) (*wasmbindings.ChallengerByIndex, error) {
 
-	log.Println("############## Smart contract query for fetching a client is Started ##############")
+	log.Println("############## Smart contract query for fetching a Challenger is Started ##############")
 
-	// client, found := qp.keeper.GetReputation(ctx, index)
-	// if !found {
-	// 	return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[Querier][GetClientByIndex] failed. Client with the index: [ %T ] for query wasm contract is not found.", index)
-	// }
-	var clientByIndex wasmbindings.ClientByIndex
-	// clientByIndex.Index = client.Index
+	challenger, found := qp.keeper.GetChallenger(ctx, index)
+	if !found {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[Querier][GetChallengerByIndex] failed. Challenger with the index: [ %T ] for query wasm contract is not found.", index)
+	}
+	var challengerByIndex wasmbindings.ChallengerByIndex
+	challengerByIndex.Index = challenger.Address
 
-	log.Println("############## End of Smart contract query for fetching a client ##############")
+	log.Println("############## End of Smart contract query for fetching a Challenger ##############")
 
-	return &clientByIndex, nil
+	return &challengerByIndex, nil
 }

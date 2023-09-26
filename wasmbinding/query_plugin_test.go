@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_ClientByIndex(t *testing.T) {
+func Test_ChallengerByIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
@@ -22,7 +22,7 @@ func Test_ClientByIndex(t *testing.T) {
 	require.NotEmpty(t, 1, got)
 }
 
-func Test_ClientByNotValidIndex(t *testing.T) {
+func Test_ChallengerByNotValidIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
