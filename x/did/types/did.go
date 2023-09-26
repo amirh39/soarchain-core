@@ -358,7 +358,7 @@ func NewOwner(id string, purchaseDate string) Owner {
 
 func WithSoarchainPublicKey(soarchainPublicKey *SoarchainPublicKey) DidDocumentOption {
 	return func(opts *DidDocument) {
-		opts.SoarchainPublicKey = soarchainPublicKey
+		opts.Keys = soarchainPublicKey
 	}
 }
 
