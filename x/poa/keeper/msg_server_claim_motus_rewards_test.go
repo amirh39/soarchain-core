@@ -2,7 +2,6 @@ package keeper_test
 
 import (
 	"fmt"
-	didtypes "soarchain/x/did/types"
 	"soarchain/x/poa/types"
 
 	k "soarchain/x/poa/keeper"
@@ -18,14 +17,12 @@ func (helper *KeeperTestHelper) Test_ClaimMotusReward() {
 		msgServer := k.NewMsgServerImpl(keeper)
 		ctx := sdk.WrapSDKContext(helper.Ctx)
 
-		didKeeper := helper.App.DidKeeper
-
-		reputation := didtypes.Reputation{
+		reputation := types.Reputation{
 			Index:       ClientPubKey,
 			Address:     ClientAddress,
 			NetEarnings: "100000000udmotus",
 		}
-		didKeeper.SetReputation(helper.Ctx, reputation)
+		keeper.SetReputation(helper.Ctx, reputation)
 		helper.Require().NotEmpty(reputation)
 
 		resp, err := msgServer.ClaimMotusRewards(ctx, &types.MsgClaimMotusRewards{
