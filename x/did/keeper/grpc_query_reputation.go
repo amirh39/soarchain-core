@@ -52,7 +52,7 @@ func (k Keeper) Reputation(c context.Context, req *types.QueryGetReputationReque
 		req.Index,
 	)
 	if !found {
-		return nil, status.Error(codes.NotFound, "[Reputation][GetReputation] failed. Couldn't find a client from the request.")
+		return nil, status.Error(codes.NotFound, "[Reputation][GetReputation] failed. Make sure index of the reputation is valid.")
 	}
 
 	return &types.QueryGetReputationResponse{Reputation: val}, nil
