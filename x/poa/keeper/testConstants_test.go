@@ -16,7 +16,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/golang/mock/gomock"
 
-	didTypes "soarchain/x/did/types"
 	epochTypes "soarchain/x/epoch/types"
 
 	epochKeeper "soarchain/x/epoch/keeper"
@@ -61,29 +60,11 @@ func SetupNRunner(n int) []types.Runner {
 	return items
 }
 
-func CreateNClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
-	items := make([]types.Reputation, n)
-	for i := range items {
-		items[i].Index = strconv.Itoa(i)
-		items[i].Address = strconv.Itoa(i)
-	}
-	return items
-}
-
-func SetupNReputation(n int) []didTypes.Reputation {
-	items := make([]didTypes.Reputation, n)
-	for i := range items {
-		items[i].Index = ClientPubKey
-		items[i].Address = ClientAddress
-	}
-	return items
-}
-
 func CreateTwoReputationsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) []types.Reputation {
 	items := make([]types.Reputation, 2)
 
-	// Create the first client
-	firstClient := types.Reputation{
+	// Create the first reputation
+	firstReputation := types.Reputation{
 		Index:              ClientPubKey,
 		Address:            ClientAddress,
 		Score:              ClientScore,
@@ -93,8 +74,8 @@ func CreateTwoReputationsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) [
 		CoolDownTolerance:  ClientCoolDownTolerance,
 	}
 
-	// Create the second client
-	secondClient := types.Reputation{
+	// Create the second reputation
+	secondReputation := types.Reputation{
 		Index:              ClientPubKey2,
 		Address:            CommunityWallet,
 		Score:              ClientScore2,
@@ -104,17 +85,17 @@ func CreateTwoReputationsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) [
 		CoolDownTolerance:  ClientCoolDownTolerance,
 	}
 
-	// Adjust the address for the second client if it matches the first
-	if firstClient.Address == secondClient.Address {
-		secondClient.Address = CommunityWallet
+	// Adjust the address for the second reputation if it matches the first
+	if firstReputation.Address == secondReputation.Address {
+		secondReputation.Address = CommunityWallet
 	}
 
-	// Set the clients and return them
-	//keeper.SetReputation(ctx, firstClient)
-	//keeper.SetReputation(ctx, secondClient)
+	// Set the reputations and return them
+	keeper.SetReputation(ctx, firstReputation)
+	keeper.SetReputation(ctx, secondReputation)
 
-	items[0] = firstClient
-	items[1] = secondClient
+	items[0] = firstReputation
+	items[1] = secondReputation
 
 	return items
 }
@@ -133,18 +114,7 @@ func SetupReputationEntity(n int) []types.Reputation {
 	return items
 }
 
-func CreateInValidClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
-	items := make([]types.Reputation, n)
-	for i := range items {
-		items[i].Index = ""
-		items[i].Address = ""
-
-		//keeper.SetReputation(ctx, items[i])
-	}
-	return items
-}
-
-func CreateInValidClientScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+func CreateInValidReputationScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
 	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
@@ -152,29 +122,6 @@ func CreateInValidClientScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []t
 		items[i].Score = NotValid_Score
 		items[i].LastTimeChallenged = NotValid_LastTimeChallenged
 		items[i].CoolDownTolerance = NotValid_CoolDownTolerance
-
-		//keeper.SetReputation(ctx, items[i])
-	}
-	return items
-}
-
-func SetupClientWithInvalidScore(n int) []types.Reputation {
-	items := make([]types.Reputation, n)
-	for i := range items {
-		items[i].Index = strconv.Itoa(i)
-		items[i].Address = strconv.Itoa(12)
-		items[i].Score = NotValid_Score
-		items[i].LastTimeChallenged = NotValid_LastTimeChallenged
-		items[i].CoolDownTolerance = NotValid_CoolDownTolerance
-	}
-	return items
-}
-
-func SetupClientToUnregistration(n int) []types.Reputation {
-	items := make([]types.Reputation, n)
-	for i := range items {
-		items[i].Index = ClientPubKey
-		items[i].Address = CREATOR
 	}
 	return items
 }
@@ -193,7 +140,6 @@ func CreateNChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Ch
 		keeper.SetChallenger(ctx, items[i])
 	}
 	return items
-
 }
 
 func CreateNChallengerWithNormalScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
@@ -210,7 +156,6 @@ func CreateNChallengerWithNormalScore(keeper *keeper.Keeper, ctx sdk.Context, n 
 		keeper.SetChallenger(ctx, items[i])
 	}
 	return items
-
 }
 
 func SetupNChallenger(n int) []types.Challenger {
@@ -246,13 +191,6 @@ func CreateNFactoryKeys(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.F
 	return items
 }
 
-func SetupMotusWalletEntityByClient(reputation types.Reputation) types.MotusWallet {
-	motusWallet := types.MotusWallet{
-		Index:      MotusWallet_Index,
-		Reputation: &reputation,
-	}
-	return motusWallet
-}
 func SetupMsgServerForPoa(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context,
 	*gomock.Controller, *testutil.MockBankKeeper, *testutil.MockEpochKeeper) {
 	ctrl := gomock.NewController(t)
@@ -469,4 +407,15 @@ func CreateEpochData(keeper *epochKeeper.Keeper, ctx sdk.Context) epochTypes.Epo
 	}
 	keeper.SetEpochData(ctx, item)
 	return item
+}
+
+func CreateNReputation(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+	items := make([]types.Reputation, n)
+	for i := range items {
+		items[i].Index = strconv.Itoa(i)
+		items[i].Address = strconv.Itoa(i)
+
+		keeper.SetReputation(ctx, items[i])
+	}
+	return items
 }

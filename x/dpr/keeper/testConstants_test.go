@@ -55,7 +55,6 @@ func SetupSecondDpr(n int) []types.Dpr {
 		items[i].Duration = 12
 		items[i].IsActive = false
 		items[i].Vin = []string{VIN}
-
 	}
 	return items
 }
@@ -80,7 +79,6 @@ func CreateAeactiveDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dp
 		items[i].Creator = strconv.Itoa(i)
 		items[i].Duration = 12
 		items[i].IsActive = true
-
 		keeper.SetDpr(ctx, items[i])
 	}
 	return items
@@ -90,7 +88,6 @@ func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Conte
 	ctrl := gomock.NewController(t)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
 	k, ctx := keepertest.DprKeeperWithMocks(t, bankMock)
-
 	dpr.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
