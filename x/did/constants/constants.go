@@ -7,3 +7,5 @@ const (
 const (
 	Did = "did"
 )
+
+const InitialScore = 50
