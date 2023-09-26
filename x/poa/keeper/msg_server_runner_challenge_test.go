@@ -12,8 +12,9 @@ func (helper *KeeperTestHelper) TestRunnerChallenge() {
 	helper.Run("TestRunnerChallenge", func() {
 		helper.Setup()
 		keeper := helper.App.PoaKeeper
+		didkeeper := helper.App.DidKeeper
 
-		client := CreateTwoClientsWithAllFields(&keeper, helper.Ctx)
+		client := CreateTwoReputationsWithAllFields(&keeper, helper.Ctx)
 		CreateNChallengerWithNormalScore(&keeper, helper.Ctx, 1)
 
 		CreateNRunner(&keeper, helper.Ctx, 1)
@@ -29,8 +30,8 @@ func (helper *KeeperTestHelper) TestRunnerChallenge() {
 		helper.NoError(err)
 		helper.Empty(res)
 
-		clientUpdated, isFound0 := keeper.GetClient(helper.Ctx, ClientPubKeys[1])
-		clientUpdated2, isFound1 := keeper.GetClient(helper.Ctx, ClientPubKeys[0])
+		clientUpdated, isFound0 := didkeeper.GetReputation(helper.Ctx, ClientPubKeys[1])
+		clientUpdated2, isFound1 := didkeeper.GetReputation(helper.Ctx, ClientPubKeys[0])
 		runnerUpdated, isFound2 := keeper.GetRunner(helper.Ctx, RunnerAddress)
 		challengerUpdated, isFound3 := keeper.GetChallenger(helper.Ctx, Challenger_Address)
 		helper.Require().NotEmpty(isFound0)
