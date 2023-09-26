@@ -5,13 +5,15 @@ import (
 	"log"
 	"strconv"
 
+	"soarchain/x/did/constants"
 	"soarchain/x/did/types"
 	"soarchain/x/did/utility"
 
-	param "soarchain/app/params"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	param "soarchain/app/params"
+	poatypes "soarchain/x/poa/types"
 )
 
 func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.MsgGenDidResponse, error) {
@@ -71,18 +73,17 @@ func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.M
 		logger.Info("Generating did successfully done.", "transaction", "GenDid", "document", didDocument)
 	}
 
-	rewardMultiplier := utility.CalculateRewardMultiplier(utility.InitialScore)
-	reputation := types.Reputation{
+	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)
+
+	k.Keeper.poaKeeper.SetReputation(ctx, poatypes.Reputation{
 		Index:              pubKeyHex,
 		Address:            msg.Creator,
-		Score:              strconv.FormatFloat(utility.InitialScore, 'f', -1, 64),
+		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
-	}
-
-	k.SetReputation(ctx, reputation)
+	})
 
 	log.Println("############## End of Generating did Transaction ##############")
 
