@@ -11,8 +11,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
-	didtypes "soarchain/x/did/types"
 )
 
 func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallengeService) (*types.MsgChallengeServiceResponse, error) {
@@ -36,7 +34,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 
 	// Fetch client from the store
-	client, isFound := k.didKeeper.GetReputation(ctx, msg.ClientPubkey)
+	client, isFound := k.GetReputation(ctx, msg.ClientPubkey)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ChallengeService][GetClient] failed. Target client is not registered in the store.")
 	}
@@ -153,7 +151,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			coolDownMultiplier = 1
 		}
 
-		updatedReputation := didtypes.Reputation{
+		updatedClient := types.Reputation{
 			Index:              client.Index,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
@@ -162,7 +160,8 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 		}
-		k.didKeeper.SetReputation(ctx, updatedReputation)
+
+		k.SetReputation(ctx, updatedClient)
 
 		if logger != nil {
 			logger.Info("Rewarding the client successfully done.", "transaction", "ChallengeService")
@@ -201,7 +200,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 
 		//
-		updatedReputation := didtypes.Reputation{
+		updatedClient := types.Reputation{
 			Index:              client.Index,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
@@ -210,7 +209,8 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
 		}
-		k.didKeeper.SetReputation(ctx, updatedReputation)
+
+		k.SetReputation(ctx, updatedClient)
 
 		if logger != nil {
 			logger.Info("Punishing the client successfully done.", "transaction", "ChallengeService")
