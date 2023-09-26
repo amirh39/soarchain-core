@@ -12,7 +12,7 @@ import (
 
 func (k Keeper) GetReputationByAddress(goCtx context.Context, req *types.QueryGetReputationByAddressRequest) (*types.QueryGetReputationByAddressResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "[GetClientByAddress] failed. Invalid request.")
+		return nil, status.Error(codes.InvalidArgument, "[GetReputationByAddress] failed. Invalid request.")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
