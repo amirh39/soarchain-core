@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "poa/params.proto";
 import "poa/challenger.proto";
 import "poa/runner.proto";
+import "poa/reputation.proto";
 import "poa/vrf_data.proto";
 import "poa/master_key.proto";
 import "poa/factory_keys.proto";
@@ -21,5 +22,6 @@ message GenesisState {
   MasterKey masterKey = 10 [(gogoproto.nullable) = false];
   repeated FactoryKeys factoryKeysList = 11 [(gogoproto.nullable) = false];
   uint64 factoryKeysCount = 12;
+  repeated Reputation reputationList = 13 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

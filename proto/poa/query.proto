@@ -8,6 +8,7 @@ import "poa/params.proto";
 import "poa/vrf_data.proto";
 import "poa/master_key.proto";
 import "poa/factory_keys.proto";
+import "poa/reputation.proto";
 // this line is used by starport scaffolding # 1
 import "poa/runner.proto";
 import "poa/challenger.proto";
@@ -91,6 +92,19 @@ service Query {
 // Queries a Runner by PubKey
 	rpc GetRunnerByPubKey(QueryGetRunnerByPubKeyRequest) returns (QueryGetRunnerByPubKeyResponse) {
 		option (google.api.http).get = "/soarchain/poa/get_runner_by_PubKey/{pubkey}";
+	}
+
+	rpc Reputation(QueryGetReputationRequest) returns (QueryGetReputationResponse) {
+		option (google.api.http).get = "/soarchain/poa/reputation/{index}";
+	}
+
+
+	rpc ReputationAll(QueryAllReputationRequest) returns (QueryAllReputationResponse) {
+		option (google.api.http).get = "/soarchain/poa/reputation";
+	}
+
+	rpc GetReputationByAddress(QueryGetReputationByAddressRequest) returns (QueryGetReputationByAddressResponse) {
+		option (google.api.http).get = "/soarchain/poa/get_reputation_by_address/{address}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -232,4 +246,30 @@ message QueryGetRunnerByPubKeyRequest{
 message QueryGetRunnerByPubKeyResponse{
 	Runner runner = 1;
 }
+
+message QueryGetReputationRequest {
+	string index = 1;
+
+}
+
+message QueryGetReputationResponse {
+  Reputation reputation = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllReputationRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllReputationResponse {
+  repeated Reputation reputation = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetReputationByAddressRequest {
+	string address = 1;
+  }
+  
+  message QueryGetReputationByAddressResponse {
+	  Reputation reputation = 1;
+  }
 // this line is used by starport scaffolding # 3
