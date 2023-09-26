@@ -15,10 +15,10 @@ import (
 	"soarchain/x/did/types"
 )
 
-func Test_ClientQuerySingle(t *testing.T) {
+func Test_ReputationQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := CreateNClient(keeper, ctx, 2)
+	msgs := CreateNReputation(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetReputationRequest
@@ -69,7 +69,7 @@ func Test_ClientQuerySingle(t *testing.T) {
 func Test_ClientQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := CreateNClient(keeper, ctx, 5)
+	msgs := CreateNReputation(keeper, ctx, 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllReputationRequest {
 		return &types.QueryAllReputationRequest{

@@ -11,7 +11,7 @@ import (
 
 func Test_ReputationGet(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
-	items := CreateNClient(keeper, ctx, 10)
+	items := CreateNReputation(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetReputation(ctx,
 			item.Index,
@@ -26,7 +26,7 @@ func Test_ReputationGet(t *testing.T) {
 
 func Test_ReputationGetAll(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
-	items := CreateNClient(keeper, ctx, 10)
+	items := CreateNReputation(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
 		nullify.Fill(keeper.GetAllReputation(ctx)),
@@ -35,7 +35,7 @@ func Test_ReputationGetAll(t *testing.T) {
 
 func Test_ReputationByAddressGet(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
-	items := CreateNClient(keeper, ctx, 1)
+	items := CreateNReputation(keeper, ctx, 1)
 	for _, item := range items {
 		response, found := keeper.GetReputation(ctx,
 			item.Address,
