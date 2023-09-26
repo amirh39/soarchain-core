@@ -4,7 +4,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	didtypes "soarchain/x/did/types"
 	epochtypes "soarchain/x/epoch/types"
 )
 
@@ -32,10 +31,4 @@ type EpochKeeper interface {
 	SetEpochData(ctx sdk.Context, epochData epochtypes.EpochData)
 	UpdateEpochRewards(ctx sdk.Context, serviceName string, coin sdk.Coin) error
 	UpdateEpoch(ctx sdk.Context)
-}
-
-type DidKeeper interface {
-	GetReputation(ctx sdk.Context, pubkey string) (val didtypes.Reputation, found bool)
-	SetReputation(ctx sdk.Context, reputation didtypes.Reputation)
-	GetReputationByClientAddress(ctx sdk.Context, address string) (val didtypes.Reputation, found bool)
 }
