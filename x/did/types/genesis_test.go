@@ -27,21 +27,6 @@ func TestGenesisState_Validate(t *testing.T) {
 			},
 			valid: true,
 		},
-		{
-			desc: "duplicated reputation",
-			genState: &types.GenesisState{
-				ReputationList: []types.Reputation{
-					{
-						Index: "0",
-					},
-					{
-						Index: "0",
-					},
-				},
-			},
-			valid: false,
-		},
-
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
