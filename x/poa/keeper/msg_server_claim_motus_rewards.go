@@ -9,8 +9,6 @@ import (
 
 	params "soarchain/app/params"
 	"soarchain/x/poa/types"
-
-	didtypes "soarchain/x/did/types"
 )
 
 func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimMotusRewards) (*types.MsgClaimMotusRewardsResponse, error) {
@@ -19,7 +17,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	log.Println("############## Claim Motus Rewards Transaction Started ##############")
 
-	reputation, isFound := k.didKeeper.GetReputationByClientAddress(ctx, msg.Creator)
+	reputation, isFound := k.GetReputationByClientAddress(ctx, msg.Creator)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][GetReputation] failed. Creator is not valid address.")
 	}
@@ -45,7 +43,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	}
 
 	if logger != nil {
-		logger.Info("Transfering coins to the target client successfully done.", "transaction", "ClaimMotusRewards")
+		logger.Info("Transfering coins to the target reputations successfully done.", "transaction", "ClaimMotusRewards")
 	}
 
 	// Calculate new net earnings
@@ -60,11 +58,11 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		logger.Info("Calculating new net earning successfully done.", "transaction", "ClaimMotusRewards")
 	}
 
-	updatedReputation := didtypes.Reputation{
+	updatedReputation := types.Reputation{
 		Index:       reputation.Index,
 		NetEarnings: netEarnings.String(),
 	}
-	k.didKeeper.SetReputation(ctx, updatedReputation)
+	k.SetReputation(ctx, updatedReputation)
 
 	log.Println("############## End of Claim Motus Rewards Transaction ##############")
 
