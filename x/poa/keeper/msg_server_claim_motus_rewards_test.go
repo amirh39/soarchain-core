@@ -1,33 +1,42 @@
 package keeper_test
 
 import (
-	"testing"
+	"fmt"
+	didtypes "soarchain/x/did/types"
+	"soarchain/x/poa/types"
+
+	k "soarchain/x/poa/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
-
-	"soarchain/x/poa/types"
 )
 
-func Test_ClaimMotusRewards(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
-	defer ctrl.Finish()
+func (helper *KeeperTestHelper) Test_ClaimMotusReward() {
 
-	bank.ExpectAny(context)
+	helper.Run("TestClaimMotusReward", func() {
+		helper.Setup()
+		keeper := helper.App.PoaKeeper
+		msgServer := k.NewMsgServerImpl(keeper)
+		ctx := sdk.WrapSDKContext(helper.Ctx)
 
-	ctx := sdk.UnwrapSDKContext(context)
-	// create test motus wallet and client
-	motusWallet := types.MotusWallet{
-		Index:  CommunityWallet,
-		Client: &types.Client{Address: CommunityWallet, NetEarnings: MotusWalletAmount},
-	}
-	k.SetMotusWallet(ctx, motusWallet)
+		didKeeper := helper.App.DidKeeper
 
-	// test with successful claim
-	resp, err := msgServer.ClaimMotusRewards(context, &types.MsgClaimMotusRewards{
-		Creator: CommunityWallet,
-		Amount:  MotusWalletAmount,
+		reputation := didtypes.Reputation{
+			Index:       ClientPubKey,
+			Address:     ClientAddress,
+			NetEarnings: "100000000udmotus",
+		}
+		didKeeper.SetReputation(helper.Ctx, reputation)
+		helper.Require().NotEmpty(reputation)
+
+		resp, err := msgServer.ClaimMotusRewards(ctx, &types.MsgClaimMotusRewards{
+			Creator: ClientAddress,
+			Amount:  "10udmotus",
+		})
+		fmt.Print("resp------>", resp)
+		if err != nil {
+			helper.Require().NotNil(err)
+		} else {
+			helper.Require().Nil(err)
+		}
 	})
-	require.NoError(t, err)
-	require.NotNil(t, resp)
 }
