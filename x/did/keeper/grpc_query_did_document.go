@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"soarchain/x/did/errors"
@@ -39,7 +38,7 @@ func (k Keeper) DidDocument(c context.Context, req *types.QueryGetDidRequest) (*
 		ctx,
 		req.Id,
 	)
-	fmt.Print("0000000000000000000000000", val, req.Id)
+
 	if !found {
 		return nil, status.Error(codes.NotFound, "[DidDocument][GetDidDocument] failed. Couldn't find a did document from the request.")
 	}
