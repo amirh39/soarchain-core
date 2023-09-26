@@ -32,3 +32,19 @@ func Test_ReputationGetAll(t *testing.T) {
 		nullify.Fill(keeper.GetAllReputation(ctx)),
 	)
 }
+
+func Test_ReputationByAddressGet(t *testing.T) {
+	keeper, ctx := keepertest.DidKeeper(t)
+	items := CreateNClient(keeper, ctx, 1)
+	for _, item := range items {
+		response, found := keeper.GetReputation(ctx,
+			item.Address,
+		)
+		t.Log("response------>", response)
+		require.True(t, found)
+		require.Equal(t,
+			nullify.Fill(&item),
+			nullify.Fill(&response),
+		)
+	}
+}
