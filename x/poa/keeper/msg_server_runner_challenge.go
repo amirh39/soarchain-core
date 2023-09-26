@@ -14,8 +14,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-
-	didtypes "soarchain/x/did/types"
 )
 
 func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger, epoch epoch.EpochData) error {
@@ -143,7 +141,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 	// Create an array of scores to send to CalculateRewards
 	scores := make([]float64, clientPubkeysCount)
 	for i := 0; i < clientPubkeysCount; i++ {
-		reputation, isFound := k.didKeeper.GetReputation(ctx, msg.ClientPubkeys[i])
+		reputation, isFound := k.GetReputation(ctx, msg.ClientPubkeys[i])
 		if !isFound {
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
@@ -162,7 +160,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 	}
 	var totalEarnings sdk.Coin
 	for i := 0; i < clientPubkeysCount; i++ {
-		reputation, isFound := k.didKeeper.GetReputation(ctx, msg.ClientPubkeys[i])
+		reputation, isFound := k.GetReputation(ctx, msg.ClientPubkeys[i])
 		if !isFound {
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
@@ -176,9 +174,8 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 			}
 		}
 
-		updatedReputation := didtypes.Reputation{
+		updatedReputation := types.Reputation{
 			Index:              reputation.Index,
-			Address:            reputation.Address,
 			Score:              strconv.FormatFloat(score, 'f', -1, 64),
 			NetEarnings:        totalEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
@@ -186,7 +183,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		}
 
-		k.didKeeper.SetReputation(ctx, updatedReputation)
+		k.SetReputation(ctx, updatedReputation)
 	}
 	return nil
 }
