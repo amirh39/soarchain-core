@@ -2,6 +2,9 @@ package keeper
 
 import (
 	"fmt"
+	"os"
+	"strconv"
+	"time"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -42,5 +45,17 @@ func NewDidKeeper(
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
-	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+	printLogs, err := strconv.ParseBool(os.Getenv("PrintLogs"))
+	if err != nil {
+		fmt.Print("[keeper][Logger] failed. Couldn't parse int to string.")
+	}
+
+	if !printLogs {
+		return nil
+	}
+	return ctx.Logger().With(
+		"timestamp", time.Now().String(),
+		"module", fmt.Sprintf("x/%s", types.ModuleName),
+		"height", strconv.FormatInt(ctx.BlockHeight(), 10),
+	)
 }
