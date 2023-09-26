@@ -24,7 +24,6 @@ type (
 
 		bankKeeper  types.BankKeeper
 		epochKeeper types.EpochKeeper
-		didKeeper   types.DidKeeper
 	}
 )
 
@@ -36,7 +35,6 @@ func NewKeeper(
 
 	bankKeeper types.BankKeeper,
 	epochKeeper types.EpochKeeper,
-	didKeeper types.DidKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -51,7 +49,6 @@ func NewKeeper(
 		paramstore:  ps,
 		bankKeeper:  bankKeeper,
 		epochKeeper: epochKeeper,
-		didKeeper:   didKeeper,
 	}
 }
 
