@@ -58,10 +58,10 @@ type AppKeepers struct {
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 	ScopedWasmKeeper       capabilitykeeper.ScopedKeeper
 
-	PoaKeeper   poamodulekeeper.Keeper
 	EpochKeeper epochmodulekeeper.Keeper
-	DprKeeper   dprmodulekeeper.Keeper
+	PoaKeeper   poamodulekeeper.Keeper
 	DidKeeper   didmodulekeeper.Keeper
+	DprKeeper   dprmodulekeeper.Keeper
 }
 
 func NewAppKeepers() {}
