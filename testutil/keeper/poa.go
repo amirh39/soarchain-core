@@ -49,7 +49,6 @@ func PoaKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Ke
 		paramsSubspace,
 		bank,
 		nil,
-		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
@@ -86,7 +85,6 @@ func PoaKeeperWithMocksEpoch(t testing.TB, bank *testutil.MockBankKeeper, epoch 
 		paramsSubspace,
 		bank,
 		epoch,
-		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
