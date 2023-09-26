@@ -16,14 +16,6 @@ func TestGenesis(t *testing.T) {
 		Params: types.DefaultParams(),
 
 		DidList: []string{"0", "1"},
-		ReputationList: []types.Reputation{
-			{
-				Index: "0",
-			},
-			{
-				Index: "1",
-			},
-		},
 	}
 
 	k, ctx := keepertest.DidKeeper(t)
@@ -35,5 +27,4 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.ElementsMatch(t, genesisState.DidList, got.DidList)
-	require.ElementsMatch(t, genesisState.ReputationList, got.ReputationList)
 }
