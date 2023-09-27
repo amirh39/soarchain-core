@@ -357,11 +357,6 @@ const (
 )
 
 const (
-	MotusWallet_Index = "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8"
-	MotusWalletAmount = "100utmotus"
-)
-
-const (
 	CommunityWallet = "soar1fkl5vm32776a5h6v7ra5pq9fnckxx3nl2mkjnx"
 )
 
