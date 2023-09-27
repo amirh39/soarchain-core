@@ -20,10 +20,9 @@ service Msg {
 
 message MsgGenDid {
   DidDocument document = 1;
-  bytes signature = 2;
-  string clientSignature = 3;
-  string certificate = 4;
-  string creator = 5;
+  string signature = 2;
+  string certificate = 3;
+  string creator = 4;
 }
   
   message MsgGenDidResponse {}

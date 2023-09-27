@@ -17,17 +17,14 @@ func (helper *KeeperTestHelper) Test_Gen_Did() {
 		ctx := sdk.WrapSDKContext(helper.Ctx)
 		msgServer := k.NewMsgServerImpl(keeper)
 
-		documentWithSequence, privKey := NewDIDDocumentWithSeq(Did)
-		doc := documentWithSequence.Document
-		sig, error := types.Sign(doc, documentWithSequence.Sequence, privKey)
-		helper.Require().NoError(error)
+		documentWithSequence, _ := NewDIDDocumentWithSeq(Did)
+		helper.Require().NotEmpty(documentWithSequence)
 
 		res, err := msgServer.GenDid(ctx, &types.MsgGenDid{
-			Document:        documentWithSequence.Document,
-			Signature:       sig,
-			Certificate:     Certificate,
-			ClientSignature: ClientSignature,
-			Creator:         ADDRESS,
+			Document:    documentWithSequence.Document,
+			Signature:   Signature,
+			Certificate: Certificate,
+			Creator:     ADDRESS,
 		})
 		helper.Require().NoError(err)
 		didDocument, found := keeper.GetDidDocument(helper.Ctx, Did)

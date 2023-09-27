@@ -32,7 +32,7 @@ func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.M
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenDid][CreateX509CertFromString] failed. Invalid device certificate.")
 	}
 
-	isValide := ValidateX509CertByASN1(msg.Creator, msg.ClientSignature, deviceCert)
+	isValide := ValidateX509CertByASN1(msg.Creator, msg.Signature, deviceCert)
 	if !isValide {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenDid][ValidateX509CertByASN1] failed. Invalid device certificate and signature.")
 	}
@@ -56,15 +56,6 @@ func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.M
 	}
 
 	seq := types.InitialSequence
-	_, err := k.VerifyDidOwnership(msg.Document, seq, msg.Document, msg.Document.VerificationMethods[0].Id, msg.Signature)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDid][VerifyDidOwnership] failed. Did not belong to the creator.")
-	}
-
-	if logger != nil {
-		logger.Info("VerifyDidOwnership", "transaction", "GenDid", "msg.Document", msg.Document)
-	}
-
 	msg.Document.Index = pubKeyHex
 	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
 	k.SetDidDocument(ctx, didDocument.Document.Id, didDocument)
