@@ -14,7 +14,7 @@ message DidDocument {
   string index = 2;
   string address = 3;
   string type = 4;
-  SoarchainPublicKey keys = 5 [json_name = "soarchainPublicKey"];
+  Keys keys = 5 [json_name = "keys"];
   repeated VerificationMethod verificationMethods = 6 [json_name = "verificationMethod"];
   repeated VerificationRelationship authentications = 7 [json_name = "authentication", (gogoproto.customtype) = "VerificationRelationship"];
   repeated Service services = 8 [json_name = "service"];
@@ -27,7 +27,7 @@ message DidDocument {
   string updated = 15;
 }
 
-message SoarchainPublicKey {
+message Keys {
   string id = 1;
   string pubkeyType = 2;
   string controller = 3;
