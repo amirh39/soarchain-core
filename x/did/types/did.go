@@ -334,8 +334,8 @@ func NewDidDocument(id string, index string, address string, soarchainType strin
 	return doc
 }
 
-func NewSoarchainPublicKey(id string, pubkeyType string, controller string, publicKeyPem string) SoarchainPublicKey {
-	return SoarchainPublicKey{
+func NewKeys(id string, pubkeyType string, controller string, publicKeyPem string) Keys {
+	return Keys{
 		Id:           id,
 		PubkeyType:   pubkeyType,
 		Controller:   controller,
@@ -356,7 +356,7 @@ func NewOwner(id string, purchaseDate string) Owner {
 	}
 }
 
-func WithSoarchainPublicKey(soarchainPublicKey *SoarchainPublicKey) DidDocumentOption {
+func WithKeys(soarchainPublicKey *Keys) DidDocumentOption {
 	return func(opts *DidDocument) {
 		opts.Keys = soarchainPublicKey
 	}
