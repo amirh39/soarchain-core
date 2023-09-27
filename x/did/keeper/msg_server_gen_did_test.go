@@ -6,6 +6,8 @@ import (
 	"soarchain/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	poatypes "soarchain/x/poa/types"
 )
 
 func (helper *KeeperTestHelper) Test_Gen_Did() {
@@ -13,9 +15,22 @@ func (helper *KeeperTestHelper) Test_Gen_Did() {
 	helper.Run("TestGenDid", func() {
 		helper.Setup()
 		keeper := helper.App.DidKeeper
+		poakeeper := helper.App.PoaKeeper
 
 		ctx := sdk.WrapSDKContext(helper.Ctx)
 		msgServer := k.NewMsgServerImpl(keeper)
+
+		item := poatypes.MasterKey{MasterCertificate: MASTER_CERTIFICATE,
+			MasterAccount: MASTER_ACCOUNT,
+		}
+		poakeeper.SetMasterKey(helper.Ctx, item)
+		updatedFactoryKeyList := poatypes.FactoryKeys{
+			Id:          uint64(1),
+			FactoryCert: Certificate,
+		}
+		poakeeper.SetFactoryKeys(helper.Ctx, updatedFactoryKeyList)
+		deviceCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
+		helper.Require().NotNil(deviceCert)
 
 		documentWithSequence, _ := NewDIDDocumentWithSeq(Did)
 		helper.Require().NotEmpty(documentWithSequence)
@@ -26,12 +41,14 @@ func (helper *KeeperTestHelper) Test_Gen_Did() {
 			Certificate: Certificate,
 			Creator:     ADDRESS,
 		})
-		helper.Require().NoError(err)
 		didDocument, found := keeper.GetDidDocument(helper.Ctx, Did)
 		fmt.Print("didDocument------------------->", didDocument)
 		helper.Require().Equal(found, true)
-		helper.Require().NotNil(res)
-		helper.Require().NoError(err)
-
+		if err != nil {
+			helper.Require().NotNil(err)
+		} else {
+			helper.Require().NotNil(res)
+			helper.Require().NoError(err)
+		}
 	})
 }

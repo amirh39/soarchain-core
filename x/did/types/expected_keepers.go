@@ -15,7 +15,7 @@ type AccountKeeper interface {
 }
 
 type PoaKeeper interface {
-	SetReputation(ctx sdk.Context, reputation poatypes.Reputation)
+	InitializeReputation(ctx sdk.Context, reputation poatypes.Reputation, certificate string) error
 	GetReputation(ctx sdk.Context, pubkey string) (val poatypes.Reputation, found bool)
 	// Methods imported from account should be defined here
 }

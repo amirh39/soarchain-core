@@ -57,7 +57,7 @@ func (k msgServer) GenChallenger(goctx context.Context, msg *types.MsgGenChallen
 	}
 
 	// Check validity of certificate
-	errCert := k.validateCertificate(ctx, deviceCert)
+	errCert := k.ValidateCertificate(ctx, deviceCert)
 	if errCert != nil {
 		return nil, errCert
 	}

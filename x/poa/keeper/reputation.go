@@ -5,6 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func (k Keeper) SetReputation(ctx sdk.Context, reputation types.Reputation) {
@@ -13,6 +14,21 @@ func (k Keeper) SetReputation(ctx sdk.Context, reputation types.Reputation) {
 	store.Set(types.ReputationKey(
 		reputation.Index,
 	), b)
+}
+
+func (k Keeper) InitializeReputation(ctx sdk.Context, reputation types.Reputation, certificate string) error {
+	deviceCert, err := k.CreateX509CertFromString(certificate)
+	if err != nil {
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDid][SetReputation][CreateX509CertFromString] failed. Device certificate and reputation can not be empty.")
+	}
+
+	err = k.ValidateCertificate(ctx, deviceCert)
+	if err != nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenDid][SetReputation][ValidateCertificate] failed. Device certificate is not valid.")
+	}
+
+	k.SetReputation(ctx, reputation)
+	return nil
 }
 
 func (k Keeper) GetReputation(

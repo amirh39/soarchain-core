@@ -66,7 +66,7 @@ func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.M
 
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)
 
-	k.Keeper.poaKeeper.SetReputation(ctx, poatypes.Reputation{
+	err := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
 		Index:              pubKeyHex,
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
@@ -74,7 +74,11 @@ func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.M
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
-	})
+	}, msg.Certificate)
+
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenDid][InitializeReputation] failed. Invalid certificate validation.")
+	}
 
 	log.Println("############## End of Generating did Transaction ##############")
 

@@ -25,7 +25,7 @@ func (k Keeper) DidAll(c context.Context, req *types.QueryAllDidRequest) (*types
 
 	log.Println("############## End of fetching all dids ##############")
 
-	return &types.QueryAllDidResponse{Did: dids}, nil
+	return &types.QueryAllDidResponse{DidDocument: dids}, nil
 }
 
 func (k Keeper) DidDocument(c context.Context, req *types.QueryGetDidRequest) (*types.QueryGetDidResponse, error) {

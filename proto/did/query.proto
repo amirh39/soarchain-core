@@ -48,7 +48,7 @@ message QueryAllDidRequest {
 }
 
 message QueryAllDidResponse {
-	repeated string did = 1  [(gogoproto.nullable) = false];
+	repeated DidDocumentWithSeq didDocument = 1  [(gogoproto.nullable) = false];
 }
 
 

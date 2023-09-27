@@ -14,8 +14,6 @@ import (
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
-
-		DidList: []string{"0", "1"},
 	}
 
 	k, ctx := keepertest.DidKeeper(t)

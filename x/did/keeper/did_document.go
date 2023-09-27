@@ -45,17 +45,19 @@ func (k Keeper) GetEligibleDidByPubkey(ctx sdk.Context, pubkey string) (didDocum
 	return types.DidDocumentWithSeq{}, false
 }
 
-func (k Keeper) GetAllDid(ctx sdk.Context) []string {
+func (k Keeper) GetAllDid(ctx sdk.Context) (list []types.DidDocumentWithSeq) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
-	dids := make([]string, 0)
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
-	iter := sdk.KVStorePrefixIterator(store, []byte{})
-	defer iter.Close()
-	for ; iter.Valid(); iter.Next() {
-		did := string(iter.Key())
-		dids = append(dids, did)
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.DidDocumentWithSeq
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
 	}
-	return dids
+
+	return
 }
 
 func (k Keeper) GetEligibleDids(ctx sdk.Context, pins []uint) (found bool) {

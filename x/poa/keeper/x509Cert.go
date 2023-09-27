@@ -94,7 +94,7 @@ func (k Keeper) VerifyX509CertByASN1AndExtractPubkey(creatorInput string, signat
 	return pubKeyHex, nil
 }
 
-func (k msgServer) validateCertificate(ctx sdk.Context, deviceCert *x509.Certificate) error {
+func (k Keeper) ValidateCertificate(ctx sdk.Context, deviceCert *x509.Certificate) error {
 
 	totalKeys := k.GetAllFactoryKeys(ctx)
 
