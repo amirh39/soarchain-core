@@ -41,7 +41,7 @@ func NewDIDDocumentWithSeq(did string) (types.DidDocumentWithSeq, tendermintcryp
 	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
 	vehicle := types.NewVehicle(VIN)
 	owner := types.NewOwner(OWNERID, PURCHESDATE)
-	doc := types.NewDidDocument(did, INDEX, ADDRESS, TYPE, PIDS, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications), types.WithSoarchainPublicKey(&soarchainPublicKey), types.WithVehicle(&vehicle), types.WithOwner(&owner))
+	doc := types.NewDidDocument(did, INDEX, ADDRESS, TYPE, PIDS, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications), types.WithKeys(&soarchainPublicKey), types.WithVehicle(&vehicle), types.WithOwner(&owner))
 	docWithSeq := types.NewDidDocumentWithSeq(
 		&doc,
 		types.InitialSequence,
