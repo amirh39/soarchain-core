@@ -14,11 +14,7 @@ import (
 
 func (k Keeper) ValidateInputs(msg *types.MsgGenDid) bool {
 
-	if msg.Creator == "" || msg.Certificate == "" || msg.ClientSignature == "" || msg.Document.VerificationMethods[0].Id == "" {
-		return false
-	}
-
-	if msg.Signature == nil || msg.Document == nil {
+	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.Document == nil || msg.Document.VerificationMethods[0].Id == "" {
 		return false
 	}
 
