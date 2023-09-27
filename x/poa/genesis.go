@@ -10,6 +10,10 @@ import (
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+
+	for _, elem := range genState.ReputationList {
+		k.SetReputation(ctx, elem)
+	}
 	// Set all the challenger
 	for _, elem := range genState.ChallengerList {
 		k.SetChallenger(ctx, elem)
@@ -44,6 +48,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.ChallengerList = k.GetAllChallenger(ctx)
 	genesis.RunnerList = k.GetAllRunner(ctx)
+
+	genesis.ReputationList = k.GetAllReputation(ctx)
 
 	genesis.VrfDataList = k.GetAllVrfData(ctx)
 	// Get all masterKey
