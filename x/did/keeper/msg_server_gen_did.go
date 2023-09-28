@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+	"crypto/x509"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -15,6 +17,19 @@ import (
 	param "soarchain/app/params"
 	poatypes "soarchain/x/poa/types"
 )
+
+func clientType(deviceCert *x509.Certificate) string {
+	if deviceCert.Issuer.Names[1].Value == nil {
+		return "No Type"
+	}
+	results := fmt.Sprintf("%v", deviceCert.Issuer.Names[1].Value)
+	if results[41:43] == "01" {
+		return "mini"
+	} else {
+		return "pro"
+	}
+
+}
 
 func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.MsgGenDidResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -74,6 +89,7 @@ func (k msgServer) GenDid(goCtx context.Context, msg *types.MsgGenDid) (*types.M
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
+		Type:               clientType(deviceCert),
 	}, msg.Certificate)
 
 	if err != nil {

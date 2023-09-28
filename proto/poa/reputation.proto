@@ -11,5 +11,6 @@ message Reputation {
   string netEarnings = 6;
   string lastTimeChallenged = 7;
   string coolDownTolerance = 8;
+  string type = 9;
 }
 
