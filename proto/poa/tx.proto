@@ -10,9 +10,7 @@ option go_package = "soarchain/x/poa/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc GenClient(MsgGenClient) returns (MsgGenClientResponse);
   rpc ChallengeService(MsgChallengeService) returns (MsgChallengeServiceResponse);
-  rpc UnregisterClient(MsgUnregisterClient) returns (MsgUnregisterClientResponse);
   rpc UnregisterChallenger(MsgUnregisterChallenger) returns (MsgUnregisterChallengerResponse);
   rpc UnregisterRunner(MsgUnregisterRunner) returns (MsgUnregisterRunnerResponse);
   rpc RunnerChallenge(MsgRunnerChallenge) returns (MsgRunnerChallengeResponse);
@@ -27,15 +25,6 @@ service Msg {
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgGenClient {
-  string creator = 1;
-  string certificate = 2;
-  string signature = 3;
-}
-
-message MsgGenClientResponse {
-}
-
 message MsgChallengeService {
   string creator = 1;
   string clientPubkey = 2;
@@ -47,14 +36,6 @@ message MsgChallengeService {
 message MsgChallengeServiceResponse {
 }
 
-message MsgUnregisterClient {
-  string creator = 1;
-  string pubkey = 2;
-}
-
-message MsgUnregisterClientResponse {
-}
-
 message MsgUnregisterChallenger {
   string creator = 1;
   string challengerAddress = 2;
@@ -62,7 +43,6 @@ message MsgUnregisterChallenger {
 
 message MsgUnregisterChallengerResponse {
 }
-
 
 message MsgGenRunner{
   string creator = 1; 
@@ -73,7 +53,6 @@ message MsgGenRunner{
 }
 
 message MsgGenRunnerResponse{
-
 }
 
 message MsgGenChallenger{
@@ -86,9 +65,7 @@ message MsgGenChallenger{
 }
 
 message MsgGenChallengerResponse{
-
 }
-
 
 message MsgUnregisterRunner {
   string creator = 1;
@@ -107,8 +84,6 @@ message MsgRunnerChallenge {
 
 message MsgRunnerChallengeResponse {
 }
-
-
 
 message MsgSelectRandomChallenger {
   string creator = 1;
@@ -149,7 +124,6 @@ message MsgClaimChallengerRewards {
 }
 
 message MsgClaimChallengerRewardsResponse {
-
 }
 
 message MsgRegisterFactoryKey {
@@ -159,5 +133,3 @@ message MsgRegisterFactoryKey {
 
 message MsgRegisterFactoryKeyResponse {
 }
-
-// this line is used by starport scaffolding # proto/tx/message

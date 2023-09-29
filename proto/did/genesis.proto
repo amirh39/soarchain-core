@@ -1,8 +1,8 @@
 syntax = "proto3";
 package soarchain.did;
-
 import "gogoproto/gogo.proto";
 import "did/params.proto";
+import "did/did_document.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "soarchain/x/did/types";
@@ -10,6 +10,6 @@ option go_package = "soarchain/x/did/types";
 // GenesisState defines the did module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
-  repeated string DidList = 2 [(gogoproto.nullable) = false];
+  repeated DidDocumentWithSeq DidList = 2 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

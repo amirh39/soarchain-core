@@ -1,6 +1,5 @@
 syntax = "proto3";
 package soarchain.did;
-
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
@@ -49,5 +48,7 @@ message QueryAllDidRequest {
 }
 
 message QueryAllDidResponse {
-	repeated string did = 1  [(gogoproto.nullable) = false];
+	repeated DidDocumentWithSeq didDocument = 1  [(gogoproto.nullable) = false];
 }
+
+

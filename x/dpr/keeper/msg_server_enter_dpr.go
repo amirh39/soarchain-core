@@ -34,7 +34,7 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 	clientPubKey = append(clientPubKey, msg.PubKey)
 
 	vin := []string{}
-	vin = append(vin, did.Document.Vin)
+	vin = append(vin, did.Document.Vehicle.Vin)
 
 	// Save dpr into storage
 	newDpr := types.Dpr{

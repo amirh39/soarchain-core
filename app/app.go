@@ -276,11 +276,11 @@ type SoarchainApp struct {
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 	ScopedWasmKeeper       capabilitykeeper.ScopedKeeper
 
+	EpochKeeper epochmodulekeeper.Keeper
+
 	PoaKeeper poamodulekeeper.Keeper
 
 	DidKeeper didmodulekeeper.Keeper
-
-	EpochKeeper epochmodulekeeper.Keeper
 
 	DprKeeper dprmodulekeeper.Keeper
 
@@ -470,14 +470,6 @@ func NewSoarchainApp(
 	)
 	epochModule := epochmodule.NewAppModule(appCodec, app.EpochKeeper, app.AccountKeeper, app.BankKeeper)
 
-	app.DidKeeper = *didmodulekeeper.NewDidKeeper(
-		appCodec,
-		keys[didmoduletypes.StoreKey],
-		keys[didmoduletypes.MemStoreKey],
-		app.GetSubspace(didmoduletypes.ModuleName),
-	)
-	didModule := didmodule.NewAppModule(appCodec, app.DidKeeper, app.AccountKeeper)
-
 	app.PoaKeeper = *poamodulekeeper.NewKeeper(
 		appCodec,
 		keys[poamoduletypes.StoreKey],
@@ -488,6 +480,16 @@ func NewSoarchainApp(
 		app.EpochKeeper,
 	)
 	poaModule := poamodule.NewAppModule(appCodec, app.PoaKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper)
+
+	app.DidKeeper = *didmodulekeeper.NewDidKeeper(
+		appCodec,
+		keys[didmoduletypes.StoreKey],
+		keys[didmoduletypes.MemStoreKey],
+		app.GetSubspace(didmoduletypes.ModuleName),
+
+		app.PoaKeeper,
+	)
+	didModule := didmodule.NewAppModule(appCodec, app.DidKeeper, app.AccountKeeper)
 
 	app.DprKeeper = *dprmodulekeeper.NewDprKeeper(
 		appCodec,

@@ -10,28 +10,27 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func TestClientByIndex(t *testing.T) {
+func TestChallengerByIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
-	clients := SetupClientEntity(1)
-	require.NotEmpty(t, 1, clients)
-	k.SetClient(ctx, clients[0])
+	challengers := CreateNChallenger(1)
+	k.SetChallenger(ctx, challengers[0])
 
-	client, err := wasmbinding.GetClientByIndex(ctx, Index, k)
-	require.NotEmpty(t, 1, client)
-	require.Equal(t, "25", client.Score)
+	challenger, err := wasmbinding.GetChallenger(ctx, Challenger_Address, k)
+	require.NotEmpty(t, 1, challenger)
+	require.Equal(t, "189", challenger.Score)
 	require.Equal(t, nil, err)
 }
 
-func TestClientByNotValidIndex(t *testing.T) {
+func TestChallengerByNotValidIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
-	clients := SetupClientEntity(1)
-	k.SetClient(ctx, clients[0])
+	challengers := CreateNChallenger(1)
+	k.SetChallenger(ctx, challengers[0])
 
-	client, err := wasmbinding.GetClientByIndex(ctx, NotValidndex, k)
+	challenger, err := wasmbinding.GetChallenger(ctx, NotValidndex, k)
 	require.Error(t, err)
-	require.Empty(t, client)
+	require.Empty(t, challenger)
 }

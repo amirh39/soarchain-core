@@ -34,7 +34,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	}
 
 	// Fetch client from the store
-	client, isFound := k.GetClient(ctx, msg.ClientPubkey)
+	client, isFound := k.GetReputation(ctx, msg.ClientPubkey)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ChallengeService][GetClient] failed. Target client is not registered in the store.")
 	}
@@ -151,7 +151,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			coolDownMultiplier = 1
 		}
 
-		updatedClient := types.Client{
+		updatedClient := types.Reputation{
 			Index:              client.Index,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
@@ -159,21 +159,9 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			NetEarnings:        "0",
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
-			Type:               client.Type,
 		}
 
-		k.SetClient(ctx, updatedClient)
-
-		// Update Motus wallet
-		motusWallet, isFoundWallet := k.GetMotusWallet(ctx, client.Address)
-		if !isFoundWallet {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][GetMotusWallet] failed. Couldn't find a wallet for Motus client.")
-		}
-		newMotusWallet := types.MotusWallet{
-			Index:  motusWallet.Index,
-			Client: &updatedClient,
-		}
-		k.SetMotusWallet(ctx, newMotusWallet)
+		k.SetReputation(ctx, updatedClient)
 
 		if logger != nil {
 			logger.Info("Rewarding the client successfully done.", "transaction", "ChallengeService")
@@ -212,7 +200,7 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 		}
 
 		//
-		updatedClient := types.Client{
+		updatedClient := types.Reputation{
 			Index:              client.Index,
 			Address:            client.Address,
 			Score:              strconv.FormatFloat(newScore, 'f', -1, 64),
@@ -220,21 +208,9 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 			NetEarnings:        client.NetEarnings,
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(coolDownMultiplier, 10),
-			Type:               client.Type,
 		}
 
-		k.SetClient(ctx, updatedClient)
-
-		// Update Motus wallet
-		motusWallet, isFoundWallet := k.GetMotusWallet(ctx, client.Address)
-		if !isFoundWallet {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ChallengeService][GetMotusWallet] failed. Motus client wallet not found.")
-		}
-		newMotusWallet := types.MotusWallet{
-			Index:  motusWallet.Index,
-			Client: &updatedClient,
-		}
-		k.SetMotusWallet(ctx, newMotusWallet)
+		k.SetReputation(ctx, updatedClient)
 
 		if logger != nil {
 			logger.Info("Punishing the client successfully done.", "transaction", "ChallengeService")

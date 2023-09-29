@@ -21,10 +21,14 @@ func (helper *KeeperTestHelper) Test_Leave_DPR() {
 		dprKeeper.SetDpr(helper.Ctx, dpr[0])
 		helper.Require().NotEmpty(dpr)
 
+		vin := didtypes.Vehicle{
+			Vin: VIN,
+		}
+
 		newDid := didtypes.DidDocument{
-			Id:              Did,
-			ClientPublicKey: PUBKEY,
-			Vin:             VIN,
+			Id:      Did,
+			Index:   PUBKEY,
+			Vehicle: &vin,
 		}
 
 		didDocument := didtypes.DidDocumentWithSeq{

@@ -3,18 +3,19 @@ package cli
 import (
 	"strconv"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdGetClientByAddress() *cobra.Command {
+func CmdGetReputationByAddress() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-client-by-address [address]",
-		Short: "Query getClientByAddress",
+		Use:   "get-reputation-by-address [address]",
+		Short: "Query getreputationByAddress",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqAddress := args[0]
@@ -26,12 +27,12 @@ func CmdGetClientByAddress() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetClientByAddressRequest{
+			params := &types.QueryGetReputationByAddressRequest{
 
 				Address: reqAddress,
 			}
 
-			res, err := queryClient.GetClientByAddress(cmd.Context(), params)
+			res, err := queryClient.GetReputationByAddress(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

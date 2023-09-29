@@ -15,33 +15,33 @@ import (
 	"soarchain/x/poa/types"
 )
 
-func Test_ClientQuerySingle(t *testing.T) {
+func Test_ReputationQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := CreateNClient(keeper, ctx, 2)
+	msgs := CreateNReputation(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetClientRequest
-		response *types.QueryGetClientResponse
+		request  *types.QueryGetReputationRequest
+		response *types.QueryGetReputationResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetClientRequest{
+			request: &types.QueryGetReputationRequest{
 				Index: msgs[0].Index,
 			},
-			response: &types.QueryGetClientResponse{Client: msgs[0]},
+			response: &types.QueryGetReputationResponse{Reputation: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetClientRequest{
+			request: &types.QueryGetReputationRequest{
 				Index: msgs[1].Index,
 			},
-			response: &types.QueryGetClientResponse{Client: msgs[1]},
+			response: &types.QueryGetReputationResponse{Reputation: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetClientRequest{
+			request: &types.QueryGetReputationRequest{
 				Index: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
@@ -52,7 +52,7 @@ func Test_ClientQuerySingle(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.Client(wctx, tc.request)
+			response, err := keeper.Reputation(wctx, tc.request)
 			if err != nil {
 				require.Error(t, err)
 			} else {
@@ -69,10 +69,10 @@ func Test_ClientQuerySingle(t *testing.T) {
 func Test_ClientQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := CreateNClient(keeper, ctx, 5)
+	msgs := CreateNReputation(keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllClientRequest {
-		return &types.QueryAllClientRequest{
+	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllReputationRequest {
+		return &types.QueryAllReputationRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -84,12 +84,12 @@ func Test_ClientQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.ClientAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.ReputationAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.Client), step)
+			require.LessOrEqual(t, len(resp.Reputation), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.Client),
+				nullify.Fill(resp.Reputation),
 			)
 		}
 	})
@@ -97,27 +97,27 @@ func Test_ClientQueryPaginated(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.ClientAll(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.ReputationAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.Client), step)
+			require.LessOrEqual(t, len(resp.Reputation), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.Client),
+				nullify.Fill(resp.Reputation),
 			)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.ClientAll(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.ReputationAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
-			nullify.Fill(resp.Client),
+			nullify.Fill(resp.Reputation),
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.ClientAll(wctx, nil)
+		_, err := keeper.ReputationAll(wctx, nil)
 		require.Error(t, err)
 	})
 }

@@ -17,9 +17,9 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	log.Println("############## Claim Motus Rewards Transaction Started ##############")
 
-	motusWallet, isFound := k.GetMotusWallet(ctx, msg.Creator)
+	reputation, isFound := k.GetReputationByClientAddress(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ClaimMotusRewards][GetMotusWallet] failed. Target client is not registered in the store.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][GetReputation] failed. Creator is not valid address.")
 	}
 
 	withdrawAmount, err := sdk.ParseCoinsNormalized(msg.Amount)
@@ -27,7 +27,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount.")
 	}
 
-	earnedAmount, err := sdk.ParseCoinsNormalized(motusWallet.Client.NetEarnings)
+	earnedAmount, err := sdk.ParseCoinsNormalized(reputation.NetEarnings)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][ParseCoinsNormalized] failed. Couldn't parse withdrawal amount.")
 	}
@@ -43,7 +43,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	}
 
 	if logger != nil {
-		logger.Info("Transfering coins to the target client successfully done.", "transaction", "ClaimMotusRewards")
+		logger.Info("Transfering coins to the target reputations successfully done.", "transaction", "ClaimMotusRewards")
 	}
 
 	// Calculate new net earnings
@@ -58,29 +58,11 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 		logger.Info("Calculating new net earning successfully done.", "transaction", "ClaimMotusRewards")
 	}
 
-	updatedClient := types.Client{
-		Index:              motusWallet.Client.Index,
-		Address:            motusWallet.Client.Address,
-		Score:              motusWallet.Client.Score,
-		RewardMultiplier:   motusWallet.Client.RewardMultiplier,
-		NetEarnings:        netEarnings.String(),
-		LastTimeChallenged: motusWallet.Client.LastTimeChallenged,
-		CoolDownTolerance:  motusWallet.Client.CoolDownTolerance,
-		Type:               motusWallet.Client.Type,
+	updatedReputation := types.Reputation{
+		Index:       reputation.Index,
+		NetEarnings: netEarnings.String(),
 	}
-
-	k.SetClient(ctx, updatedClient)
-
-	// Update Motus wallet
-	newMotusWallet := types.MotusWallet{
-		Index:  motusWallet.Index,
-		Client: &updatedClient,
-	}
-	k.SetMotusWallet(ctx, newMotusWallet)
-
-	if logger != nil {
-		logger.Info("Updating target client and motus wallet successfully done.", "transaction", "ClaimMotusRewards")
-	}
+	k.SetReputation(ctx, updatedReputation)
 
 	log.Println("############## End of Claim Motus Rewards Transaction ##############")
 

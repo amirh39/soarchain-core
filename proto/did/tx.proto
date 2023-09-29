@@ -19,12 +19,11 @@ service Msg {
 }
 
 message MsgGenDid {
-    string did = 1;
-    DidDocument document = 2;
-    string verificationMethodId = 3;
-    bytes signature = 4;
-    string fromAddress = 5;
-  }
+  DidDocument document = 1;
+  string signature = 2;
+  string certificate = 3;
+  string creator = 4;
+}
   
   message MsgGenDidResponse {}
   

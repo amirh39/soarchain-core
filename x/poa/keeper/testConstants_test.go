@@ -4,6 +4,7 @@ package keeper_test
 import (
 	"context"
 	"soarchain/x/poa"
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/keeper"
 	"soarchain/x/poa/testutil"
 	"soarchain/x/poa/types"
@@ -59,21 +60,11 @@ func SetupNRunner(n int) []types.Runner {
 	return items
 }
 
-func CreateNClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
-	items := make([]types.Client, n)
-	for i := range items {
-		items[i].Index = strconv.Itoa(i)
-		items[i].Address = strconv.Itoa(i)
+func CreateTwoReputationsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) []types.Reputation {
+	items := make([]types.Reputation, 2)
 
-		keeper.SetClient(ctx, items[i])
-	}
-	return items
-}
-func CreateTwoClientsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) []types.Client {
-	items := make([]types.Client, 2)
-
-	// Create the first client
-	firstClient := types.Client{
+	// Create the first reputation
+	firstReputation := types.Reputation{
 		Index:              ClientPubKey,
 		Address:            ClientAddress,
 		Score:              ClientScore,
@@ -81,11 +72,10 @@ func CreateTwoClientsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) []typ
 		NetEarnings:        ClientNetEarnings2,
 		LastTimeChallenged: ClientLastTimeChallenged,
 		CoolDownTolerance:  ClientCoolDownTolerance,
-		Type:               ClientType,
 	}
 
-	// Create the second client
-	secondClient := types.Client{
+	// Create the second reputation
+	secondReputation := types.Reputation{
 		Index:              ClientPubKey2,
 		Address:            CommunityWallet,
 		Score:              ClientScore2,
@@ -93,26 +83,25 @@ func CreateTwoClientsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) []typ
 		NetEarnings:        ClientNetEarnings2,
 		LastTimeChallenged: ClientLastTimeChallenged,
 		CoolDownTolerance:  ClientCoolDownTolerance,
-		Type:               ClientType,
 	}
 
-	// Adjust the address for the second client if it matches the first
-	if firstClient.Address == secondClient.Address {
-		secondClient.Address = CommunityWallet
+	// Adjust the address for the second reputation if it matches the first
+	if firstReputation.Address == secondReputation.Address {
+		secondReputation.Address = CommunityWallet
 	}
 
-	// Set the clients and return them
-	keeper.SetClient(ctx, firstClient)
-	keeper.SetClient(ctx, secondClient)
+	// Set the reputations and return them
+	keeper.SetReputation(ctx, firstReputation)
+	keeper.SetReputation(ctx, secondReputation)
 
-	items[0] = firstClient
-	items[1] = secondClient
+	items[0] = firstReputation
+	items[1] = secondReputation
 
 	return items
 }
 
-func SetupClientEntity(n int) []types.Client {
-	items := make([]types.Client, n)
+func SetupReputationEntity(n int) []types.Reputation {
+	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].Index = ClientPubKey
 		items[i].Address = ClientAddress
@@ -121,53 +110,18 @@ func SetupClientEntity(n int) []types.Client {
 		items[i].NetEarnings = ClientNetEarnings
 		items[i].LastTimeChallenged = ClientLastTimeChallenged
 		items[i].CoolDownTolerance = ClientCoolDownTolerance
-		items[i].Type = ClientType
 	}
 	return items
 }
 
-func CreateInValidClient(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
-	items := make([]types.Client, n)
-	for i := range items {
-		items[i].Index = ""
-		items[i].Address = ""
-
-		keeper.SetClient(ctx, items[i])
-	}
-	return items
-}
-
-func CreateInValidClientScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Client {
-	items := make([]types.Client, n)
+func CreateInValidReputationScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
 		items[i].Address = strconv.Itoa(12)
 		items[i].Score = NotValid_Score
 		items[i].LastTimeChallenged = NotValid_LastTimeChallenged
 		items[i].CoolDownTolerance = NotValid_CoolDownTolerance
-
-		keeper.SetClient(ctx, items[i])
-	}
-	return items
-}
-
-func SetupClientWithInvalidScore(n int) []types.Client {
-	items := make([]types.Client, n)
-	for i := range items {
-		items[i].Index = strconv.Itoa(i)
-		items[i].Address = strconv.Itoa(12)
-		items[i].Score = NotValid_Score
-		items[i].LastTimeChallenged = NotValid_LastTimeChallenged
-		items[i].CoolDownTolerance = NotValid_CoolDownTolerance
-	}
-	return items
-}
-
-func SetupClientToUnregistration(n int) []types.Client {
-	items := make([]types.Client, n)
-	for i := range items {
-		items[i].Index = ClientPubKey
-		items[i].Address = CREATOR
 	}
 	return items
 }
@@ -186,7 +140,6 @@ func CreateNChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Ch
 		keeper.SetChallenger(ctx, items[i])
 	}
 	return items
-
 }
 
 func CreateNChallengerWithNormalScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
@@ -203,7 +156,6 @@ func CreateNChallengerWithNormalScore(keeper *keeper.Keeper, ctx sdk.Context, n 
 		keeper.SetChallenger(ctx, items[i])
 	}
 	return items
-
 }
 
 func SetupNChallenger(n int) []types.Challenger {
@@ -224,7 +176,7 @@ func CreateV2NTypeChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []ty
 	items := make([]types.Challenger, n)
 	for i := range items {
 		items[i].Address = strconv.Itoa(i)
-		items[i].Type = "v2n"
+		items[i].Type = constants.V2NChallengerType
 
 		keeper.SetChallenger(ctx, items[i])
 	}
@@ -239,23 +191,6 @@ func CreateNFactoryKeys(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.F
 	return items
 }
 
-func CreateNMotusWallet(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.MotusWallet {
-	items := make([]types.MotusWallet, n)
-	for i := range items {
-		items[i].Index = strconv.Itoa(i)
-
-		keeper.SetMotusWallet(ctx, items[i])
-	}
-	return items
-}
-
-func SetupMotusWalletEntityByClient(client types.Client) types.MotusWallet {
-	motusWallet := types.MotusWallet{
-		Index:  MotusWallet_Index,
-		Client: &client,
-	}
-	return motusWallet
-}
 func SetupMsgServerForPoa(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context,
 	*gomock.Controller, *testutil.MockBankKeeper, *testutil.MockEpochKeeper) {
 	ctrl := gomock.NewController(t)
@@ -422,11 +357,6 @@ const (
 )
 
 const (
-	MotusWallet_Index = "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8"
-	MotusWalletAmount = "100utmotus"
-)
-
-const (
 	CommunityWallet = "soar1fkl5vm32776a5h6v7ra5pq9fnckxx3nl2mkjnx"
 )
 
@@ -472,4 +402,15 @@ func CreateEpochData(keeper *epochKeeper.Keeper, ctx sdk.Context) epochTypes.Epo
 	}
 	keeper.SetEpochData(ctx, item)
 	return item
+}
+
+func CreateNReputation(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+	items := make([]types.Reputation, n)
+	for i := range items {
+		items[i].Index = strconv.Itoa(i)
+		items[i].Address = strconv.Itoa(i)
+
+		keeper.SetReputation(ctx, items[i])
+	}
+	return items
 }

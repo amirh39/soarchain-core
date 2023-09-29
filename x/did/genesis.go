@@ -15,7 +15,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	k.SetParams(ctx, genState.Params)
 
 	for _, element := range genState.DidList {
-		did, found := k.GetDidDocument(ctx, element)
+		did, found := k.GetDidDocument(ctx, element.Document.Id)
 		if found {
 			k.SetDidDocument(ctx, did.Document.Id, did)
 		}

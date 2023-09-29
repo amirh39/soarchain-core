@@ -132,21 +132,21 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 	return nil
 }
 
-func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge, epoch epoch.EpochData) error {
-	v2nBxAddrCount := len(msg.ClientPubkeys)
-	if v2nBxAddrCount < 1 {
+func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge, epoch epoch.EpochData) error {
+	clientPubkeysCount := len(msg.ClientPubkeys)
+	if clientPubkeysCount < 1 {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NoV2nBxAddressPubKeys)
 	}
 
 	// Create an array of scores to send to CalculateRewards
-	scores := make([]float64, v2nBxAddrCount)
-	for i := 0; i < v2nBxAddrCount; i++ {
-		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
+	scores := make([]float64, clientPubkeysCount)
+	for i := 0; i < clientPubkeysCount; i++ {
+		reputation, isFound := k.GetReputation(ctx, msg.ClientPubkeys[i])
 		if !isFound {
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
 
-		score, err := strconv.ParseFloat(v2nBxClient.Score, 64)
+		score, err := strconv.ParseFloat(reputation.Score, 64)
 		if err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid score")
 		}
@@ -159,51 +159,35 @@ func (k Keeper) updateClient(ctx sdk.Context, msg *types.MsgRunnerChallenge, epo
 		return sdkerrors.Wrap(sdkerrors.ErrLogic, errors.EarnedRewardsBigInt)
 	}
 	var totalEarnings sdk.Coin
-	for i := 0; i < v2nBxAddrCount; i++ {
-		v2nBxClient, isFound := k.GetClient(ctx, msg.ClientPubkeys[i])
+	for i := 0; i < clientPubkeysCount; i++ {
+		reputation, isFound := k.GetReputation(ctx, msg.ClientPubkeys[i])
 		if !isFound {
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
-
 		// RewardAndScore functionality
-		rewardMultiplier, score := k.rewardAndScore(v2nBxClient.Score)
+		rewardMultiplier, score := k.rewardAndScore(reputation.Score)
 
 		if len(earnedRewardsBigInt) > 0 {
-			totalEarnings, err = k.calculateTotalEarnings(ctx, v2nBxClient.NetEarnings, earnedRewardsBigInt[i], constants.Runner)
+			totalEarnings, err = k.calculateTotalEarnings(ctx, reputation.NetEarnings, earnedRewardsBigInt[i], constants.Runner)
 			if err != nil {
 				return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
 			}
 		}
 
-		updatedClient := types.Client{
-			Index:              v2nBxClient.Index,
-			Address:            v2nBxClient.Address,
+		updatedReputation := types.Reputation{
+			Index:              reputation.Index,
 			Score:              strconv.FormatFloat(score, 'f', -1, 64),
 			NetEarnings:        totalEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, msg.Creator), 10),
-			Type:               v2nBxClient.Type,
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		}
 
-		k.SetClient(ctx, updatedClient)
-
-		k.updateMotusWallet(ctx, v2nBxClient.Address, updatedClient)
+		k.SetReputation(ctx, updatedReputation)
 	}
-
 	return nil
 }
 
-func (k Keeper) updateMotusWallet(ctx sdk.Context, address string, client types.Client) {
-	motusWallet, _ := k.GetMotusWallet(ctx, address)
-
-	newMotusWallet := types.MotusWallet{
-		Index:  motusWallet.Index,
-		Client: &client,
-	}
-
-	k.SetMotusWallet(ctx, newMotusWallet)
-}
 func (k Keeper) calculateTotalEarnings(ctx sdk.Context, currentEarnings string, earnedRewardsBigInt *big.Int, entityType string) (sdk.Coin, error) {
 	earnedAmount := sdk.NewIntFromBigInt(earnedRewardsBigInt)
 	earnedCoin := sdk.NewCoin(params.BondDenom, earnedAmount)
@@ -226,7 +210,7 @@ func (k Keeper) calculateTotalEarnings(ctx sdk.Context, currentEarnings string, 
 func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerChallenge) (*types.MsgRunnerChallengeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
-	log.Println("############## runner_challenge Transaction Has Started ##############")
+	log.Println("############## Runner challenge Transaction Has Started ##############")
 
 	epochData, isFound := k.epochKeeper.GetEpochData(ctx)
 	if !isFound {
@@ -238,22 +222,22 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
 
-	err := k.updateRunner(ctx, msg.Creator, msg.RunnerPubkey, msg.ChallengeResult, epochData)
+	err := k.updateReputation(ctx, msg, epochData)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
+	}
+
+	if logger != nil {
+		logger.Info("Updating reputation successfully done.", "transaction", "RunnerChallenge")
+	}
+
+	err = k.updateRunner(ctx, msg.Creator, msg.RunnerPubkey, msg.ChallengeResult, epochData)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
 
 	if logger != nil {
 		logger.Info("Updating runner successfully done.", "transaction", "RunnerChallenge")
-	}
-
-	err = k.updateClient(ctx, msg, epochData)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
-	}
-
-	if logger != nil {
-		logger.Info("Updating client successfully done.", "transaction", "RunnerChallenge")
 	}
 
 	/** Update challenger info after the successfull reward session */
@@ -267,12 +251,15 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	}
 
 	//update the challenge counts
-	if epochErr := k.epochKeeper.UpdateEpochRewards(ctx, "runner_challenge", sdk.NewCoin(params.BondDenom, sdk.ZeroInt())); epochErr == nil {
-		log.Println("UpdateEpochRewards working")
-	} else {
-		// There was an error in the UpdateEpochRewards function, handle it here
+	epochErr := k.epochKeeper.UpdateEpochRewards(ctx, "runner_challenge", sdk.NewCoin(params.BondDenom, sdk.ZeroInt()))
+	if epochErr != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EpochError)
 	}
+
+	if logger != nil {
+		logger.Info("Updating epoch reward successfully done.", "transaction", "RunnerChallenge")
+	}
+
 	log.Println("############## End of Runner Challenge Transaction ##############")
 
 	return &types.MsgRunnerChallengeResponse{}, nil

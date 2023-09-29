@@ -25,26 +25,24 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdQueryParams())
-	cmd.AddCommand(CmdListClient())
-	cmd.AddCommand(CmdShowClient())
 	cmd.AddCommand(CmdListChallenger())
 	cmd.AddCommand(CmdShowChallenger())
 	cmd.AddCommand(CmdListRunner())
 	cmd.AddCommand(CmdShowRunner())
-	cmd.AddCommand(CmdGetClientByAddress())
 	cmd.AddCommand(CmdGetChallengerByAddress())
 	cmd.AddCommand(CmdListVrfData())
 	cmd.AddCommand(CmdShowVrfData())
 	cmd.AddCommand(CmdVerifyRandomNumber())
 	cmd.AddCommand(CmdIsChallengeable())
-	cmd.AddCommand(CmdListMotusWallet())
-	cmd.AddCommand(CmdShowMotusWallet())
 	cmd.AddCommand(CmdShowMasterKey())
 	cmd.AddCommand(CmdListFactoryKeys())
 	cmd.AddCommand(CmdShowFactoryKeys())
 	cmd.AddCommand(CmdGetRunnerByIp())
 	cmd.AddCommand(CmdGetChallengerByPubKey())
 	cmd.AddCommand(CmdGetRunnerByPubKey())
+	cmd.AddCommand(CmdListReputation())
+	cmd.AddCommand(CmdShowReputation())
+	cmd.AddCommand(CmdGetReputationByAddress())
 
 	// this line is used by starport scaffolding # 1
 

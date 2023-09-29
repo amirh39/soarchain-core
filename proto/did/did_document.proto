@@ -10,21 +10,28 @@ message Strings {
 }
 
 message DidDocument {
-  Strings contexts = 1 [json_name = "@context", (gogoproto.customtype) = "JSONStringOrStrings"];
-  string id = 2;
-  Strings controller = 3 [(gogoproto.customtype) = "JSONStringOrStrings"];
-  repeated VerificationMethod verificationMethods = 4 [json_name = "verificationMethod"];
-  repeated VerificationRelationship authentications = 5 [json_name = "authentication", (gogoproto.customtype) = "VerificationRelationship"];
-  repeated VerificationRelationship assertionMethods = 6 [json_name = "assertionMethod", (gogoproto.customtype) = "VerificationRelationship"];
-  repeated VerificationRelationship keyAgreements = 7 [json_name = "keyAgreement", (gogoproto.customtype) = "VerificationRelationship"];
-  repeated VerificationRelationship capabilityInvocations = 8 [json_name = "capabilityInvocation", (gogoproto.customtype) = "VerificationRelationship"];
-  repeated VerificationRelationship capabilityDelegations = 9 [json_name = "capabilityDelegation", (gogoproto.customtype) = "VerificationRelationship"];
-  repeated Service services = 10 [json_name = "service"];
-  string clientPublicKey = 11;
-  string vin = 12;
-  bool pidSupportedOneToTwnety = 13;
-  bool pidSupportedTwentyOneToForthy = 14;
-  bool pidSupportedForthyOneToSixty = 15;
+  string id = 1;
+  string index = 2;
+  string address = 3;
+  string type = 4;
+  Keys keys = 5 [json_name = "keys"];
+  repeated VerificationMethod verificationMethods = 6 [json_name = "verificationMethod"];
+  repeated VerificationRelationship authentications = 7 [json_name = "authentication", (gogoproto.customtype) = "VerificationRelationship"];
+  repeated Service services = 8 [json_name = "service"];
+  Vehicle vehicle = 9 [json_name = "vehicle"];
+  Owner owner = 10 [json_name = "owner"];
+  bool pidSupportedOneToTwnety = 11;
+  bool pidSupportedTwentyOneToForthy = 12;
+  bool pidSupportedForthyOneToSixty = 13;
+  string created = 14;
+  string updated = 15;
+}
+
+message Keys {
+  string id = 1;
+  string pubkeyType = 2;
+  string controller = 3;
+  string publicKeyPem = 4;
 }
 
 message VerificationMethod {
@@ -48,6 +55,15 @@ message Service {
   string id = 1;
   string type = 2;
   string serviceEndpoint = 3;
+}
+
+message Vehicle {
+  string vin = 1;
+}
+
+message Owner {
+  string id = 1;
+  string purchaseDate = 2;
 }
 
 // DidDocumentWithSeq defines a message for Did Document with a sequence number for preventing replay attacks.

@@ -25,17 +25,17 @@ var (
 )
 
 const (
-	opWeightMsgGenClient = "op_weight_msg_gen_client"
+	opWeightMsgGenReputation = "op_weight_msg_gen_reputation"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgGenClient int = 100
+	defaultWeightMsgGenReputation int = 100
 
 	opWeightMsgChallengeService = "op_weight_msg_challenge_service"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgChallengeService int = 100
 
-	opWeightMsgUnregisterClient = "op_weight_msg_unregister_client"
+	opWeightMsgUnregisterReputation = "op_weight_msg_unregister_reputation"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgUnregisterClient int = 100
+	defaultWeightMsgUnregisterReputation int = 100
 
 	opWeightMsgUnregisterChallenger = "op_weight_msg_unregister_challenger"
 	// TODO: Determine the simulation weight value
@@ -103,17 +103,6 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
-	var weightMsgGenClient int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgGenClient, &weightMsgGenClient, nil,
-		func(_ *rand.Rand) {
-			weightMsgGenClient = defaultWeightMsgGenClient
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgGenClient,
-		poasimulation.SimulateMsgGenClient(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
 	var weightMsgChallengeService int
 	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgChallengeService, &weightMsgChallengeService, nil,
 		func(_ *rand.Rand) {
@@ -123,17 +112,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgChallengeService,
 		poasimulation.SimulateMsgChallengeService(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgUnregisterClient int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUnregisterClient, &weightMsgUnregisterClient, nil,
-		func(_ *rand.Rand) {
-			weightMsgUnregisterClient = defaultWeightMsgUnregisterClient
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUnregisterClient,
-		poasimulation.SimulateMsgUnregisterClient(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgUnregisterChallenger int

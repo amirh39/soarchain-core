@@ -13,33 +13,34 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func Test_GetClientByAddress(t *testing.T) {
+func Test_GetReputationByAddress(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := CreateNClient(keeper, ctx, 2)
+	reputations := CreateNReputation(keeper, ctx, 2)
+	keeper.SetReputation(ctx, reputations[0])
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetClientByAddressRequest
-		response *types.QueryGetClientByAddressResponse
+		request  *types.QueryGetReputationByAddressRequest
+		response *types.QueryGetReputationByAddressResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetClientByAddressRequest{
-				Address: msgs[0].Address,
+			request: &types.QueryGetReputationByAddressRequest{
+				Address: reputations[0].Address,
 			},
-			response: &types.QueryGetClientByAddressResponse{Client: &msgs[0]},
+			response: &types.QueryGetReputationByAddressResponse{Reputation: &reputations[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetClientByAddressRequest{
-				Address: msgs[1].Address,
+			request: &types.QueryGetReputationByAddressRequest{
+				Address: reputations[1].Address,
 			},
-			response: &types.QueryGetClientByAddressResponse{Client: &msgs[1]},
+			response: &types.QueryGetReputationByAddressResponse{Reputation: &reputations[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetClientByAddressRequest{
+			request: &types.QueryGetReputationByAddressRequest{
 				Address: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "client not found"),
@@ -50,7 +51,7 @@ func Test_GetClientByAddress(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.GetClientByAddress(wctx, tc.request)
+			response, err := keeper.GetReputationByAddress(wctx, tc.request)
 			if tc.err != nil {
 				require.Error(t, tc.err)
 			} else {

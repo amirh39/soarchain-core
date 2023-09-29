@@ -22,15 +22,6 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
-
-				ClientList: []types.Client{
-					{
-						Index: "0",
-					},
-					{
-						Index: "1",
-					},
-				},
 				ChallengerList: []types.Challenger{
 					{
 						PubKey: "0",
@@ -55,14 +46,6 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
-				MotusWalletList: []types.MotusWallet{
-					{
-						Index: "0",
-					},
-					{
-						Index: "1",
-					},
-				},
 				MasterKey: types.MasterKey{
 					MasterCertificate: "26",
 					MasterAccount:     "70",
@@ -79,20 +62,6 @@ func TestGenesisState_Validate(t *testing.T) {
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
-		},
-		{
-			desc: "duplicated client",
-			genState: &types.GenesisState{
-				ClientList: []types.Client{
-					{
-						Index: "0",
-					},
-					{
-						Index: "0",
-					},
-				},
-			},
-			valid: false,
 		},
 		{
 			desc: "duplicated challenger",
@@ -126,20 +95,6 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated vrfData",
 			genState: &types.GenesisState{
 				VrfDataList: []types.VrfData{
-					{
-						Index: "0",
-					},
-					{
-						Index: "0",
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "duplicated motusWallet",
-			genState: &types.GenesisState{
-				MotusWalletList: []types.MotusWallet{
 					{
 						Index: "0",
 					},

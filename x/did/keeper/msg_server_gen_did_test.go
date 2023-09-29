@@ -1,31 +1,54 @@
 package keeper_test
 
 import (
+	"fmt"
+	k "soarchain/x/did/keeper"
 	"soarchain/x/did/types"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
+
+	poatypes "soarchain/x/poa/types"
 )
 
-func Test_GenDid(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServer(t)
-	defer ctrl.Finish()
-	bank.ExpectAny(context)
-	ctx := sdk.UnwrapSDKContext(context)
-	documentWithSequence, privKey := NewDIDDocumentWithSeq(Did)
-	doc := documentWithSequence.Document
-	sig, error := types.Sign(doc, documentWithSequence.Sequence, privKey)
-	require.NoError(t, error)
-	res, err := msgServer.GenDid(context, &types.MsgGenDid{
-		Did:                  Did,
-		Document:             documentWithSequence.Document,
-		VerificationMethodId: VerificationMethodId,
-		Signature:            sig,
-		FromAddress:          ADDRESS,
+func (helper *KeeperTestHelper) Test_Gen_Did() {
+
+	helper.Run("TestGenDid", func() {
+		helper.Setup()
+		keeper := helper.App.DidKeeper
+		poakeeper := helper.App.PoaKeeper
+
+		ctx := sdk.WrapSDKContext(helper.Ctx)
+		msgServer := k.NewMsgServerImpl(keeper)
+
+		item := poatypes.MasterKey{MasterCertificate: MASTER_CERTIFICATE,
+			MasterAccount: MASTER_ACCOUNT,
+		}
+		poakeeper.SetMasterKey(helper.Ctx, item)
+		updatedFactoryKeyList := poatypes.FactoryKeys{
+			Id:          uint64(1),
+			FactoryCert: Certificate,
+		}
+		poakeeper.SetFactoryKeys(helper.Ctx, updatedFactoryKeyList)
+		deviceCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
+		helper.Require().NotNil(deviceCert)
+
+		documentWithSequence, _ := NewDIDDocumentWithSeq(Did)
+		helper.Require().NotEmpty(documentWithSequence)
+
+		res, err := msgServer.GenDid(ctx, &types.MsgGenDid{
+			Document:    documentWithSequence.Document,
+			Signature:   Signature,
+			Certificate: Certificate,
+			Creator:     ADDRESS,
+		})
+		didDocument, found := keeper.GetDidDocument(helper.Ctx, Did)
+		fmt.Print("didDocument------------------->", didDocument)
+		helper.Require().Equal(found, true)
+		if err != nil {
+			helper.Require().NotNil(err)
+		} else {
+			helper.Require().NotNil(res)
+			helper.Require().NoError(err)
+		}
 	})
-	didDocument, _ := k.GetDidDocument(ctx, Did)
-	t.Log("didDocument------------------->", didDocument)
-	require.NotNil(t, res)
-	require.NoError(t, err)
 }

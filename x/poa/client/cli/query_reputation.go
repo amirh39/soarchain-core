@@ -3,16 +3,17 @@ package cli
 import (
 	"context"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
-func CmdListMotusWallet() *cobra.Command {
+func CmdListReputation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-motus-wallet",
-		Short: "list all motusWallet",
+		Use:   "list-reputation",
+		Short: "list all reputation",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -23,11 +24,11 @@ func CmdListMotusWallet() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllMotusWalletRequest{
+			params := &types.QueryAllReputationRequest{
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.MotusWalletAll(context.Background(), params)
+			res, err := queryClient.ReputationAll(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -42,10 +43,10 @@ func CmdListMotusWallet() *cobra.Command {
 	return cmd
 }
 
-func CmdShowMotusWallet() *cobra.Command {
+func CmdShowReputation() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-motus-wallet [index]",
-		Short: "shows a motusWallet",
+		Use:   "show-reputation [index]",
+		Short: "shows a reputation",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)
@@ -54,11 +55,11 @@ func CmdShowMotusWallet() *cobra.Command {
 
 			argIndex := args[0]
 
-			params := &types.QueryGetMotusWalletRequest{
+			params := &types.QueryGetReputationRequest{
 				Index: argIndex,
 			}
 
-			res, err := queryClient.MotusWallet(context.Background(), params)
+			res, err := queryClient.Reputation(context.Background(), params)
 			if err != nil {
 				return err
 			}

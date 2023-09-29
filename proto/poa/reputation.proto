@@ -3,7 +3,7 @@ package soarchain.poa;
 
 option go_package = "soarchain/x/poa/types";
 
-message Client {
+message Reputation {
   string index = 1; 
   string address = 2;
   string score = 4;

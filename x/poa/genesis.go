@@ -10,9 +10,9 @@ import (
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
-	// Set all the client
-	for _, elem := range genState.ClientList {
-		k.SetClient(ctx, elem)
+
+	for _, elem := range genState.ReputationList {
+		k.SetReputation(ctx, elem)
 	}
 	// Set all the challenger
 	for _, elem := range genState.ChallengerList {
@@ -28,10 +28,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetVrfData(ctx, elem)
 	}
 
-	// Set all the motusWallet
-	for _, elem := range genState.MotusWalletList {
-		k.SetMotusWallet(ctx, elem)
-	}
 	// Set if defined
 	k.SetMasterKey(ctx, genState.MasterKey)
 	// Set all the factoryKeys
@@ -50,12 +46,12 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
 
-	genesis.ClientList = k.GetAllClient(ctx)
 	genesis.ChallengerList = k.GetAllChallenger(ctx)
 	genesis.RunnerList = k.GetAllRunner(ctx)
 
+	genesis.ReputationList = k.GetAllReputation(ctx)
+
 	genesis.VrfDataList = k.GetAllVrfData(ctx)
-	genesis.MotusWalletList = k.GetAllMotusWallet(ctx)
 	// Get all masterKey
 	masterKey, found := k.GetMasterKey(ctx)
 	if found {

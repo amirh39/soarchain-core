@@ -14,8 +14,6 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	// Check for duplicated index in client
-	//clientIndexMap := make(map[string]struct{})
 
 	// this line is used by starport scaffolding # genesis/types/validate
 
