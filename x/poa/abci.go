@@ -2,6 +2,7 @@ package poa
 
 import (
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/telemetry"
@@ -9,6 +10,8 @@ import (
 
 	"soarchain/x/poa/keeper"
 	"soarchain/x/poa/types"
+
+	epochtypes "soarchain/x/epoch/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )
@@ -31,20 +34,27 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 
 	// check if a new epoch has started
 	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
-		if logger != nil {
-			logger.Info("Update epoch started.", "path", "BeginBlocker")
-		}
-
-		if logger != nil {
-			logger.Info("[Poa Module][BeginBlocker] Fetching epoch data successfully done.", "path", "BeginBlocker", "found", found, "epoch data", epochData)
-		}
 
 		k.epochKeeper.UpdateEpoch(ctx)
-
 		if logger != nil {
 			logger.Info("[Poa Module][BeginBlocker] Update epoch successfully done.", "path", "BeginBlocker", "epoch data", epochData, "found", found)
 		}
 
+		randomNumber, found := k.epochKeeper.RandomNumber(ctx, epochData.TotalEpochs)
+		if !found {
+			logger.Error("[Poa Module][BeginBlocker] Fetching random number failed.", "path", "BeginBlocker")
+		}
+
+		randomData := epochtypes.RandomData{
+			Id:           strconv.FormatInt(ctx.BlockHeight(), 10),
+			EpochNumber:  strconv.FormatUint(epochData.TotalEpochs, 10),
+			RandomNumber: randomNumber,
+		}
+
+		k.epochKeeper.SetRandomData(ctx, randomData)
+		if logger != nil {
+			logger.Info("[Poa Module][BeginBlocker] Update random number successfully done.", "path", "BeginBlocker")
+		}
 	}
 
 	if (epochData.TotalEpochs%192 == 0) && (epochData.TotalEpochs != 0) {
