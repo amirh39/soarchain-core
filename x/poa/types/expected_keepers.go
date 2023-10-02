@@ -31,4 +31,7 @@ type EpochKeeper interface {
 	SetEpochData(ctx sdk.Context, epochData epochtypes.EpochData)
 	UpdateEpochRewards(ctx sdk.Context, serviceName string, coin sdk.Coin) error
 	UpdateEpoch(ctx sdk.Context)
+	SetRandomData(ctx sdk.Context, randomData epochtypes.RandomData)
+	GetAllRandomNumber(ctx sdk.Context) (list []epochtypes.RandomData)
+	RandomNumber(ctx sdk.Context, epochTotal uint64) (string, bool)
 }
