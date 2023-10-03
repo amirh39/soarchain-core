@@ -1,0 +1,10 @@
+syntax = "proto3";
+package soarchain.epoch;
+
+option go_package = "soarchain/x/epoch/types";
+
+message RandomData {
+  string id = 1; 
+  string randomNumber = 2; 
+  string epochNumber = 3; 
+}

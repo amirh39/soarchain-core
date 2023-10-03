@@ -1,6 +1,7 @@
 syntax = "proto3";
 package soarchain.epoch;
 import "epoch/epoch_data.proto";
+import "epoch/random_data.proto";
 import "gogoproto/gogo.proto";
 import "epoch/params.proto";
 // this line is used by starport scaffolding # genesis/proto/import
@@ -11,5 +12,6 @@ option go_package = "soarchain/x/epoch/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   EpochData epochData = 8 [(gogoproto.nullable) = false];
+  RandomData randomData = 2 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

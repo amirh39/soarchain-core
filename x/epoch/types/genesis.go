@@ -39,6 +39,11 @@ func DefaultGenesis() *GenesisState {
 			V2VBXPerChallengeValue:        2000000,
 			V2VRXPerChallengeValue:        2000000,
 		},
+		RandomData: RandomData{
+			Id:           "0",
+			RandomNumber: "0",
+			EpochNumber:  "0",
+		},
 	}
 }
 

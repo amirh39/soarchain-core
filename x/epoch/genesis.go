@@ -14,6 +14,8 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	k.SetParams(ctx, genState.Params)
 	// Set if defined
 	k.SetEpochData(ctx, genState.EpochData)
+
+	k.SetRandomData(ctx, genState.RandomData)
 }
 
 // ExportGenesis returns the capability module's exported genesis.

@@ -36,3 +36,22 @@ func CreateEpochData(keeper *keeper.Keeper, ctx sdk.Context) types.EpochData {
 	keeper.SetEpochData(ctx, item)
 	return item
 }
+
+func CreateRandomData(keeper *keeper.Keeper, ctx sdk.Context) types.RandomData {
+	item := types.RandomData{
+		Id:           "1",
+		RandomNumber: "123",
+		EpochNumber:  "353545345",
+	}
+	keeper.SetRandomData(ctx, item)
+	return item
+}
+
+func SetupRandomData() types.RandomData {
+	item := types.RandomData{
+		Id:           "1",
+		RandomNumber: "123",
+		EpochNumber:  "353545345",
+	}
+	return item
+}
