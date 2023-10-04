@@ -208,6 +208,20 @@ func (m *MockEpochKeeper) EXPECT() *MockEpochKeeperMockRecorder {
 	return m.recorder
 }
 
+// GetAllRandomNumber mocks base method.
+func (m *MockEpochKeeper) GetAllRandomNumber(ctx types.Context) []types1.RandomData {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAllRandomNumber", ctx)
+	ret0, _ := ret[0].([]types1.RandomData)
+	return ret0
+}
+
+// GetAllRandomNumber indicates an expected call of GetAllRandomNumber.
+func (mr *MockEpochKeeperMockRecorder) GetAllRandomNumber(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllRandomNumber", reflect.TypeOf((*MockEpochKeeper)(nil).GetAllRandomNumber), ctx)
+}
+
 // GetEpochData mocks base method.
 func (m *MockEpochKeeper) GetEpochData(ctx types.Context) (types1.EpochData, bool) {
 	m.ctrl.T.Helper()
@@ -223,6 +237,21 @@ func (mr *MockEpochKeeperMockRecorder) GetEpochData(ctx interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEpochData", reflect.TypeOf((*MockEpochKeeper)(nil).GetEpochData), ctx)
 }
 
+// RandomNumber mocks base method.
+func (m *MockEpochKeeper) RandomNumber(ctx types.Context, epochTotal uint64) (string, bool) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RandomNumber", ctx, epochTotal)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(bool)
+	return ret0, ret1
+}
+
+// RandomNumber indicates an expected call of RandomNumber.
+func (mr *MockEpochKeeperMockRecorder) RandomNumber(ctx, epochTotal interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RandomNumber", reflect.TypeOf((*MockEpochKeeper)(nil).RandomNumber), ctx, epochTotal)
+}
+
 // SetEpochData mocks base method.
 func (m *MockEpochKeeper) SetEpochData(ctx types.Context, epochData types1.EpochData) {
 	m.ctrl.T.Helper()
@@ -233,6 +262,18 @@ func (m *MockEpochKeeper) SetEpochData(ctx types.Context, epochData types1.Epoch
 func (mr *MockEpochKeeperMockRecorder) SetEpochData(ctx, epochData interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetEpochData", reflect.TypeOf((*MockEpochKeeper)(nil).SetEpochData), ctx, epochData)
+}
+
+// SetRandomData mocks base method.
+func (m *MockEpochKeeper) SetRandomData(ctx types.Context, randomData types1.RandomData) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "SetRandomData", ctx, randomData)
+}
+
+// SetRandomData indicates an expected call of SetRandomData.
+func (mr *MockEpochKeeperMockRecorder) SetRandomData(ctx, randomData interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetRandomData", reflect.TypeOf((*MockEpochKeeper)(nil).SetRandomData), ctx, randomData)
 }
 
 // UpdateEpoch mocks base method.
