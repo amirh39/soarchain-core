@@ -196,7 +196,7 @@ func SetupMsgServerForPoa(t testing.TB) (types.MsgServer, keeper.Keeper, context
 	ctrl := gomock.NewController(t)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
 	epochMock := testutil.NewMockEpochKeeper(ctrl)
-	k, ctx := keepertest.PoaKeeperWithMocksEpoch(t, bankMock, epochMock)
+	k, ctx := keepertest.PoaKeeperWithMocks(t, bankMock)
 
 	poa.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
