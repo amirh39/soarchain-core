@@ -21,6 +21,9 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgGenClient:
 			res, err := msgServer.GenClient(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgGenRunner:
+			res, err := msgServer.GenRunner(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUpdateDid:
 			res, err := msgServer.UpdateDid(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
