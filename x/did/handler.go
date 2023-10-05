@@ -18,8 +18,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgGenDid:
-			res, err := msgServer.GenDid(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgGenClient:
+			res, err := msgServer.GenClient(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUpdateDid:
 			res, err := msgServer.UpdateDid(sdk.WrapSDKContext(ctx), msg)
