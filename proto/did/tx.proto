@@ -8,7 +8,7 @@ option go_package = "soarchain/x/did/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc GenDid(MsgGenDid) returns (MsgGenDidResponse);
+  rpc GenClient(MsgGenClient) returns (MsgGenClientResponse);
 
   // UpdateDID defines a method for updating a DID.
   rpc UpdateDid(MsgUpdateDid) returns (MsgUpdateDidResponse);
@@ -18,14 +18,14 @@ service Msg {
 
 }
 
-message MsgGenDid {
+message MsgGenClient {
   DidDocument document = 1;
   string signature = 2;
   string certificate = 3;
   string creator = 4;
 }
   
-  message MsgGenDidResponse {}
+  message MsgGenClientResponse {}
   
   // MsgUpdateDid defines the Msg/UpdateDID request type.
   message MsgUpdateDid {
