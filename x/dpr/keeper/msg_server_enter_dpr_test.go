@@ -25,17 +25,17 @@ func (helper *KeeperTestHelper) Test_Enter_DPR() {
 			Vin: VIN,
 		}
 
-		newDid := didtypes.DidDocument{
+		newDid := didtypes.ClientDidDocument{
 			Id:      Did,
 			Index:   PUBKEY,
 			Vehicle: &vin,
 		}
 
-		didDocument := didtypes.DidDocumentWithSeq{
+		didDocument := didtypes.ClientDidDocumentWithSeq{
 			Document: &newDid,
 			Sequence: 0,
 		}
-		didKeeper.SetDidDocument(helper.Ctx, newDid.Id, didDocument)
+		didKeeper.SetClientDidDocument(helper.Ctx, newDid.Id, didDocument)
 		res, err := helper.MsgServer.EnterDpr(ctx, &types.MsgEnterDpr{
 			PubKey: PUBKEY,
 			Sender: CREATOR,

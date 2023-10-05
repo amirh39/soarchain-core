@@ -16,7 +16,7 @@ func (k msgServer) DeactivateDid(goCtx context.Context, msg *types.MsgDeactivate
 
 	log.Println("############## Deactivating a did Transaction is Started ##############")
 
-	documentWithSequence, found := k.GetDidDocument(ctx, msg.Did)
+	documentWithSequence, found := k.GetClientDidDocument(ctx, msg.Did)
 	doc := documentWithSequence.Document
 	if !found || documentWithSequence.Empty() {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][GetDidDocument] failed. Did is not registered.")
@@ -34,7 +34,7 @@ func (k msgServer) DeactivateDid(goCtx context.Context, msg *types.MsgDeactivate
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][VerifyDidOwnership] failed. Did not belong to the creator.")
 	}
 
-	k.SetDidDocument(ctx, msg.Did, documentWithSequence.Deactivate(newSequence))
+	k.SetClientDidDocument(ctx, msg.Did, documentWithSequence.Deactivate(newSequence))
 
 	log.Println("############## End of Deactivating did Transaction ##############")
 

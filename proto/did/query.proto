@@ -4,7 +4,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "did/params.proto";
-import "did/did_document.proto";
+import "did/client_did_document.proto";
 
 option go_package = "soarchain/x/did/types";
 
@@ -15,12 +15,12 @@ service Query {
     option (google.api.http).get = "/soarchain/did/params";
   }
 
-	rpc DidAll(QueryAllDidRequest) returns (QueryAllDidResponse) {
-		option (google.api.http).get = "/soarchain/did/did_document";
+	rpc ClientDidAll(QueryAllClientDidRequest) returns (QueryAllClientDidResponse) {
+		option (google.api.http).get = "/soarchain/did/client_did_document";
 	}
 
-	rpc DidDocument(QueryGetDidRequest) returns (QueryGetDidResponse) {
-		option (google.api.http).get = "/soarchain/did/did_document/{id}";
+	rpc ClientDidDocument(QueryGetClientDidRequest) returns (QueryGetClientDidResponse) {
+		option (google.api.http).get = "/soarchain/did/client_did_document/{id}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -35,20 +35,20 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryGetDidRequest {
+message QueryGetClientDidRequest {
   string id = 1;
 }
 
-message QueryGetDidResponse {
-	DidDocumentWithSeq didDocument = 1 [(gogoproto.nullable) = false];
+message QueryGetClientDidResponse {
+	ClientDidDocumentWithSeq clientDidDocument = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllDidRequest {
+message QueryAllClientDidRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllDidResponse {
-	repeated DidDocumentWithSeq didDocument = 1  [(gogoproto.nullable) = false];
+message QueryAllClientDidResponse {
+	repeated ClientDidDocumentWithSeq clientDidDocument = 1  [(gogoproto.nullable) = false];
 }
 
 

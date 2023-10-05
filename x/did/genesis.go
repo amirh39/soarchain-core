@@ -14,10 +14,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 
-	for _, element := range genState.DidList {
-		did, found := k.GetDidDocument(ctx, element.Document.Id)
+	for _, element := range genState.ClientDidList {
+		did, found := k.GetClientDidDocument(ctx, element.Document.Id)
 		if found {
-			k.SetDidDocument(ctx, did.Document.Id, did)
+			k.SetClientDidDocument(ctx, did.Document.Id, did)
 		}
 	}
 }
@@ -27,7 +27,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
 
-	genesis.DidList = k.GetAllDid(ctx)
+	genesis.ClientDidList = k.GetAllClientDid(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

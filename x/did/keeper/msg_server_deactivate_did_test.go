@@ -15,9 +15,9 @@ func TestHandleMsgDeactivateDID(t *testing.T) {
 	ctx := sdk.UnwrapSDKContext(context)
 	//
 	did, docWithSeq, privKey, verificationMethodID := MakeTestData()
-	k.SetDidDocument(ctx, did, docWithSeq)
+	k.SetClientDidDocument(ctx, did, docWithSeq)
 
-	didDocument, found := k.GetDidDocument(ctx, did)
+	didDocument, found := k.GetClientDidDocument(ctx, did)
 	require.Equal(t, true, found)
 	require.NotNil(t, didDocument)
 
@@ -29,7 +29,7 @@ func TestHandleMsgDeactivateDID(t *testing.T) {
 	require.NotNil(t, deactivateRes)
 
 	// check if it's really deactivated
-	got, found := k.GetDidDocument(ctx, did)
+	got, found := k.GetClientDidDocument(ctx, did)
 	require.False(t, got.Empty())
 	require.True(t, found)
 	require.True(t, got.Deactivated())

@@ -1,7 +1,7 @@
 syntax = "proto3";
 package soarchain.did;
 
-import "did/did_document.proto";
+import "did/client_did_document.proto";
 
 
 option go_package = "soarchain/x/did/types";
@@ -19,7 +19,7 @@ service Msg {
 }
 
 message MsgGenClient {
-  DidDocument document = 1;
+  ClientDidDocument document = 1;
   string signature = 2;
   string certificate = 3;
   string creator = 4;
@@ -30,7 +30,7 @@ message MsgGenClient {
   // MsgUpdateDid defines the Msg/UpdateDID request type.
   message MsgUpdateDid {
     string did = 1;
-    DidDocument document = 2;
+    ClientDidDocument document = 2;
     string verificationMethodId = 3;
     bytes signature = 4;
     string fromAddress = 5;

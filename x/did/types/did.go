@@ -142,7 +142,7 @@ func EmptyDid(did string) bool {
 	return did == ""
 }
 
-func (doc DidDocument) Empty() bool {
+func (doc ClientDidDocument) Empty() bool {
 	return EmptyDid(doc.Id)
 }
 
@@ -237,7 +237,7 @@ func (v VerificationRelationship) Valid(did string) bool {
 	}
 }
 
-func (doc DidDocument) validVerificationRelationships(relationships []VerificationRelationship) bool {
+func (doc ClientDidDocument) validVerificationRelationships(relationships []VerificationRelationship) bool {
 	for _, relationship := range relationships {
 		if !relationship.Valid(doc.Id) {
 			return false
@@ -255,7 +255,7 @@ func (s Service) Valid() bool {
 	return s.Id != "" && s.Type != "" && s.ServiceEndpoint != ""
 }
 
-func (doc DidDocument) VerificationMethodByID(id string) (VerificationMethod, bool) {
+func (doc ClientDidDocument) VerificationMethodByID(id string) (VerificationMethod, bool) {
 	for _, verificationMethod := range doc.VerificationMethods {
 		if verificationMethod.Id == id {
 			return *verificationMethod, true
@@ -264,7 +264,7 @@ func (doc DidDocument) VerificationMethodByID(id string) (VerificationMethod, bo
 	return VerificationMethod{}, false
 }
 
-func (doc DidDocument) Valid() bool {
+func (doc ClientDidDocument) Valid() bool {
 	if doc.Empty() {
 		return true
 	}
@@ -292,7 +292,7 @@ func (doc DidDocument) Valid() bool {
 	return true
 }
 
-func (d DidDocumentWithSeq) Valid() bool {
+func (d ClientDidDocumentWithSeq) Valid() bool {
 	return d.Document.Valid()
 }
 
@@ -315,10 +315,10 @@ func NewVerificationRelationship(verificationMethodID string) VerificationRelati
 	}
 }
 
-type DidDocumentOption func(opts *DidDocument)
+type ClientDidDocumentOption func(opts *ClientDidDocument)
 
-func NewDidDocument(id string, index string, address string, soarchainType string, pids []bool, opts ...DidDocumentOption) DidDocument {
-	doc := DidDocument{
+func NewClientDidDocument(id string, index string, address string, soarchainType string, pids []bool, opts ...ClientDidDocumentOption) ClientDidDocument {
+	doc := ClientDidDocument{
 		Id:                            id,
 		Index:                         index,
 		Address:                       address,
@@ -356,54 +356,54 @@ func NewOwner(id string, purchaseDate string) Owner {
 	}
 }
 
-func WithKeys(soarchainPublicKey *Keys) DidDocumentOption {
-	return func(opts *DidDocument) {
+func WithKeys(soarchainPublicKey *Keys) ClientDidDocumentOption {
+	return func(opts *ClientDidDocument) {
 		opts.Keys = soarchainPublicKey
 	}
 }
 
-func WithVehicle(vehicle *Vehicle) DidDocumentOption {
-	return func(opts *DidDocument) {
+func WithVehicle(vehicle *Vehicle) ClientDidDocumentOption {
+	return func(opts *ClientDidDocument) {
 		opts.Vehicle = vehicle
 	}
 }
 
-func WithOwner(owner *Owner) DidDocumentOption {
-	return func(opts *DidDocument) {
+func WithOwner(owner *Owner) ClientDidDocumentOption {
+	return func(opts *ClientDidDocument) {
 		opts.Owner = owner
 	}
 }
 
-func WithVerificationMethods(verificationMethods []*VerificationMethod) DidDocumentOption {
-	return func(opts *DidDocument) {
+func WithVerificationMethods(verificationMethods []*VerificationMethod) ClientDidDocumentOption {
+	return func(opts *ClientDidDocument) {
 		opts.VerificationMethods = verificationMethods
 	}
 }
 
 const InitialSequence uint64 = 0
 
-func NewDidDocumentWithSeq(doc *DidDocument, seq uint64) DidDocumentWithSeq {
-	return DidDocumentWithSeq{
+func NewDidDocumentWithSeq(doc *ClientDidDocument, seq uint64) ClientDidDocumentWithSeq {
+	return ClientDidDocumentWithSeq{
 		Document: doc,
 		Sequence: seq,
 	}
 }
 
-func WithAuthentications(authentications []VerificationRelationship) DidDocumentOption {
-	return func(opts *DidDocument) {
+func WithAuthentications(authentications []VerificationRelationship) ClientDidDocumentOption {
+	return func(opts *ClientDidDocument) {
 		opts.Authentications = authentications
 	}
 }
 
-func (d DidDocumentWithSeq) Empty() bool {
+func (d ClientDidDocumentWithSeq) Empty() bool {
 	return d.Document == nil || d.Document.Empty() && d.Sequence == InitialSequence
 }
 
-func (d DidDocumentWithSeq) Deactivated() bool {
+func (d ClientDidDocumentWithSeq) Deactivated() bool {
 	return d.Document.Empty() && d.Sequence != InitialSequence
 }
 
-func (doc DidDocument) VerificationMethodFrom(relationships []VerificationRelationship, id string) (VerificationMethod, bool) {
+func (doc ClientDidDocument) VerificationMethodFrom(relationships []VerificationRelationship, id string) (VerificationMethod, bool) {
 	for _, relationship := range relationships {
 		if relationship.hasDedicatedMethod() {
 			veriMethod := relationship.GetVerificationMethod()
@@ -421,8 +421,8 @@ func (doc DidDocument) VerificationMethodFrom(relationships []VerificationRelati
 	return VerificationMethod{}, false
 }
 
-func (d DidDocumentWithSeq) Deactivate(newSeq uint64) DidDocumentWithSeq {
-	return NewDidDocumentWithSeq(&DidDocument{}, newSeq)
+func (d ClientDidDocumentWithSeq) Deactivate(newSeq uint64) ClientDidDocumentWithSeq {
+	return NewDidDocumentWithSeq(&ClientDidDocument{}, newSeq)
 }
 
 type Address = bytes.HexBytes
@@ -452,7 +452,7 @@ func mustGetSignBytesWithSeq(signableData sdkcodec.ProtoMarshaler, seq uint64) (
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[mustGetSignBytesWithSeq][Marshal] failed. SignableData is not valid.")
 	}
-	dataWithSeq := DataWithSeq{
+	dataWithSeq := ClientDataWithSeq{
 		Data:     dAtA,
 		Sequence: seq,
 	}

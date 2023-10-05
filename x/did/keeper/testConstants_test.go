@@ -19,12 +19,12 @@ import (
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
 
-func NewMsgUpdateDID(newDoc types.DidDocument, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgUpdateDid {
+func NewMsgUpdateDID(newDoc types.ClientDidDocument, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgUpdateDid {
 	sig, _ := types.Sign(&newDoc, seq, privKey)
 	return *types.NewMsgUpdateDid(newDoc.Id, newDoc, verificationMethodID, sig, ADDRESS) // sdk.AccAddress{}.String()
 }
 
-func NewDIDDocumentWithSeq(did string) (types.DidDocumentWithSeq, tendermintcrypto.PrivKey) {
+func NewDIDDocumentWithSeq(did string) (types.ClientDidDocumentWithSeq, tendermintcrypto.PrivKey) {
 	privKey := secp256k1.GenPrivKey()
 	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
 	verificationMethodID := types.NewVerificationMethodID(did, "key1")
@@ -41,7 +41,7 @@ func NewDIDDocumentWithSeq(did string) (types.DidDocumentWithSeq, tendermintcryp
 	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
 	vehicle := types.NewVehicle(VIN)
 	owner := types.NewOwner(OWNERID, PURCHESDATE)
-	doc := types.NewDidDocument(did, INDEX, ADDRESS, TYPE, PIDS, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications), types.WithKeys(&soarchainPublicKey), types.WithVehicle(&vehicle), types.WithOwner(&owner))
+	doc := types.NewClientDidDocument(did, INDEX, ADDRESS, TYPE, PIDS, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications), types.WithKeys(&soarchainPublicKey), types.WithVehicle(&vehicle), types.WithOwner(&owner))
 	docWithSeq := types.NewDidDocumentWithSeq(
 		&doc,
 		types.InitialSequence,
@@ -49,12 +49,12 @@ func NewDIDDocumentWithSeq(did string) (types.DidDocumentWithSeq, tendermintcryp
 	return docWithSeq, privKey
 }
 
-func NewMsgDeactivateDID(doc types.DidDocument, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
+func NewMsgDeactivateDID(doc types.ClientDidDocument, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
 	sig, _ := types.Sign(&doc, seq, privKey)
 	return *types.NewMsgDeactivateDid(did, verificationMethodID, sig, sdk.AccAddress{}.String())
 }
 
-func MakeTestData() (string, types.DidDocumentWithSeq, tendermintcrypto.PrivKey, string) {
+func MakeTestData() (string, types.ClientDidDocumentWithSeq, tendermintcrypto.PrivKey, string) {
 	doc, privKey := NewDIDDocumentWithSeq(Did)
 	return Did, doc, privKey, doc.Document.VerificationMethods[0].Id
 }

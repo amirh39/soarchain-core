@@ -18,7 +18,7 @@ func TestHandleMsgUpdateDID(t *testing.T) {
 	ctx := sdk.UnwrapSDKContext(context)
 
 	did, origDocWithSeq, privKey, verificationMethodID := MakeTestData()
-	k.SetDidDocument(ctx, did, origDocWithSeq)
+	k.SetClientDidDocument(ctx, did, origDocWithSeq)
 
 	newDoc := origDocWithSeq.Document
 	verificationMethod := types.NewVerificationMethod(
@@ -35,7 +35,7 @@ func TestHandleMsgUpdateDID(t *testing.T) {
 	require.Nil(t, err)
 	require.NotNil(t, updateRes)
 
-	updatedDoc, found := k.GetDidDocument(ctx, did)
+	updatedDoc, found := k.GetClientDidDocument(ctx, did)
 	require.Equal(t, true, found)
 	require.NotNil(t, updatedDoc)
 }

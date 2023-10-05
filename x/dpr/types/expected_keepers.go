@@ -27,9 +27,9 @@ type BankKeeper interface {
 }
 
 type DidKeeper interface {
-	SetDidDocument(ctx sdk.Context, id string, ddrData didtypes.DidDocumentWithSeq)
-	GetDidDocument(ctx sdk.Context, id string) (val didtypes.DidDocumentWithSeq, found bool)
-	GetEligibleDidByPubkey(ctx sdk.Context, pubkey string) (didDocument didtypes.DidDocumentWithSeq, eligible bool)
+	SetClientDidDocument(ctx sdk.Context, id string, ddrData didtypes.ClientDidDocumentWithSeq)
+	GetClientDidDocument(ctx sdk.Context, id string) (val didtypes.ClientDidDocumentWithSeq, found bool)
+	GetEligibleDidByPubkey(ctx sdk.Context, pubkey string) (didDocument didtypes.ClientDidDocumentWithSeq, eligible bool)
 	GetEligibleDids(ctx sdk.Context, pins []uint) (found bool)
 }
 

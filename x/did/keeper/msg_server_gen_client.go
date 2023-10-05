@@ -73,7 +73,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	seq := types.InitialSequence
 	msg.Document.Index = pubKeyHex
 	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetDidDocument(ctx, didDocument.Document.Id, didDocument)
+	k.SetClientDidDocument(ctx, didDocument.Document.Id, didDocument)
 
 	if logger != nil {
 		logger.Info("Generating did successfully done.", "transaction", "GenClient", "document", didDocument)

@@ -9,7 +9,7 @@ const TypeMsgUpdateDid = "update_did"
 
 var _ sdk.Msg = &MsgUpdateDid{}
 
-func NewMsgUpdateDid(did string, document DidDocument, verificationMethodID string, signature []byte, fromAddress string) *MsgUpdateDid {
+func NewMsgUpdateDid(did string, document ClientDidDocument, verificationMethodID string, signature []byte, fromAddress string) *MsgUpdateDid {
 	return &MsgUpdateDid{
 		Did:                  did,
 		Document:             &document,
