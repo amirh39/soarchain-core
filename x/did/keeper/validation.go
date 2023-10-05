@@ -12,7 +12,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) ValidateInputs(msg *types.MsgGenDid) bool {
+func (k Keeper) ValidateInputs(msg *types.MsgGenClient) bool {
 
 	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.Document == nil || msg.Document.VerificationMethods[0].Id == "" {
 		return false
@@ -71,12 +71,12 @@ func ValidateX509CertByASN1(creator string, signature string, deviceCert *x509.C
 func ExtractPubkeyFromCertificate(certificate string) (string, error) {
 
 	if certificate == "" {
-		return "", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenDid][ExtractPubkeyFromCertificate] failed. Device certification is not valid.")
+		return "", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][ExtractPubkeyFromCertificate] failed. Device certification is not valid.")
 	}
 
 	deviceCertificate, error := CreateX509CertFromString(certificate)
 	if error != nil {
-		return "", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenDid][CreateX509CertFromString] failed. Invalid device certificate.")
+		return "", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][CreateX509CertFromString] failed. Invalid device certificate.")
 	}
 
 	pubKeyFromCertificate, err := x509.MarshalPKIXPublicKey(deviceCertificate.PublicKey)

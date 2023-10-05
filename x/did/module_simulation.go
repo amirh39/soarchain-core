@@ -25,9 +25,9 @@ var (
 )
 
 const (
-	opWeightMsgGenDid = "op_weight_msg_gen_did"
+	opWeightMsgGenClient = "op_weight_msg_gen_client"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgGenDid int = 100
+	defaultWeightMsgGenClient int = 100
 
 	opWeightMsgUpdateDid = "op_weight_msg_update_did"
 	// TODO: Determine the simulation weight value
@@ -71,15 +71,15 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
-	var weightMsgGenDid int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgGenDid, &weightMsgGenDid, nil,
+	var weightMsgGenClient int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgGenClient, &weightMsgGenClient, nil,
 		func(_ *rand.Rand) {
-			weightMsgGenDid = defaultWeightMsgGenDid
+			weightMsgGenClient = defaultWeightMsgGenClient
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgGenDid,
-		didsimulation.SimulateMsgGenDid(am.accountKeeper, am.keeper),
+		weightMsgGenClient,
+		didsimulation.SimulateMsgGenClient(am.accountKeeper, am.keeper),
 	))
 
 	var weightMsgUpdateDid int
