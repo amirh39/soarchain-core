@@ -5,6 +5,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "did/params.proto";
 import "did/client_did_document.proto";
+import "did/runner_did_document.proto";
 
 option go_package = "soarchain/x/did/types";
 
@@ -21,6 +22,14 @@ service Query {
 
 	rpc ClientDidDocument(QueryGetClientDidRequest) returns (QueryGetClientDidResponse) {
 		option (google.api.http).get = "/soarchain/did/client_did_document/{id}";
+	}
+
+	rpc RunnerDidAll(QueryAllRunnerDidRequest) returns (QueryAllRunnerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/runner_did_document";
+	}
+
+	rpc RunnerDidDocument(QueryGetRunnerDidRequest) returns (QueryGetRunnerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/runner_did_document/{id}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -50,5 +59,21 @@ message QueryAllClientDidRequest {
 message QueryAllClientDidResponse {
 	repeated ClientDidDocumentWithSeq clientDidDocument = 1  [(gogoproto.nullable) = false];
 }
+
+message QueryGetRunnerDidRequest {
+	string id = 1;
+  }
+  
+  message QueryGetRunnerDidResponse {
+	RunnerDidDocumentWithSeq runnerDidDocument = 1 [(gogoproto.nullable) = false];
+  }
+  
+  message QueryAllRunnerDidRequest {
+	  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  }
+  
+  message QueryAllRunnerDidResponse {
+	  repeated RunnerDidDocumentWithSeq runnerDidDocument = 1  [(gogoproto.nullable) = false];
+  }
 
 

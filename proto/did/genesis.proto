@@ -3,6 +3,7 @@ package soarchain.did;
 import "gogoproto/gogo.proto";
 import "did/params.proto";
 import "did/client_did_document.proto";
+import "did/runner_did_document.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "soarchain/x/did/types";
@@ -11,5 +12,6 @@ option go_package = "soarchain/x/did/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated ClientDidDocumentWithSeq ClientDidList = 2 [(gogoproto.nullable) = false];
+  repeated RunnerDidDocumentWithSeq RunnerDidList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }
