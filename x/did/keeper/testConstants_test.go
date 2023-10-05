@@ -49,6 +49,29 @@ func NewDIDDocumentWithSeq(did string) (types.ClientDidDocumentWithSeq, tendermi
 	return docWithSeq, privKey
 }
 
+func NewRunnerDidDocumentWithSeq(did string) (types.RunnerDidDocumentWithSeq, tendermintcrypto.PrivKey) {
+	privKey := secp256k1.GenPrivKey()
+	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
+	verificationMethodID := types.NewVerificationMethodID(did, "key1")
+	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
+	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
+	verificationMethods := []*types.VerificationMethod{
+		&es256VerificationMethod,
+		&blsVerificationMethod,
+	}
+	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
+	authentications := []types.VerificationRelationship{
+		verificationRelationship,
+	}
+	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
+	doc := types.NewRunnerDidDocument(did, INDEX, ADDRESS, types.WithRunnerVerificationMethods(verificationMethods), types.WithRunnerAuthentications(authentications), types.WithRunnerKeys(&soarchainPublicKey))
+	docWithSeq := types.NewRunnerDidDocumentWithSeq(
+		&doc,
+		types.InitialSequence,
+	)
+	return docWithSeq, privKey
+}
+
 func NewMsgDeactivateDID(doc types.ClientDidDocument, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
 	sig, _ := types.Sign(&doc, seq, privKey)
 	return *types.NewMsgDeactivateDid(did, verificationMethodID, sig, sdk.AccAddress{}.String())
