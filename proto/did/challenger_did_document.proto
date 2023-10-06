@@ -6,7 +6,7 @@ option go_package = "soarchain/x/did/types";
 import "gogoproto/gogo.proto";
 import "did/client_did_document.proto";
 
-message RunnerDidDocument {
+message ChallengerDidDocument {
   string id = 1;
   string pubKey = 2;
   Keys keys = 3 [json_name = "keys"];
@@ -20,14 +20,14 @@ message RunnerDidDocument {
   string address = 11;
 }
 
-// RunnerDidDocumentWithSeq defines a message for Did Document with a sequence number for preventing replay attacks.
-message RunnerDidDocumentWithSeq {
-  RunnerDidDocument document = 1;
+// ChallengerDidDocumentWithSeq defines a message for Did Document with a sequence number for preventing replay attacks.
+message ChallengerDidDocumentWithSeq {
+  ChallengerDidDocument document = 1;
   uint64 sequence = 2;
 }
 
-// RunnerDataWithSeq defines a message for data with a sequence number for preventing replay attacks.
-message RunnerDataWithSeq {
+// ChallengerDataWithSeq defines a message for data with a sequence number for preventing replay attacks.
+message ChallengerDataWithSeq {
   bytes data = 1;
   uint64 sequence = 2;
 }
