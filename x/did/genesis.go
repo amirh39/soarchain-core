@@ -27,6 +27,13 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 			k.SetRunnerDidDocument(ctx, did.Document.Id, did)
 		}
 	}
+
+	for _, element := range genState.ChallengerDidList {
+		did, found := k.GetChallengerDidDocument(ctx, element.Document.Id)
+		if found {
+			k.SetChallengerDidDocument(ctx, did.Document.Id, did)
+		}
+	}
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -36,6 +43,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.ClientDidList = k.GetAllClientDid(ctx)
 	genesis.RunnerDidList = k.GetAllRunnerDid(ctx)
+	genesis.ChallengerDidList = k.GetAllChallengerDid(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

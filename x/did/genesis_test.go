@@ -26,4 +26,5 @@ func TestGenesis(t *testing.T) {
 
 	require.ElementsMatch(t, genesisState.ClientDidList, got.ClientDidList)
 	require.ElementsMatch(t, genesisState.RunnerDidList, got.RunnerDidList)
+	require.ElementsMatch(t, genesisState.ChallengerDidList, got.ChallengerDidList)
 }

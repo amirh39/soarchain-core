@@ -33,6 +33,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgGenRunner int = 100
 
+	opWeightMsgGenChallenger = "op_weight_msg_gen_challenger"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgGenChallenger int = 100
+
 	opWeightMsgUpdateDid = "op_weight_msg_update_did"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUpdateDid int = 100
@@ -97,15 +101,15 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		didsimulation.SimulateMsgGenRunner(am.accountKeeper, am.keeper),
 	))
 
-	var weightMsgUpdateDid int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateDid, &weightMsgUpdateDid, nil,
+	var weightMsgGenChallenger int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgGenRunner, &weightMsgGenChallenger, nil,
 		func(_ *rand.Rand) {
-			weightMsgUpdateDid = defaultWeightMsgUpdateDid
+			weightMsgGenChallenger = defaultWeightMsgGenChallenger
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgUpdateDid,
-		didsimulation.SimulateMsgUpdateDid(am.accountKeeper, am.keeper),
+		weightMsgGenChallenger,
+		didsimulation.SimulateMsgGenChallenger(am.accountKeeper, am.keeper),
 	))
 
 	var weightMsgdeactivateDid int
