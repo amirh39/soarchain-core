@@ -3,6 +3,7 @@ package soarchain.did;
 
 import "did/client_did_document.proto";
 import "did/runner_did_document.proto";
+import "did/challenger_did_document.proto";
 
 option go_package = "soarchain/x/did/types";
 
@@ -10,11 +11,7 @@ option go_package = "soarchain/x/did/types";
 service Msg {
   rpc GenClient(MsgGenClient) returns (MsgGenClientResponse);
   rpc GenRunner(MsgGenRunner) returns (MsgGenRunnerResponse);
-
-  // UpdateDID defines a method for updating a DID.
-  rpc UpdateDid(MsgUpdateDid) returns (MsgUpdateDidResponse);
-
-  // DeactivateDID defines a method for deactivating a DID.
+  rpc GenChallenger(MsgGenChallenger) returns (MsgGenChallengerResponse);
   rpc DeactivateDid(MsgDeactivateDid) returns (MsgDeactivateDidResponse);
 
 }
@@ -31,31 +28,25 @@ message MsgGenClientResponse {}
 message MsgGenRunner {
   RunnerDidDocument document = 1;
   string creator = 2; 
-  string runnerStake = 3;
-  string runnerIp = 4;
-  string certificate = 5;
-  string signature = 6;
+  string certificate = 3;
+  string signature = 4;
 }
   
 message MsgGenRunnerResponse {}
 
-// MsgUpdateDid defines the Msg/UpdateDID request type.
-message MsgUpdateDid {
-  string did = 1;
-  ClientDidDocument document = 2;
-  string verificationMethodId = 3;
-  bytes signature = 4;
-  string fromAddress = 5;
+message MsgGenChallenger {
+  ChallengerDidDocument document = 1;
+  string creator = 2;
+  string challengerType = 3;
+  string certificate = 4;
+  string signature = 5;
 }
-
-// MsgUpdateDIDResponse defines the Msg/UpdateDID response type.
-message MsgUpdateDidResponse {}
+  
+message MsgGenChallengerResponse {}
 
 // MsgDeactivateDid defines the Msg/DeactivateDID request type.
 message MsgDeactivateDid {
   string did = 1;
-  string verificationMethodId = 2;
-  bytes signature = 3;
   string fromAddress = 4;
 }
 

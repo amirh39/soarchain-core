@@ -6,6 +6,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "did/params.proto";
 import "did/client_did_document.proto";
 import "did/runner_did_document.proto";
+import "did/challenger_did_document.proto";
 
 option go_package = "soarchain/x/did/types";
 
@@ -30,6 +31,14 @@ service Query {
 
 	rpc RunnerDidDocument(QueryGetRunnerDidRequest) returns (QueryGetRunnerDidResponse) {
 		option (google.api.http).get = "/soarchain/did/runner_did_document/{id}";
+	}
+
+	rpc ChallengerDidAll(QueryAllChallengerDidRequest) returns (QueryAllChallengerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/challenger_did_document";
+	}
+
+	rpc ChallengerDidDocument(QueryGetChallengerDidRequest) returns (QueryGetChallengerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/challenger_did_document/{id}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -64,16 +73,32 @@ message QueryGetRunnerDidRequest {
 	string id = 1;
   }
   
-  message QueryGetRunnerDidResponse {
-	RunnerDidDocumentWithSeq runnerDidDocument = 1 [(gogoproto.nullable) = false];
+message QueryGetRunnerDidResponse {
+RunnerDidDocumentWithSeq runnerDidDocument = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllRunnerDidRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllRunnerDidResponse {
+	repeated RunnerDidDocumentWithSeq runnerDidDocument = 1  [(gogoproto.nullable) = false];
+}
+
+message QueryGetChallengerDidRequest {
+	string id = 1;
   }
   
-  message QueryAllRunnerDidRequest {
-	  cosmos.base.query.v1beta1.PageRequest pagination = 1;
-  }
-  
-  message QueryAllRunnerDidResponse {
-	  repeated RunnerDidDocumentWithSeq runnerDidDocument = 1  [(gogoproto.nullable) = false];
-  }
+message QueryGetChallengerDidResponse {
+	ChallengerDidDocumentWithSeq challengerDidDocument = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllChallengerDidRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllChallengerDidResponse {
+	repeated ChallengerDidDocumentWithSeq challengerDidDocument = 1  [(gogoproto.nullable) = false];
+}
 
 
