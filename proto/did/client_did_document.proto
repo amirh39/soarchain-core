@@ -11,7 +11,7 @@ message Strings {
 
 message ClientDidDocument {
   string id = 1;
-  string index = 2;
+  string pubKey = 2;
   string address = 3;
   string type = 4;
   Keys keys = 5 [json_name = "keys"];
@@ -66,13 +66,13 @@ message Owner {
   string purchaseDate = 2;
 }
 
-// DidDocumentWithSeq defines a message for Did Document with a sequence number for preventing replay attacks.
+// ClientDidDocumentWithSeq defines a message for Did Document with a sequence number for preventing replay attacks.
 message ClientDidDocumentWithSeq {
   ClientDidDocument document = 1;
   uint64 sequence = 2;
 }
 
-// DataWithSeq defines a message for data with a sequence number for preventing replay attacks.
+// ClientDataWithSeq defines a message for data with a sequence number for preventing replay attacks.
 message ClientDataWithSeq {
   bytes data = 1;
   uint64 sequence = 2;
