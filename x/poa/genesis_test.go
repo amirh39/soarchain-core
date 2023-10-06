@@ -25,10 +25,10 @@ func TestGenesis(t *testing.T) {
 		},
 		ReputationList: []types.Reputation{
 			{
-				Index: "0",
+				PubKey: "0",
 			},
 			{
-				Index: "1",
+				PubKey: "1",
 			},
 		},
 		RunnerList: []types.Runner{
