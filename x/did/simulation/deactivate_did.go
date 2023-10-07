@@ -20,8 +20,6 @@ func SimulateMsgDeactivateDid(
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 		msg := &types.MsgDeactivateDid{
 			Did:                  "",
-			VerificationMethodId: "",
-			Signature:            nil,
 			FromAddress:          string(simAccount.Address),
 		}
 

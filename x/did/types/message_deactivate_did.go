@@ -11,10 +11,8 @@ var _ sdk.Msg = &MsgDeactivateDid{}
 
 func NewMsgDeactivateDid(did string, verificationMethodID string, signature []byte, fromAddress string) *MsgDeactivateDid {
 	return &MsgDeactivateDid{
-		Did:                  did,
-		VerificationMethodId: verificationMethodID,
-		Signature:            signature,
-		FromAddress:          fromAddress,
+		Did:         did,
+		FromAddress: fromAddress,
 	}
 }
 
