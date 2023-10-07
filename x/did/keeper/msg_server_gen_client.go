@@ -37,7 +37,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	log.Println("############## Generating a did Transaction Started ##############")
 
-	result := k.ValidateInputs(msg)
+	result := k.ValidateClientInputs(msg)
 	if !result {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][ValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
@@ -61,9 +61,10 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		logger.Info("Verifying client certificate successfully done.", "transaction", "GenClient")
 	}
 
-	isUnique := k.IsUniqueDid(ctx, msg.Document.Id, msg.Document.Address, pubKeyHex)
-	if !isUnique {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenClient][IsUniqueDid] failed. Invalid certificate validation. Error: [ %T ]")
+	isUnique := k.IsUniqueDid(ctx, msg.Document.Id)
+	fmt.Print("0000000000000000000000000000000", isUnique)
+	if isUnique {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenClient][IsUniqueDid] failed. Did is already registered.")
 	}
 
 	if logger != nil {
@@ -71,7 +72,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	}
 
 	seq := types.InitialSequence
-	msg.Document.Index = pubKeyHex
+	msg.Document.PubKey = pubKeyHex
 	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
 	k.SetClientDidDocument(ctx, didDocument.Document.Id, didDocument)
 
@@ -82,7 +83,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)
 
 	err := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
-		Index:              pubKeyHex,
+		PubKey:             pubKeyHex,
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
