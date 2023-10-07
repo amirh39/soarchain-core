@@ -12,7 +12,7 @@ func (k Keeper) SetReputation(ctx sdk.Context, reputation types.Reputation) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
 	b := k.cdc.MustMarshal(&reputation)
 	store.Set(types.ReputationKey(
-		reputation.Index,
+		reputation.PubKey,
 	), b)
 }
 

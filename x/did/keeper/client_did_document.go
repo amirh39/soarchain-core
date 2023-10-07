@@ -38,7 +38,7 @@ func (k Keeper) GetEligibleDidByPubkey(ctx sdk.Context, pubkey string) (didDocum
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.ClientDidDocumentWithSeq
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		if val.Document.Index == pubkey {
+		if val.Document.PubKey == pubkey {
 			return val, true
 		}
 	}
@@ -99,18 +99,9 @@ func (k Keeper) GetEligibleDids(ctx sdk.Context, pins []uint) (found bool) {
 	return false
 }
 
-func (k Keeper) ValidateDid(ctx sdk.Context, id string, address string, pubkey string) bool {
+func (k Keeper) RemoveClientDid(ctx sdk.Context, id string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.ClientDidDocumentWithSeq
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		if val.Document.Id == id || val.Document.Address == address || val.Document.Index == pubkey {
-			return false
-		}
-	}
-	return true
+	store.Delete(types.DidKey(
+		id,
+	))
 }

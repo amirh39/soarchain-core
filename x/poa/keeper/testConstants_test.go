@@ -65,7 +65,7 @@ func CreateTwoReputationsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) [
 
 	// Create the first reputation
 	firstReputation := types.Reputation{
-		Index:              ClientPubKey,
+		PubKey:             ClientPubKey,
 		Address:            ClientAddress,
 		Score:              ClientScore,
 		RewardMultiplier:   ClientRewardMultiplier,
@@ -76,7 +76,7 @@ func CreateTwoReputationsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) [
 
 	// Create the second reputation
 	secondReputation := types.Reputation{
-		Index:              ClientPubKey2,
+		PubKey:             ClientPubKey2,
 		Address:            CommunityWallet,
 		Score:              ClientScore2,
 		RewardMultiplier:   ClientRewardMultiplier,
@@ -103,7 +103,7 @@ func CreateTwoReputationsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) [
 func SetupReputationEntity(n int) []types.Reputation {
 	items := make([]types.Reputation, n)
 	for i := range items {
-		items[i].Index = ClientPubKey
+		items[i].PubKey = ClientPubKey
 		items[i].Address = ClientAddress
 		items[i].Score = ClientScore
 		items[i].RewardMultiplier = ClientRewardMultiplier
@@ -117,7 +117,7 @@ func SetupReputationEntity(n int) []types.Reputation {
 func CreateInValidReputationScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
 	items := make([]types.Reputation, n)
 	for i := range items {
-		items[i].Index = strconv.Itoa(i)
+		items[i].PubKey = strconv.Itoa(i)
 		items[i].Address = strconv.Itoa(12)
 		items[i].Score = NotValid_Score
 		items[i].LastTimeChallenged = NotValid_LastTimeChallenged
@@ -407,7 +407,7 @@ func CreateEpochData(keeper *epochKeeper.Keeper, ctx sdk.Context) epochTypes.Epo
 func CreateNReputation(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
 	items := make([]types.Reputation, n)
 	for i := range items {
-		items[i].Index = strconv.Itoa(i)
+		items[i].PubKey = strconv.Itoa(i)
 		items[i].Address = strconv.Itoa(i)
 
 		keeper.SetReputation(ctx, items[i])

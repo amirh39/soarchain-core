@@ -32,7 +32,7 @@ func (gs GenesisState) Validate() error {
 	reputationIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.ReputationList {
-		index := string(ReputationKey(elem.Index))
+		index := string(ReputationKey(elem.PubKey))
 		if _, ok := reputationIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for reputation")
 		}

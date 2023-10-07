@@ -27,7 +27,7 @@ func (helper *KeeperTestHelper) Test_Leave_DPR() {
 
 		newDid := didtypes.ClientDidDocument{
 			Id:      Did,
-			Index:   PUBKEY,
+			PubKey:  PUBKEY,
 			Vehicle: &vin,
 		}
 

@@ -175,7 +175,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 		}
 
 		updatedReputation := types.Reputation{
-			Index:              reputation.Index,
+			PubKey:             reputation.PubKey,
 			Score:              strconv.FormatFloat(score, 'f', -1, 64),
 			NetEarnings:        totalEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),

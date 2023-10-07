@@ -21,8 +21,8 @@ func (helper *KeeperTestHelper) TestRunnerChallenge() {
 		msgServer := k.NewMsgServerImpl(keeper)
 
 		reputationPubKeys := []string{
-			reputation[0].Index,
-			reputation[1].Index,
+			reputation[0].PubKey,
+			reputation[1].PubKey,
 		}
 
 		res, err := msgServer.RunnerChallenge(sdk.WrapSDKContext(helper.Ctx), &types.MsgRunnerChallenge{Creator: Challenger_Address, RunnerPubkey: RunnerPubKey, ClientPubkeys: reputationPubKeys, ChallengeResult: "reward"})

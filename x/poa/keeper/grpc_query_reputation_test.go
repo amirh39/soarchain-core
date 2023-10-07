@@ -28,14 +28,14 @@ func Test_ReputationQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetReputationRequest{
-				Index: msgs[0].Index,
+				Index: msgs[0].PubKey,
 			},
 			response: &types.QueryGetReputationResponse{Reputation: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetReputationRequest{
-				Index: msgs[1].Index,
+				Index: msgs[1].PubKey,
 			},
 			response: &types.QueryGetReputationResponse{Reputation: msgs[1]},
 		},

@@ -59,7 +59,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	}
 
 	updatedReputation := types.Reputation{
-		Index:       reputation.Index,
+		PubKey:      reputation.PubKey,
 		NetEarnings: netEarnings.String(),
 	}
 	k.SetReputation(ctx, updatedReputation)

@@ -320,7 +320,7 @@ type ClientDidDocumentOption func(opts *ClientDidDocument)
 func NewClientDidDocument(id string, index string, address string, soarchainType string, pids []bool, opts ...ClientDidDocumentOption) ClientDidDocument {
 	doc := ClientDidDocument{
 		Id:                            id,
-		Index:                         index,
+		PubKey:                        index,
 		Address:                       address,
 		Type:                          soarchainType,
 		PidSupportedOneToTwnety:       pids[0],
