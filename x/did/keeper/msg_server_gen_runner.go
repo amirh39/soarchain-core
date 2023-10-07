@@ -22,6 +22,11 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 
 	log.Println("############## Generating a runner did Transaction Started ##############")
 
+	result := k.ValidateRunnerInputs(msg)
+	if !result {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenRunner][ValidateInputs] failed. Make sure transaction inputs are valid.")
+	}
+
 	deviceCert, error := CreateX509CertFromString(msg.Certificate)
 	if error != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenRunner][CreateX509CertFromString] failed. Invalid device certificate.")
@@ -38,12 +43,12 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 	}
 
 	if logger != nil {
-		logger.Info("Verifying client certificate successfully done.", "transaction", "GenRunner")
+		logger.Info("Verifying runner certificate successfully done.", "transaction", "GenRunner")
 	}
 
-	isUnique := k.IsUniqueDid(ctx, msg.Document.Id, msg.Document.Address, pubKeyHex)
-	if !isUnique {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenRunner][IsUniqueDid] failed. Invalid certificate validation. Error: [ %T ]")
+	isUnique := k.IsUniqueDid(ctx, msg.Document.Id)
+	if isUnique {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenRunner][IsUniqueDid] failed. Did is already registered.")
 	}
 
 	if logger != nil {
@@ -62,16 +67,15 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)
 
 	err := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
-		Index:              pubKeyHex,
+		PubKey:             pubKeyHex,
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
-		Type:               clientType(deviceCert),
+		Type:               "",
 	}, msg.Certificate)
-
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenClient][InitializeReputation] failed. Invalid certificate validation.")
 	}
