@@ -12,32 +12,35 @@ import (
 
 func (k msgServer) DeactivateDid(goCtx context.Context, msg *types.MsgDeactivateDid) (*types.MsgDeactivateDidResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	logger := k.Logger(ctx)
 
 	log.Println("############## Deactivating a did Transaction is Started ##############")
 
-	documentWithSequence, found := k.GetClientDidDocument(ctx, msg.Did)
-	doc := documentWithSequence.Document
-	if !found || documentWithSequence.Empty() {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][GetDidDocument] failed. Did is not registered.")
-	}
-	if documentWithSequence.Deactivated() {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][GetDidDocument] failed. Did was already deactivated.")
-	}
+	_, found := k.GetClientDidDocument(ctx, msg.Did)
+	if found {
+		k.RemoveClientDid(ctx, msg.Did)
 
-	if logger != nil {
-		logger.Info("Checking for valid did successfully done.", "transaction", "DeactivateDid", "DocumentWithSequence", documentWithSequence)
+		log.Println("############## End of Deactivating did Transaction ##############")
+
+		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
-	newSequence, err := k.VerifyDidOwnership(doc, documentWithSequence.Sequence, documentWithSequence.Document, msg.VerificationMethodId, msg.Signature)
-	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][VerifyDidOwnership] failed. Did not belong to the creator.")
+	_, found = k.GetRunnerDidDocument(ctx, msg.Did)
+	if found {
+		k.RemoveRunnerDid(ctx, msg.Did)
+
+		log.Println("############## End of Deactivating did Transaction ##############")
+
+		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
-	k.SetClientDidDocument(ctx, msg.Did, documentWithSequence.Deactivate(newSequence))
+	_, found = k.GetChallengerDidDocument(ctx, msg.Did)
+	if found {
+		k.RemoveChallengerDid(ctx, msg.Did)
 
-	log.Println("############## End of Deactivating did Transaction ##############")
+		log.Println("############## End of Deactivating did Transaction ##############")
 
-	return &types.MsgDeactivateDidResponse{}, nil
+		return &types.MsgDeactivateDidResponse{}, nil
+	}
 
+	return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid] failed. Could not find valid did.")
 }
