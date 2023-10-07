@@ -12,18 +12,36 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) ValidateInputs(msg *types.MsgGenClient) bool {
-
+func (k Keeper) ValidateClientInputs(msg *types.MsgGenClient) bool {
 	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.Document == nil || msg.Document.VerificationMethods[0].Id == "" {
 		return false
 	}
-
 	return true
 }
 
-func (k Keeper) IsUniqueDid(ctx sdk.Context, id string, address string, pubkey string) bool {
-	result := k.ValidateDid(ctx, id, address, pubkey)
-	return result
+func (k Keeper) ValidateRunnerInputs(msg *types.MsgGenRunner) bool {
+	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.Document == nil || msg.Document.VerificationMethods[0].Id == "" {
+		return false
+	}
+	return true
+}
+
+func (k Keeper) ValidateChallengerInputs(msg *types.MsgGenChallenger) bool {
+	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.Document == nil || msg.Document.VerificationMethods[0].Id == "" {
+		return false
+	}
+	return true
+}
+
+func (k Keeper) IsUniqueDid(ctx sdk.Context, id string) bool {
+	_, isFoundClientDid := k.GetClientDidDocument(ctx, id)
+	_, isFoundRunnerDid := k.GetRunnerDidDocument(ctx, id)
+	_, isFoundChallengerDid := k.GetChallengerDidDocument(ctx, id)
+
+	if isFoundClientDid || isFoundRunnerDid || isFoundChallengerDid {
+		return true
+	}
+	return false
 }
 
 func CreateX509CertFromString(certString string) (*x509.Certificate, error) {
