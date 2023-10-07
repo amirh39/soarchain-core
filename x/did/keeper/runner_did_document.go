@@ -43,3 +43,10 @@ func (k Keeper) GetAllRunnerDid(ctx sdk.Context) (list []types.RunnerDidDocument
 
 	return
 }
+
+func (k Keeper) RemoveRunnerDid(ctx sdk.Context, id string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RunnerDidKeyPrefix))
+	store.Delete(types.RunnerDidKey(
+		id,
+	))
+}
