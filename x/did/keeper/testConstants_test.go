@@ -19,11 +19,6 @@ import (
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
 
-func NewMsgUpdateDID(newDoc types.ClientDidDocument, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgUpdateDid {
-	sig, _ := types.Sign(&newDoc, seq, privKey)
-	return *types.NewMsgUpdateDid(newDoc.Id, newDoc, verificationMethodID, sig, ADDRESS) // sdk.AccAddress{}.String()
-}
-
 func NewDIDDocumentWithSeq(did string) (types.ClientDidDocumentWithSeq, tendermintcrypto.PrivKey) {
 	privKey := secp256k1.GenPrivKey()
 	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
@@ -66,6 +61,29 @@ func NewRunnerDidDocumentWithSeq(did string) (types.RunnerDidDocumentWithSeq, te
 	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
 	doc := types.NewRunnerDidDocument(did, INDEX, ADDRESS, types.WithRunnerVerificationMethods(verificationMethods), types.WithRunnerAuthentications(authentications), types.WithRunnerKeys(&soarchainPublicKey))
 	docWithSeq := types.NewRunnerDidDocumentWithSeq(
+		&doc,
+		types.InitialSequence,
+	)
+	return docWithSeq, privKey
+}
+
+func NewChallengerDidDocumentWithSeq(did string) (types.ChallengerDidDocumentWithSeq, tendermintcrypto.PrivKey) {
+	privKey := secp256k1.GenPrivKey()
+	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
+	verificationMethodID := types.NewVerificationMethodID(did, "key1")
+	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
+	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
+	verificationMethods := []*types.VerificationMethod{
+		&es256VerificationMethod,
+		&blsVerificationMethod,
+	}
+	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
+	authentications := []types.VerificationRelationship{
+		verificationRelationship,
+	}
+	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
+	doc := types.NewChallengerDidDocument(did, INDEX, ADDRESS, types.WithChallengerVerificationMethods(verificationMethods), types.WithChallengerAuthentications(authentications), types.WithChallengerKeys(&soarchainPublicKey))
+	docWithSeq := types.NewChallengerDidDocumentWithSeq(
 		&doc,
 		types.InitialSequence,
 	)
