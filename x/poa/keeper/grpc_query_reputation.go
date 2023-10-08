@@ -49,7 +49,7 @@ func (k Keeper) Reputation(c context.Context, req *types.QueryGetReputationReque
 
 	val, found := k.GetReputation(
 		ctx,
-		req.Index,
+		req.Pubkey,
 	)
 	if !found {
 		return nil, status.Error(codes.NotFound, "[Reputation][GetReputation] failed. Make sure index of the reputation is valid.")

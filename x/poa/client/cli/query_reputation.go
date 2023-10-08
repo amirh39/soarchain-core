@@ -56,7 +56,7 @@ func CmdShowReputation() *cobra.Command {
 			argIndex := args[0]
 
 			params := &types.QueryGetReputationRequest{
-				Index: argIndex,
+				Pubkey: argIndex,
 			}
 
 			res, err := queryClient.Reputation(context.Background(), params)
