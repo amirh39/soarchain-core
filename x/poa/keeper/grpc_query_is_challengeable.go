@@ -24,7 +24,7 @@ func (k Keeper) IsChallengeable(goCtx context.Context, req *types.QueryIsChallen
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	reputation, isFound := k.GetReputationByClientAddress(ctx, req.ClientAddr)
+	reputation, isFound := k.GetReputationsByAddress(ctx, req.ClientAddr)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[IsChallengeable][GetClient] failed. Target client is not registered in the store.")
 	}

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
@@ -64,11 +65,7 @@ func (k Keeper) GetAllReputation(ctx sdk.Context) (list []types.Reputation) {
 	return
 }
 
-func (k Keeper) GetReputationByClientAddress(
-	ctx sdk.Context,
-	address string,
-
-) (val types.Reputation, found bool) {
+func (k Keeper) GetReputationsByAddress(ctx sdk.Context, address string) (val types.Reputation, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
@@ -82,4 +79,50 @@ func (k Keeper) GetReputationByClientAddress(
 		}
 	}
 	return types.Reputation{}, false
+}
+
+func (k Keeper) GetReputationByType(ctx sdk.Context, Address string, Type string) (val types.Reputation, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
+
+	b := store.Get(types.ReputationKey(
+		Address,
+	))
+
+	k.cdc.MustUnmarshal(b, &val)
+	if val.Type == Type {
+		return val, true
+	}
+	return types.Reputation{}, false
+}
+
+func (k Keeper) GetAllChallenger(ctx sdk.Context) (list []types.Reputation) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Reputation
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.Type == constants.V2XChallenger || val.Type == constants.V2NChallenger {
+			list = append(list, val)
+		}
+	}
+	return
+}
+
+func (k Keeper) GetAllRunner(ctx sdk.Context) (list []types.Reputation) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Reputation
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.Type == "" {
+			list = append(list, val)
+		}
+	}
+	return
 }

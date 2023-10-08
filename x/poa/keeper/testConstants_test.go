@@ -4,7 +4,6 @@ package keeper_test
 import (
 	"context"
 	"soarchain/x/poa"
-	"soarchain/x/poa/constants"
 	"soarchain/x/poa/keeper"
 	"soarchain/x/poa/testutil"
 	"soarchain/x/poa/types"
@@ -17,6 +16,7 @@ import (
 	"github.com/golang/mock/gomock"
 
 	epochTypes "soarchain/x/epoch/types"
+	"soarchain/x/poa/constants"
 
 	epochKeeper "soarchain/x/epoch/keeper"
 )
@@ -27,33 +27,29 @@ func CreateMasterKey(keeper *keeper.Keeper, ctx sdk.Context) types.MasterKey {
 	return item
 }
 
-func CreateNRunner(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner {
-	items := make([]types.Runner, n)
+func CreateNRunnerReputation(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].PubKey = RunnerPubKey
 		items[i].Address = RunnerAddress
 		items[i].Score = RunnerScore
 		items[i].RewardMultiplier = RunnerRewardMultiplier
-		items[i].StakedAmount = RunnerStakedAmount2
 		items[i].NetEarnings = RunnerNetEarnings2
-		items[i].IpAddress = "45.12.65.78"
 		items[i].LastTimeChallenged = RunnerLastTimeChallenged
 		items[i].CoolDownTolerance = RunnerCoolDownTolerance
-		keeper.SetRunner(ctx, items[i])
+		keeper.SetReputation(ctx, items[i])
 	}
 	return items
 }
 
-func SetupNRunner(n int) []types.Runner {
-	items := make([]types.Runner, n)
+func SetupNRunnerReputation(n int) []types.Reputation {
+	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].PubKey = RunnerPubKey
 		items[i].Address = RunnerAddress
 		items[i].Score = RunnerScore
 		items[i].RewardMultiplier = RunnerRewardMultiplier
-		items[i].StakedAmount = RunnerStakedAmount
 		items[i].NetEarnings = RunnerNetEarnings
-		items[i].IpAddress = ""
 		items[i].LastTimeChallenged = RunnerLastTimeChallenged
 		items[i].CoolDownTolerance = RunnerCoolDownTolerance
 	}
@@ -100,6 +96,20 @@ func CreateTwoReputationsWithAllFields(keeper *keeper.Keeper, ctx sdk.Context) [
 	return items
 }
 
+func CreateNChallengerReputationWithNormalScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+	items := make([]types.Reputation, n)
+	for i := range items {
+		items[i].PubKey = Challenger_PubKey
+		items[i].Address = Challenger_Address
+		items[i].Score = Challenger_Score2
+		items[i].NetEarnings = Challenger_NetEarnings2
+		items[i].Type = Challenger_Type
+
+		keeper.SetReputation(ctx, items[i])
+	}
+	return items
+}
+
 func SetupReputationEntity(n int) []types.Reputation {
 	items := make([]types.Reputation, n)
 	for i := range items {
@@ -110,6 +120,20 @@ func SetupReputationEntity(n int) []types.Reputation {
 		items[i].NetEarnings = ClientNetEarnings
 		items[i].LastTimeChallenged = ClientLastTimeChallenged
 		items[i].CoolDownTolerance = ClientCoolDownTolerance
+	}
+	return items
+}
+
+func SetupReputationForRunner(n int) []types.Reputation {
+	items := make([]types.Reputation, n)
+	for i := range items {
+		items[i].PubKey = RunnerPubKey
+		items[i].Address = RunnerAddress
+		items[i].Score = RunnerScore
+		items[i].RewardMultiplier = RunnerRewardMultiplier
+		items[i].NetEarnings = RunnerNetEarnings
+		items[i].LastTimeChallenged = RunnerLastTimeChallenged
+		items[i].CoolDownTolerance = RunnerCoolDownTolerance
 	}
 	return items
 }
@@ -126,59 +150,53 @@ func CreateInValidReputationScore(keeper *keeper.Keeper, ctx sdk.Context, n int)
 	return items
 }
 
-func CreateNChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
-	items := make([]types.Challenger, n)
+func CreateNChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].PubKey = Challenger_PubKey
 		items[i].Address = Challenger_Address
 		items[i].Score = Challenger_Score
-		items[i].StakedAmount = Challenger_StakedAmount
 		items[i].NetEarnings = Challenger_NetEarnings
-		items[i].IpAddress = ""
 		items[i].Type = Challenger_Type
 
-		keeper.SetChallenger(ctx, items[i])
+		keeper.SetReputation(ctx, items[i])
 	}
 	return items
 }
 
-func CreateNChallengerWithNormalScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
-	items := make([]types.Challenger, n)
+func CreateNChallengerWithNormalScore(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].PubKey = Challenger_PubKey
 		items[i].Address = Challenger_Address
 		items[i].Score = Challenger_Score2
-		items[i].StakedAmount = Challenger_StakedAmount2
 		items[i].NetEarnings = Challenger_NetEarnings2
-		items[i].IpAddress = ""
 		items[i].Type = Challenger_Type
 
-		keeper.SetChallenger(ctx, items[i])
+		keeper.SetReputation(ctx, items[i])
 	}
 	return items
 }
 
-func SetupNChallenger(n int) []types.Challenger {
-	items := make([]types.Challenger, n)
+func SetupNChallenger(n int) []types.Reputation {
+	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].PubKey = Challenger_PubKey
 		items[i].Address = Challenger_Address
 		items[i].Score = Challenger_Score
-		items[i].StakedAmount = Challenger_StakedAmount
 		items[i].NetEarnings = Challenger_NetEarnings
-		items[i].IpAddress = ""
 		items[i].Type = Challenger_Type
 	}
 	return items
 }
 
-func CreateV2NTypeChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
-	items := make([]types.Challenger, n)
+func CreateV2NTypeChallenger(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].Address = strconv.Itoa(i)
-		items[i].Type = constants.V2NChallengerType
+		items[i].Type = constants.V2NChallenger
 
-		keeper.SetChallenger(ctx, items[i])
+		keeper.SetReputation(ctx, items[i])
 	}
 	return items
 }
@@ -223,26 +241,6 @@ func CreateNVrfData(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.VrfDa
 		items[i].Index = strconv.Itoa(i)
 
 		keeper.SetVrfData(ctx, items[i])
-	}
-	return items
-}
-
-func CreatesChallengerForPagination(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Challenger {
-	items := make([]types.Challenger, n)
-	for i := range items {
-		items[i].Address = strconv.Itoa(i)
-
-		keeper.SetChallenger(ctx, items[i])
-	}
-	return items
-}
-
-func CreatesRunnerForPagination(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Runner {
-	items := make([]types.Runner, n)
-	for i := range items {
-		items[i].Address = strconv.Itoa(i)
-
-		keeper.SetRunner(ctx, items[i])
 	}
 	return items
 }
