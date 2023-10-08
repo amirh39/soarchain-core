@@ -22,22 +22,6 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
-				ChallengerList: []types.Challenger{
-					{
-						PubKey: "0",
-					},
-					{
-						PubKey: "1",
-					},
-				},
-				RunnerList: []types.Runner{
-					{
-						PubKey: "0",
-					},
-					{
-						PubKey: "1",
-					},
-				},
 				VrfDataList: []types.VrfData{
 					{
 						Index: "0",
@@ -62,34 +46,6 @@ func TestGenesisState_Validate(t *testing.T) {
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
-		},
-		{
-			desc: "duplicated challenger",
-			genState: &types.GenesisState{
-				ChallengerList: []types.Challenger{
-					{
-						PubKey: "0",
-					},
-					{
-						PubKey: "0",
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "duplicated runner",
-			genState: &types.GenesisState{
-				RunnerList: []types.Runner{
-					{
-						PubKey: "0",
-					},
-					{
-						PubKey: "0",
-					},
-				},
-			},
-			valid: false,
 		},
 		{
 			desc: "duplicated vrfData",

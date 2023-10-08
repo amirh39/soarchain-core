@@ -21,12 +21,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgChallengeService:
 			res, err := msgServer.ChallengeService(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUnregisterChallenger:
-			res, err := msgServer.UnregisterChallenger(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUnregisterRunner:
-			res, err := msgServer.UnregisterRunner(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRunnerChallenge:
 			res, err := msgServer.RunnerChallenge(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
@@ -44,12 +38,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRegisterFactoryKey:
 			res, err := msgServer.RegisterFactoryKey(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgGenRunner:
-			res, err := msgServer.GenRunner(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgGenChallenger:
-			res, err := msgServer.GenChallenger(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgClaimChallengerRewards:
 			res, err := msgServer.ClaimChallengerRewards(sdk.WrapSDKContext(ctx), msg)

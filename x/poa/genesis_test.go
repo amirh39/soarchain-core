@@ -15,23 +15,7 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
-		ChallengerList: []types.Challenger{
-			{
-				PubKey: "0",
-			},
-			{
-				PubKey: "1",
-			},
-		},
 		ReputationList: []types.Reputation{
-			{
-				PubKey: "0",
-			},
-			{
-				PubKey: "1",
-			},
-		},
-		RunnerList: []types.Runner{
 			{
 				PubKey: "0",
 			},
@@ -71,9 +55,7 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
-	require.ElementsMatch(t, genesisState.ChallengerList, got.ChallengerList)
 	require.ElementsMatch(t, genesisState.ReputationList, got.ReputationList)
-	require.ElementsMatch(t, genesisState.RunnerList, got.RunnerList)
 	require.ElementsMatch(t, genesisState.VrfDataList, got.VrfDataList)
 	require.Equal(t, genesisState.MasterKey, got.MasterKey)
 	require.ElementsMatch(t, genesisState.FactoryKeysList, got.FactoryKeysList)
