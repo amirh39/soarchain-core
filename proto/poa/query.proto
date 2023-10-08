@@ -9,9 +9,6 @@ import "poa/vrf_data.proto";
 import "poa/master_key.proto";
 import "poa/factory_keys.proto";
 import "poa/reputation.proto";
-// this line is used by starport scaffolding # 1
-import "poa/runner.proto";
-import "poa/challenger.proto";
 
 option go_package = "soarchain/x/poa/types";
 
@@ -22,32 +19,8 @@ service Query {
     option (google.api.http).get = "/soarchain/poa/params";
   }
 
-// Queries a Challenger by index.
-	rpc Challenger(QueryGetChallengerRequest) returns (QueryGetChallengerResponse) {
-		option (google.api.http).get = "/soarchain/poa/challenger/{address}";
-	}
 
-	// Queries a list of Challenger items.
-	rpc ChallengerAll(QueryAllChallengerRequest) returns (QueryAllChallengerResponse) {
-		option (google.api.http).get = "/soarchain/poa/challenger";
-	}
-
-// Queries a Runner by index.
-	rpc Runner(QueryGetRunnerRequest) returns (QueryGetRunnerResponse) {
-		option (google.api.http).get = "/soarchain/poa/runner/{address}";
-	}
-
-	// Queries a list of Runner items.
-	rpc RunnerAll(QueryAllRunnerRequest) returns (QueryAllRunnerResponse) {
-		option (google.api.http).get = "/soarchain/poa/runner";
-	}
-
-// Queries a list of GetChallengerByAddress items.
-	rpc GetChallengerByAddress(QueryGetChallengerByAddressRequest) returns (QueryGetChallengerByAddressResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_challenger_by_address/{address}";
-	}
-
-// Queries a VrfData by index.
+	// Queries a VrfData by index.
 	rpc VrfData(QueryGetVrfDataRequest) returns (QueryGetVrfDataResponse) {
 		option (google.api.http).get = "/soarchain/poa/vrf_data/{index}";
 	}
@@ -81,23 +54,9 @@ service Query {
 		option (google.api.http).get = "/soarchain/poa/factory_keys";
 	}
 
-// Queries a list of GetRunnerByIp items.
-	rpc GetRunnerByIp(QueryGetRunnerByIpRequest) returns (QueryGetRunnerByIpResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_runner_by_ip/{ipAddress}";
-	}
-// Queries a Challenger by pubKey 
-	rpc GetChallengerByPubKey(QueryGetChallengerByPubKeyRequest) returns (QueryGetChallengerByPubKeyResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_challenger_by_PubKey/{pubkey}";
-	}
-// Queries a Runner by PubKey
-	rpc GetRunnerByPubKey(QueryGetRunnerByPubKeyRequest) returns (QueryGetRunnerByPubKeyResponse) {
-		option (google.api.http).get = "/soarchain/poa/get_runner_by_PubKey/{pubkey}";
-	}
-
 	rpc Reputation(QueryGetReputationRequest) returns (QueryGetReputationResponse) {
-		option (google.api.http).get = "/soarchain/poa/reputation/{index}";
+		option (google.api.http).get = "/soarchain/poa/reputation/{pubkey}";
 	}
-
 
 	rpc ReputationAll(QueryAllReputationRequest) returns (QueryAllReputationResponse) {
 		option (google.api.http).get = "/soarchain/poa/reputation";
@@ -117,50 +76,6 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryGetChallengerRequest {
-	  string address = 1;
-
-}
-
-message QueryGetChallengerResponse {
-	Challenger challenger = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllChallengerRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllChallengerResponse {
-	repeated Challenger challenger = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetRunnerRequest {
-	  string address = 1;
-
-}
-
-message QueryGetRunnerResponse {
-	Runner runner = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllRunnerRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllRunnerResponse {
-	repeated Runner runner = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetChallengerByAddressRequest {
-  string address = 1;
-}
-
-message QueryGetChallengerByAddressResponse {
-  Challenger challenger = 1;
 }
 
 message QueryGetVrfDataRequest {
@@ -223,33 +138,8 @@ message QueryAllFactoryKeysResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryGetRunnerByIpRequest {
-  string ipAddress = 1;
-}
-
-message QueryGetRunnerByIpResponse {
-  Runner runner = 1;
-}
-
-message QueryGetChallengerByPubKeyRequest{
-	string pubkey = 1;
-}
-
-message QueryGetChallengerByPubKeyResponse{
-	Challenger challenger = 1;
-}
-
-message QueryGetRunnerByPubKeyRequest{
-	string pubkey = 1;
-}
-
-message QueryGetRunnerByPubKeyResponse{
-	Runner runner = 1;
-}
-
 message QueryGetReputationRequest {
-	string index = 1;
-
+	string pubkey = 1;
 }
 
 message QueryGetReputationResponse {
@@ -267,9 +157,9 @@ message QueryAllReputationResponse {
 
 message QueryGetReputationByAddressRequest {
 	string address = 1;
-  }
-  
-  message QueryGetReputationByAddressResponse {
-	  Reputation reputation = 1;
-  }
+}
+
+message QueryGetReputationByAddressResponse {
+	Reputation reputation = 1;
+}
 // this line is used by starport scaffolding # 3
