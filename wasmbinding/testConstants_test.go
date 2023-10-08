@@ -40,15 +40,13 @@ const (
 	Challenger_Type         = "v2n"
 )
 
-func CreateNChallenger(n int) []types.Challenger {
-	items := make([]types.Challenger, n)
+func CreateNReputation(n int) []types.Reputation {
+	items := make([]types.Reputation, n)
 	for i := range items {
 		items[i].PubKey = Challenger_PubKey
 		items[i].Address = Challenger_Address
 		items[i].Score = Challenger_Score
-		items[i].StakedAmount = Challenger_StakedAmount
 		items[i].NetEarnings = Challenger_NetEarnings
-		items[i].IpAddress = ""
 		items[i].Type = Challenger_Type
 	}
 	return items

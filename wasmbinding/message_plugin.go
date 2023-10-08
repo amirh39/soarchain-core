@@ -52,7 +52,7 @@ func GetChallenger(ctx sdk.Context, index string, poa poaKeepers.Keeper) (res bi
 
 	logger := poa.Logger(ctx)
 
-	challenger, found := poa.GetChallenger(ctx, index)
+	challenger, found := poa.GetReputation(ctx, index)
 	if !found {
 		return response, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[Message_PlugIn][GetChallengerByIndex] failed. Challenger with the index: [ %T ] for query wasm contract not found.", index)
 	}
