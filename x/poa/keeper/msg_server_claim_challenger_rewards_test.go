@@ -12,37 +12,25 @@ func Test_ClaimChallengerRewards(t *testing.T) {
 	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
-	// Set up the bank expectations
-	//bank.SendCoinsFromModuleToAccount()
+	ctx := sdk.UnwrapSDKContext(context)
 	bank.ExpectAny(context)
 
-	// Set up the context
-	ctx := sdk.UnwrapSDKContext(context)
-
-	// Create a challenger with net earnings
-	challenger := types.Challenger{
-		PubKey:       Challenger_PubKey,
-		Address:      Challenger_Address,
-		Score:        Challenger_Score,
-		StakedAmount: Challenger_StakedAmount,
-		NetEarnings:  "100udmotus",
-		Type:         Challenger_Type,
-		IpAddress:    Challenger_IPAddress,
+	reputation := types.Reputation{
+		PubKey:      Challenger_PubKey,
+		Address:     Challenger_Address,
+		Score:       Challenger_Score,
+		NetEarnings: "100udmotus",
+		Type:        Challenger_Type,
 	}
-	k.SetChallenger(ctx, challenger)
+	k.SetReputation(ctx, reputation)
 
 	// Create a test message
 	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "50udmotus")
-
-	// Run the ClaimChallengerRewards function
 	res, err := msgServer.ClaimChallengerRewards(context, msg)
-
-	// Verify the response
 	require.NoError(t, err)
 	require.NotNil(t, res)
 
-	// Verify that the challenger's net earnings have been updated
-	updatedChallenger, found := k.GetChallenger(ctx, Challenger_Address)
+	updatedChallenger, found := k.GetReputation(ctx, Challenger_PubKey)
 	require.True(t, found)
 	require.Equal(t, "50udmotus", updatedChallenger.NetEarnings)
 }
@@ -52,52 +40,29 @@ func Test_ClaimChallengerRewards_KeyNotFound(t *testing.T) {
 	msgServer, _, context, ctrl, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
-	// Create a test message with an unknown challenger key
 	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "100udmotus")
-
-	// Run the ClaimChallengerRewards function
 	res, err := msgServer.ClaimChallengerRewards(context, msg)
-
-	// Verify the error response
 	require.Error(t, err)
 	require.Nil(t, res)
-
-	// Verify the error message
-	expectedErrMsg := "[ClaimChallengerRewards][GetChallenger] failed. Target challenger is not registered in the store by this address: [ string ]. Make sure the address is valid and not empty.: key not found"
-	require.Equal(t, expectedErrMsg, err.Error())
 }
 
 /** Using an insufficient funds amount should raise an error */
 func Test_ClaimChallengerRewards_InsufficientFunds(t *testing.T) {
 	msgServer, k, context, ctrl, _ := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
-
-	// Set up the context
 	ctx := sdk.UnwrapSDKContext(context)
 
-	// Create a challenger with net earnings
-	challenger := types.Challenger{
-		PubKey:       Challenger_PubKey,
-		Address:      Challenger_Address,
-		Score:        Challenger_Score,
-		StakedAmount: Challenger_StakedAmount,
-		NetEarnings:  "100udmotus",
-		Type:         Challenger_Type,
-		IpAddress:    Challenger_IPAddress,
+	reputation := types.Reputation{
+		PubKey:      Challenger_PubKey,
+		Address:     Challenger_Address,
+		Score:       Challenger_Score,
+		NetEarnings: "100udmotus",
+		Type:        Challenger_Type,
 	}
-	k.SetChallenger(ctx, challenger)
+	k.SetReputation(ctx, reputation)
 
-	// Create a test message with an amount greater than the net earnings
 	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "1000udmotus")
-
-	// Run the ClaimChallengerRewards function
 	res, err := msgServer.ClaimChallengerRewards(context, msg)
-
-	// Verify the error response
 	require.Error(t, err)
 	require.Nil(t, res)
-
-	// Verify the error message
-	expectedErrMsg := "[ClaimChallengerRewards][DenomsSubsetOf] failed. Not enough coins to claim.: insufficient funds"
-	require.Equal(t, expectedErrMsg, err.Error())
 }

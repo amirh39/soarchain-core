@@ -19,9 +19,9 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 
 	log.Println("############## Challenge Service Transaction Started ##############")
 
-	challenger, isFound := k.GetChallenger(ctx, msg.Creator)
+	challenger, isFound := k.GetReputationsByAddress(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[ChallengeService][GetChallenger] failed. Only registered challengers can initiate this transaction.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[ChallengeService][GetReputationsByAddress] failed. Only registered challengers can initiate this transaction.")
 	}
 
 	// Challenger type must be v2x for this operation
@@ -224,17 +224,13 @@ func (k msgServer) ChallengeService(goCtx context.Context, msg *types.MsgChallen
 	scoreIntChallenger, _ := strconv.Atoi(challenger.Score)
 	scoreIntChallenger++
 
-	updatedChallenger := types.Challenger{
-		PubKey:       challenger.PubKey,
-		Address:      challenger.Address,
-		Score:        strconv.Itoa(scoreIntChallenger),
-		StakedAmount: challenger.StakedAmount,
-		NetEarnings:  challenger.NetEarnings, // TBD
-		Type:         challenger.Type,
-		IpAddress:    challenger.IpAddress,
+	updatedChallenger := types.Reputation{
+		PubKey:  challenger.PubKey,
+		Address: challenger.Address,
+		Score:   strconv.Itoa(scoreIntChallenger),
 	}
 
-	k.SetChallenger(ctx, updatedChallenger)
+	k.SetReputation(ctx, updatedChallenger)
 
 	if logger != nil {
 		logger.Info("Increasing Challenger score successfully done.", "transaction", "ChallengeService")

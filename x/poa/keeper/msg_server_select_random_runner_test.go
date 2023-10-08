@@ -16,8 +16,8 @@ func Test_SelectRandomRunner(t *testing.T) {
 
 	ctx := sdk.UnwrapSDKContext(context)
 
-	runner := SetupNRunner(1)
-	k.SetRunner(ctx, runner[0])
+	runnerReputation := SetupNRunnerReputation(1)
+	k.SetReputation(ctx, runnerReputation[0])
 
 	res, err := msgServer.SelectRandomRunner(context, &types.MsgSelectRandomRunner{
 		Creator: "soar1k9ee7xx2mqzehrt56y7ezyqnegzfy8afrs754n",
@@ -36,8 +36,8 @@ func Test_SelectRandomRunner_NotValidCreator(t *testing.T) {
 
 	ctx := sdk.UnwrapSDKContext(context)
 
-	runner := SetupNRunner(1)
-	k.SetRunner(ctx, runner[0])
+	runner := SetupNRunnerReputation(1)
+	k.SetReputation(ctx, runner[0])
 
 	res, err := msgServer.SelectRandomRunner(context, &types.MsgSelectRandomRunner{
 		Creator: "",

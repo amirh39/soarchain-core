@@ -17,7 +17,7 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 
 	log.Println("############## Claim Motus Rewards Transaction Started ##############")
 
-	reputation, isFound := k.GetReputationByClientAddress(ctx, msg.Creator)
+	reputation, isFound := k.GetReputationsByAddress(ctx, msg.Creator)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][GetReputation] failed. Creator is not valid address.")
 	}

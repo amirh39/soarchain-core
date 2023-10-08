@@ -18,13 +18,13 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 
 	log.Println("############## Claim Runner Rewards Transaction Started ##############")
 
-	runner, isFound := k.GetRunner(ctx, msg.Creator)
+	reputation, isFound := k.GetReputationsByAddress(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimRunnerRewards][GetRunner] failed. Target runner is not registered in the store by this address: [ %T ]. Make sure the address is valid and not empty.", msg.Creator)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimRunnerRewards][GetReputationByClientAddress] failed. Target reputation is not registered in the store by this address: [ %T ]. Make sure the address is valid and not empty.", msg.Creator)
 	}
 
 	if logger != nil {
-		logger.Info("Fetching runner from the store successfully done.", "transaction", "ClaimRunnerRewards")
+		logger.Info("Fetching reputation from the store successfully done.", "transaction", "ClaimRunnerRewards")
 	}
 
 	withdrawAmount, err := sdk.ParseCoinsNormalized(msg.Amount)
@@ -32,9 +32,9 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", msg.Amount, err)
 	}
 
-	earnedAmount, err := sdk.ParseCoinsNormalized(runner.NetEarnings)
+	earnedAmount, err := sdk.ParseCoinsNormalized(reputation.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", runner.NetEarnings, err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", reputation.NetEarnings, err)
 	}
 
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
@@ -63,22 +63,15 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 		logger.Info("Calculating new net earning successfully done.", "transaction", "ClaimRunnerRewards")
 	}
 
-	updatedRunner := types.Runner{
-		PubKey:             runner.PubKey,
-		Address:            runner.Address,
-		Score:              runner.Score,
-		RewardMultiplier:   runner.RewardMultiplier,
-		StakedAmount:       runner.StakedAmount,
-		NetEarnings:        netEarnings.String(),
-		IpAddress:          runner.IpAddress,
-		LastTimeChallenged: runner.LastTimeChallenged,
-		CoolDownTolerance:  runner.CoolDownTolerance,
+	updatedReputation := types.Reputation{
+		PubKey:      reputation.PubKey,
+		NetEarnings: netEarnings.String(),
 	}
 
-	k.SetRunner(ctx, updatedRunner)
+	k.SetReputation(ctx, updatedReputation)
 
 	if logger != nil {
-		logger.Info("Updating target runner successfully done.", "transaction", "ClaimRunnerRewards")
+		logger.Info("Updating target reputation successfully done.", "transaction", "ClaimRunnerRewards")
 	}
 
 	log.Println("############## End of Claim Runner Rewards Transaction ##############")

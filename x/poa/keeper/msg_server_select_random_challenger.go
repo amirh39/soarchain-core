@@ -22,11 +22,11 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[SelectRandomChallenger] failed. Couldn't find a valid msg.Creator. got [ %T ]", msg.Creator)
 	}
 
-	allChallengers := k.GetAllChallenger(ctx)
-	if allChallengers == nil {
+	allChallengerReputations := k.GetAllChallenger(ctx)
+	if allChallengerReputations == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[SelectRandomChallenger][GetAllChallenger] failed. Couldn't find any challenger.")
 	}
-	factor := int(len(allChallengers))
+	factor := int(len(allChallengerReputations))
 
 	vrfData, err := k.CreateVRF(ctx, msg.Creator, factor)
 	if err != nil {
@@ -37,14 +37,10 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[SelectRandomChallenger][ParseUint] failed. Couldn't parse VRF data. Error: [ %T ]", err)
 	}
-	var selectedChallenger types.Challenger
-	challengers := k.GetAllChallenger(ctx)
-	if allChallengers == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[SelectRandomChallenger][GetAllChallenger] failed. Couldn't find any challenger.")
-	}
-	for i := 0; i < len(challengers); i++ {
+	var selectedChallenger types.Reputation
+	for i := 0; i < len(allChallengerReputations); i++ {
 		if i == int(generatedNumber) {
-			selectedChallenger = challengers[i]
+			selectedChallenger = allChallengerReputations[i]
 		}
 	}
 
@@ -74,5 +70,5 @@ func (k msgServer) SelectRandomChallenger(goCtx context.Context, msg *types.MsgS
 
 	log.Println("############## End of Select Random Challenger Transaction ##############")
 
-	return &types.MsgSelectRandomChallengerResponse{RandomChallenger: &selectedChallenger}, nil
+	return &types.MsgSelectRandomChallengerResponse{RandomChallengerReputation: &selectedChallenger}, nil
 }

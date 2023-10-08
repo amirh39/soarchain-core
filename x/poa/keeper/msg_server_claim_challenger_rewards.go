@@ -16,9 +16,9 @@ func (k msgServer) ClaimChallengerRewards(goCtx context.Context, msg *types.MsgC
 
 	log.Println("############## Claim Challenger Rewards Transaction Started ##############")
 
-	challenger, isFound := k.GetChallenger(ctx, msg.Creator)
+	reputation, isFound := k.GetReputationsByAddress(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimChallengerRewards][GetChallenger] failed. Target challenger is not registered in the store by this address: [ %T ]. Make sure the address is valid and not empty.", msg.Creator)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimChallengerRewards][GetReputationsByAddress] failed. Target challenger is not registered in the store by this address: [ %T ]. Make sure the address is valid and not empty.", msg.Creator)
 	}
 
 	if logger != nil {
@@ -30,9 +30,9 @@ func (k msgServer) ClaimChallengerRewards(goCtx context.Context, msg *types.MsgC
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimChallengerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", msg.Amount, err)
 	}
 
-	earnedAmount, err := sdk.ParseCoinsNormalized(challenger.NetEarnings)
+	earnedAmount, err := sdk.ParseCoinsNormalized(reputation.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimChallengerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", challenger.NetEarnings, err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimChallengerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", reputation.NetEarnings, err)
 	}
 
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
@@ -63,8 +63,8 @@ func (k msgServer) ClaimChallengerRewards(goCtx context.Context, msg *types.MsgC
 	}
 
 	// Update challenger object with only necessary fields
-	challenger.NetEarnings = netEarnings.String()
-	k.SetChallenger(ctx, challenger)
+	reputation.NetEarnings = netEarnings.String()
+	k.SetReputation(ctx, reputation)
 
 	if logger != nil {
 		logger.Info("Updating target challenger successfully done.", "transaction", "ClaimChallengerRewards")
