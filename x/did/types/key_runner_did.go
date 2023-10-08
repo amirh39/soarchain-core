@@ -11,11 +11,11 @@ const (
 
 // DidKey returns the store key to retrieve a did from the index fields
 func RunnerDidKey(
-	id string,
+	address string,
 ) []byte {
 	var key []byte
 
-	indexBytes := []byte(id)
+	indexBytes := []byte(address)
 	key = append(key, indexBytes...)
 	key = append(key, []byte("/")...)
 
