@@ -6,41 +6,26 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"encoding/pem"
-	"soarchain/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) ValidateClientInputs(msg *types.MsgGenClient) bool {
-	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.Document == nil || msg.Document.VerificationMethods[0].Id == "" {
-		return false
-	}
-	return true
-}
-
-func (k Keeper) ValidateRunnerInputs(msg *types.MsgGenRunner) bool {
-	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.Document == nil || msg.Document.VerificationMethods[0].Id == "" {
-		return false
-	}
-	return true
-}
-
-func (k Keeper) ValidateChallengerInputs(msg *types.MsgGenChallenger) bool {
-	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.Document == nil || msg.Document.VerificationMethods[0].Id == "" {
+func (k Keeper) ValidateInputs(creator string, certificate string, signature string, verificationMethidId string) bool {
+	if creator == "" || certificate == "" || signature == "" || verificationMethidId == "" {
 		return false
 	}
 	return true
 }
 
 func (k Keeper) IsUniqueDid(ctx sdk.Context, id string) bool {
-	_, isFoundClientDid := k.GetClientDidDocument(ctx, id)
-	_, isFoundRunnerDid := k.GetRunnerDidDocument(ctx, id)
-	_, isFoundChallengerDid := k.GetChallengerDidDocument(ctx, id)
-
+	_, isFoundClientDid := k.GetClientDid(ctx, id)
+	_, isFoundRunnerDid := k.GetRunnerDid(ctx, id)
+	_, isFoundChallengerDid := k.GetChallengerDid(ctx, id)
 	if isFoundClientDid || isFoundRunnerDid || isFoundChallengerDid {
 		return true
 	}
+
 	return false
 }
 
@@ -116,4 +101,11 @@ func ValidateX509Cert(derivedCert *x509.Certificate, signerCert *x509.Certificat
 	} else {
 		return true, nil
 	}
+}
+
+func ValidString(input string) bool {
+	if len(input) == 0 || input == "" {
+		return false
+	}
+	return true
 }
