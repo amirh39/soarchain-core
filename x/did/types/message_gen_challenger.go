@@ -9,7 +9,7 @@ const TypeMsgGenChallenger = "gen_challenger"
 
 var _ sdk.Msg = &MsgGenChallenger{}
 
-func NewMsgGenChallenger(document ChallengerDidDocument, signature string, certificate string, creator string) *MsgGenChallenger {
+func NewMsgGenChallenger(document ChallengerDid, signature string, certificate string, creator string) *MsgGenChallenger {
 	return &MsgGenChallenger{
 		Document:    &document,
 		Signature:   signature,

@@ -142,7 +142,7 @@ func EmptyDid(did string) bool {
 	return did == ""
 }
 
-func (doc ClientDidDocument) Empty() bool {
+func (doc ClientDid) Empty() bool {
 	return EmptyDid(doc.Id)
 }
 
@@ -237,7 +237,7 @@ func (v VerificationRelationship) Valid(did string) bool {
 	}
 }
 
-func (doc ClientDidDocument) validVerificationRelationships(relationships []VerificationRelationship) bool {
+func (doc ClientDid) validVerificationRelationships(relationships []VerificationRelationship) bool {
 	for _, relationship := range relationships {
 		if !relationship.Valid(doc.Id) {
 			return false
@@ -255,7 +255,7 @@ func (s Service) Valid() bool {
 	return s.Id != "" && s.Type != "" && s.ServiceEndpoint != ""
 }
 
-func (doc ClientDidDocument) VerificationMethodByID(id string) (VerificationMethod, bool) {
+func (doc ClientDid) VerificationMethodByID(id string) (VerificationMethod, bool) {
 	for _, verificationMethod := range doc.VerificationMethods {
 		if verificationMethod.Id == id {
 			return *verificationMethod, true
@@ -264,7 +264,7 @@ func (doc ClientDidDocument) VerificationMethodByID(id string) (VerificationMeth
 	return VerificationMethod{}, false
 }
 
-func (doc ClientDidDocument) Valid() bool {
+func (doc ClientDid) Valid() bool {
 	if doc.Empty() {
 		return true
 	}
@@ -292,7 +292,7 @@ func (doc ClientDidDocument) Valid() bool {
 	return true
 }
 
-func (d ClientDidDocumentWithSeq) Valid() bool {
+func (d ClientDidWithSeq) Valid() bool {
 	return d.Document.Valid()
 }
 
@@ -315,10 +315,10 @@ func NewVerificationRelationship(verificationMethodID string) VerificationRelati
 	}
 }
 
-type ClientDidDocumentOption func(opts *ClientDidDocument)
+type ClientDidDocumentOption func(opts *ClientDid)
 
-func NewClientDidDocument(id string, index string, address string, soarchainType string, pids []bool, opts ...ClientDidDocumentOption) ClientDidDocument {
-	doc := ClientDidDocument{
+func NewClientDidDocument(id string, index string, address string, soarchainType string, pids []bool, opts ...ClientDidDocumentOption) ClientDid {
+	doc := ClientDid{
 		Id:                            id,
 		PubKey:                        index,
 		Address:                       address,
@@ -357,53 +357,53 @@ func NewOwner(id string, purchaseDate string) Owner {
 }
 
 func WithKeys(soarchainPublicKey *Keys) ClientDidDocumentOption {
-	return func(opts *ClientDidDocument) {
+	return func(opts *ClientDid) {
 		opts.Keys = soarchainPublicKey
 	}
 }
 
 func WithVehicle(vehicle *Vehicle) ClientDidDocumentOption {
-	return func(opts *ClientDidDocument) {
+	return func(opts *ClientDid) {
 		opts.Vehicle = vehicle
 	}
 }
 
 func WithOwner(owner *Owner) ClientDidDocumentOption {
-	return func(opts *ClientDidDocument) {
+	return func(opts *ClientDid) {
 		opts.Owner = owner
 	}
 }
 
 func WithVerificationMethods(verificationMethods []*VerificationMethod) ClientDidDocumentOption {
-	return func(opts *ClientDidDocument) {
+	return func(opts *ClientDid) {
 		opts.VerificationMethods = verificationMethods
 	}
 }
 
 const InitialSequence uint64 = 0
 
-func NewDidDocumentWithSeq(doc *ClientDidDocument, seq uint64) ClientDidDocumentWithSeq {
-	return ClientDidDocumentWithSeq{
+func NewDidDocumentWithSeq(doc *ClientDid, seq uint64) ClientDidWithSeq {
+	return ClientDidWithSeq{
 		Document: doc,
 		Sequence: seq,
 	}
 }
 
 func WithAuthentications(authentications []VerificationRelationship) ClientDidDocumentOption {
-	return func(opts *ClientDidDocument) {
+	return func(opts *ClientDid) {
 		opts.Authentications = authentications
 	}
 }
 
-func (d ClientDidDocumentWithSeq) Empty() bool {
+func (d ClientDidWithSeq) Empty() bool {
 	return d.Document == nil || d.Document.Empty() && d.Sequence == InitialSequence
 }
 
-func (d ClientDidDocumentWithSeq) Deactivated() bool {
+func (d ClientDidWithSeq) Deactivated() bool {
 	return d.Document.Empty() && d.Sequence != InitialSequence
 }
 
-func (doc ClientDidDocument) VerificationMethodFrom(relationships []VerificationRelationship, id string) (VerificationMethod, bool) {
+func (doc ClientDid) VerificationMethodFrom(relationships []VerificationRelationship, id string) (VerificationMethod, bool) {
 	for _, relationship := range relationships {
 		if relationship.hasDedicatedMethod() {
 			veriMethod := relationship.GetVerificationMethod()
@@ -421,8 +421,8 @@ func (doc ClientDidDocument) VerificationMethodFrom(relationships []Verification
 	return VerificationMethod{}, false
 }
 
-func (d ClientDidDocumentWithSeq) Deactivate(newSeq uint64) ClientDidDocumentWithSeq {
-	return NewDidDocumentWithSeq(&ClientDidDocument{}, newSeq)
+func (d ClientDidWithSeq) Deactivate(newSeq uint64) ClientDidWithSeq {
+	return NewDidDocumentWithSeq(&ClientDid{}, newSeq)
 }
 
 type Address = bytes.HexBytes

@@ -8,10 +8,10 @@ import (
 	"soarchain/x/did/errors"
 )
 
-type RunnerDidDocumentOption func(opts *RunnerDidDocument)
+type RunnerDidDocumentOption func(opts *RunnerDid)
 
-func NewRunnerDidDocument(id string, pubkey string, address string, opts ...RunnerDidDocumentOption) RunnerDidDocument {
-	doc := RunnerDidDocument{
+func NewRunnerDidDocument(id string, pubkey string, address string, opts ...RunnerDidDocumentOption) RunnerDid {
+	doc := RunnerDid{
 		Id:      id,
 		PubKey:  pubkey,
 		Address: address,
@@ -23,26 +23,26 @@ func NewRunnerDidDocument(id string, pubkey string, address string, opts ...Runn
 	return doc
 }
 
-func NewRunnerDidDocumentWithSeq(doc *RunnerDidDocument, seq uint64) RunnerDidDocumentWithSeq {
-	return RunnerDidDocumentWithSeq{
+func NewRunnerDidDocumentWithSeq(doc *RunnerDid, seq uint64) RunnerDidWithSeq {
+	return RunnerDidWithSeq{
 		Document: doc,
 		Sequence: seq,
 	}
 }
 
-func (doc RunnerDidDocument) Empty() bool {
+func (doc RunnerDid) Empty() bool {
 	return EmptyDid(doc.Id)
 }
 
-func (d RunnerDidDocumentWithSeq) Empty() bool {
+func (d RunnerDidWithSeq) Empty() bool {
 	return d.Document == nil || d.Document.Empty() && d.Sequence == InitialSequence
 }
 
-func (d RunnerDidDocumentWithSeq) Deactivated() bool {
+func (d RunnerDidWithSeq) Deactivated() bool {
 	return d.Document.Empty() && d.Sequence != InitialSequence
 }
 
-func (doc RunnerDidDocument) RunnerVerificationMethodByID(id string) (VerificationMethod, bool) {
+func (doc RunnerDid) RunnerVerificationMethodByID(id string) (VerificationMethod, bool) {
 	for _, verificationMethod := range doc.VerificationMethods {
 		if verificationMethod.Id == id {
 			return *verificationMethod, true
@@ -51,7 +51,7 @@ func (doc RunnerDidDocument) RunnerVerificationMethodByID(id string) (Verificati
 	return VerificationMethod{}, false
 }
 
-func (doc RunnerDidDocument) VerificationMethodFrom(relationships []VerificationRelationship, id string) (VerificationMethod, bool) {
+func (doc RunnerDid) VerificationMethodFrom(relationships []VerificationRelationship, id string) (VerificationMethod, bool) {
 	for _, relationship := range relationships {
 		if relationship.hasDedicatedMethod() {
 			veriMethod := relationship.GetVerificationMethod()
@@ -70,25 +70,25 @@ func (doc RunnerDidDocument) VerificationMethodFrom(relationships []Verification
 }
 
 func WithRunnerVerificationMethods(verificationMethods []*VerificationMethod) RunnerDidDocumentOption {
-	return func(opts *RunnerDidDocument) {
+	return func(opts *RunnerDid) {
 		opts.VerificationMethods = verificationMethods
 	}
 }
 
 func WithRunnerAuthentications(authentications []VerificationRelationship) RunnerDidDocumentOption {
-	return func(opts *RunnerDidDocument) {
+	return func(opts *RunnerDid) {
 		opts.Authentications = authentications
 	}
 }
 
 func WithRunnerKeys(soarchainPublicKey *Keys) RunnerDidDocumentOption {
-	return func(opts *RunnerDidDocument) {
+	return func(opts *RunnerDid) {
 		opts.Keys = soarchainPublicKey
 	}
 }
 
-func (d RunnerDidDocumentWithSeq) Deactivate(newSeq uint64) RunnerDidDocumentWithSeq {
-	return NewRunnerDidDocumentWithSeq(&RunnerDidDocument{}, newSeq)
+func (d RunnerDidWithSeq) Deactivate(newSeq uint64) RunnerDidWithSeq {
+	return NewRunnerDidDocumentWithSeq(&RunnerDid{}, newSeq)
 }
 
 func mustGetRunnerSignBytesWithSeq(signableData sdkcodec.ProtoMarshaler, seq uint64) ([]byte, error) {

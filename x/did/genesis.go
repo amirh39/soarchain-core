@@ -15,23 +15,23 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	k.SetParams(ctx, genState.Params)
 
 	for _, element := range genState.ClientDidList {
-		did, found := k.GetClientDidDocument(ctx, element.Document.Id)
+		did, found := k.GetClientDid(ctx, element.Id)
 		if found {
-			k.SetClientDidDocument(ctx, did.Document.Id, did)
+			k.SetClientDid(ctx, did)
 		}
 	}
 
 	for _, element := range genState.RunnerDidList {
-		did, found := k.GetRunnerDidDocument(ctx, element.Document.Id)
+		did, found := k.GetRunnerDid(ctx, element.Id)
 		if found {
-			k.SetRunnerDidDocument(ctx, did.Document.Id, did)
+			k.SetRunnerDid(ctx, did)
 		}
 	}
 
 	for _, element := range genState.ChallengerDidList {
-		did, found := k.GetChallengerDidDocument(ctx, element.Document.Id)
+		did, found := k.GetChallengerDid(ctx, element.Id)
 		if found {
-			k.SetChallengerDidDocument(ctx, did.Document.Id, did)
+			k.SetChallengerDid(ctx, did)
 		}
 	}
 }

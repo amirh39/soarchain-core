@@ -19,7 +19,7 @@ import (
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
 
-func NewDIDDocumentWithSeq(did string) (types.ClientDidDocumentWithSeq, tendermintcrypto.PrivKey) {
+func NewDIDDocumentWithSeq(did string) (types.ClientDidWithSeq, tendermintcrypto.PrivKey) {
 	privKey := secp256k1.GenPrivKey()
 	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
 	verificationMethodID := types.NewVerificationMethodID(did, "key1")
@@ -44,7 +44,7 @@ func NewDIDDocumentWithSeq(did string) (types.ClientDidDocumentWithSeq, tendermi
 	return docWithSeq, privKey
 }
 
-func NewRunnerDidDocumentWithSeq(did string) (types.RunnerDidDocumentWithSeq, tendermintcrypto.PrivKey) {
+func NewRunnerDidDocumentWithSeq(did string) (types.RunnerDidWithSeq, tendermintcrypto.PrivKey) {
 	privKey := secp256k1.GenPrivKey()
 	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
 	verificationMethodID := types.NewVerificationMethodID(did, "key1")
@@ -67,7 +67,7 @@ func NewRunnerDidDocumentWithSeq(did string) (types.RunnerDidDocumentWithSeq, te
 	return docWithSeq, privKey
 }
 
-func NewChallengerDidDocumentWithSeq(did string) (types.ChallengerDidDocumentWithSeq, tendermintcrypto.PrivKey) {
+func NewChallengerDidDocumentWithSeq(did string) (types.ChallengerDidWithSeq, tendermintcrypto.PrivKey) {
 	privKey := secp256k1.GenPrivKey()
 	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
 	verificationMethodID := types.NewVerificationMethodID(did, "key1")
@@ -90,12 +90,12 @@ func NewChallengerDidDocumentWithSeq(did string) (types.ChallengerDidDocumentWit
 	return docWithSeq, privKey
 }
 
-func NewMsgDeactivateDID(doc types.ClientDidDocument, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
+func NewMsgDeactivateDID(doc types.ClientDid, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
 	sig, _ := types.Sign(&doc, seq, privKey)
 	return *types.NewMsgDeactivateDid(did, verificationMethodID, sig, sdk.AccAddress{}.String())
 }
 
-func MakeTestData() (string, types.ClientDidDocumentWithSeq, tendermintcrypto.PrivKey, string) {
+func MakeTestData() (string, types.ClientDidWithSeq, tendermintcrypto.PrivKey, string) {
 	doc, privKey := NewDIDDocumentWithSeq(Did)
 	return Did, doc, privKey, doc.Document.VerificationMethods[0].Id
 }
@@ -110,6 +110,34 @@ func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Conte
 
 	return server, *k, context, ctrl, bankMock
 }
+
+func CreateNChallengerDid(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.ChallengerDid {
+	items := make([]types.ChallengerDid, n)
+	for i := range items {
+		items[i].PubKey = Challenger_PubKey
+		items[i].Address = Challenger_Address
+		items[i].IpAddress = Challenger_IPAddress
+		items[i].StakedAmount = Challenger_StakedAmount
+
+		keeper.SetChallengerDid(ctx, items[i])
+	}
+	return items
+}
+
+const (
+	Challenger_PubKey        = "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251"
+	Challenger_Address       = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
+	Challenger_Score         = "189"
+	Challenger_StakedAmount  = "2000000000utmotus"
+	Challenger_NetEarnings   = "0utmotus"
+	Challenger_StakedAmount2 = "2000000000udmotus"
+	Challenger_NetEarnings2  = "0udmotus"
+	Challenger_IpAddr        = ""
+	Challenger_IPAddress     = "104.248.142.45"
+	Challenger_Type          = "v2n"
+	Challenger_Creator       = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
+	Challenger_Score2        = "82"
+)
 
 const (
 	Did       = "did:soar:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm"

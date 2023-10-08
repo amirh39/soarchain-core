@@ -13,7 +13,7 @@ func Test_IsUniqueDid(t *testing.T) {
 	// Input two DidDocument
 	clientDidDocument, privkey := NewDIDDocumentWithSeq(Did)
 	require.NotNil(t, privkey)
-	keeper.SetClientDidDocument(ctx, Did, clientDidDocument)
+	keeper.SetClientDid(ctx, *clientDidDocument.Document)
 
 	isFound := keeper.IsUniqueDid(ctx, clientDidDocument.Document.Id)
 	require.Equal(t, true, isFound)
