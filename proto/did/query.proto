@@ -4,9 +4,9 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "did/params.proto";
-import "did/client_did_document.proto";
-import "did/runner_did_document.proto";
-import "did/challenger_did_document.proto";
+import "did/client_did.proto";
+import "did/runner_did.proto";
+import "did/challenger_did.proto";
 
 option go_package = "soarchain/x/did/types";
 
@@ -18,27 +18,43 @@ service Query {
   }
 
 	rpc ClientDidAll(QueryAllClientDidRequest) returns (QueryAllClientDidResponse) {
-		option (google.api.http).get = "/soarchain/did/client_did_document";
+		option (google.api.http).get = "/soarchain/did/client_did";
 	}
 
-	rpc ClientDidDocument(QueryGetClientDidRequest) returns (QueryGetClientDidResponse) {
-		option (google.api.http).get = "/soarchain/did/client_did_document/{id}";
+	rpc ClientDid(QueryGetClientDidRequest) returns (QueryGetClientDidResponse) {
+		option (google.api.http).get = "/soarchain/did/client_did/{id}";
 	}
 
 	rpc RunnerDidAll(QueryAllRunnerDidRequest) returns (QueryAllRunnerDidResponse) {
-		option (google.api.http).get = "/soarchain/did/runner_did_document";
+		option (google.api.http).get = "/soarchain/did/runner_did";
 	}
 
-	rpc RunnerDidDocument(QueryGetRunnerDidRequest) returns (QueryGetRunnerDidResponse) {
-		option (google.api.http).get = "/soarchain/did/runner_did_document/{id}";
+	rpc RunnerDid(QueryGetRunnerDidRequest) returns (QueryGetRunnerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/runner_did/{address}";
 	}
 
 	rpc ChallengerDidAll(QueryAllChallengerDidRequest) returns (QueryAllChallengerDidResponse) {
-		option (google.api.http).get = "/soarchain/did/challenger_did_document";
+		option (google.api.http).get = "/soarchain/did/challenger_did";
 	}
 
-	rpc ChallengerDidDocument(QueryGetChallengerDidRequest) returns (QueryGetChallengerDidResponse) {
-		option (google.api.http).get = "/soarchain/did/challenger_did_document/{id}";
+	rpc ChallengerDid(QueryGetChallengerDidRequest) returns (QueryGetChallengerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/challenger_did/{address}";
+	}
+
+	rpc GetRunnerDidByIp(QueryGetRunnerDidByIpRequest) returns (QueryGetRunnerDidByIpResponse) {
+		option (google.api.http).get = "/soarchain/did/get_runner_did_by_ip/{ipAddress}";
+	}
+
+	rpc GetChallengerDidByPubKey(QueryGetChallengerDidByPubKeyRequest) returns (QueryGetChallengerDidByPubKeyResponse) {
+		option (google.api.http).get = "/soarchain/did/query_challenger_did_by_pubKey/{pubkey}";
+	}
+// Queries a Runner by PubKey
+	rpc GetRunnerDidByPubKey(QueryGetRunnerDidByPubKeyRequest) returns (QueryGetRunnerDidByPubKeyResponse) {
+		option (google.api.http).get = "/soarchain/did/get_runner_did_by_PubKey/{pubkey}";
+	}
+
+	rpc GetChallengerDidByAddress(QueryGetChallengerDidByAddressRequest) returns (QueryGetChallengerDidByAddressResponse) {
+		option (google.api.http).get = "/soarchain/did/get_challenger_did_by_address/{address}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -58,7 +74,7 @@ message QueryGetClientDidRequest {
 }
 
 message QueryGetClientDidResponse {
-	ClientDidDocumentWithSeq clientDidDocument = 1 [(gogoproto.nullable) = false];
+	ClientDid clientDid = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllClientDidRequest {
@@ -66,15 +82,15 @@ message QueryAllClientDidRequest {
 }
 
 message QueryAllClientDidResponse {
-	repeated ClientDidDocumentWithSeq clientDidDocument = 1  [(gogoproto.nullable) = false];
+	repeated ClientDid clientDid = 1  [(gogoproto.nullable) = false];
 }
 
 message QueryGetRunnerDidRequest {
-	string id = 1;
-  }
+	string address = 1;
+}
   
 message QueryGetRunnerDidResponse {
-RunnerDidDocumentWithSeq runnerDidDocument = 1 [(gogoproto.nullable) = false];
+	RunnerDid runnerDid = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllRunnerDidRequest {
@@ -82,15 +98,15 @@ message QueryAllRunnerDidRequest {
 }
 
 message QueryAllRunnerDidResponse {
-	repeated RunnerDidDocumentWithSeq runnerDidDocument = 1  [(gogoproto.nullable) = false];
+	repeated RunnerDid runnerDid = 1  [(gogoproto.nullable) = false];
 }
 
 message QueryGetChallengerDidRequest {
-	string id = 1;
-  }
+	string address = 1;
+}
   
 message QueryGetChallengerDidResponse {
-	ChallengerDidDocumentWithSeq challengerDidDocument = 1 [(gogoproto.nullable) = false];
+	ChallengerDid challengerDid = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllChallengerDidRequest {
@@ -98,7 +114,39 @@ message QueryAllChallengerDidRequest {
 }
 
 message QueryAllChallengerDidResponse {
-	repeated ChallengerDidDocumentWithSeq challengerDidDocument = 1  [(gogoproto.nullable) = false];
+	repeated ChallengerDid challengerDid = 1  [(gogoproto.nullable) = false];
 }
+
+message QueryGetRunnerDidByIpRequest {
+	string ipAddress = 1;
+}
+  
+message QueryGetRunnerDidByIpResponse {
+	RunnerDid runner = 1;
+}
+
+message QueryGetChallengerDidByPubKeyRequest{
+	string pubkey = 1;
+}
+
+message QueryGetChallengerDidByPubKeyResponse{
+	ChallengerDid challengerDid = 1;
+}
+
+message QueryGetRunnerDidByPubKeyRequest{
+	string pubkey = 1;
+}
+
+message QueryGetRunnerDidByPubKeyResponse{
+	RunnerDid runnerDid = 1;
+}
+
+message QueryGetChallengerDidByAddressRequest {
+	string address = 1;
+  }
+  
+  message QueryGetChallengerDidByAddressResponse {
+	ChallengerDid challengerDid = 1;
+  }
 
 

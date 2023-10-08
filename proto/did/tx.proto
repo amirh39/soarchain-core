@@ -1,9 +1,9 @@
 syntax = "proto3";
 package soarchain.did;
 
-import "did/client_did_document.proto";
-import "did/runner_did_document.proto";
-import "did/challenger_did_document.proto";
+import "did/client_did.proto";
+import "did/runner_did.proto";
+import "did/challenger_did.proto";
 
 option go_package = "soarchain/x/did/types";
 
@@ -17,7 +17,7 @@ service Msg {
 }
 
 message MsgGenClient {
-  ClientDidDocument document = 1;
+  ClientDid document = 1;
   string signature = 2;
   string certificate = 3;
   string creator = 4;
@@ -26,7 +26,7 @@ message MsgGenClient {
 message MsgGenClientResponse {}
 
 message MsgGenRunner {
-  RunnerDidDocument document = 1;
+  RunnerDid document = 1;
   string creator = 2; 
   string certificate = 3;
   string signature = 4;
@@ -35,7 +35,7 @@ message MsgGenRunner {
 message MsgGenRunnerResponse {}
 
 message MsgGenChallenger {
-  ChallengerDidDocument document = 1;
+  ChallengerDid document = 1;
   string creator = 2;
   string challengerType = 3;
   string certificate = 4;
