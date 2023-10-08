@@ -22,7 +22,11 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	log.Println("############## Generating a challenger did Transaction Started ##############")
 
-	result := k.ValidateChallengerInputs(msg)
+	if msg.Document == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenChallenger][ValidateDid] failed. Make sure challenger did document is valid.")
+	}
+
+	result := k.ValidateInputs(msg.Creator, msg.Certificate, msg.Signature, msg.Document.VerificationMethods[0].Id)
 	if !result {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenChallenger][ValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
@@ -43,7 +47,7 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 	}
 
 	if logger != nil {
-		logger.Info("Verifying client certificate successfully done.", "transaction", "GenRunner")
+		logger.Info("Verifying challenger certificate successfully done.", "transaction", "GeChallenger")
 	}
 
 	isUnique := k.IsUniqueDid(ctx, msg.Document.Id)
@@ -52,16 +56,32 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 	}
 
 	if logger != nil {
-		logger.Info("Verifying unique did successfully done.", "transaction", "GenRunner")
+		logger.Info("Verifying unique did successfully done.", "transaction", "GenChallenger")
+	}
+
+	// check if the address is uniqe
+	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
+	if isUniqueAddress {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniqueAddress] failed. Challenger did with the address [ %T ] is already registered.", msg.Creator)
+	}
+
+	// check if the pubKey is uniqe
+	isUniquePubkey := IsUniquePubKey(k, ctx, pubKeyHex)
+	if isUniquePubkey {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniquePubKey] failed. Challenger did with the PubKey [ %T ] is already registered.", pubKeyHex)
+	}
+
+	if logger != nil {
+		logger.Info("Checking for challenger did address and pubKey successfully done.", "transaction", "GenChallengerDid")
 	}
 
 	seq := types.InitialSequence
 	msg.Document.PubKey = pubKeyHex
 	didDocument := types.NewChallengerDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetChallengerDidDocument(ctx, didDocument.Document.Id, didDocument)
+	k.SetChallengerDid(ctx, *didDocument.Document)
 
 	if logger != nil {
-		logger.Info("Generating runner did successfully done.", "transaction", "GenRunner", "document", didDocument)
+		logger.Info("Generating challenger did successfully done.", "transaction", "GenChallenger", "document", didDocument)
 	}
 
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)

@@ -37,7 +37,11 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	log.Println("############## Generating a did Transaction Started ##############")
 
-	result := k.ValidateClientInputs(msg)
+	if msg.Document == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][ValidateDid] failed. Make sure client did document is valid.")
+	}
+
+	result := k.ValidateInputs(msg.Creator, msg.Certificate, msg.Signature, msg.Document.VerificationMethods[0].Id)
 	if !result {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][ValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
@@ -62,7 +66,6 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	}
 
 	isUnique := k.IsUniqueDid(ctx, msg.Document.Id)
-	fmt.Print("0000000000000000000000000000000", isUnique)
 	if isUnique {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenClient][IsUniqueDid] failed. Did is already registered.")
 	}
@@ -71,10 +74,26 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		logger.Info("Verifying unique did successfully done.", "transaction", "GenClient")
 	}
 
+	// check if the address is uniqe
+	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
+	if isUniqueAddress {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][IsUniqueAddress] failed. Client did with the address [ %T ] is already registered.", msg.Creator)
+	}
+
+	// check if the pubKey is uniqe
+	isUniquePubkey := IsUniquePubKey(k, ctx, pubKeyHex)
+	if isUniquePubkey {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][IsUniquePubKey] failed. Client did with the PubKey [ %T ] is already registered.", pubKeyHex)
+	}
+
+	if logger != nil {
+		logger.Info("Checking for client did address and pubKey successfully done.", "transaction", "GenClientDid")
+	}
+
 	seq := types.InitialSequence
 	msg.Document.PubKey = pubKeyHex
 	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetClientDidDocument(ctx, didDocument.Document.Id, didDocument)
+	k.SetClientDid(ctx, *didDocument.Document)
 
 	if logger != nil {
 		logger.Info("Generating did successfully done.", "transaction", "GenClient", "document", didDocument)

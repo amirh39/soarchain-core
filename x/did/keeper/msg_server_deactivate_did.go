@@ -15,7 +15,7 @@ func (k msgServer) DeactivateDid(goCtx context.Context, msg *types.MsgDeactivate
 
 	log.Println("############## Deactivating a did Transaction is Started ##############")
 
-	_, found := k.GetClientDidDocument(ctx, msg.Did)
+	_, found := k.GetClientDid(ctx, msg.Did)
 	if found {
 		k.RemoveClientDid(ctx, msg.Did)
 
@@ -24,7 +24,7 @@ func (k msgServer) DeactivateDid(goCtx context.Context, msg *types.MsgDeactivate
 		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
-	_, found = k.GetRunnerDidDocument(ctx, msg.Did)
+	_, found = k.GetRunnerDid(ctx, msg.Did)
 	if found {
 		k.RemoveRunnerDid(ctx, msg.Did)
 
@@ -33,7 +33,7 @@ func (k msgServer) DeactivateDid(goCtx context.Context, msg *types.MsgDeactivate
 		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
-	_, found = k.GetChallengerDidDocument(ctx, msg.Did)
+	_, found = k.GetChallengerDid(ctx, msg.Did)
 	if found {
 		k.RemoveChallengerDid(ctx, msg.Did)
 

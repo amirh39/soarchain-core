@@ -22,7 +22,11 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 
 	log.Println("############## Generating a runner did Transaction Started ##############")
 
-	result := k.ValidateRunnerInputs(msg)
+	if msg.Document == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenRunner][ValidateDid] failed. Make sure runner did document is valid.")
+	}
+
+	result := k.ValidateInputs(msg.Creator, msg.Certificate, msg.Signature, msg.Document.VerificationMethods[0].Id)
 	if !result {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenRunner][ValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
@@ -55,10 +59,26 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 		logger.Info("Verifying unique did successfully done.", "transaction", "GenRunner")
 	}
 
+	// check if the address is uniqe
+	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
+	if isUniqueAddress {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][IsUniqueAddress] failed. Runner did with the address [ %T ] is already registered.", msg.Creator)
+	}
+
+	// check if the pubKey is uniqe
+	isUniquePubkey := IsUniquePubKey(k, ctx, pubKeyHex)
+	if isUniquePubkey {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][IsUniquePubKey] failed. Runner did with the PubKey [ %T ] is already registered.", pubKeyHex)
+	}
+
+	if logger != nil {
+		logger.Info("Checking for runner did address and pubKey successfully done.", "transaction", "GenRunnerDid")
+	}
+
 	seq := types.InitialSequence
 	msg.Document.PubKey = pubKeyHex
 	didDocument := types.NewRunnerDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetRunnerDidDocument(ctx, didDocument.Document.Id, didDocument)
+	k.SetRunnerDid(ctx, *didDocument.Document)
 
 	if logger != nil {
 		logger.Info("Generating runner did successfully done.", "transaction", "GenRunner", "document", didDocument)
@@ -77,7 +97,7 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 		Type:               "",
 	}, msg.Certificate)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenClient][InitializeReputation] failed. Invalid certificate validation.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenRunner][InitializeReputation] failed. Invalid certificate validation.")
 	}
 
 	log.Println("############## End of Generating did Transaction ##############")

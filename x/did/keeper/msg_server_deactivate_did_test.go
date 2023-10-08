@@ -15,9 +15,9 @@ func TestHandleMsgDeactivateDID(t *testing.T) {
 	ctx := sdk.UnwrapSDKContext(context)
 	//
 	did, docWithSeq, _, _ := MakeTestData()
-	k.SetClientDidDocument(ctx, did, docWithSeq)
+	k.SetClientDid(ctx, *docWithSeq.Document)
 
-	didDocument, found := k.GetClientDidDocument(ctx, did)
+	didDocument, found := k.GetClientDid(ctx, did)
 	require.Equal(t, true, found)
 	require.NotNil(t, didDocument)
 
@@ -32,7 +32,7 @@ func TestHandleMsgDeactivateDID(t *testing.T) {
 		require.Nil(t, clientDid)
 	} else {
 		require.Nil(t, err)
-		got, found := k.GetClientDidDocument(ctx, did)
+		got, found := k.GetClientDid(ctx, did)
 		require.NotNil(t, got)
 		require.False(t, found)
 	}

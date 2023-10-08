@@ -41,7 +41,7 @@ func (helper *KeeperTestHelper) Test_Gen_Client() {
 			Certificate: Certificate,
 			Creator:     ADDRESS,
 		})
-		didDocument, found := keeper.GetClientDidDocument(helper.Ctx, Did)
+		didDocument, found := keeper.GetClientDid(helper.Ctx, Did)
 		fmt.Print("didDocument------------------->", didDocument)
 		helper.Require().Equal(found, true)
 		if err != nil {
