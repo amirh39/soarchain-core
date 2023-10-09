@@ -7,13 +7,9 @@ func (k Keeper) VerifyDprInputs(msg *types.MsgGenDpr, totalEpoch uint64) bool {
 		return false
 	}
 
-	if !msg.PidSupportedOneToTwnety && !msg.PidSupportedTwentyOneToForthy && !msg.PidSupportedForthyOneToSixty {
-		return false
-	}
-
-	if msg.Duration < totalEpoch {
-		return false
-	}
+	// if !msg.PidSupportedOneToTwnety && !msg.PidSupportedTwentyOneToForthy && !msg.PidSupportedForthyOneToSixty {
+	// 	return false
+	// }
 
 	return true
 }
