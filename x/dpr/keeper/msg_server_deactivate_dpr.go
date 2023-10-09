@@ -45,15 +45,13 @@ func (k msgServer) DeactivateDpr(goCtx context.Context, msg *types.MsgDeactivate
 
 	//Save dpr into storage
 	newDpr := types.Dpr{
-		Id:                            dpr.Id,
-		Creator:                       dpr.Creator,
-		PidSupportedOneToTwnety:       dpr.PidSupportedOneToTwnety,
-		PidSupportedTwentyOneToForthy: dpr.PidSupportedTwentyOneToForthy,
-		PidSupportedForthyOneToSixty:  dpr.PidSupportedForthyOneToSixty,
-		IsActive:                      false,
-		Vin:                           dpr.Vin,
-		ClientPubkeys:                 dpr.ClientPubkeys,
-		Duration:                      newDuration,
+		Id:            dpr.Id,
+		Creator:       dpr.Creator,
+		SupportedPIDs: dpr.SupportedPIDs,
+		IsActive:      false,
+		Vin:           dpr.Vin,
+		ClientPubkeys: dpr.ClientPubkeys,
+		Duration:      newDuration,
 	}
 	k.SetDpr(ctx, newDpr)
 
