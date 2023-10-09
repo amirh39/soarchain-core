@@ -459,7 +459,7 @@ paths:
           type: boolean
       tags:
         - Query
-  /cosmos/auth/v1beta1/accounts/{address}:
+  '/cosmos/auth/v1beta1/accounts/{address}':
     get:
       summary: Account returns account details based on address.
       operationId: CosmosAuthV1Beta1Account
@@ -1726,7 +1726,7 @@ paths:
                         }
       tags:
         - Service
-  /cosmos/base/tendermint/v1beta1/blocks/{height}:
+  '/cosmos/base/tendermint/v1beta1/blocks/{height}':
     get:
       summary: GetBlockByHeight queries block for given height.
       operationId: CosmosBaseTendermintV1Beta1GetBlockByHeight
@@ -3450,7 +3450,7 @@ paths:
           type: boolean
       tags:
         - Service
-  /cosmos/base/tendermint/v1beta1/validatorsets/{height}:
+  '/cosmos/base/tendermint/v1beta1/validatorsets/{height}':
     get:
       summary: GetValidatorSetByHeight queries validator-set at a given height.
       operationId: CosmosBaseTendermintV1Beta1GetValidatorSetByHeight
@@ -4503,7 +4503,7 @@ paths:
                     description: Response code.
                   data:
                     type: string
-                    description: Result bytes, if any.
+                    description: 'Result bytes, if any.'
                   raw_log:
                     type: string
                     description: >-
@@ -4920,7 +4920,7 @@ paths:
               RPC method.
       tags:
         - Service
-  /cosmos/tx/v1beta1/txs/block/{height}:
+  '/cosmos/tx/v1beta1/txs/block/{height}':
     get:
       summary: GetBlockWithTxs fetches a block with decoded txs.
       description: 'Since: cosmos-sdk 0.45.2'
@@ -5180,7 +5180,7 @@ paths:
           type: boolean
       tags:
         - Service
-  /cosmos/tx/v1beta1/txs/{hash}:
+  '/cosmos/tx/v1beta1/txs/{hash}':
     get:
       summary: GetTx fetches a tx by hash.
       operationId: CosmosTxV1Beta1GetTx
@@ -5376,12 +5376,2238 @@ paths:
                         }
       parameters:
         - name: hash
-          description: hash is the tx hash to query, encoded as a hex string.
+          description: 'hash is the tx hash to query, encoded as a hex string.'
           in: path
           required: true
           type: string
       tags:
         - Service
+  /soarchain/did/did_document:
+    get:
+      operationId: SoarchainDidDidAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              didDocument:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    document:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        index:
+                          type: string
+                        address:
+                          type: string
+                        type:
+                          type: string
+                        keys:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            pubkeyType:
+                              type: string
+                            controller:
+                              type: string
+                            publicKeyPem:
+                              type: string
+                        verificationMethods:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                              controller:
+                                type: string
+                              publicKeyBase58:
+                                type: string
+                        authentications:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              verificationMethodId:
+                                type: string
+                              verificationMethod:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  type:
+                                    type: string
+                                  controller:
+                                    type: string
+                                  publicKeyBase58:
+                                    type: string
+                            title: >-
+                              VerificationRelationship defines a W3C
+                              verification relationship
+                        services:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                              serviceEndpoint:
+                                type: string
+                            description: Service defines a service in the W3C Did Document.
+                        vehicle:
+                          type: object
+                          properties:
+                            vin:
+                              type: string
+                        owner:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            purchaseDate:
+                              type: string
+                        pidSupportedOneToTwnety:
+                          type: boolean
+                        pidSupportedTwentyOneToForthy:
+                          type: boolean
+                        pidSupportedForthyOneToSixty:
+                          type: boolean
+                        created:
+                          type: string
+                        updated:
+                          type: string
+                    sequence:
+                      type: string
+                      format: uint64
+                  description: >-
+                    DidDocumentWithSeq defines a message for Did Document with a
+                    sequence number for preventing replay attacks.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/soarchain/did/did_document/{id}':
+    get:
+      operationId: SoarchainDidDidDocument
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              didDocument:
+                type: object
+                properties:
+                  document:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      index:
+                        type: string
+                      address:
+                        type: string
+                      type:
+                        type: string
+                      keys:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          pubkeyType:
+                            type: string
+                          controller:
+                            type: string
+                          publicKeyPem:
+                            type: string
+                      verificationMethods:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            controller:
+                              type: string
+                            publicKeyBase58:
+                              type: string
+                      authentications:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            verificationMethodId:
+                              type: string
+                            verificationMethod:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+                                controller:
+                                  type: string
+                                publicKeyBase58:
+                                  type: string
+                          title: >-
+                            VerificationRelationship defines a W3C verification
+                            relationship
+                      services:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            serviceEndpoint:
+                              type: string
+                          description: Service defines a service in the W3C Did Document.
+                      vehicle:
+                        type: object
+                        properties:
+                          vin:
+                            type: string
+                      owner:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          purchaseDate:
+                            type: string
+                      pidSupportedOneToTwnety:
+                        type: boolean
+                      pidSupportedTwentyOneToForthy:
+                        type: boolean
+                      pidSupportedForthyOneToSixty:
+                        type: boolean
+                      created:
+                        type: string
+                      updated:
+                        type: string
+                  sequence:
+                    type: string
+                    format: uint64
+                description: >-
+                  DidDocumentWithSeq defines a message for Did Document with a
+                  sequence number for preventing replay attacks.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/did/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: SoarchainDidParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/dpr/dpr:
+    get:
+      operationId: SoarchainDprDprAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              dpr:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    creator:
+                      type: string
+                    SupportedPIDs:
+                      type: string
+                    isActive:
+                      type: boolean
+                    vin:
+                      type: array
+                      items:
+                        type: string
+                    clientPubkeys:
+                      type: array
+                      items:
+                        type: string
+                    duration:
+                      type: string
+                      format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/soarchain/dpr/dpr/{id}':
+    get:
+      operationId: SoarchainDprDpr
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              dpr:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  creator:
+                    type: string
+                  SupportedPIDs:
+                    type: string
+                  isActive:
+                    type: boolean
+                  vin:
+                    type: array
+                    items:
+                      type: string
+                  clientPubkeys:
+                    type: array
+                    items:
+                      type: string
+                  duration:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/dpr/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: SoarchainDprParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/epoch/epoch_data:
+    get:
+      summary: Queries a EpochData by index.
+      operationId: SoarchainEpochEpochData
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              epochData:
+                type: object
+                properties:
+                  totalEpochs:
+                    type: string
+                    format: uint64
+                  epochV2VRX:
+                    type: string
+                  epochV2VBX:
+                    type: string
+                  epochV2NBX:
+                    type: string
+                  epochRunner:
+                    type: string
+                  epochChallenger:
+                    type: string
+                  v2vRXTotalChallenges:
+                    type: string
+                    format: uint64
+                  v2vBXTotalChallenges:
+                    type: string
+                    format: uint64
+                  v2nBXTotalChallenges:
+                    type: string
+                    format: uint64
+                  runnerTotalChallenges:
+                    type: string
+                    format: uint64
+                  challengerTotalChallenges:
+                    type: string
+                    format: uint64
+                  v2vRXLastBlockChallenges:
+                    type: string
+                    format: uint64
+                  v2vBXLastBlockChallenges:
+                    type: string
+                    format: uint64
+                  v2nBXLastBlockChallenges:
+                    type: string
+                    format: uint64
+                  runnerLastBlockChallenges:
+                    type: string
+                    format: uint64
+                  challengerLastBlockChallenges:
+                    type: string
+                    format: uint64
+                  totalChallengesPrevDay:
+                    type: string
+                    format: uint64
+                  initialPerChallengeValue:
+                    type: number
+                    format: double
+                  v2nBXPerChallengeValue:
+                    type: string
+                    format: uint64
+                  runnerPerChallengeValue:
+                    type: string
+                    format: uint64
+                  challengerPerChallengeValue:
+                    type: string
+                    format: uint64
+                  v2vBXPerChallengeValue:
+                    type: string
+                    format: uint64
+                  v2vRXPerChallengeValue:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/epoch/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: SoarchainEpochParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/soarchain/epoch/random_data/{epochNumber}':
+    get:
+      operationId: SoarchainEpochRandomData
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              randomData:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  randomNumber:
+                    type: string
+                  epochNumber:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: epochNumber
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/poa/challenger:
+    get:
+      summary: Queries a list of Challenger items.
+      operationId: SoarchainPoaChallengerAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              challenger:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    pubKey:
+                      type: string
+                    address:
+                      type: string
+                    score:
+                      type: string
+                    stakedAmount:
+                      type: string
+                    netEarnings:
+                      type: string
+                    type:
+                      type: string
+                    ipAddress:
+                      type: string
+                    rewardMultiplier:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/soarchain/poa/challenger/{address}':
+    get:
+      summary: Queries a Challenger by index.
+      operationId: SoarchainPoaChallenger
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              challenger:
+                type: object
+                properties:
+                  pubKey:
+                    type: string
+                  address:
+                    type: string
+                  score:
+                    type: string
+                  stakedAmount:
+                    type: string
+                  netEarnings:
+                    type: string
+                  type:
+                    type: string
+                  ipAddress:
+                    type: string
+                  rewardMultiplier:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/poa/factory_keys:
+    get:
+      summary: Queries a list of FactoryKeys items.
+      operationId: SoarchainPoaFactoryKeysAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              factoryKeys:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    factoryCert:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/soarchain/poa/factory_keys/{id}':
+    get:
+      summary: Queries a FactoryKeys by id.
+      operationId: SoarchainPoaFactoryKeys
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              factoryKeys:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  factoryCert:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  '/soarchain/poa/get_challenger_by_PubKey/{pubkey}':
+    get:
+      summary: Queries a Challenger by pubKey
+      operationId: SoarchainPoaGetChallengerByPubKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              challenger:
+                type: object
+                properties:
+                  pubKey:
+                    type: string
+                  address:
+                    type: string
+                  score:
+                    type: string
+                  stakedAmount:
+                    type: string
+                  netEarnings:
+                    type: string
+                  type:
+                    type: string
+                  ipAddress:
+                    type: string
+                  rewardMultiplier:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pubkey
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/poa/get_challenger_by_address/{address}':
+    get:
+      summary: Queries a list of GetChallengerByAddress items.
+      operationId: SoarchainPoaGetChallengerByAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              challenger:
+                type: object
+                properties:
+                  pubKey:
+                    type: string
+                  address:
+                    type: string
+                  score:
+                    type: string
+                  stakedAmount:
+                    type: string
+                  netEarnings:
+                    type: string
+                  type:
+                    type: string
+                  ipAddress:
+                    type: string
+                  rewardMultiplier:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/poa/get_reputation_by_address/{address}':
+    get:
+      operationId: SoarchainPoaGetReputationByAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              reputation:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  address:
+                    type: string
+                  score:
+                    type: string
+                  rewardMultiplier:
+                    type: string
+                  netEarnings:
+                    type: string
+                  lastTimeChallenged:
+                    type: string
+                  coolDownTolerance:
+                    type: string
+                  type:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/poa/get_runner_by_PubKey/{pubkey}':
+    get:
+      summary: Queries a Runner by PubKey
+      operationId: SoarchainPoaGetRunnerByPubKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              runner:
+                type: object
+                properties:
+                  pubKey:
+                    type: string
+                  address:
+                    type: string
+                  score:
+                    type: string
+                  rewardMultiplier:
+                    type: string
+                  stakedAmount:
+                    type: string
+                  netEarnings:
+                    type: string
+                  ipAddress:
+                    type: string
+                  lastTimeChallenged:
+                    type: string
+                  coolDownTolerance:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pubkey
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/poa/get_runner_by_ip/{ipAddress}':
+    get:
+      summary: Queries a list of GetRunnerByIp items.
+      operationId: SoarchainPoaGetRunnerByIp
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              runner:
+                type: object
+                properties:
+                  pubKey:
+                    type: string
+                  address:
+                    type: string
+                  score:
+                    type: string
+                  rewardMultiplier:
+                    type: string
+                  stakedAmount:
+                    type: string
+                  netEarnings:
+                    type: string
+                  ipAddress:
+                    type: string
+                  lastTimeChallenged:
+                    type: string
+                  coolDownTolerance:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: ipAddress
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/poa/is_challengeable/{clientAddr}':
+    get:
+      summary: Queries a list of IsChallengeable items.
+      operationId: SoarchainPoaIsChallengeable
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              resultBool:
+                type: string
+              challengeabilityScore:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: clientAddr
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/poa/master_key:
+    get:
+      summary: Queries a MasterKey by index.
+      operationId: SoarchainPoaMasterKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              masterKey:
+                type: object
+                properties:
+                  masterCertificate:
+                    type: string
+                  masterAccount:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/poa/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: SoarchainPoaParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/poa/reputation:
+    get:
+      operationId: SoarchainPoaReputationAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              reputation:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    address:
+                      type: string
+                    score:
+                      type: string
+                    rewardMultiplier:
+                      type: string
+                    netEarnings:
+                      type: string
+                    lastTimeChallenged:
+                      type: string
+                    coolDownTolerance:
+                      type: string
+                    type:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/soarchain/poa/reputation/{index}':
+    get:
+      operationId: SoarchainPoaReputation
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              reputation:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  address:
+                    type: string
+                  score:
+                    type: string
+                  rewardMultiplier:
+                    type: string
+                  netEarnings:
+                    type: string
+                  lastTimeChallenged:
+                    type: string
+                  coolDownTolerance:
+                    type: string
+                  type:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/poa/runner:
+    get:
+      summary: Queries a list of Runner items.
+      operationId: SoarchainPoaRunnerAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              runner:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    pubKey:
+                      type: string
+                    address:
+                      type: string
+                    score:
+                      type: string
+                    rewardMultiplier:
+                      type: string
+                    stakedAmount:
+                      type: string
+                    netEarnings:
+                      type: string
+                    ipAddress:
+                      type: string
+                    lastTimeChallenged:
+                      type: string
+                    coolDownTolerance:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/soarchain/poa/runner/{address}':
+    get:
+      summary: Queries a Runner by index.
+      operationId: SoarchainPoaRunner
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              runner:
+                type: object
+                properties:
+                  pubKey:
+                    type: string
+                  address:
+                    type: string
+                  score:
+                    type: string
+                  rewardMultiplier:
+                    type: string
+                  stakedAmount:
+                    type: string
+                  netEarnings:
+                    type: string
+                  ipAddress:
+                    type: string
+                  lastTimeChallenged:
+                    type: string
+                  coolDownTolerance:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/poa/verify_random_number/{pubkey}/{message}/{vrv}/{proof}':
+    get:
+      summary: Queries a list of VerifyRandomNumber items.
+      operationId: SoarchainPoaVerifyRandomNumber
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              result:
+                type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pubkey
+          in: path
+          required: true
+          type: string
+        - name: message
+          in: path
+          required: true
+          type: string
+        - name: vrv
+          in: path
+          required: true
+          type: string
+        - name: proof
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/poa/vrf_data:
+    get:
+      summary: Queries a list of VrfData items.
+      operationId: SoarchainPoaVrfDataAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              vrfData:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    creator:
+                      type: string
+                    count:
+                      type: string
+                    vrv:
+                      type: string
+                    multiplier:
+                      type: string
+                    proof:
+                      type: string
+                    pubkey:
+                      type: string
+                    message:
+                      type: string
+                    parsedVrv:
+                      type: string
+                    floatVrv:
+                      type: string
+                    finalVrv:
+                      type: string
+                    finalVrvFloat:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/soarchain/poa/vrf_data/{index}':
+    get:
+      summary: Queries a VrfData by index.
+      operationId: SoarchainPoaVrfData
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              vrfData:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  creator:
+                    type: string
+                  count:
+                    type: string
+                  vrv:
+                    type: string
+                  multiplier:
+                    type: string
+                  proof:
+                    type: string
+                  pubkey:
+                    type: string
+                  message:
+                    type: string
+                  parsedVrv:
+                    type: string
+                  floatVrv:
+                    type: string
+                  finalVrv:
+                    type: string
+                  finalVrvFloat:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/soarmint/minter:
+    get:
+      summary: Queries a Minter by index.
+      operationId: SoarchainSoarmintMinter
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Minter:
+                type: object
+                properties:
+                  inflation:
+                    type: string
+                  phase:
+                    type: string
+                    format: uint64
+                  startPhaseBlock:
+                    type: string
+                    format: uint64
+                  annualProvisions:
+                    type: string
+                  targetSupply:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /soarchain/soarmint/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: SoarchainSoarmintParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  mint_denom:
+                    type: string
+                    title: type of coin to mint
+                  blocks_per_year:
+                    type: string
+                    format: uint64
+                    title: expected blocks per year
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
 definitions:
   cosmos.auth.v1beta1.Params:
     type: object
@@ -10572,7 +12798,7 @@ definitions:
         description: Response code.
       data:
         type: string
-        description: Result bytes, if any.
+        description: 'Result bytes, if any.'
       raw_log:
         type: string
         description: |-
@@ -10963,7 +13189,7 @@ definitions:
             description: Response code.
           data:
             type: string
-            description: Result bytes, if any.
+            description: 'Result bytes, if any.'
           raw_log:
             type: string
             description: |-
@@ -11829,7 +14055,7 @@ definitions:
             description: Response code.
           data:
             type: string
-            description: Result bytes, if any.
+            description: 'Result bytes, if any.'
           raw_log:
             type: string
             description: |-
@@ -12041,7 +14267,7 @@ definitions:
               description: Response code.
             data:
               type: string
-              description: Result bytes, if any.
+              description: 'Result bytes, if any.'
             raw_log:
               type: string
               description: |-
@@ -13715,7 +15941,7 @@ definitions:
             index:
               type: boolean
               title: nondeterministic
-          description: EventAttribute is a single key-value pair, associated with an event.
+          description: 'EventAttribute is a single key-value pair, associated with an event.'
     description: >-
       Event allows application developers to attach additional information to
 
@@ -13735,9 +15961,1493 @@ definitions:
       index:
         type: boolean
         title: nondeterministic
-    description: EventAttribute is a single key-value pair, associated with an event.
+    description: 'EventAttribute is a single key-value pair, associated with an event.'
   cosmos.vesting.v1beta1.MsgCreateVestingAccountResponse:
     type: object
     description: >-
       MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount
       response type.
+  soarchain.did.DidDocument:
+    type: object
+    properties:
+      id:
+        type: string
+      index:
+        type: string
+      address:
+        type: string
+      type:
+        type: string
+      keys:
+        type: object
+        properties:
+          id:
+            type: string
+          pubkeyType:
+            type: string
+          controller:
+            type: string
+          publicKeyPem:
+            type: string
+      verificationMethods:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            controller:
+              type: string
+            publicKeyBase58:
+              type: string
+      authentications:
+        type: array
+        items:
+          type: object
+          properties:
+            verificationMethodId:
+              type: string
+            verificationMethod:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          title: VerificationRelationship defines a W3C verification relationship
+      services:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            serviceEndpoint:
+              type: string
+          description: Service defines a service in the W3C Did Document.
+      vehicle:
+        type: object
+        properties:
+          vin:
+            type: string
+      owner:
+        type: object
+        properties:
+          id:
+            type: string
+          purchaseDate:
+            type: string
+      pidSupportedOneToTwnety:
+        type: boolean
+      pidSupportedTwentyOneToForthy:
+        type: boolean
+      pidSupportedForthyOneToSixty:
+        type: boolean
+      created:
+        type: string
+      updated:
+        type: string
+  soarchain.did.DidDocumentWithSeq:
+    type: object
+    properties:
+      document:
+        type: object
+        properties:
+          id:
+            type: string
+          index:
+            type: string
+          address:
+            type: string
+          type:
+            type: string
+          keys:
+            type: object
+            properties:
+              id:
+                type: string
+              pubkeyType:
+                type: string
+              controller:
+                type: string
+              publicKeyPem:
+                type: string
+          verificationMethods:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          authentications:
+            type: array
+            items:
+              type: object
+              properties:
+                verificationMethodId:
+                  type: string
+                verificationMethod:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    controller:
+                      type: string
+                    publicKeyBase58:
+                      type: string
+              title: VerificationRelationship defines a W3C verification relationship
+          services:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                serviceEndpoint:
+                  type: string
+              description: Service defines a service in the W3C Did Document.
+          vehicle:
+            type: object
+            properties:
+              vin:
+                type: string
+          owner:
+            type: object
+            properties:
+              id:
+                type: string
+              purchaseDate:
+                type: string
+          pidSupportedOneToTwnety:
+            type: boolean
+          pidSupportedTwentyOneToForthy:
+            type: boolean
+          pidSupportedForthyOneToSixty:
+            type: boolean
+          created:
+            type: string
+          updated:
+            type: string
+      sequence:
+        type: string
+        format: uint64
+    description: >-
+      DidDocumentWithSeq defines a message for Did Document with a sequence
+      number for preventing replay attacks.
+  soarchain.did.Keys:
+    type: object
+    properties:
+      id:
+        type: string
+      pubkeyType:
+        type: string
+      controller:
+        type: string
+      publicKeyPem:
+        type: string
+  soarchain.did.MsgDeactivateDidResponse:
+    type: object
+    description: MsgDeactivateDIDResponse defines the Msg/DeactivateDID response type.
+  soarchain.did.MsgGenDidResponse:
+    type: object
+  soarchain.did.MsgUpdateDidResponse:
+    type: object
+    description: MsgUpdateDIDResponse defines the Msg/UpdateDID response type.
+  soarchain.did.Owner:
+    type: object
+    properties:
+      id:
+        type: string
+      purchaseDate:
+        type: string
+  soarchain.did.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  soarchain.did.QueryAllDidResponse:
+    type: object
+    properties:
+      didDocument:
+        type: array
+        items:
+          type: object
+          properties:
+            document:
+              type: object
+              properties:
+                id:
+                  type: string
+                index:
+                  type: string
+                address:
+                  type: string
+                type:
+                  type: string
+                keys:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    pubkeyType:
+                      type: string
+                    controller:
+                      type: string
+                    publicKeyPem:
+                      type: string
+                verificationMethods:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyBase58:
+                        type: string
+                authentications:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      verificationMethodId:
+                        type: string
+                      verificationMethod:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          type:
+                            type: string
+                          controller:
+                            type: string
+                          publicKeyBase58:
+                            type: string
+                    title: >-
+                      VerificationRelationship defines a W3C verification
+                      relationship
+                services:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      serviceEndpoint:
+                        type: string
+                    description: Service defines a service in the W3C Did Document.
+                vehicle:
+                  type: object
+                  properties:
+                    vin:
+                      type: string
+                owner:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    purchaseDate:
+                      type: string
+                pidSupportedOneToTwnety:
+                  type: boolean
+                pidSupportedTwentyOneToForthy:
+                  type: boolean
+                pidSupportedForthyOneToSixty:
+                  type: boolean
+                created:
+                  type: string
+                updated:
+                  type: string
+            sequence:
+              type: string
+              format: uint64
+          description: >-
+            DidDocumentWithSeq defines a message for Did Document with a
+            sequence number for preventing replay attacks.
+  soarchain.did.QueryGetDidResponse:
+    type: object
+    properties:
+      didDocument:
+        type: object
+        properties:
+          document:
+            type: object
+            properties:
+              id:
+                type: string
+              index:
+                type: string
+              address:
+                type: string
+              type:
+                type: string
+              keys:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  pubkeyType:
+                    type: string
+                  controller:
+                    type: string
+                  publicKeyPem:
+                    type: string
+              verificationMethods:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    controller:
+                      type: string
+                    publicKeyBase58:
+                      type: string
+              authentications:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    verificationMethodId:
+                      type: string
+                    verificationMethod:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyBase58:
+                          type: string
+                  title: >-
+                    VerificationRelationship defines a W3C verification
+                    relationship
+              services:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    serviceEndpoint:
+                      type: string
+                  description: Service defines a service in the W3C Did Document.
+              vehicle:
+                type: object
+                properties:
+                  vin:
+                    type: string
+              owner:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  purchaseDate:
+                    type: string
+              pidSupportedOneToTwnety:
+                type: boolean
+              pidSupportedTwentyOneToForthy:
+                type: boolean
+              pidSupportedForthyOneToSixty:
+                type: boolean
+              created:
+                type: string
+              updated:
+                type: string
+          sequence:
+            type: string
+            format: uint64
+        description: >-
+          DidDocumentWithSeq defines a message for Did Document with a sequence
+          number for preventing replay attacks.
+  soarchain.did.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  soarchain.did.Service:
+    type: object
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      serviceEndpoint:
+        type: string
+    description: Service defines a service in the W3C Did Document.
+  soarchain.did.Vehicle:
+    type: object
+    properties:
+      vin:
+        type: string
+  soarchain.did.VerificationMethod:
+    type: object
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      controller:
+        type: string
+      publicKeyBase58:
+        type: string
+  soarchain.did.VerificationRelationship:
+    type: object
+    properties:
+      verificationMethodId:
+        type: string
+      verificationMethod:
+        type: object
+        properties:
+          id:
+            type: string
+          type:
+            type: string
+          controller:
+            type: string
+          publicKeyBase58:
+            type: string
+    title: VerificationRelationship defines a W3C verification relationship
+  soarchain.dpr.Dpr:
+    type: object
+    properties:
+      id:
+        type: string
+      creator:
+        type: string
+      SupportedPIDs:
+        type: string
+      isActive:
+        type: boolean
+      vin:
+        type: array
+        items:
+          type: string
+      clientPubkeys:
+        type: array
+        items:
+          type: string
+      duration:
+        type: string
+        format: uint64
+  soarchain.dpr.MsgActivateDprResponse:
+    type: object
+  soarchain.dpr.MsgDeactivateDprResponse:
+    type: object
+  soarchain.dpr.MsgEnterDprResponse:
+    type: object
+  soarchain.dpr.MsgGenDprResponse:
+    type: object
+  soarchain.dpr.MsgLeaveDprResponse:
+    type: object
+  soarchain.dpr.MsgUpdateDprResponse:
+    type: object
+  soarchain.dpr.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  soarchain.dpr.QueryAllDprResponse:
+    type: object
+    properties:
+      dpr:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            creator:
+              type: string
+            SupportedPIDs:
+              type: string
+            isActive:
+              type: boolean
+            vin:
+              type: array
+              items:
+                type: string
+            clientPubkeys:
+              type: array
+              items:
+                type: string
+            duration:
+              type: string
+              format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  soarchain.dpr.QueryGetDprResponse:
+    type: object
+    properties:
+      dpr:
+        type: object
+        properties:
+          id:
+            type: string
+          creator:
+            type: string
+          SupportedPIDs:
+            type: string
+          isActive:
+            type: boolean
+          vin:
+            type: array
+            items:
+              type: string
+          clientPubkeys:
+            type: array
+            items:
+              type: string
+          duration:
+            type: string
+            format: uint64
+  soarchain.dpr.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  soarchain.epoch.EpochData:
+    type: object
+    properties:
+      totalEpochs:
+        type: string
+        format: uint64
+      epochV2VRX:
+        type: string
+      epochV2VBX:
+        type: string
+      epochV2NBX:
+        type: string
+      epochRunner:
+        type: string
+      epochChallenger:
+        type: string
+      v2vRXTotalChallenges:
+        type: string
+        format: uint64
+      v2vBXTotalChallenges:
+        type: string
+        format: uint64
+      v2nBXTotalChallenges:
+        type: string
+        format: uint64
+      runnerTotalChallenges:
+        type: string
+        format: uint64
+      challengerTotalChallenges:
+        type: string
+        format: uint64
+      v2vRXLastBlockChallenges:
+        type: string
+        format: uint64
+      v2vBXLastBlockChallenges:
+        type: string
+        format: uint64
+      v2nBXLastBlockChallenges:
+        type: string
+        format: uint64
+      runnerLastBlockChallenges:
+        type: string
+        format: uint64
+      challengerLastBlockChallenges:
+        type: string
+        format: uint64
+      totalChallengesPrevDay:
+        type: string
+        format: uint64
+      initialPerChallengeValue:
+        type: number
+        format: double
+      v2nBXPerChallengeValue:
+        type: string
+        format: uint64
+      runnerPerChallengeValue:
+        type: string
+        format: uint64
+      challengerPerChallengeValue:
+        type: string
+        format: uint64
+      v2vBXPerChallengeValue:
+        type: string
+        format: uint64
+      v2vRXPerChallengeValue:
+        type: string
+        format: uint64
+  soarchain.epoch.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  soarchain.epoch.QueryGetEpochDataResponse:
+    type: object
+    properties:
+      epochData:
+        type: object
+        properties:
+          totalEpochs:
+            type: string
+            format: uint64
+          epochV2VRX:
+            type: string
+          epochV2VBX:
+            type: string
+          epochV2NBX:
+            type: string
+          epochRunner:
+            type: string
+          epochChallenger:
+            type: string
+          v2vRXTotalChallenges:
+            type: string
+            format: uint64
+          v2vBXTotalChallenges:
+            type: string
+            format: uint64
+          v2nBXTotalChallenges:
+            type: string
+            format: uint64
+          runnerTotalChallenges:
+            type: string
+            format: uint64
+          challengerTotalChallenges:
+            type: string
+            format: uint64
+          v2vRXLastBlockChallenges:
+            type: string
+            format: uint64
+          v2vBXLastBlockChallenges:
+            type: string
+            format: uint64
+          v2nBXLastBlockChallenges:
+            type: string
+            format: uint64
+          runnerLastBlockChallenges:
+            type: string
+            format: uint64
+          challengerLastBlockChallenges:
+            type: string
+            format: uint64
+          totalChallengesPrevDay:
+            type: string
+            format: uint64
+          initialPerChallengeValue:
+            type: number
+            format: double
+          v2nBXPerChallengeValue:
+            type: string
+            format: uint64
+          runnerPerChallengeValue:
+            type: string
+            format: uint64
+          challengerPerChallengeValue:
+            type: string
+            format: uint64
+          v2vBXPerChallengeValue:
+            type: string
+            format: uint64
+          v2vRXPerChallengeValue:
+            type: string
+            format: uint64
+  soarchain.epoch.QueryGetRandomDataResponse:
+    type: object
+    properties:
+      randomData:
+        type: object
+        properties:
+          id:
+            type: string
+          randomNumber:
+            type: string
+          epochNumber:
+            type: string
+  soarchain.epoch.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  soarchain.epoch.RandomData:
+    type: object
+    properties:
+      id:
+        type: string
+      randomNumber:
+        type: string
+      epochNumber:
+        type: string
+  soarchain.poa.Challenger:
+    type: object
+    properties:
+      pubKey:
+        type: string
+      address:
+        type: string
+      score:
+        type: string
+      stakedAmount:
+        type: string
+      netEarnings:
+        type: string
+      type:
+        type: string
+      ipAddress:
+        type: string
+      rewardMultiplier:
+        type: string
+  soarchain.poa.FactoryKeys:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      factoryCert:
+        type: string
+  soarchain.poa.MasterKey:
+    type: object
+    properties:
+      masterCertificate:
+        type: string
+      masterAccount:
+        type: string
+  soarchain.poa.MsgChallengeServiceResponse:
+    type: object
+  soarchain.poa.MsgClaimChallengerRewardsResponse:
+    type: object
+  soarchain.poa.MsgClaimMotusRewardsResponse:
+    type: object
+  soarchain.poa.MsgClaimRunnerRewardsResponse:
+    type: object
+  soarchain.poa.MsgGenChallengerResponse:
+    type: object
+  soarchain.poa.MsgGenRunnerResponse:
+    type: object
+  soarchain.poa.MsgRegisterFactoryKeyResponse:
+    type: object
+  soarchain.poa.MsgRunnerChallengeResponse:
+    type: object
+  soarchain.poa.MsgSelectRandomChallengerResponse:
+    type: object
+    properties:
+      randomChallenger:
+        type: object
+        properties:
+          pubKey:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          type:
+            type: string
+          ipAddress:
+            type: string
+          rewardMultiplier:
+            type: string
+  soarchain.poa.MsgSelectRandomRunnerResponse:
+    type: object
+    properties:
+      randomRunner:
+        type: object
+        properties:
+          pubKey:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          rewardMultiplier:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          ipAddress:
+            type: string
+          lastTimeChallenged:
+            type: string
+          coolDownTolerance:
+            type: string
+  soarchain.poa.MsgUnregisterChallengerResponse:
+    type: object
+  soarchain.poa.MsgUnregisterRunnerResponse:
+    type: object
+  soarchain.poa.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  soarchain.poa.QueryAllChallengerResponse:
+    type: object
+    properties:
+      challenger:
+        type: array
+        items:
+          type: object
+          properties:
+            pubKey:
+              type: string
+            address:
+              type: string
+            score:
+              type: string
+            stakedAmount:
+              type: string
+            netEarnings:
+              type: string
+            type:
+              type: string
+            ipAddress:
+              type: string
+            rewardMultiplier:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  soarchain.poa.QueryAllFactoryKeysResponse:
+    type: object
+    properties:
+      factoryKeys:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            factoryCert:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  soarchain.poa.QueryAllReputationResponse:
+    type: object
+    properties:
+      reputation:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            address:
+              type: string
+            score:
+              type: string
+            rewardMultiplier:
+              type: string
+            netEarnings:
+              type: string
+            lastTimeChallenged:
+              type: string
+            coolDownTolerance:
+              type: string
+            type:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  soarchain.poa.QueryAllRunnerResponse:
+    type: object
+    properties:
+      runner:
+        type: array
+        items:
+          type: object
+          properties:
+            pubKey:
+              type: string
+            address:
+              type: string
+            score:
+              type: string
+            rewardMultiplier:
+              type: string
+            stakedAmount:
+              type: string
+            netEarnings:
+              type: string
+            ipAddress:
+              type: string
+            lastTimeChallenged:
+              type: string
+            coolDownTolerance:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  soarchain.poa.QueryAllVrfDataResponse:
+    type: object
+    properties:
+      vrfData:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            creator:
+              type: string
+            count:
+              type: string
+            vrv:
+              type: string
+            multiplier:
+              type: string
+            proof:
+              type: string
+            pubkey:
+              type: string
+            message:
+              type: string
+            parsedVrv:
+              type: string
+            floatVrv:
+              type: string
+            finalVrv:
+              type: string
+            finalVrvFloat:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  soarchain.poa.QueryGetChallengerByAddressResponse:
+    type: object
+    properties:
+      challenger:
+        type: object
+        properties:
+          pubKey:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          type:
+            type: string
+          ipAddress:
+            type: string
+          rewardMultiplier:
+            type: string
+  soarchain.poa.QueryGetChallengerByPubKeyResponse:
+    type: object
+    properties:
+      challenger:
+        type: object
+        properties:
+          pubKey:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          type:
+            type: string
+          ipAddress:
+            type: string
+          rewardMultiplier:
+            type: string
+  soarchain.poa.QueryGetChallengerResponse:
+    type: object
+    properties:
+      challenger:
+        type: object
+        properties:
+          pubKey:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          type:
+            type: string
+          ipAddress:
+            type: string
+          rewardMultiplier:
+            type: string
+  soarchain.poa.QueryGetFactoryKeysResponse:
+    type: object
+    properties:
+      factoryKeys:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          factoryCert:
+            type: string
+  soarchain.poa.QueryGetMasterKeyResponse:
+    type: object
+    properties:
+      masterKey:
+        type: object
+        properties:
+          masterCertificate:
+            type: string
+          masterAccount:
+            type: string
+  soarchain.poa.QueryGetReputationByAddressResponse:
+    type: object
+    properties:
+      reputation:
+        type: object
+        properties:
+          index:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          rewardMultiplier:
+            type: string
+          netEarnings:
+            type: string
+          lastTimeChallenged:
+            type: string
+          coolDownTolerance:
+            type: string
+          type:
+            type: string
+  soarchain.poa.QueryGetReputationResponse:
+    type: object
+    properties:
+      reputation:
+        type: object
+        properties:
+          index:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          rewardMultiplier:
+            type: string
+          netEarnings:
+            type: string
+          lastTimeChallenged:
+            type: string
+          coolDownTolerance:
+            type: string
+          type:
+            type: string
+  soarchain.poa.QueryGetRunnerByIpResponse:
+    type: object
+    properties:
+      runner:
+        type: object
+        properties:
+          pubKey:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          rewardMultiplier:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          ipAddress:
+            type: string
+          lastTimeChallenged:
+            type: string
+          coolDownTolerance:
+            type: string
+  soarchain.poa.QueryGetRunnerByPubKeyResponse:
+    type: object
+    properties:
+      runner:
+        type: object
+        properties:
+          pubKey:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          rewardMultiplier:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          ipAddress:
+            type: string
+          lastTimeChallenged:
+            type: string
+          coolDownTolerance:
+            type: string
+  soarchain.poa.QueryGetRunnerResponse:
+    type: object
+    properties:
+      runner:
+        type: object
+        properties:
+          pubKey:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          rewardMultiplier:
+            type: string
+          stakedAmount:
+            type: string
+          netEarnings:
+            type: string
+          ipAddress:
+            type: string
+          lastTimeChallenged:
+            type: string
+          coolDownTolerance:
+            type: string
+  soarchain.poa.QueryGetVrfDataResponse:
+    type: object
+    properties:
+      vrfData:
+        type: object
+        properties:
+          index:
+            type: string
+          creator:
+            type: string
+          count:
+            type: string
+          vrv:
+            type: string
+          multiplier:
+            type: string
+          proof:
+            type: string
+          pubkey:
+            type: string
+          message:
+            type: string
+          parsedVrv:
+            type: string
+          floatVrv:
+            type: string
+          finalVrv:
+            type: string
+          finalVrvFloat:
+            type: string
+  soarchain.poa.QueryIsChallengeableResponse:
+    type: object
+    properties:
+      resultBool:
+        type: string
+      challengeabilityScore:
+        type: string
+  soarchain.poa.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  soarchain.poa.QueryVerifyRandomNumberResponse:
+    type: object
+    properties:
+      result:
+        type: boolean
+  soarchain.poa.Reputation:
+    type: object
+    properties:
+      index:
+        type: string
+      address:
+        type: string
+      score:
+        type: string
+      rewardMultiplier:
+        type: string
+      netEarnings:
+        type: string
+      lastTimeChallenged:
+        type: string
+      coolDownTolerance:
+        type: string
+      type:
+        type: string
+  soarchain.poa.Runner:
+    type: object
+    properties:
+      pubKey:
+        type: string
+      address:
+        type: string
+      score:
+        type: string
+      rewardMultiplier:
+        type: string
+      stakedAmount:
+        type: string
+      netEarnings:
+        type: string
+      ipAddress:
+        type: string
+      lastTimeChallenged:
+        type: string
+      coolDownTolerance:
+        type: string
+  soarchain.poa.VrfData:
+    type: object
+    properties:
+      index:
+        type: string
+      creator:
+        type: string
+      count:
+        type: string
+      vrv:
+        type: string
+      multiplier:
+        type: string
+      proof:
+        type: string
+      pubkey:
+        type: string
+      message:
+        type: string
+      parsedVrv:
+        type: string
+      floatVrv:
+        type: string
+      finalVrv:
+        type: string
+      finalVrvFloat:
+        type: string
+  soarchain.soarmint.Minter:
+    type: object
+    properties:
+      inflation:
+        type: string
+      phase:
+        type: string
+        format: uint64
+      startPhaseBlock:
+        type: string
+        format: uint64
+      annualProvisions:
+        type: string
+      targetSupply:
+        type: string
+  soarchain.soarmint.Params:
+    type: object
+    properties:
+      mint_denom:
+        type: string
+        title: type of coin to mint
+      blocks_per_year:
+        type: string
+        format: uint64
+        title: expected blocks per year
+    description: Params defines the parameters for the module.
+  soarchain.soarmint.QueryGetMinterResponse:
+    type: object
+    properties:
+      Minter:
+        type: object
+        properties:
+          inflation:
+            type: string
+          phase:
+            type: string
+            format: uint64
+          startPhaseBlock:
+            type: string
+            format: uint64
+          annualProvisions:
+            type: string
+          targetSupply:
+            type: string
+  soarchain.soarmint.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+        properties:
+          mint_denom:
+            type: string
+            title: type of coin to mint
+          blocks_per_year:
+            type: string
+            format: uint64
+            title: expected blocks per year
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
