@@ -52,15 +52,13 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 
 	// Save dpr into storage
 	newDpr := types.Dpr{
-		Id:                            dpr.Id,
-		Creator:                       dpr.Creator,
-		PidSupportedOneToTwnety:       dpr.PidSupportedOneToTwnety,
-		PidSupportedTwentyOneToForthy: dpr.PidSupportedTwentyOneToForthy,
-		PidSupportedForthyOneToSixty:  dpr.PidSupportedForthyOneToSixty,
-		IsActive:                      dpr.IsActive,
-		Vin:                           remainedVins(did.Document.Vehicle.Vin, dpr.Vin),
-		ClientPubkeys:                 remainedPubKeys(msg.PubKey, dpr.ClientPubkeys),
-		Duration:                      dpr.Duration,
+		Id:            dpr.Id,
+		Creator:       dpr.Creator,
+		SupportedPIDs: dpr.SupportedPIDs,
+		IsActive:      dpr.IsActive,
+		Vin:           remainedVins(did.Document.Vehicle.Vin, dpr.Vin),
+		ClientPubkeys: remainedPubKeys(msg.PubKey, dpr.ClientPubkeys),
+		Duration:      dpr.Duration,
 	}
 	k.SetDpr(ctx, newDpr)
 
