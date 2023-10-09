@@ -38,15 +38,13 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 
 	// Save dpr into storage
 	newDpr := types.Dpr{
-		Id:                            dpr.Id,
-		Creator:                       dpr.Creator,
-		PidSupportedOneToTwnety:       dpr.PidSupportedOneToTwnety,
-		PidSupportedTwentyOneToForthy: dpr.PidSupportedTwentyOneToForthy,
-		PidSupportedForthyOneToSixty:  dpr.PidSupportedForthyOneToSixty,
-		IsActive:                      dpr.IsActive,
-		Vin:                           vin,
-		ClientPubkeys:                 clientPubKey,
-		Duration:                      dpr.Duration,
+		Id:            dpr.Id,
+		Creator:       dpr.Creator,
+		SupportedPIDs: dpr.SupportedPIDs,
+		IsActive:      dpr.IsActive,
+		Vin:           vin,
+		ClientPubkeys: clientPubKey,
+		Duration:      dpr.Duration,
 	}
 
 	k.SetDpr(ctx, newDpr)
