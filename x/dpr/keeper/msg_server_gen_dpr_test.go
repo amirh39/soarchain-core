@@ -38,11 +38,9 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		didKeeper.SetDidDocument(helper.Ctx, newDid.Id, didDocument)
 
 		res, err := helper.MsgServer.GenDpr(ctx, &types.MsgGenDpr{
-			Creator:                       CREATOR,
-			PidSupportedOneToTwnety:       true,
-			PidSupportedTwentyOneToForthy: false,
-			PidSupportedForthyOneToSixty:  false,
-			Duration:                      45,
+			Creator:       CREATOR,
+			SupportedPIDs: "BE1FA813",
+			Duration:      45,
 		})
 		helper.Require().Empty(res)
 		helper.Require().Nil(err)
