@@ -38,15 +38,13 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 
 	//Save dpr into storage
 	newDpr := types.Dpr{
-		Id:                            dpr.Id,
-		Creator:                       dpr.Creator,
-		PidSupportedOneToTwnety:       dpr.PidSupportedOneToTwnety,
-		PidSupportedTwentyOneToForthy: dpr.PidSupportedTwentyOneToForthy,
-		PidSupportedForthyOneToSixty:  dpr.PidSupportedForthyOneToSixty,
-		IsActive:                      true,
-		Vin:                           dpr.Vin,
-		ClientPubkeys:                 dpr.ClientPubkeys,
-		Duration:                      dpr.Duration,
+		Id:            dpr.Id,
+		Creator:       dpr.Creator,
+		SupportedPIDs: dpr.SupportedPIDs,
+		IsActive:      true,
+		Vin:           dpr.Vin,
+		ClientPubkeys: dpr.ClientPubkeys,
+		Duration:      dpr.Duration,
 	}
 	k.SetDpr(ctx, newDpr)
 
