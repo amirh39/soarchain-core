@@ -1,53 +1,55 @@
 syntax = "proto3";
 package soarchain.did;
 
-import "did/did_document.proto";
-
+import "did/client_did.proto";
+import "did/runner_did.proto";
+import "did/challenger_did.proto";
 
 option go_package = "soarchain/x/did/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc GenDid(MsgGenDid) returns (MsgGenDidResponse);
-
-  // UpdateDID defines a method for updating a DID.
-  rpc UpdateDid(MsgUpdateDid) returns (MsgUpdateDidResponse);
-
-  // DeactivateDID defines a method for deactivating a DID.
+  rpc GenClient(MsgGenClient) returns (MsgGenClientResponse);
+  rpc GenRunner(MsgGenRunner) returns (MsgGenRunnerResponse);
+  rpc GenChallenger(MsgGenChallenger) returns (MsgGenChallengerResponse);
   rpc DeactivateDid(MsgDeactivateDid) returns (MsgDeactivateDidResponse);
 
 }
 
-message MsgGenDid {
-  DidDocument document = 1;
+message MsgGenClient {
+  ClientDid document = 1;
   string signature = 2;
   string certificate = 3;
   string creator = 4;
 }
   
-  message MsgGenDidResponse {}
+message MsgGenClientResponse {}
+
+message MsgGenRunner {
+  RunnerDid document = 1;
+  string creator = 2; 
+  string certificate = 3;
+  string signature = 4;
+}
   
-  // MsgUpdateDid defines the Msg/UpdateDID request type.
-  message MsgUpdateDid {
-    string did = 1;
-    DidDocument document = 2;
-    string verificationMethodId = 3;
-    bytes signature = 4;
-    string fromAddress = 5;
-  }
+message MsgGenRunnerResponse {}
+
+message MsgGenChallenger {
+  ChallengerDid document = 1;
+  string creator = 2;
+  string challengerType = 3;
+  string certificate = 4;
+  string signature = 5;
+}
   
-  // MsgUpdateDIDResponse defines the Msg/UpdateDID response type.
-  message MsgUpdateDidResponse {}
-  
-  // MsgDeactivateDid defines the Msg/DeactivateDID request type.
-  message MsgDeactivateDid {
-    string did = 1;
-    string verificationMethodId = 2;
-    bytes signature = 3;
-    string fromAddress = 4;
-  }
-  
-  // MsgDeactivateDIDResponse defines the Msg/DeactivateDID response type.
-  message MsgDeactivateDidResponse {}
-  
-  
+message MsgGenChallengerResponse {}
+
+// MsgDeactivateDid defines the Msg/DeactivateDID request type.
+message MsgDeactivateDid {
+  string did = 1;
+  string fromAddress = 4;
+}
+
+// MsgDeactivateDIDResponse defines the Msg/DeactivateDID response type.
+message MsgDeactivateDidResponse {}
+

@@ -14,10 +14,10 @@ func TestChallengerByIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
-	challengers := CreateNChallenger(1)
-	k.SetChallenger(ctx, challengers[0])
+	challengers := CreateNReputation(1)
+	k.SetReputation(ctx, challengers[0])
 
-	challenger, err := wasmbinding.GetChallenger(ctx, Challenger_Address, k)
+	challenger, err := wasmbinding.GetChallenger(ctx, Challenger_PubKey, k)
 	require.NotEmpty(t, 1, challenger)
 	require.Equal(t, "189", challenger.Score)
 	require.Equal(t, nil, err)
@@ -27,8 +27,8 @@ func TestChallengerByNotValidIndex(t *testing.T) {
 	k, context := SetupMsgServer(t)
 	ctx := sdk.UnwrapSDKContext(context)
 
-	challengers := CreateNChallenger(1)
-	k.SetChallenger(ctx, challengers[0])
+	challengers := CreateNReputation(1)
+	k.SetReputation(ctx, challengers[0])
 
 	challenger, err := wasmbinding.GetChallenger(ctx, NotValidndex, k)
 	require.Error(t, err)

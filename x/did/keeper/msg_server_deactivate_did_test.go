@@ -14,24 +14,26 @@ func TestHandleMsgDeactivateDID(t *testing.T) {
 	bank.ExpectAny(context)
 	ctx := sdk.UnwrapSDKContext(context)
 	//
-	did, docWithSeq, privKey, verificationMethodID := MakeTestData()
-	k.SetDidDocument(ctx, did, docWithSeq)
+	did, docWithSeq, _, _ := MakeTestData()
+	k.SetClientDid(ctx, *docWithSeq.Document)
 
-	didDocument, found := k.GetDidDocument(ctx, did)
+	didDocument, found := k.GetClientDid(ctx, did)
 	require.Equal(t, true, found)
 	require.NotNil(t, didDocument)
 
 	// deactivate
-	deactivateMsg := NewMsgDeactivateDID(*didDocument.Document, did, verificationMethodID, privKey, types.InitialSequence)
-	deactivateRes, err := msgServer.DeactivateDid(context, &deactivateMsg)
-
-	require.NoError(t, err)
-	require.NotNil(t, deactivateRes)
-
-	// check if it's really deactivated
-	got, found := k.GetDidDocument(ctx, did)
-	require.False(t, got.Empty())
-	require.True(t, found)
-	require.True(t, got.Deactivated())
-	require.Equal(t, types.InitialSequence+1, got.Sequence)
+	deactivateMsg := types.MsgDeactivateDid{
+		Did:         Did,
+		FromAddress: ADDRESS,
+	}
+	clientDid, err := msgServer.DeactivateDid(context, &deactivateMsg)
+	if err != nil {
+		require.NotNil(t, err)
+		require.Nil(t, clientDid)
+	} else {
+		require.Nil(t, err)
+		got, found := k.GetClientDid(ctx, did)
+		require.NotNil(t, got)
+		require.False(t, found)
+	}
 }

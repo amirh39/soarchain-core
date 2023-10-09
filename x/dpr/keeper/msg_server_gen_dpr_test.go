@@ -23,19 +23,19 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		epochData := CreateEpochData(&epochKeeper, helper.Ctx)
 		epochKeeper.SetEpochData(helper.Ctx, epochData)
 
-		newDid := didtypes.DidDocument{
+		newDid := didtypes.ClientDid{
 			Id:                            Did,
-			Index:                         PUBKEY,
+			PubKey:                        PUBKEY,
 			PidSupportedOneToTwnety:       true,
 			PidSupportedTwentyOneToForthy: false,
 			PidSupportedForthyOneToSixty:  false,
 		}
 
-		didDocument := didtypes.DidDocumentWithSeq{
+		didDocument := didtypes.ClientDidWithSeq{
 			Document: &newDid,
 			Sequence: 0,
 		}
-		didKeeper.SetDidDocument(helper.Ctx, newDid.Id, didDocument)
+		didKeeper.SetClientDid(helper.Ctx, *didDocument.Document)
 
 		res, err := helper.MsgServer.GenDpr(ctx, &types.MsgGenDpr{
 			Creator:                       CREATOR,

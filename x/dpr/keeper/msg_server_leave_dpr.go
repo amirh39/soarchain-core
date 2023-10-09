@@ -58,7 +58,7 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 		PidSupportedTwentyOneToForthy: dpr.PidSupportedTwentyOneToForthy,
 		PidSupportedForthyOneToSixty:  dpr.PidSupportedForthyOneToSixty,
 		IsActive:                      dpr.IsActive,
-		Vin:                           remainedVins(did.Document.Vehicle.Vin, dpr.Vin),
+		Vin:                           remainedVins(did.Vehicle.Vin, dpr.Vin),
 		ClientPubkeys:                 remainedPubKeys(msg.PubKey, dpr.ClientPubkeys),
 		Duration:                      dpr.Duration,
 	}

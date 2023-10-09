@@ -6,24 +6,27 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"encoding/pem"
-	"soarchain/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) ValidateInputs(msg *types.MsgGenDid) bool {
-
-	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.Document == nil || msg.Document.VerificationMethods[0].Id == "" {
+func (k Keeper) ValidateInputs(creator string, certificate string, signature string, verificationMethidId string) bool {
+	if creator == "" || certificate == "" || signature == "" || verificationMethidId == "" {
 		return false
 	}
-
 	return true
 }
 
-func (k Keeper) IsUniqueDid(ctx sdk.Context, id string, address string, pubkey string) bool {
-	result := k.ValidateDid(ctx, id, address, pubkey)
-	return result
+func (k Keeper) IsUniqueDid(ctx sdk.Context, id string) bool {
+	_, isFoundClientDid := k.GetClientDid(ctx, id)
+	_, isFoundRunnerDid := k.GetRunnerDid(ctx, id)
+	_, isFoundChallengerDid := k.GetChallengerDid(ctx, id)
+	if isFoundClientDid || isFoundRunnerDid || isFoundChallengerDid {
+		return true
+	}
+
+	return false
 }
 
 func CreateX509CertFromString(certString string) (*x509.Certificate, error) {
@@ -71,12 +74,12 @@ func ValidateX509CertByASN1(creator string, signature string, deviceCert *x509.C
 func ExtractPubkeyFromCertificate(certificate string) (string, error) {
 
 	if certificate == "" {
-		return "", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenDid][ExtractPubkeyFromCertificate] failed. Device certification is not valid.")
+		return "", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][ExtractPubkeyFromCertificate] failed. Device certification is not valid.")
 	}
 
 	deviceCertificate, error := CreateX509CertFromString(certificate)
 	if error != nil {
-		return "", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenDid][CreateX509CertFromString] failed. Invalid device certificate.")
+		return "", sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][CreateX509CertFromString] failed. Invalid device certificate.")
 	}
 
 	pubKeyFromCertificate, err := x509.MarshalPKIXPublicKey(deviceCertificate.PublicKey)
@@ -98,4 +101,11 @@ func ValidateX509Cert(derivedCert *x509.Certificate, signerCert *x509.Certificat
 	} else {
 		return true, nil
 	}
+}
+
+func ValidString(input string) bool {
+	if len(input) == 0 || input == "" {
+		return false
+	}
+	return true
 }

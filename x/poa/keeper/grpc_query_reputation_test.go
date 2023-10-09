@@ -28,21 +28,21 @@ func Test_ReputationQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetReputationRequest{
-				Index: msgs[0].Index,
+				Pubkey: msgs[0].PubKey,
 			},
 			response: &types.QueryGetReputationResponse{Reputation: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetReputationRequest{
-				Index: msgs[1].Index,
+				Pubkey: msgs[1].PubKey,
 			},
 			response: &types.QueryGetReputationResponse{Reputation: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetReputationRequest{
-				Index: strconv.Itoa(100000),
+				Pubkey: strconv.Itoa(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

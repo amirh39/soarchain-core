@@ -14,14 +14,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.ReputationList {
 		k.SetReputation(ctx, elem)
 	}
-	// Set all the challenger
-	for _, elem := range genState.ChallengerList {
-		k.SetChallenger(ctx, elem)
-	}
-	// Set all the runner
-	for _, elem := range genState.RunnerList {
-		k.SetRunner(ctx, elem)
-	}
 
 	// Set all the vrfData
 	for _, elem := range genState.VrfDataList {
@@ -45,9 +37,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
-
-	genesis.ChallengerList = k.GetAllChallenger(ctx)
-	genesis.RunnerList = k.GetAllRunner(ctx)
 
 	genesis.ReputationList = k.GetAllReputation(ctx)
 

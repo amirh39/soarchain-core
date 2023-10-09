@@ -8,18 +8,22 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgGenDid{}, "did/GenDid", nil)
-	cdc.RegisterConcrete(&MsgUpdateDid{}, "did/UpdateDid", nil)
+	cdc.RegisterConcrete(&MsgGenClient{}, "did/GenClient", nil)
+	cdc.RegisterConcrete(&MsgGenRunner{}, "did/GenRunner", nil)
+	cdc.RegisterConcrete(&MsgGenChallenger{}, "did/GenChallenger", nil)
 	cdc.RegisterConcrete(&MsgDeactivateDid{}, "did/DeactivateDid", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgGenDid{},
+		&MsgGenClient{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgUpdateDid{},
+		&MsgGenRunner{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgGenChallenger{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgDeactivateDid{},

@@ -26,7 +26,7 @@ func (qp QueryPlugin) GetChallengerByIndex(ctx sdk.Context, index string) (*wasm
 
 	log.Println("############## Smart contract query for fetching a Challenger is Started ##############")
 
-	challenger, found := qp.keeper.GetChallenger(ctx, index)
+	challenger, found := qp.keeper.GetReputation(ctx, index)
 	if !found {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[Querier][GetChallengerByIndex] failed. Challenger with the index: [ %T ] for query wasm contract is not found.", index)
 	}
