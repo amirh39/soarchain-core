@@ -18,7 +18,7 @@ func (k Keeper) ValidateInputs(creator string, certificate string, signature str
 	return true
 }
 
-func (k Keeper) IsUniqueDid(ctx sdk.Context, id string) bool {
+func (k Keeper) IsNotUniqueDid(ctx sdk.Context, id string) bool {
 	_, isFoundClientDid := k.GetClientDid(ctx, id)
 	_, isFoundRunnerDid := k.GetRunnerDid(ctx, id)
 	_, isFoundChallengerDid := k.GetChallengerDid(ctx, id)
