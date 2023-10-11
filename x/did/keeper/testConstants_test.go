@@ -140,8 +140,10 @@ const (
 )
 
 const (
-	Did       = "did:soar:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm"
-	SecondDid = "did:soar:1Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgap"
+	Did           = "did:soar:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm"
+	SecondDid     = "did:soar:1Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgap"
+	SecondAddress = "my-second-address"
+	SecondPubKey  = "my-second-pubkey"
 )
 
 const (
