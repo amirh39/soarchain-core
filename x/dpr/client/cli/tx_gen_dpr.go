@@ -17,11 +17,11 @@ func CmdGenDpr() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "gen-dpr [supportedPIDs] [duration]",
 		Short: "Broadcast message gen-dpr",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-			supportedPIDs := args[1]
-			duration, _ := strconv.ParseUint(args[2], 10, 64)
+			supportedPIDs := args[0]
+			duration, _ := strconv.ParseUint(args[1], 10, 64)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
