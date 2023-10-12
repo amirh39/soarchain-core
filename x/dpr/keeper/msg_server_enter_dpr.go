@@ -16,9 +16,14 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 
 	log.Println("############## Entering a dpr Transaction is Started ##############")
 
+	_, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
+	if !found {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetEligibleDidByPubkey] failed. Only motus owner can send the joinDPR transaction.")
+	}
+
 	dpr, found := k.GetDpr(ctx, msg.DprId)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetDpr] failed. There is no eligible client to serve this DPR.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetDpr] failed. There is no DPR with this DPRid.")
 	}
 
 	did, eligible := k.didKeeper.GetEligibleDidByPubkey(ctx, msg.PubKey)
@@ -50,7 +55,7 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 	k.SetDpr(ctx, newDpr)
 
 	if logger != nil {
-		logger.Info("Dpr is entered to the Dpr successfully", "transaction", "EnterDpr")
+		logger.Info("Client is entered to the Dpr successfully", "transaction", "EnterDpr")
 	}
 
 	log.Println("############## End of Enter dpr Transaction ##############")
