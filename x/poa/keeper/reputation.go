@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
@@ -12,19 +13,19 @@ func (k Keeper) SetReputation(ctx sdk.Context, reputation types.Reputation) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
 	b := k.cdc.MustMarshal(&reputation)
 	store.Set(types.ReputationKey(
-		reputation.Index,
+		reputation.PubKey,
 	), b)
 }
 
 func (k Keeper) InitializeReputation(ctx sdk.Context, reputation types.Reputation, certificate string) error {
 	deviceCert, err := k.CreateX509CertFromString(certificate)
 	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDid][SetReputation][CreateX509CertFromString] failed. Device certificate and reputation can not be empty.")
+		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][SetReputation][CreateX509CertFromString] failed. Device certificate and reputation can not be empty.")
 	}
 
 	err = k.ValidateCertificate(ctx, deviceCert)
 	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenDid][SetReputation][ValidateCertificate] failed. Device certificate is not valid.")
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenClient][SetReputation][ValidateCertificate] failed. Device certificate is not valid.")
 	}
 
 	k.SetReputation(ctx, reputation)
@@ -64,11 +65,7 @@ func (k Keeper) GetAllReputation(ctx sdk.Context) (list []types.Reputation) {
 	return
 }
 
-func (k Keeper) GetReputationByClientAddress(
-	ctx sdk.Context,
-	address string,
-
-) (val types.Reputation, found bool) {
+func (k Keeper) GetReputationsByAddress(ctx sdk.Context, address string) (val types.Reputation, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
@@ -82,4 +79,50 @@ func (k Keeper) GetReputationByClientAddress(
 		}
 	}
 	return types.Reputation{}, false
+}
+
+func (k Keeper) GetReputationByType(ctx sdk.Context, Address string, Type string) (val types.Reputation, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
+
+	b := store.Get(types.ReputationKey(
+		Address,
+	))
+
+	k.cdc.MustUnmarshal(b, &val)
+	if val.Type == Type {
+		return val, true
+	}
+	return types.Reputation{}, false
+}
+
+func (k Keeper) GetAllChallenger(ctx sdk.Context) (list []types.Reputation) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Reputation
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.Type == constants.V2XChallenger || val.Type == constants.V2NChallenger {
+			list = append(list, val)
+		}
+	}
+	return
+}
+
+func (k Keeper) GetAllRunner(ctx sdk.Context) (list []types.Reputation) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.Reputation
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.Type == "" {
+			list = append(list, val)
+		}
+	}
+	return
 }

@@ -11,8 +11,6 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		ReputationList: []Reputation{},
-		ChallengerList: []Challenger{},
-		RunnerList:     []Runner{},
 		VrfDataList:    []VrfData{},
 
 		MasterKey: MasterKey{
@@ -32,32 +30,11 @@ func (gs GenesisState) Validate() error {
 	reputationIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.ReputationList {
-		index := string(ReputationKey(elem.Index))
+		index := string(ReputationKey(elem.PubKey))
 		if _, ok := reputationIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for reputation")
 		}
 		reputationIndexMap[index] = struct{}{}
-	}
-
-	// Check for duplicated index in challenger
-	challengerIndexMap := make(map[string]struct{})
-
-	for _, elem := range gs.ChallengerList {
-		index := string(ChallengerKey(elem.PubKey))
-		if _, ok := challengerIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for challenger")
-		}
-		challengerIndexMap[index] = struct{}{}
-	}
-	// Check for duplicated index in runner
-	runnerIndexMap := make(map[string]struct{})
-
-	for _, elem := range gs.RunnerList {
-		index := string(RunnerKey(elem.PubKey))
-		if _, ok := runnerIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for runner")
-		}
-		runnerIndexMap[index] = struct{}{}
 	}
 
 	// Check for duplicated index in vrfData

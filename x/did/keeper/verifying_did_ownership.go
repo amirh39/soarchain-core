@@ -7,7 +7,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) VerifyDidOwnership(signData *types.DidDocument, seq uint64, doc *types.DidDocument, verificationMethodId string, sig []byte) (uint64, error) {
+func (k Keeper) VerifyDidOwnership(signData *types.ClientDid, seq uint64, doc *types.ClientDid, verificationMethodId string, sig []byte) (uint64, error) {
 
 	verificationMethod, ok := doc.VerificationMethodFrom(doc.Authentications, verificationMethodId)
 	if !ok {

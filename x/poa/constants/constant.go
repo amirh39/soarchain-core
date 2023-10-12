@@ -5,9 +5,9 @@ const (
 )
 
 const (
-	V2XChallenger     = "v2x"
-	V2NChallengerType = "v2n"
-	ChallengerAmount  = 1000000000
+	V2XChallenger    = "v2x"
+	V2NChallenger    = "v2n"
+	ChallengerAmount = 1000000000
 )
 
 const (

@@ -14,7 +14,7 @@ func Test_ReputationGet(t *testing.T) {
 	items := CreateNReputation(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetReputation(ctx,
-			item.Index,
+			item.PubKey,
 		)
 		require.True(t, found)
 		require.Equal(t,

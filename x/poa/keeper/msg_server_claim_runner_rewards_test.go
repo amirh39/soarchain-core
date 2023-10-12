@@ -16,8 +16,8 @@ func Test_ClaimRunnerRewards(t *testing.T) {
 
 	ctx := sdk.UnwrapSDKContext(context)
 
-	runner := SetupNRunner(1)
-	k.SetRunner(ctx, runner[0])
+	reputation := SetupReputationForRunner(1)
+	k.SetReputation(ctx, reputation[0])
 
 	res, err := msgServer.ClaimRunnerRewards(context, &types.MsgClaimRunnerRewards{
 		Creator: RunnerAddress,
@@ -36,8 +36,8 @@ func Test_RegisterNotValidClaimRunnerReward_KeyNotFound(t *testing.T) {
 	bank.ExpectAny(context)
 	ctx := sdk.UnwrapSDKContext(context)
 
-	runner := SetupNRunner(1)
-	k.SetRunner(ctx, runner[0])
+	runner := SetupReputationForRunner(1)
+	k.SetReputation(ctx, runner[0])
 
 	res, err := msgServer.ClaimRunnerRewards(context, &types.MsgClaimRunnerRewards{
 		Creator: CREATOR,
@@ -56,8 +56,8 @@ func Test_RegisterClaimRunnerReward_InsufficientFound(t *testing.T) {
 	bank.ExpectAny(context)
 	ctx := sdk.UnwrapSDKContext(context)
 
-	runner := SetupNRunner(1)
-	k.SetRunner(ctx, runner[0])
+	runner := SetupReputationForRunner(1)
+	k.SetReputation(ctx, runner[0])
 
 	res, err := msgServer.ClaimRunnerRewards(context, &types.MsgClaimRunnerRewards{
 		Creator: CREATOR,

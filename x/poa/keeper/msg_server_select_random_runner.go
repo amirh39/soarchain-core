@@ -39,7 +39,7 @@ func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelec
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidType, "[SelectRandomRunner][ParseUint] failed. vrfData.FinalVrv parse error: [ %T ]", err)
 	}
 
-	var selectedRunner types.Runner
+	var selectedRunner types.Reputation
 	for i := 0; i < len(runenrs); i++ {
 		if i == int(generatedNumber) {
 			selectedRunner = runenrs[i]
@@ -73,5 +73,5 @@ func (k msgServer) SelectRandomRunner(goCtx context.Context, msg *types.MsgSelec
 
 	log.Println("############## End of Select Random Runner Transaction ##############")
 
-	return &types.MsgSelectRandomRunnerResponse{RandomRunner: &selectedRunner}, nil
+	return &types.MsgSelectRandomRunnerResponse{RandomRunnerReputation: &selectedRunner}, nil
 }

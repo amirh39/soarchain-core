@@ -4,7 +4,9 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "did/params.proto";
-import "did/did_document.proto";
+import "did/client_did.proto";
+import "did/runner_did.proto";
+import "did/challenger_did.proto";
 
 option go_package = "soarchain/x/did/types";
 
@@ -15,12 +17,44 @@ service Query {
     option (google.api.http).get = "/soarchain/did/params";
   }
 
-	rpc DidAll(QueryAllDidRequest) returns (QueryAllDidResponse) {
-		option (google.api.http).get = "/soarchain/did/did_document";
+	rpc ClientDidAll(QueryAllClientDidRequest) returns (QueryAllClientDidResponse) {
+		option (google.api.http).get = "/soarchain/did/client_did";
 	}
 
-	rpc DidDocument(QueryGetDidRequest) returns (QueryGetDidResponse) {
-		option (google.api.http).get = "/soarchain/did/did_document/{id}";
+	rpc ClientDid(QueryGetClientDidRequest) returns (QueryGetClientDidResponse) {
+		option (google.api.http).get = "/soarchain/did/client_did/{id}";
+	}
+
+	rpc RunnerDidAll(QueryAllRunnerDidRequest) returns (QueryAllRunnerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/runner_did";
+	}
+
+	rpc RunnerDid(QueryGetRunnerDidRequest) returns (QueryGetRunnerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/runner_did/{address}";
+	}
+
+	rpc ChallengerDidAll(QueryAllChallengerDidRequest) returns (QueryAllChallengerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/challenger_did";
+	}
+
+	rpc ChallengerDid(QueryGetChallengerDidRequest) returns (QueryGetChallengerDidResponse) {
+		option (google.api.http).get = "/soarchain/did/challenger_did/{address}";
+	}
+
+	rpc GetRunnerDidByIp(QueryGetRunnerDidByIpRequest) returns (QueryGetRunnerDidByIpResponse) {
+		option (google.api.http).get = "/soarchain/did/get_runner_did_by_ip/{ipAddress}";
+	}
+
+	rpc GetChallengerDidByPubKey(QueryGetChallengerDidByPubKeyRequest) returns (QueryGetChallengerDidByPubKeyResponse) {
+		option (google.api.http).get = "/soarchain/did/query_challenger_did_by_pubKey/{pubkey}";
+	}
+// Queries a Runner by PubKey
+	rpc GetRunnerDidByPubKey(QueryGetRunnerDidByPubKeyRequest) returns (QueryGetRunnerDidByPubKeyResponse) {
+		option (google.api.http).get = "/soarchain/did/get_runner_did_by_PubKey/{pubkey}";
+	}
+
+	rpc GetChallengerDidByAddress(QueryGetChallengerDidByAddressRequest) returns (QueryGetChallengerDidByAddressResponse) {
+		option (google.api.http).get = "/soarchain/did/get_challenger_did_by_address/{address}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -35,20 +69,84 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryGetDidRequest {
+message QueryGetClientDidRequest {
   string id = 1;
 }
 
-message QueryGetDidResponse {
-	DidDocumentWithSeq didDocument = 1 [(gogoproto.nullable) = false];
+message QueryGetClientDidResponse {
+	ClientDid clientDid = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllDidRequest {
+message QueryAllClientDidRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllDidResponse {
-	repeated DidDocumentWithSeq didDocument = 1  [(gogoproto.nullable) = false];
+message QueryAllClientDidResponse {
+	repeated ClientDid clientDid = 1  [(gogoproto.nullable) = false];
 }
+
+message QueryGetRunnerDidRequest {
+	string address = 1;
+}
+  
+message QueryGetRunnerDidResponse {
+	RunnerDid runnerDid = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllRunnerDidRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllRunnerDidResponse {
+	repeated RunnerDid runnerDid = 1  [(gogoproto.nullable) = false];
+}
+
+message QueryGetChallengerDidRequest {
+	string address = 1;
+}
+  
+message QueryGetChallengerDidResponse {
+	ChallengerDid challengerDid = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllChallengerDidRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllChallengerDidResponse {
+	repeated ChallengerDid challengerDid = 1  [(gogoproto.nullable) = false];
+}
+
+message QueryGetRunnerDidByIpRequest {
+	string ipAddress = 1;
+}
+  
+message QueryGetRunnerDidByIpResponse {
+	RunnerDid runner = 1;
+}
+
+message QueryGetChallengerDidByPubKeyRequest{
+	string pubkey = 1;
+}
+
+message QueryGetChallengerDidByPubKeyResponse{
+	ChallengerDid challengerDid = 1;
+}
+
+message QueryGetRunnerDidByPubKeyRequest{
+	string pubkey = 1;
+}
+
+message QueryGetRunnerDidByPubKeyResponse{
+	RunnerDid runnerDid = 1;
+}
+
+message QueryGetChallengerDidByAddressRequest {
+	string address = 1;
+  }
+  
+  message QueryGetChallengerDidByAddressResponse {
+	ChallengerDid challengerDid = 1;
+  }
 
 

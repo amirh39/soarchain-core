@@ -1,26 +1,18 @@
 syntax = "proto3";
 package soarchain.poa;
 
-import "poa/challenger.proto";
-
-// this line is used by starport scaffolding # proto/tx/import
-import "poa/runner.proto";
-
+import "poa/reputation.proto";
 option go_package = "soarchain/x/poa/types";
 
 // Msg defines the Msg service.
 service Msg {
   rpc ChallengeService(MsgChallengeService) returns (MsgChallengeServiceResponse);
-  rpc UnregisterChallenger(MsgUnregisterChallenger) returns (MsgUnregisterChallengerResponse);
-  rpc UnregisterRunner(MsgUnregisterRunner) returns (MsgUnregisterRunnerResponse);
   rpc RunnerChallenge(MsgRunnerChallenge) returns (MsgRunnerChallengeResponse);
   rpc SelectRandomChallenger(MsgSelectRandomChallenger) returns (MsgSelectRandomChallengerResponse);
   rpc SelectRandomRunner(MsgSelectRandomRunner) returns (MsgSelectRandomRunnerResponse);
   rpc ClaimMotusRewards(MsgClaimMotusRewards) returns (MsgClaimMotusRewardsResponse);
   rpc ClaimRunnerRewards(MsgClaimRunnerRewards) returns (MsgClaimRunnerRewardsResponse);
   rpc RegisterFactoryKey(MsgRegisterFactoryKey) returns (MsgRegisterFactoryKeyResponse);
-  rpc GenRunner(MsgGenRunner) returns (MsgGenRunnerResponse);
-  rpc GenChallenger(MsgGenChallenger) returns (MsgGenChallengerResponse);
   rpc ClaimChallengerRewards(MsgClaimChallengerRewards) returns (MsgClaimChallengerRewardsResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
@@ -34,45 +26,6 @@ message MsgChallengeService {
 }
 
 message MsgChallengeServiceResponse {
-}
-
-message MsgUnregisterChallenger {
-  string creator = 1;
-  string challengerAddress = 2;
-}
-
-message MsgUnregisterChallengerResponse {
-}
-
-message MsgGenRunner{
-  string creator = 1; 
-  string runnerStake = 2;
-  string runnerIp = 3;
-  string certificate = 4;
-  string signature = 5;
-}
-
-message MsgGenRunnerResponse{
-}
-
-message MsgGenChallenger{
-  string creator = 1;
-  string challengerStake = 2;
-  string challengerIp = 3;
-  string challengerType = 4;
-  string certificate = 5;
-  string signature = 6;
-}
-
-message MsgGenChallengerResponse{
-}
-
-message MsgUnregisterRunner {
-  string creator = 1;
-  string runnerAddress = 2;
-}
-
-message MsgUnregisterRunnerResponse {
 }
 
 message MsgRunnerChallenge {
@@ -90,7 +43,7 @@ message MsgSelectRandomChallenger {
 }
 
 message MsgSelectRandomChallengerResponse {
-  Challenger randomChallenger = 1;
+  Reputation randomChallengerReputation = 1;
 }
 
 message MsgSelectRandomRunner {
@@ -98,7 +51,7 @@ message MsgSelectRandomRunner {
 }
 
 message MsgSelectRandomRunnerResponse {
-  Runner randomRunner = 1;
+  Reputation randomRunnerReputation = 1;
 }
 
 

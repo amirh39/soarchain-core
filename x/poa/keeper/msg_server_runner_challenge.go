@@ -16,12 +16,12 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger, epoch epoch.EpochData) error {
+func (k Keeper) updateChallengerReputation(ctx sdk.Context, challengerReputation types.Reputation, epoch epoch.EpochData) error {
 
 	var totalEarnings sdk.Coin
 	var rewardMultiplier float64
 	newScore := make([]float64, 0)
-	rewardMultiplier, score := k.rewardAndScore(challenger.Score)
+	rewardMultiplier, score := k.rewardAndScore(challengerReputation.Score)
 	newScore = append(newScore, score)
 
 	totalAmount := big.NewInt(int64(epoch.ChallengerPerChallengeValue))
@@ -31,24 +31,21 @@ func (k Keeper) updateChallenger(ctx sdk.Context, challenger types.Challenger, e
 	}
 
 	if len(earnedRewardsBigInt) > 0 {
-		totalEarnings, err = k.calculateTotalEarnings(ctx, challenger.NetEarnings, earnedRewardsBigInt[0], constants.Runner)
+		totalEarnings, err = k.calculateTotalEarnings(ctx, challengerReputation.NetEarnings, earnedRewardsBigInt[0], constants.Runner)
 		if err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
 		}
 	}
 
-	updatedChallenger := types.Challenger{
-		PubKey:           challenger.PubKey,
-		Address:          challenger.Address,
+	updatedChallenger := types.Reputation{
+		PubKey:           challengerReputation.PubKey,
+		Address:          challengerReputation.Address,
 		Score:            strconv.FormatFloat(newScore[0], 'f', -1, 64),
-		StakedAmount:     challenger.StakedAmount,
 		NetEarnings:      totalEarnings.String(),
-		Type:             challenger.Type,
-		IpAddress:        challenger.IpAddress,
 		RewardMultiplier: strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 	}
 
-	k.SetChallenger(ctx, updatedChallenger)
+	k.SetReputation(ctx, updatedChallenger)
 
 	return nil
 }
@@ -85,8 +82,8 @@ func (k Keeper) punish(score string) (float64, float64) {
 	return rewardMultiplier, newScore
 }
 
-func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey string, result string, epoch epoch.EpochData) error {
-	runner, found := k.GetRunnerUsingPubKey(ctx, runnerPubKey)
+func (k Keeper) updateRunnerReputation(ctx sdk.Context, creator string, runnerPubKey string, result string, epoch epoch.EpochData) error {
+	runner, found := k.GetReputation(ctx, runnerPubKey)
 	if !found {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NotFoundAValidRunner)
 	}
@@ -116,18 +113,16 @@ func (k Keeper) updateRunner(ctx sdk.Context, creator string, runnerPubKey strin
 		}
 	}
 
-	updatedRunner := types.Runner{
+	updatedRunner := types.Reputation{
 		PubKey:             runner.PubKey,
 		Address:            runner.Address,
 		Score:              strconv.FormatFloat(newScore[0], 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
-		StakedAmount:       runner.StakedAmount,
 		NetEarnings:        totalEarnings.String(),
-		IpAddress:          runner.IpAddress,
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, creator), 10),
 	}
-	k.SetRunner(ctx, updatedRunner)
+	k.SetReputation(ctx, updatedRunner)
 
 	return nil
 }
@@ -175,7 +170,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 		}
 
 		updatedReputation := types.Reputation{
-			Index:              reputation.Index,
+			PubKey:             reputation.PubKey,
 			Score:              strconv.FormatFloat(score, 'f', -1, 64),
 			NetEarnings:        totalEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
@@ -217,7 +212,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[RunnerChallenge][GetEpochData] failed. Epoch data is not found!")
 	}
 
-	challenger, found := k.GetChallengerByType(ctx, msg.Creator, constants.V2NChallengerType)
+	challengerReputation, found := k.GetReputationByType(ctx, msg.Creator, constants.V2NChallenger)
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
@@ -231,7 +226,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		logger.Info("Updating reputation successfully done.", "transaction", "RunnerChallenge")
 	}
 
-	err = k.updateRunner(ctx, msg.Creator, msg.RunnerPubkey, msg.ChallengeResult, epochData)
+	err = k.updateRunnerReputation(ctx, msg.Creator, msg.RunnerPubkey, msg.ChallengeResult, epochData)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
@@ -241,13 +236,13 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 	}
 
 	/** Update challenger info after the successfull reward session */
-	err = k.updateChallenger(ctx, challenger, epochData)
+	err = k.updateChallengerReputation(ctx, challengerReputation, epochData)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.EarnedTokenRewardsFloat)
 	}
 
 	if logger != nil {
-		logger.Info("Updating challenger successfully done.", "transaction", "RunnerChallenge")
+		logger.Info("Updating challengerReputation successfully done.", "transaction", "RunnerChallenge")
 	}
 
 	//update the challenge counts

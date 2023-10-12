@@ -17,7 +17,7 @@ func Test_SelectRandomChallenger(t *testing.T) {
 	ctx := sdk.UnwrapSDKContext(context)
 
 	challenger := SetupNChallenger(1)
-	k.SetChallenger(ctx, challenger[0])
+	k.SetReputation(ctx, challenger[0])
 
 	res, err := msgServer.SelectRandomChallenger(context, &types.MsgSelectRandomChallenger{
 		Creator: Challenger_Creator,
@@ -37,7 +37,7 @@ func Test_SelectRandomChallenger_NotValidCreator(t *testing.T) {
 	ctx := sdk.UnwrapSDKContext(context)
 
 	challenger := SetupNChallenger(1)
-	k.SetChallenger(ctx, challenger[0])
+	k.SetReputation(ctx, challenger[0])
 
 	res, err := msgServer.SelectRandomChallenger(context, &types.MsgSelectRandomChallenger{
 		Creator: "",

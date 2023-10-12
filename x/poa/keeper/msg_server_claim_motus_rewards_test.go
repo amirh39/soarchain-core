@@ -18,7 +18,7 @@ func (helper *KeeperTestHelper) Test_ClaimMotusReward() {
 		ctx := sdk.WrapSDKContext(helper.Ctx)
 
 		reputation := types.Reputation{
-			Index:       ClientPubKey,
+			PubKey:      ClientPubKey,
 			Address:     ClientAddress,
 			NetEarnings: "100000000udmotus",
 		}

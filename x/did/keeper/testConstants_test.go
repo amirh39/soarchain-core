@@ -19,12 +19,7 @@ import (
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
 
-func NewMsgUpdateDID(newDoc types.DidDocument, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgUpdateDid {
-	sig, _ := types.Sign(&newDoc, seq, privKey)
-	return *types.NewMsgUpdateDid(newDoc.Id, newDoc, verificationMethodID, sig, ADDRESS) // sdk.AccAddress{}.String()
-}
-
-func NewDIDDocumentWithSeq(did string) (types.DidDocumentWithSeq, tendermintcrypto.PrivKey) {
+func NewDIDDocumentWithSeq(did string) (types.ClientDidWithSeq, tendermintcrypto.PrivKey) {
 	privKey := secp256k1.GenPrivKey()
 	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
 	verificationMethodID := types.NewVerificationMethodID(did, "key1")
@@ -41,7 +36,7 @@ func NewDIDDocumentWithSeq(did string) (types.DidDocumentWithSeq, tendermintcryp
 	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
 	vehicle := types.NewVehicle(VIN)
 	owner := types.NewOwner(OWNERID, PURCHESDATE)
-	doc := types.NewDidDocument(did, INDEX, ADDRESS, TYPE, PIDS, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications), types.WithKeys(&soarchainPublicKey), types.WithVehicle(&vehicle), types.WithOwner(&owner))
+	doc := types.NewClientDidDocument(did, INDEX, ADDRESS, TYPE, PIDS, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications), types.WithKeys(&soarchainPublicKey), types.WithVehicle(&vehicle), types.WithOwner(&owner))
 	docWithSeq := types.NewDidDocumentWithSeq(
 		&doc,
 		types.InitialSequence,
@@ -49,12 +44,58 @@ func NewDIDDocumentWithSeq(did string) (types.DidDocumentWithSeq, tendermintcryp
 	return docWithSeq, privKey
 }
 
-func NewMsgDeactivateDID(doc types.DidDocument, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
+func NewRunnerDidDocumentWithSeq(did string) (types.RunnerDidWithSeq, tendermintcrypto.PrivKey) {
+	privKey := secp256k1.GenPrivKey()
+	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
+	verificationMethodID := types.NewVerificationMethodID(did, "key1")
+	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
+	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
+	verificationMethods := []*types.VerificationMethod{
+		&es256VerificationMethod,
+		&blsVerificationMethod,
+	}
+	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
+	authentications := []types.VerificationRelationship{
+		verificationRelationship,
+	}
+	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
+	doc := types.NewRunnerDidDocument(did, INDEX, ADDRESS, types.WithRunnerVerificationMethods(verificationMethods), types.WithRunnerAuthentications(authentications), types.WithRunnerKeys(&soarchainPublicKey))
+	docWithSeq := types.NewRunnerDidDocumentWithSeq(
+		&doc,
+		types.InitialSequence,
+	)
+	return docWithSeq, privKey
+}
+
+func NewChallengerDidDocumentWithSeq(did string) (types.ChallengerDidWithSeq, tendermintcrypto.PrivKey) {
+	privKey := secp256k1.GenPrivKey()
+	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
+	verificationMethodID := types.NewVerificationMethodID(did, "key1")
+	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
+	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
+	verificationMethods := []*types.VerificationMethod{
+		&es256VerificationMethod,
+		&blsVerificationMethod,
+	}
+	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
+	authentications := []types.VerificationRelationship{
+		verificationRelationship,
+	}
+	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
+	doc := types.NewChallengerDidDocument(did, INDEX, ADDRESS, types.WithChallengerVerificationMethods(verificationMethods), types.WithChallengerAuthentications(authentications), types.WithChallengerKeys(&soarchainPublicKey))
+	docWithSeq := types.NewChallengerDidDocumentWithSeq(
+		&doc,
+		types.InitialSequence,
+	)
+	return docWithSeq, privKey
+}
+
+func NewMsgDeactivateDID(doc types.ClientDid, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
 	sig, _ := types.Sign(&doc, seq, privKey)
 	return *types.NewMsgDeactivateDid(did, verificationMethodID, sig, sdk.AccAddress{}.String())
 }
 
-func MakeTestData() (string, types.DidDocumentWithSeq, tendermintcrypto.PrivKey, string) {
+func MakeTestData() (string, types.ClientDidWithSeq, tendermintcrypto.PrivKey, string) {
 	doc, privKey := NewDIDDocumentWithSeq(Did)
 	return Did, doc, privKey, doc.Document.VerificationMethods[0].Id
 }
@@ -69,6 +110,34 @@ func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Conte
 
 	return server, *k, context, ctrl, bankMock
 }
+
+func CreateNChallengerDid(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.ChallengerDid {
+	items := make([]types.ChallengerDid, n)
+	for i := range items {
+		items[i].PubKey = Challenger_PubKey
+		items[i].Address = Challenger_Address
+		items[i].IpAddress = Challenger_IPAddress
+		items[i].StakedAmount = Challenger_StakedAmount
+
+		keeper.SetChallengerDid(ctx, items[i])
+	}
+	return items
+}
+
+const (
+	Challenger_PubKey        = "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251"
+	Challenger_Address       = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
+	Challenger_Score         = "189"
+	Challenger_StakedAmount  = "2000000000utmotus"
+	Challenger_NetEarnings   = "0utmotus"
+	Challenger_StakedAmount2 = "2000000000udmotus"
+	Challenger_NetEarnings2  = "0udmotus"
+	Challenger_IpAddr        = ""
+	Challenger_IPAddress     = "104.248.142.45"
+	Challenger_Type          = "v2n"
+	Challenger_Creator       = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
+	Challenger_Score2        = "82"
+)
 
 const (
 	Did       = "did:soar:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm"
