@@ -37,7 +37,7 @@ func (k Keeper) DprAll(c context.Context, req *types.QueryAllDprRequest) (*types
 	})
 
 	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, status.Error(codes.NotFound, "[Dpr][DprAll] failed. Error getting DPRs")
 	}
 
 	return &types.QueryAllDprResponse{Dpr: dprs, Pagination: pageRes}, nil
