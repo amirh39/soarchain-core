@@ -60,3 +60,38 @@ func (k Keeper) Dpr(c context.Context, req *types.QueryGetDprRequest) (*types.Qu
 
 	return &types.QueryGetDprResponse{Dpr: val}, nil
 }
+
+func (k Keeper) DPRsByClientPubkey(c context.Context, req *types.QueryDPRsByClientPubkeyRequest) (*types.QueryDPRsByClientPubkeyResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "Invalid request")
+	}
+
+	// TODO: Add a check to verify that the provided pubkey is a registered client
+
+	var matchingDprs []*types.Dpr
+	ctx := sdk.UnwrapSDKContext(c)
+
+	store := ctx.KVStore(k.storeKey)
+	dprStore := prefix.NewStore(store, types.KeyPrefix(types.DprKeyPrefix))
+
+	pageRes, err := query.Paginate(dprStore, req.Pagination, func(_ []byte, value []byte) error {
+		var dpr types.Dpr
+		if err := k.cdc.Unmarshal(value, &dpr); err != nil {
+			return err
+		}
+
+		for _, pubkey := range dpr.ClientPubkeys {
+			if pubkey == req.ClientPubkey {
+				matchingDprs = append(matchingDprs, &dpr)
+				break
+			}
+		}
+		return nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryDPRsByClientPubkeyResponse{Dpr: matchingDprs, Pagination: pageRes}, nil
+}
