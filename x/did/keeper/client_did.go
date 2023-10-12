@@ -60,45 +60,6 @@ func (k Keeper) GetAllClientDid(ctx sdk.Context) (list []types.ClientDid) {
 	return
 }
 
-func (k Keeper) GetEligibleDids(ctx sdk.Context, pins []uint) (found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.ClientDid
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		switch len(pins) {
-		case 1:
-			if val.PidSupportedOneToTwnety {
-				return true
-			}
-			if val.PidSupportedTwentyOneToForthy {
-				return true
-			}
-			if val.PidSupportedForthyOneToSixty {
-				return true
-			}
-		case 2:
-			if val.PidSupportedOneToTwnety && val.PidSupportedTwentyOneToForthy {
-				return true
-			}
-			if val.PidSupportedTwentyOneToForthy && val.PidSupportedForthyOneToSixty {
-				return true
-			}
-			if val.PidSupportedOneToTwnety && val.PidSupportedForthyOneToSixty {
-				return true
-			}
-		case 3:
-			if val.PidSupportedOneToTwnety && val.PidSupportedTwentyOneToForthy && val.PidSupportedForthyOneToSixty {
-				return true
-			}
-		}
-	}
-	return false
-}
-
 func (k Keeper) RemoveClientDid(ctx sdk.Context, id string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
 	store.Delete(types.DidKey(
