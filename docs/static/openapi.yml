@@ -5382,45 +5382,56 @@ paths:
           type: string
       tags:
         - Service
-  /soarchain/did/did_document:
+  /soarchain/did/challenger_did:
     get:
-      operationId: SoarchainDidDidAll
+      operationId: SoarchainDidChallengerDidAll
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              didDocument:
+              challengerDid:
                 type: array
                 items:
                   type: object
                   properties:
-                    document:
+                    id:
+                      type: string
+                    pubKey:
+                      type: string
+                    keys:
                       type: object
                       properties:
                         id:
                           type: string
-                        index:
+                        pubkeyType:
                           type: string
-                        address:
+                        controller:
                           type: string
-                        type:
+                        publicKeyPem:
                           type: string
-                        keys:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            pubkeyType:
-                              type: string
-                            controller:
-                              type: string
-                            publicKeyPem:
-                              type: string
-                        verificationMethods:
-                          type: array
-                          items:
+                    verificationMethods:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          type:
+                            type: string
+                          controller:
+                            type: string
+                          publicKeyBase58:
+                            type: string
+                    authentications:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          verificationMethodId:
+                            type: string
+                          verificationMethod:
                             type: object
                             properties:
                               id:
@@ -5431,67 +5442,31 @@ paths:
                                 type: string
                               publicKeyBase58:
                                 type: string
-                        authentications:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              verificationMethodId:
-                                type: string
-                              verificationMethod:
-                                type: object
-                                properties:
-                                  id:
-                                    type: string
-                                  type:
-                                    type: string
-                                  controller:
-                                    type: string
-                                  publicKeyBase58:
-                                    type: string
-                            title: >-
-                              VerificationRelationship defines a W3C
-                              verification relationship
-                        services:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              type:
-                                type: string
-                              serviceEndpoint:
-                                type: string
-                            description: Service defines a service in the W3C Did Document.
-                        vehicle:
-                          type: object
-                          properties:
-                            vin:
-                              type: string
-                        owner:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            purchaseDate:
-                              type: string
-                        pidSupportedOneToTwnety:
-                          type: boolean
-                        pidSupportedTwentyOneToForthy:
-                          type: boolean
-                        pidSupportedForthyOneToSixty:
-                          type: boolean
-                        created:
-                          type: string
-                        updated:
-                          type: string
-                    sequence:
+                        title: >-
+                          VerificationRelationship defines a W3C verification
+                          relationship
+                    services:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          type:
+                            type: string
+                          serviceEndpoint:
+                            type: string
+                        description: Service defines a service in the W3C Did.
+                    stakedAmount:
                       type: string
-                      format: uint64
-                  description: >-
-                    DidDocumentWithSeq defines a message for Did Document with a
-                    sequence number for preventing replay attacks.
+                    ipAddress:
+                      type: string
+                    created:
+                      type: string
+                    updated:
+                      type: string
+                    address:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -5569,43 +5544,54 @@ paths:
           type: boolean
       tags:
         - Query
-  '/soarchain/did/did_document/{id}':
+  '/soarchain/did/challenger_did/{address}':
     get:
-      operationId: SoarchainDidDidDocument
+      operationId: SoarchainDidChallengerDid
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              didDocument:
+              challengerDid:
                 type: object
                 properties:
-                  document:
+                  id:
+                    type: string
+                  pubKey:
+                    type: string
+                  keys:
                     type: object
                     properties:
                       id:
                         type: string
-                      index:
+                      pubkeyType:
                         type: string
-                      address:
+                      controller:
                         type: string
-                      type:
+                      publicKeyPem:
                         type: string
-                      keys:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          pubkeyType:
-                            type: string
-                          controller:
-                            type: string
-                          publicKeyPem:
-                            type: string
-                      verificationMethods:
-                        type: array
-                        items:
+                  verificationMethods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyBase58:
+                          type: string
+                  authentications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        verificationMethodId:
+                          type: string
+                        verificationMethod:
                           type: object
                           properties:
                             id:
@@ -5616,67 +5602,325 @@ paths:
                               type: string
                             publicKeyBase58:
                               type: string
-                      authentications:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            verificationMethodId:
-                              type: string
-                            verificationMethod:
-                              type: object
-                              properties:
-                                id:
-                                  type: string
-                                type:
-                                  type: string
-                                controller:
-                                  type: string
-                                publicKeyBase58:
-                                  type: string
-                          title: >-
-                            VerificationRelationship defines a W3C verification
-                            relationship
-                      services:
-                        type: array
-                        items:
+                      title: >-
+                        VerificationRelationship defines a W3C verification
+                        relationship
+                  services:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        serviceEndpoint:
+                          type: string
+                      description: Service defines a service in the W3C Did.
+                  stakedAmount:
+                    type: string
+                  ipAddress:
+                    type: string
+                  created:
+                    type: string
+                  updated:
+                    type: string
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/did/client_did:
+    get:
+      operationId: SoarchainDidClientDidAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              clientDid:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    pubKey:
+                      type: string
+                    address:
+                      type: string
+                    type:
+                      type: string
+                    keys:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        pubkeyType:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyPem:
+                          type: string
+                    verificationMethods:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          type:
+                            type: string
+                          controller:
+                            type: string
+                          publicKeyBase58:
+                            type: string
+                    authentications:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          verificationMethodId:
+                            type: string
+                          verificationMethod:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                              controller:
+                                type: string
+                              publicKeyBase58:
+                                type: string
+                        title: >-
+                          VerificationRelationship defines a W3C verification
+                          relationship
+                    services:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          type:
+                            type: string
+                          serviceEndpoint:
+                            type: string
+                        description: Service defines a service in the W3C Did.
+                    vehicle:
+                      type: object
+                      properties:
+                        vin:
+                          type: string
+                    owner:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        purchaseDate:
+                          type: string
+                    SupportedPIDs:
+                      type: string
+                    created:
+                      type: string
+                    updated:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/soarchain/did/client_did/{id}':
+    get:
+      operationId: SoarchainDidClientDid
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              clientDid:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  pubKey:
+                    type: string
+                  address:
+                    type: string
+                  type:
+                    type: string
+                  keys:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      pubkeyType:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyPem:
+                        type: string
+                  verificationMethods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyBase58:
+                          type: string
+                  authentications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        verificationMethodId:
+                          type: string
+                        verificationMethod:
                           type: object
                           properties:
                             id:
                               type: string
                             type:
                               type: string
-                            serviceEndpoint:
+                            controller:
                               type: string
-                          description: Service defines a service in the W3C Did Document.
-                      vehicle:
-                        type: object
-                        properties:
-                          vin:
-                            type: string
-                      owner:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          purchaseDate:
-                            type: string
-                      pidSupportedOneToTwnety:
-                        type: boolean
-                      pidSupportedTwentyOneToForthy:
-                        type: boolean
-                      pidSupportedForthyOneToSixty:
-                        type: boolean
-                      created:
+                            publicKeyBase58:
+                              type: string
+                      title: >-
+                        VerificationRelationship defines a W3C verification
+                        relationship
+                  services:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        serviceEndpoint:
+                          type: string
+                      description: Service defines a service in the W3C Did.
+                  vehicle:
+                    type: object
+                    properties:
+                      vin:
                         type: string
-                      updated:
+                  owner:
+                    type: object
+                    properties:
+                      id:
                         type: string
-                  sequence:
+                      purchaseDate:
+                        type: string
+                  SupportedPIDs:
                     type: string
-                    format: uint64
-                description: >-
-                  DidDocumentWithSeq defines a message for Did Document with a
-                  sequence number for preventing replay attacks.
+                  created:
+                    type: string
+                  updated:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -5697,6 +5941,331 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: id
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/did/get_challenger_did_by_address/{address}':
+    get:
+      operationId: SoarchainDidGetChallengerDidByAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              challengerDid:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  pubKey:
+                    type: string
+                  keys:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      pubkeyType:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyPem:
+                        type: string
+                  verificationMethods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyBase58:
+                          type: string
+                  authentications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        verificationMethodId:
+                          type: string
+                        verificationMethod:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            controller:
+                              type: string
+                            publicKeyBase58:
+                              type: string
+                      title: >-
+                        VerificationRelationship defines a W3C verification
+                        relationship
+                  services:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        serviceEndpoint:
+                          type: string
+                      description: Service defines a service in the W3C Did.
+                  stakedAmount:
+                    type: string
+                  ipAddress:
+                    type: string
+                  created:
+                    type: string
+                  updated:
+                    type: string
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/did/get_runner_did_by_PubKey/{pubkey}':
+    get:
+      summary: Queries a Runner by PubKey
+      operationId: SoarchainDidGetRunnerDidByPubKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              runnerDid:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  pubKey:
+                    type: string
+                  keys:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      pubkeyType:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyPem:
+                        type: string
+                  verificationMethods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyBase58:
+                          type: string
+                  authentications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        verificationMethodId:
+                          type: string
+                        verificationMethod:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            controller:
+                              type: string
+                            publicKeyBase58:
+                              type: string
+                      title: >-
+                        VerificationRelationship defines a W3C verification
+                        relationship
+                  services:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        serviceEndpoint:
+                          type: string
+                      description: Service defines a service in the W3C Did.
+                  stakedAmount:
+                    type: string
+                  ipAddress:
+                    type: string
+                  created:
+                    type: string
+                  updated:
+                    type: string
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pubkey
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/soarchain/did/get_runner_did_by_ip/{ipAddress}':
+    get:
+      operationId: SoarchainDidGetRunnerDidByIp
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              runner:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  pubKey:
+                    type: string
+                  keys:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      pubkeyType:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyPem:
+                        type: string
+                  verificationMethods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyBase58:
+                          type: string
+                  authentications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        verificationMethodId:
+                          type: string
+                        verificationMethod:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            controller:
+                              type: string
+                            publicKeyBase58:
+                              type: string
+                      title: >-
+                        VerificationRelationship defines a W3C verification
+                        relationship
+                  services:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        serviceEndpoint:
+                          type: string
+                      description: Service defines a service in the W3C Did.
+                  stakedAmount:
+                    type: string
+                  ipAddress:
+                    type: string
+                  created:
+                    type: string
+                  updated:
+                    type: string
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: ipAddress
           in: path
           required: true
           type: string
@@ -5736,6 +6305,384 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      tags:
+        - Query
+  '/soarchain/did/query_challenger_did_by_pubKey/{pubkey}':
+    get:
+      operationId: SoarchainDidGetChallengerDidByPubKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              challengerDid:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  pubKey:
+                    type: string
+                  keys:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      pubkeyType:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyPem:
+                        type: string
+                  verificationMethods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyBase58:
+                          type: string
+                  authentications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        verificationMethodId:
+                          type: string
+                        verificationMethod:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            controller:
+                              type: string
+                            publicKeyBase58:
+                              type: string
+                      title: >-
+                        VerificationRelationship defines a W3C verification
+                        relationship
+                  services:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        serviceEndpoint:
+                          type: string
+                      description: Service defines a service in the W3C Did.
+                  stakedAmount:
+                    type: string
+                  ipAddress:
+                    type: string
+                  created:
+                    type: string
+                  updated:
+                    type: string
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pubkey
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /soarchain/did/runner_did:
+    get:
+      operationId: SoarchainDidRunnerDidAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              runnerDid:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    pubKey:
+                      type: string
+                    keys:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        pubkeyType:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyPem:
+                          type: string
+                    verificationMethods:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          type:
+                            type: string
+                          controller:
+                            type: string
+                          publicKeyBase58:
+                            type: string
+                    authentications:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          verificationMethodId:
+                            type: string
+                          verificationMethod:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                              controller:
+                                type: string
+                              publicKeyBase58:
+                                type: string
+                        title: >-
+                          VerificationRelationship defines a W3C verification
+                          relationship
+                    services:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          type:
+                            type: string
+                          serviceEndpoint:
+                            type: string
+                        description: Service defines a service in the W3C Did.
+                    stakedAmount:
+                      type: string
+                    ipAddress:
+                      type: string
+                    created:
+                      type: string
+                    updated:
+                      type: string
+                    address:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/soarchain/did/runner_did/{address}':
+    get:
+      operationId: SoarchainDidRunnerDid
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              runnerDid:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  pubKey:
+                    type: string
+                  keys:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      pubkeyType:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyPem:
+                        type: string
+                  verificationMethods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        controller:
+                          type: string
+                        publicKeyBase58:
+                          type: string
+                  authentications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        verificationMethodId:
+                          type: string
+                        verificationMethod:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            controller:
+                              type: string
+                            publicKeyBase58:
+                              type: string
+                      title: >-
+                        VerificationRelationship defines a W3C verification
+                        relationship
+                  services:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        serviceEndpoint:
+                          type: string
+                      description: Service defines a service in the W3C Did.
+                  stakedAmount:
+                    type: string
+                  ipAddress:
+                    type: string
+                  created:
+                    type: string
+                  updated:
+                    type: string
+                  address:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
       tags:
         - Query
   /soarchain/dpr/dpr:
@@ -6143,195 +7090,6 @@ paths:
           type: string
       tags:
         - Query
-  /soarchain/poa/challenger:
-    get:
-      summary: Queries a list of Challenger items.
-      operationId: SoarchainPoaChallengerAll
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              challenger:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    pubKey:
-                      type: string
-                    address:
-                      type: string
-                    score:
-                      type: string
-                    stakedAmount:
-                      type: string
-                    netEarnings:
-                      type: string
-                    type:
-                      type: string
-                    ipAddress:
-                      type: string
-                    rewardMultiplier:
-                      type: string
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                    title: |-
-                      next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently
-                  total:
-                    type: string
-                    format: uint64
-                    title: >-
-                      total is total number of results available if
-                      PageRequest.count_total
-
-                      was set, its value is undefined otherwise
-                description: >-
-                  PageResponse is to be embedded in gRPC response messages where
-                  the
-
-                  corresponding request message has used PageRequest.
-
-                   message SomeResponse {
-                           repeated Bar results = 1;
-                           PageResponse page = 2;
-                   }
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pagination.key
-          description: |-
-            key is a value returned in PageResponse.next_key to begin
-            querying the next page most efficiently. Only one of offset or key
-            should be set.
-          in: query
-          required: false
-          type: string
-          format: byte
-        - name: pagination.offset
-          description: >-
-            offset is a numeric offset that can be used when key is unavailable.
-
-            It is less efficient than using key. Only one of offset or key
-            should
-
-            be set.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.limit
-          description: >-
-            limit is the total number of results to be returned in the result
-            page.
-
-            If left empty it will default to a value to be set by each app.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.count_total
-          description: >-
-            count_total is set to true  to indicate that the result set should
-            include
-
-            a count of the total number of items available for pagination in
-            UIs.
-
-            count_total is only respected when offset is used. It is ignored
-            when key
-
-            is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
-      tags:
-        - Query
-  '/soarchain/poa/challenger/{address}':
-    get:
-      summary: Queries a Challenger by index.
-      operationId: SoarchainPoaChallenger
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              challenger:
-                type: object
-                properties:
-                  pubKey:
-                    type: string
-                  address:
-                    type: string
-                  score:
-                    type: string
-                  stakedAmount:
-                    type: string
-                  netEarnings:
-                    type: string
-                  type:
-                    type: string
-                  ipAddress:
-                    type: string
-                  rewardMultiplier:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: address
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
   /soarchain/poa/factory_keys:
     get:
       summary: Queries a list of FactoryKeys items.
@@ -6500,114 +7258,6 @@ paths:
           format: uint64
       tags:
         - Query
-  '/soarchain/poa/get_challenger_by_PubKey/{pubkey}':
-    get:
-      summary: Queries a Challenger by pubKey
-      operationId: SoarchainPoaGetChallengerByPubKey
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              challenger:
-                type: object
-                properties:
-                  pubKey:
-                    type: string
-                  address:
-                    type: string
-                  score:
-                    type: string
-                  stakedAmount:
-                    type: string
-                  netEarnings:
-                    type: string
-                  type:
-                    type: string
-                  ipAddress:
-                    type: string
-                  rewardMultiplier:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pubkey
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  '/soarchain/poa/get_challenger_by_address/{address}':
-    get:
-      summary: Queries a list of GetChallengerByAddress items.
-      operationId: SoarchainPoaGetChallengerByAddress
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              challenger:
-                type: object
-                properties:
-                  pubKey:
-                    type: string
-                  address:
-                    type: string
-                  score:
-                    type: string
-                  stakedAmount:
-                    type: string
-                  netEarnings:
-                    type: string
-                  type:
-                    type: string
-                  ipAddress:
-                    type: string
-                  rewardMultiplier:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: address
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
   '/soarchain/poa/get_reputation_by_address/{address}':
     get:
       operationId: SoarchainPoaGetReputationByAddress
@@ -6620,7 +7270,7 @@ paths:
               reputation:
                 type: object
                 properties:
-                  index:
+                  pubKey:
                     type: string
                   address:
                     type: string
@@ -6656,118 +7306,6 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: address
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  '/soarchain/poa/get_runner_by_PubKey/{pubkey}':
-    get:
-      summary: Queries a Runner by PubKey
-      operationId: SoarchainPoaGetRunnerByPubKey
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              runner:
-                type: object
-                properties:
-                  pubKey:
-                    type: string
-                  address:
-                    type: string
-                  score:
-                    type: string
-                  rewardMultiplier:
-                    type: string
-                  stakedAmount:
-                    type: string
-                  netEarnings:
-                    type: string
-                  ipAddress:
-                    type: string
-                  lastTimeChallenged:
-                    type: string
-                  coolDownTolerance:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pubkey
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  '/soarchain/poa/get_runner_by_ip/{ipAddress}':
-    get:
-      summary: Queries a list of GetRunnerByIp items.
-      operationId: SoarchainPoaGetRunnerByIp
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              runner:
-                type: object
-                properties:
-                  pubKey:
-                    type: string
-                  address:
-                    type: string
-                  score:
-                    type: string
-                  rewardMultiplier:
-                    type: string
-                  stakedAmount:
-                    type: string
-                  netEarnings:
-                    type: string
-                  ipAddress:
-                    type: string
-                  lastTimeChallenged:
-                    type: string
-                  coolDownTolerance:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: ipAddress
           in: path
           required: true
           type: string
@@ -6899,7 +7437,7 @@ paths:
                 items:
                   type: object
                   properties:
-                    index:
+                    pubKey:
                       type: string
                     address:
                       type: string
@@ -7019,7 +7557,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/soarchain/poa/reputation/{index}':
+  '/soarchain/poa/reputation/{pubkey}':
     get:
       operationId: SoarchainPoaReputation
       responses:
@@ -7031,7 +7569,7 @@ paths:
               reputation:
                 type: object
                 properties:
-                  index:
+                  pubKey:
                     type: string
                   address:
                     type: string
@@ -7066,200 +7604,7 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: index
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  /soarchain/poa/runner:
-    get:
-      summary: Queries a list of Runner items.
-      operationId: SoarchainPoaRunnerAll
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              runner:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    pubKey:
-                      type: string
-                    address:
-                      type: string
-                    score:
-                      type: string
-                    rewardMultiplier:
-                      type: string
-                    stakedAmount:
-                      type: string
-                    netEarnings:
-                      type: string
-                    ipAddress:
-                      type: string
-                    lastTimeChallenged:
-                      type: string
-                    coolDownTolerance:
-                      type: string
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                    title: |-
-                      next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently
-                  total:
-                    type: string
-                    format: uint64
-                    title: >-
-                      total is total number of results available if
-                      PageRequest.count_total
-
-                      was set, its value is undefined otherwise
-                description: >-
-                  PageResponse is to be embedded in gRPC response messages where
-                  the
-
-                  corresponding request message has used PageRequest.
-
-                   message SomeResponse {
-                           repeated Bar results = 1;
-                           PageResponse page = 2;
-                   }
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pagination.key
-          description: |-
-            key is a value returned in PageResponse.next_key to begin
-            querying the next page most efficiently. Only one of offset or key
-            should be set.
-          in: query
-          required: false
-          type: string
-          format: byte
-        - name: pagination.offset
-          description: >-
-            offset is a numeric offset that can be used when key is unavailable.
-
-            It is less efficient than using key. Only one of offset or key
-            should
-
-            be set.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.limit
-          description: >-
-            limit is the total number of results to be returned in the result
-            page.
-
-            If left empty it will default to a value to be set by each app.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.count_total
-          description: >-
-            count_total is set to true  to indicate that the result set should
-            include
-
-            a count of the total number of items available for pagination in
-            UIs.
-
-            count_total is only respected when offset is used. It is ignored
-            when key
-
-            is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
-      tags:
-        - Query
-  '/soarchain/poa/runner/{address}':
-    get:
-      summary: Queries a Runner by index.
-      operationId: SoarchainPoaRunner
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              runner:
-                type: object
-                properties:
-                  pubKey:
-                    type: string
-                  address:
-                    type: string
-                  score:
-                    type: string
-                  rewardMultiplier:
-                    type: string
-                  stakedAmount:
-                    type: string
-                  netEarnings:
-                    type: string
-                  ipAddress:
-                    type: string
-                  lastTimeChallenged:
-                    type: string
-                  coolDownTolerance:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: address
+        - name: pubkey
           in: path
           required: true
           type: string
@@ -15967,12 +16312,84 @@ definitions:
     description: >-
       MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount
       response type.
-  soarchain.did.DidDocument:
+  soarchain.did.ChallengerDid:
     type: object
     properties:
       id:
         type: string
-      index:
+      pubKey:
+        type: string
+      keys:
+        type: object
+        properties:
+          id:
+            type: string
+          pubkeyType:
+            type: string
+          controller:
+            type: string
+          publicKeyPem:
+            type: string
+      verificationMethods:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            controller:
+              type: string
+            publicKeyBase58:
+              type: string
+      authentications:
+        type: array
+        items:
+          type: object
+          properties:
+            verificationMethodId:
+              type: string
+            verificationMethod:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          title: VerificationRelationship defines a W3C verification relationship
+      services:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            serviceEndpoint:
+              type: string
+          description: Service defines a service in the W3C Did.
+      stakedAmount:
+        type: string
+      ipAddress:
+        type: string
+      created:
+        type: string
+      updated:
+        type: string
+      address:
+        type: string
+  soarchain.did.ClientDid:
+    type: object
+    properties:
+      id:
+        type: string
+      pubKey:
         type: string
       address:
         type: string
@@ -16032,7 +16449,7 @@ definitions:
               type: string
             serviceEndpoint:
               type: string
-          description: Service defines a service in the W3C Did Document.
+          description: Service defines a service in the W3C Did.
       vehicle:
         type: object
         properties:
@@ -16045,25 +16462,525 @@ definitions:
             type: string
           purchaseDate:
             type: string
-      pidSupportedOneToTwnety:
-        type: boolean
-      pidSupportedTwentyOneToForthy:
-        type: boolean
-      pidSupportedForthyOneToSixty:
-        type: boolean
+      SupportedPIDs:
+        type: string
       created:
         type: string
       updated:
         type: string
-  soarchain.did.DidDocumentWithSeq:
+  soarchain.did.Keys:
     type: object
     properties:
-      document:
+      id:
+        type: string
+      pubkeyType:
+        type: string
+      controller:
+        type: string
+      publicKeyPem:
+        type: string
+  soarchain.did.MsgDeactivateDidResponse:
+    type: object
+    description: MsgDeactivateDIDResponse defines the Msg/DeactivateDID response type.
+  soarchain.did.MsgGenChallengerResponse:
+    type: object
+  soarchain.did.MsgGenClientResponse:
+    type: object
+  soarchain.did.MsgGenRunnerResponse:
+    type: object
+  soarchain.did.Owner:
+    type: object
+    properties:
+      id:
+        type: string
+      purchaseDate:
+        type: string
+  soarchain.did.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  soarchain.did.QueryAllChallengerDidResponse:
+    type: object
+    properties:
+      challengerDid:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            pubKey:
+              type: string
+            keys:
+              type: object
+              properties:
+                id:
+                  type: string
+                pubkeyType:
+                  type: string
+                controller:
+                  type: string
+                publicKeyPem:
+                  type: string
+            verificationMethods:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  controller:
+                    type: string
+                  publicKeyBase58:
+                    type: string
+            authentications:
+              type: array
+              items:
+                type: object
+                properties:
+                  verificationMethodId:
+                    type: string
+                  verificationMethod:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyBase58:
+                        type: string
+                title: >-
+                  VerificationRelationship defines a W3C verification
+                  relationship
+            services:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  serviceEndpoint:
+                    type: string
+                description: Service defines a service in the W3C Did.
+            stakedAmount:
+              type: string
+            ipAddress:
+              type: string
+            created:
+              type: string
+            updated:
+              type: string
+            address:
+              type: string
+  soarchain.did.QueryAllClientDidResponse:
+    type: object
+    properties:
+      clientDid:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            pubKey:
+              type: string
+            address:
+              type: string
+            type:
+              type: string
+            keys:
+              type: object
+              properties:
+                id:
+                  type: string
+                pubkeyType:
+                  type: string
+                controller:
+                  type: string
+                publicKeyPem:
+                  type: string
+            verificationMethods:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  controller:
+                    type: string
+                  publicKeyBase58:
+                    type: string
+            authentications:
+              type: array
+              items:
+                type: object
+                properties:
+                  verificationMethodId:
+                    type: string
+                  verificationMethod:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyBase58:
+                        type: string
+                title: >-
+                  VerificationRelationship defines a W3C verification
+                  relationship
+            services:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  serviceEndpoint:
+                    type: string
+                description: Service defines a service in the W3C Did.
+            vehicle:
+              type: object
+              properties:
+                vin:
+                  type: string
+            owner:
+              type: object
+              properties:
+                id:
+                  type: string
+                purchaseDate:
+                  type: string
+            SupportedPIDs:
+              type: string
+            created:
+              type: string
+            updated:
+              type: string
+  soarchain.did.QueryAllRunnerDidResponse:
+    type: object
+    properties:
+      runnerDid:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            pubKey:
+              type: string
+            keys:
+              type: object
+              properties:
+                id:
+                  type: string
+                pubkeyType:
+                  type: string
+                controller:
+                  type: string
+                publicKeyPem:
+                  type: string
+            verificationMethods:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  controller:
+                    type: string
+                  publicKeyBase58:
+                    type: string
+            authentications:
+              type: array
+              items:
+                type: object
+                properties:
+                  verificationMethodId:
+                    type: string
+                  verificationMethod:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      controller:
+                        type: string
+                      publicKeyBase58:
+                        type: string
+                title: >-
+                  VerificationRelationship defines a W3C verification
+                  relationship
+            services:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  serviceEndpoint:
+                    type: string
+                description: Service defines a service in the W3C Did.
+            stakedAmount:
+              type: string
+            ipAddress:
+              type: string
+            created:
+              type: string
+            updated:
+              type: string
+            address:
+              type: string
+  soarchain.did.QueryGetChallengerDidByAddressResponse:
+    type: object
+    properties:
+      challengerDid:
         type: object
         properties:
           id:
             type: string
-          index:
+          pubKey:
+            type: string
+          keys:
+            type: object
+            properties:
+              id:
+                type: string
+              pubkeyType:
+                type: string
+              controller:
+                type: string
+              publicKeyPem:
+                type: string
+          verificationMethods:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          authentications:
+            type: array
+            items:
+              type: object
+              properties:
+                verificationMethodId:
+                  type: string
+                verificationMethod:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    controller:
+                      type: string
+                    publicKeyBase58:
+                      type: string
+              title: VerificationRelationship defines a W3C verification relationship
+          services:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                serviceEndpoint:
+                  type: string
+              description: Service defines a service in the W3C Did.
+          stakedAmount:
+            type: string
+          ipAddress:
+            type: string
+          created:
+            type: string
+          updated:
+            type: string
+          address:
+            type: string
+  soarchain.did.QueryGetChallengerDidByPubKeyResponse:
+    type: object
+    properties:
+      challengerDid:
+        type: object
+        properties:
+          id:
+            type: string
+          pubKey:
+            type: string
+          keys:
+            type: object
+            properties:
+              id:
+                type: string
+              pubkeyType:
+                type: string
+              controller:
+                type: string
+              publicKeyPem:
+                type: string
+          verificationMethods:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          authentications:
+            type: array
+            items:
+              type: object
+              properties:
+                verificationMethodId:
+                  type: string
+                verificationMethod:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    controller:
+                      type: string
+                    publicKeyBase58:
+                      type: string
+              title: VerificationRelationship defines a W3C verification relationship
+          services:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                serviceEndpoint:
+                  type: string
+              description: Service defines a service in the W3C Did.
+          stakedAmount:
+            type: string
+          ipAddress:
+            type: string
+          created:
+            type: string
+          updated:
+            type: string
+          address:
+            type: string
+  soarchain.did.QueryGetChallengerDidResponse:
+    type: object
+    properties:
+      challengerDid:
+        type: object
+        properties:
+          id:
+            type: string
+          pubKey:
+            type: string
+          keys:
+            type: object
+            properties:
+              id:
+                type: string
+              pubkeyType:
+                type: string
+              controller:
+                type: string
+              publicKeyPem:
+                type: string
+          verificationMethods:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          authentications:
+            type: array
+            items:
+              type: object
+              properties:
+                verificationMethodId:
+                  type: string
+                verificationMethod:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    controller:
+                      type: string
+                    publicKeyBase58:
+                      type: string
+              title: VerificationRelationship defines a W3C verification relationship
+          services:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                serviceEndpoint:
+                  type: string
+              description: Service defines a service in the W3C Did.
+          stakedAmount:
+            type: string
+          ipAddress:
+            type: string
+          created:
+            type: string
+          updated:
+            type: string
+          address:
+            type: string
+  soarchain.did.QueryGetClientDidResponse:
+    type: object
+    properties:
+      clientDid:
+        type: object
+        properties:
+          id:
+            type: string
+          pubKey:
             type: string
           address:
             type: string
@@ -16123,7 +17040,7 @@ definitions:
                   type: string
                 serviceEndpoint:
                   type: string
-              description: Service defines a service in the W3C Did Document.
+              description: Service defines a service in the W3C Did.
           vehicle:
             type: object
             properties:
@@ -16136,186 +17053,54 @@ definitions:
                 type: string
               purchaseDate:
                 type: string
-          pidSupportedOneToTwnety:
-            type: boolean
-          pidSupportedTwentyOneToForthy:
-            type: boolean
-          pidSupportedForthyOneToSixty:
-            type: boolean
+          SupportedPIDs:
+            type: string
           created:
             type: string
           updated:
             type: string
-      sequence:
-        type: string
-        format: uint64
-    description: >-
-      DidDocumentWithSeq defines a message for Did Document with a sequence
-      number for preventing replay attacks.
-  soarchain.did.Keys:
+  soarchain.did.QueryGetRunnerDidByIpResponse:
     type: object
     properties:
-      id:
-        type: string
-      pubkeyType:
-        type: string
-      controller:
-        type: string
-      publicKeyPem:
-        type: string
-  soarchain.did.MsgDeactivateDidResponse:
-    type: object
-    description: MsgDeactivateDIDResponse defines the Msg/DeactivateDID response type.
-  soarchain.did.MsgGenDidResponse:
-    type: object
-  soarchain.did.MsgUpdateDidResponse:
-    type: object
-    description: MsgUpdateDIDResponse defines the Msg/UpdateDID response type.
-  soarchain.did.Owner:
-    type: object
-    properties:
-      id:
-        type: string
-      purchaseDate:
-        type: string
-  soarchain.did.Params:
-    type: object
-    description: Params defines the parameters for the module.
-  soarchain.did.QueryAllDidResponse:
-    type: object
-    properties:
-      didDocument:
-        type: array
-        items:
-          type: object
-          properties:
-            document:
-              type: object
-              properties:
-                id:
-                  type: string
-                index:
-                  type: string
-                address:
-                  type: string
-                type:
-                  type: string
-                keys:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    pubkeyType:
-                      type: string
-                    controller:
-                      type: string
-                    publicKeyPem:
-                      type: string
-                verificationMethods:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      type:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyBase58:
-                        type: string
-                authentications:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      verificationMethodId:
-                        type: string
-                      verificationMethod:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                          controller:
-                            type: string
-                          publicKeyBase58:
-                            type: string
-                    title: >-
-                      VerificationRelationship defines a W3C verification
-                      relationship
-                services:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      type:
-                        type: string
-                      serviceEndpoint:
-                        type: string
-                    description: Service defines a service in the W3C Did Document.
-                vehicle:
-                  type: object
-                  properties:
-                    vin:
-                      type: string
-                owner:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    purchaseDate:
-                      type: string
-                pidSupportedOneToTwnety:
-                  type: boolean
-                pidSupportedTwentyOneToForthy:
-                  type: boolean
-                pidSupportedForthyOneToSixty:
-                  type: boolean
-                created:
-                  type: string
-                updated:
-                  type: string
-            sequence:
-              type: string
-              format: uint64
-          description: >-
-            DidDocumentWithSeq defines a message for Did Document with a
-            sequence number for preventing replay attacks.
-  soarchain.did.QueryGetDidResponse:
-    type: object
-    properties:
-      didDocument:
+      runner:
         type: object
         properties:
-          document:
+          id:
+            type: string
+          pubKey:
+            type: string
+          keys:
             type: object
             properties:
               id:
                 type: string
-              index:
+              pubkeyType:
                 type: string
-              address:
+              controller:
                 type: string
-              type:
+              publicKeyPem:
                 type: string
-              keys:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  pubkeyType:
-                    type: string
-                  controller:
-                    type: string
-                  publicKeyPem:
-                    type: string
-              verificationMethods:
-                type: array
-                items:
+          verificationMethods:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          authentications:
+            type: array
+            items:
+              type: object
+              properties:
+                verificationMethodId:
+                  type: string
+                verificationMethod:
                   type: object
                   properties:
                     id:
@@ -16326,67 +17111,179 @@ definitions:
                       type: string
                     publicKeyBase58:
                       type: string
-              authentications:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    verificationMethodId:
-                      type: string
-                    verificationMethod:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyBase58:
-                          type: string
-                  title: >-
-                    VerificationRelationship defines a W3C verification
-                    relationship
-              services:
-                type: array
-                items:
+              title: VerificationRelationship defines a W3C verification relationship
+          services:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                serviceEndpoint:
+                  type: string
+              description: Service defines a service in the W3C Did.
+          stakedAmount:
+            type: string
+          ipAddress:
+            type: string
+          created:
+            type: string
+          updated:
+            type: string
+          address:
+            type: string
+  soarchain.did.QueryGetRunnerDidByPubKeyResponse:
+    type: object
+    properties:
+      runnerDid:
+        type: object
+        properties:
+          id:
+            type: string
+          pubKey:
+            type: string
+          keys:
+            type: object
+            properties:
+              id:
+                type: string
+              pubkeyType:
+                type: string
+              controller:
+                type: string
+              publicKeyPem:
+                type: string
+          verificationMethods:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          authentications:
+            type: array
+            items:
+              type: object
+              properties:
+                verificationMethodId:
+                  type: string
+                verificationMethod:
                   type: object
                   properties:
                     id:
                       type: string
                     type:
                       type: string
-                    serviceEndpoint:
+                    controller:
                       type: string
-                  description: Service defines a service in the W3C Did Document.
-              vehicle:
-                type: object
-                properties:
-                  vin:
-                    type: string
-              owner:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  purchaseDate:
-                    type: string
-              pidSupportedOneToTwnety:
-                type: boolean
-              pidSupportedTwentyOneToForthy:
-                type: boolean
-              pidSupportedForthyOneToSixty:
-                type: boolean
-              created:
-                type: string
-              updated:
-                type: string
-          sequence:
+                    publicKeyBase58:
+                      type: string
+              title: VerificationRelationship defines a W3C verification relationship
+          services:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                serviceEndpoint:
+                  type: string
+              description: Service defines a service in the W3C Did.
+          stakedAmount:
             type: string
-            format: uint64
-        description: >-
-          DidDocumentWithSeq defines a message for Did Document with a sequence
-          number for preventing replay attacks.
+          ipAddress:
+            type: string
+          created:
+            type: string
+          updated:
+            type: string
+          address:
+            type: string
+  soarchain.did.QueryGetRunnerDidResponse:
+    type: object
+    properties:
+      runnerDid:
+        type: object
+        properties:
+          id:
+            type: string
+          pubKey:
+            type: string
+          keys:
+            type: object
+            properties:
+              id:
+                type: string
+              pubkeyType:
+                type: string
+              controller:
+                type: string
+              publicKeyPem:
+                type: string
+          verificationMethods:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          authentications:
+            type: array
+            items:
+              type: object
+              properties:
+                verificationMethodId:
+                  type: string
+                verificationMethod:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    controller:
+                      type: string
+                    publicKeyBase58:
+                      type: string
+              title: VerificationRelationship defines a W3C verification relationship
+          services:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                serviceEndpoint:
+                  type: string
+              description: Service defines a service in the W3C Did.
+          stakedAmount:
+            type: string
+          ipAddress:
+            type: string
+          created:
+            type: string
+          updated:
+            type: string
+          address:
+            type: string
   soarchain.did.QueryParamsResponse:
     type: object
     properties:
@@ -16394,6 +17291,78 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  soarchain.did.RunnerDid:
+    type: object
+    properties:
+      id:
+        type: string
+      pubKey:
+        type: string
+      keys:
+        type: object
+        properties:
+          id:
+            type: string
+          pubkeyType:
+            type: string
+          controller:
+            type: string
+          publicKeyPem:
+            type: string
+      verificationMethods:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            controller:
+              type: string
+            publicKeyBase58:
+              type: string
+      authentications:
+        type: array
+        items:
+          type: object
+          properties:
+            verificationMethodId:
+              type: string
+            verificationMethod:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                controller:
+                  type: string
+                publicKeyBase58:
+                  type: string
+          title: VerificationRelationship defines a W3C verification relationship
+      services:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            serviceEndpoint:
+              type: string
+          description: Service defines a service in the W3C Did.
+      stakedAmount:
+        type: string
+      ipAddress:
+        type: string
+      created:
+        type: string
+      updated:
+        type: string
+      address:
+        type: string
   soarchain.did.Service:
     type: object
     properties:
@@ -16403,7 +17372,7 @@ definitions:
         type: string
       serviceEndpoint:
         type: string
-    description: Service defines a service in the W3C Did Document.
+    description: Service defines a service in the W3C Did.
   soarchain.did.Vehicle:
     type: object
     properties:
@@ -16726,25 +17695,6 @@ definitions:
         type: string
       epochNumber:
         type: string
-  soarchain.poa.Challenger:
-    type: object
-    properties:
-      pubKey:
-        type: string
-      address:
-        type: string
-      score:
-        type: string
-      stakedAmount:
-        type: string
-      netEarnings:
-        type: string
-      type:
-        type: string
-      ipAddress:
-        type: string
-      rewardMultiplier:
-        type: string
   soarchain.poa.FactoryKeys:
     type: object
     properties:
@@ -16768,10 +17718,6 @@ definitions:
     type: object
   soarchain.poa.MsgClaimRunnerRewardsResponse:
     type: object
-  soarchain.poa.MsgGenChallengerResponse:
-    type: object
-  soarchain.poa.MsgGenRunnerResponse:
-    type: object
   soarchain.poa.MsgRegisterFactoryKeyResponse:
     type: object
   soarchain.poa.MsgRunnerChallengeResponse:
@@ -16779,29 +17725,7 @@ definitions:
   soarchain.poa.MsgSelectRandomChallengerResponse:
     type: object
     properties:
-      randomChallenger:
-        type: object
-        properties:
-          pubKey:
-            type: string
-          address:
-            type: string
-          score:
-            type: string
-          stakedAmount:
-            type: string
-          netEarnings:
-            type: string
-          type:
-            type: string
-          ipAddress:
-            type: string
-          rewardMultiplier:
-            type: string
-  soarchain.poa.MsgSelectRandomRunnerResponse:
-    type: object
-    properties:
-      randomRunner:
+      randomChallengerReputation:
         type: object
         properties:
           pubKey:
@@ -16812,72 +17736,39 @@ definitions:
             type: string
           rewardMultiplier:
             type: string
-          stakedAmount:
-            type: string
           netEarnings:
-            type: string
-          ipAddress:
             type: string
           lastTimeChallenged:
             type: string
           coolDownTolerance:
             type: string
-  soarchain.poa.MsgUnregisterChallengerResponse:
+          type:
+            type: string
+  soarchain.poa.MsgSelectRandomRunnerResponse:
     type: object
-  soarchain.poa.MsgUnregisterRunnerResponse:
-    type: object
+    properties:
+      randomRunnerReputation:
+        type: object
+        properties:
+          pubKey:
+            type: string
+          address:
+            type: string
+          score:
+            type: string
+          rewardMultiplier:
+            type: string
+          netEarnings:
+            type: string
+          lastTimeChallenged:
+            type: string
+          coolDownTolerance:
+            type: string
+          type:
+            type: string
   soarchain.poa.Params:
     type: object
     description: Params defines the parameters for the module.
-  soarchain.poa.QueryAllChallengerResponse:
-    type: object
-    properties:
-      challenger:
-        type: array
-        items:
-          type: object
-          properties:
-            pubKey:
-              type: string
-            address:
-              type: string
-            score:
-              type: string
-            stakedAmount:
-              type: string
-            netEarnings:
-              type: string
-            type:
-              type: string
-            ipAddress:
-              type: string
-            rewardMultiplier:
-              type: string
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            title: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
   soarchain.poa.QueryAllFactoryKeysResponse:
     type: object
     properties:
@@ -16924,7 +17815,7 @@ definitions:
         items:
           type: object
           properties:
-            index:
+            pubKey:
               type: string
             address:
               type: string
@@ -16939,57 +17830,6 @@ definitions:
             coolDownTolerance:
               type: string
             type:
-              type: string
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            title: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  soarchain.poa.QueryAllRunnerResponse:
-    type: object
-    properties:
-      runner:
-        type: array
-        items:
-          type: object
-          properties:
-            pubKey:
-              type: string
-            address:
-              type: string
-            score:
-              type: string
-            rewardMultiplier:
-              type: string
-            stakedAmount:
-              type: string
-            netEarnings:
-              type: string
-            ipAddress:
-              type: string
-            lastTimeChallenged:
-              type: string
-            coolDownTolerance:
               type: string
       pagination:
         type: object
@@ -17073,72 +17913,6 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  soarchain.poa.QueryGetChallengerByAddressResponse:
-    type: object
-    properties:
-      challenger:
-        type: object
-        properties:
-          pubKey:
-            type: string
-          address:
-            type: string
-          score:
-            type: string
-          stakedAmount:
-            type: string
-          netEarnings:
-            type: string
-          type:
-            type: string
-          ipAddress:
-            type: string
-          rewardMultiplier:
-            type: string
-  soarchain.poa.QueryGetChallengerByPubKeyResponse:
-    type: object
-    properties:
-      challenger:
-        type: object
-        properties:
-          pubKey:
-            type: string
-          address:
-            type: string
-          score:
-            type: string
-          stakedAmount:
-            type: string
-          netEarnings:
-            type: string
-          type:
-            type: string
-          ipAddress:
-            type: string
-          rewardMultiplier:
-            type: string
-  soarchain.poa.QueryGetChallengerResponse:
-    type: object
-    properties:
-      challenger:
-        type: object
-        properties:
-          pubKey:
-            type: string
-          address:
-            type: string
-          score:
-            type: string
-          stakedAmount:
-            type: string
-          netEarnings:
-            type: string
-          type:
-            type: string
-          ipAddress:
-            type: string
-          rewardMultiplier:
-            type: string
   soarchain.poa.QueryGetFactoryKeysResponse:
     type: object
     properties:
@@ -17166,7 +17940,7 @@ definitions:
       reputation:
         type: object
         properties:
-          index:
+          pubKey:
             type: string
           address:
             type: string
@@ -17188,7 +17962,7 @@ definitions:
       reputation:
         type: object
         properties:
-          index:
+          pubKey:
             type: string
           address:
             type: string
@@ -17203,78 +17977,6 @@ definitions:
           coolDownTolerance:
             type: string
           type:
-            type: string
-  soarchain.poa.QueryGetRunnerByIpResponse:
-    type: object
-    properties:
-      runner:
-        type: object
-        properties:
-          pubKey:
-            type: string
-          address:
-            type: string
-          score:
-            type: string
-          rewardMultiplier:
-            type: string
-          stakedAmount:
-            type: string
-          netEarnings:
-            type: string
-          ipAddress:
-            type: string
-          lastTimeChallenged:
-            type: string
-          coolDownTolerance:
-            type: string
-  soarchain.poa.QueryGetRunnerByPubKeyResponse:
-    type: object
-    properties:
-      runner:
-        type: object
-        properties:
-          pubKey:
-            type: string
-          address:
-            type: string
-          score:
-            type: string
-          rewardMultiplier:
-            type: string
-          stakedAmount:
-            type: string
-          netEarnings:
-            type: string
-          ipAddress:
-            type: string
-          lastTimeChallenged:
-            type: string
-          coolDownTolerance:
-            type: string
-  soarchain.poa.QueryGetRunnerResponse:
-    type: object
-    properties:
-      runner:
-        type: object
-        properties:
-          pubKey:
-            type: string
-          address:
-            type: string
-          score:
-            type: string
-          rewardMultiplier:
-            type: string
-          stakedAmount:
-            type: string
-          netEarnings:
-            type: string
-          ipAddress:
-            type: string
-          lastTimeChallenged:
-            type: string
-          coolDownTolerance:
             type: string
   soarchain.poa.QueryGetVrfDataResponse:
     type: object
@@ -17328,7 +18030,7 @@ definitions:
   soarchain.poa.Reputation:
     type: object
     properties:
-      index:
+      pubKey:
         type: string
       address:
         type: string
@@ -17343,27 +18045,6 @@ definitions:
       coolDownTolerance:
         type: string
       type:
-        type: string
-  soarchain.poa.Runner:
-    type: object
-    properties:
-      pubKey:
-        type: string
-      address:
-        type: string
-      score:
-        type: string
-      rewardMultiplier:
-        type: string
-      stakedAmount:
-        type: string
-      netEarnings:
-        type: string
-      ipAddress:
-        type: string
-      lastTimeChallenged:
-        type: string
-      coolDownTolerance:
         type: string
   soarchain.poa.VrfData:
     type: object
