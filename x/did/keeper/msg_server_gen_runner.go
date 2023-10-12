@@ -50,9 +50,9 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 		logger.Info("Verifying runner certificate successfully done.", "transaction", "GenRunner")
 	}
 
-	isUnique := k.IsUniqueDid(ctx, msg.Document.Id)
+	isUnique := k.IsNotUniqueDid(ctx, msg.Document.Id)
 	if isUnique {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenRunner][IsUniqueDid] failed. Did is already registered.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenRunner][IsNotUniqueDid] failed. Did is already registered.")
 	}
 
 	if logger != nil {

@@ -50,9 +50,9 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		logger.Info("Verifying challenger certificate successfully done.", "transaction", "GeChallenger")
 	}
 
-	isUnique := k.IsUniqueDid(ctx, msg.Document.Id)
+	isUnique := k.IsNotUniqueDid(ctx, msg.Document.Id)
 	if isUnique {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenChallenger][IsUniqueDid] failed. Did is already registered.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenChallenger][IsNotUniqueDid] failed. Did is already registered.")
 	}
 
 	if logger != nil {

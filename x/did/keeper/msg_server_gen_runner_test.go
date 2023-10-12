@@ -41,7 +41,7 @@ func (helper *KeeperTestHelper) Test_Gen_Runner() {
 			Certificate: Certificate,
 			Creator:     ADDRESS,
 		})
-		didDocument, found := keeper.GetRunnerDid(helper.Ctx, Did)
+		didDocument, found := keeper.GetRunnerDid(helper.Ctx, documentWithSequence.Document.Address)
 		fmt.Print("didDocument------------------->", didDocument)
 		helper.Require().Equal(found, true)
 		if err != nil {

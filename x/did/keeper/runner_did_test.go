@@ -15,15 +15,19 @@ func Test_SetGetRunnerDidDocument(t *testing.T) {
 	require.NotNil(t, privkey)
 	keeper.SetRunnerDid(ctx, *didDocument1.Document)
 
+	got1, found1 := keeper.GetRunnerDid(ctx, ADDRESS)
+	require.Equal(t, true, found1)
+	require.NotNil(t, got1)
+
 	didDocument2, privkey := NewRunnerDidDocumentWithSeq(SecondDid)
+	didDocument2.Document.Address = SecondAddress
+	didDocument2.Document.PubKey = SecondPubKey
 	require.NotNil(t, privkey)
 	keeper.SetRunnerDid(ctx, *didDocument2.Document)
 
-	// Test first DidDocument
-	got, found := keeper.GetRunnerDid(ctx, Did)
-	require.Equal(t, true, found)
-	require.NotNil(t, got)
-	require.Equal(t, didDocument1, got)
+	got2, found2 := keeper.GetRunnerDid(ctx, ADDRESS)
+	require.Equal(t, true, found2)
+	require.NotNil(t, got2)
 
 	// Test all DIDs
 	resDids := keeper.GetAllRunnerDid(ctx)

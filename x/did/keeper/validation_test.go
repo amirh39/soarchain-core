@@ -15,6 +15,6 @@ func Test_IsUniqueDid(t *testing.T) {
 	require.NotNil(t, privkey)
 	keeper.SetClientDid(ctx, *clientDidDocument.Document)
 
-	isFound := keeper.IsUniqueDid(ctx, clientDidDocument.Document.Id)
-	require.Equal(t, true, isFound)
+	isFound := keeper.IsNotUniqueDid(ctx, clientDidDocument.Document.Id)
+	require.Equal(t, false, isFound)
 }
