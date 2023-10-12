@@ -17,7 +17,7 @@ func TestHandleMsgDeactivateDID(t *testing.T) {
 	did, docWithSeq, _, _ := MakeTestData()
 	k.SetClientDid(ctx, *docWithSeq.Document)
 
-	didDocument, found := k.GetClientDid(ctx, did)
+	didDocument, found := k.GetClientDid(ctx, ADDRESS)
 	require.Equal(t, true, found)
 	require.NotNil(t, didDocument)
 
