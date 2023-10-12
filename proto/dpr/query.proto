@@ -53,3 +53,13 @@ message QueryAllDprResponse {
 	repeated Dpr dpr = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
+
+message QueryDPRsByClientPubkeyRequest {
+	string client_pubkey = 1;
+	cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+  
+message QueryDPRsByClientPubkeyResponse {
+	repeated Dpr dpr = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
