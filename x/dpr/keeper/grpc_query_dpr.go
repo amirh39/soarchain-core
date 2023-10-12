@@ -90,7 +90,7 @@ func (k Keeper) DPRsByClientPubkey(c context.Context, req *types.QueryDPRsByClie
 	})
 
 	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, status.Error(codes.NotFound, "[Dpr][DPRsByClientPubkey] failed. Invalid query parameters")
 	}
 
 	return &types.QueryDPRsByClientPubkeyResponse{Dpr: matchingDprs, Pagination: pageRes}, nil
