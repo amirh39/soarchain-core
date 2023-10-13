@@ -6,6 +6,8 @@ import (
 
 	"soarchain/x/dpr/types"
 
+	utility "soarchain/x/dpr/utility"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -35,6 +37,12 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 		logger.Info("Eligible client is found successfully", "transaction", "EnterDpr")
 	}
 
+	eligible, err := utility.ArePIDsSupported(did.SupportedPIDs, dpr.SupportedPIDs)
+	if eligible {
+		logger.Info("Client's PID's are supporting the DPR", "transaction", "EnterDpr")
+	} else {
+		return nil, sdkerrors.Wrap(err, "[EnterDpr][ArePIDsSupported] failed. Client's PID's are not supporting the DPR.")
+	}
 	clientPubKey := []string{}
 	clientPubKey = append(clientPubKey, msg.PubKey)
 
