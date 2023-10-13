@@ -11,6 +11,6 @@ message Dpr {
   repeated string vin = 7;
   repeated string clientPubkeys = 8;
   uint64 duration = 9;
+  string DPRendTime = 10; // Adding DPRendTime 
 }
-
 
