@@ -18,6 +18,7 @@ func DefaultGenesis() *GenesisState {
 			Vin:           []string{},
 			ClientPubkeys: []string{},
 			Duration:      0,
+			DPRendTime:    "",
 		},
 		Params: DefaultParams(),
 	}
