@@ -29,13 +29,6 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		logger.Info("Validationg DPR is successfully Done.", "transaction", "GenDpr")
 	}
 
-	// pinNumbers := utility.CalculatePinNumber(msg)
-
-	// eligible := k.Keeper.didKeeper.GetEligibleDids(ctx, pinNumbers)
-	// if !eligible {
-	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][GetEligibleDids] failed. There is no eligible client to serve this DPR.")
-	// }
-
 	//Save dpr into storage
 	newDpr := types.Dpr{
 		Id:            uuid.New().String(),
@@ -45,6 +38,7 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		Vin:           []string{},
 		ClientPubkeys: []string{},
 		Duration:      msg.Duration,
+		DPRendTime:    "",
 	}
 	k.SetDpr(ctx, newDpr)
 
