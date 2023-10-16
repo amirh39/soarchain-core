@@ -29,7 +29,6 @@ func (k msgServer) UpdateDpr(goCtx context.Context, msg *types.MsgUpdateDpr) (*t
 		Creator:       dpr.Creator,
 		SupportedPIDs: msg.SupportedPIDs,
 		IsActive:      dpr.IsActive,
-		Vin:           dpr.Vin,
 		ClientPubkeys: dpr.ClientPubkeys,
 		Duration:      msg.Duration,
 	}
