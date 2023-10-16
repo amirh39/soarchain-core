@@ -7,10 +7,9 @@ message Dpr {
   string id = 1;
   string creator = 2;
   string SupportedPIDs = 3;
-  bool isActive = 6;
-  repeated string vin = 7;
-  repeated string clientPubkeys = 8;
-  uint64 duration = 9;
-  string DPRendTime = 10; // Adding DPRendTime 
+  bool isActive = 4;
+  repeated string clientPubkeys = 5;
+  uint64 duration = 6;
+  string DPRendTime = 7; // Adding DPRendTime 
 }
 

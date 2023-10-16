@@ -33,9 +33,8 @@ message MsgUpdateDpr {
 message MsgUpdateDprResponse {}
 
 message MsgEnterDpr {
-  string pubKey =1;
-  string sender = 2;
-  string dprId = 3;
+  string sender = 1;
+  string dprId = 2;
 }
 
 message MsgEnterDprResponse {}
@@ -48,9 +47,8 @@ message MsgActivateDpr {
 message MsgActivateDprResponse {}
 
 message MsgLeaveDpr {
-  string pubKey = 1;
-  string sender = 2;
-  string dprId = 3;
+  string sender = 1;
+  string dprId = 2;
 }
 
 message MsgLeaveDprResponse {}
