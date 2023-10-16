@@ -17,11 +17,10 @@ func CmdLeaveDpr() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "leave-dpr [pubkey] [pdrId]",
 		Short: "Broadcast message leave-dpr",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-			argPubkey := args[0]
-			argDprId := args[1]
+			argDprId := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -29,7 +28,6 @@ func CmdLeaveDpr() *cobra.Command {
 			}
 
 			msg := types.NewMsgLeaveDpr(
-				argPubkey,
 				clientCtx.GetFromAddress().String(),
 				argDprId,
 			)
