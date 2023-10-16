@@ -9,9 +9,8 @@ const TypeMsgLeaveDpr = "leave_dpr"
 
 var _ sdk.Msg = &MsgActivateDpr{}
 
-func NewMsgLeaveDpr(pubkey string, sender string, dprId string) *MsgLeaveDpr {
+func NewMsgLeaveDpr(sender string, dprId string) *MsgLeaveDpr {
 	return &MsgLeaveDpr{
-		PubKey: pubkey,
 		Sender: sender,
 		DprId:  dprId,
 	}
