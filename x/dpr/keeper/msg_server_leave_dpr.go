@@ -41,9 +41,9 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetEligibleDidByPubkey] failed. Only motus owner can send the joinDPR transaction.")
 	}
 
-	did, eligible := k.didKeeper.GetEligibleDidByPubkey(ctx, msg.PubKey)
+	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
 	if !eligible {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetEligibleDidByPubkey] failed. The sender is not eligible for the DPR.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetClientDid] failed. The sender is not eligible for the DPR.")
 	}
 
 	if logger != nil {

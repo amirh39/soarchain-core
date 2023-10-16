@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"soarchain/x/dpr/types"
-
 	utility "soarchain/x/dpr/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -28,9 +27,11 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetDpr] failed. There is no DPR with this DPRid.")
 	}
 
-	did, eligible := k.didKeeper.GetEligibleDidByPubkey(ctx, msg.PubKey)
+	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
+	log.Println("BEFORE tryyyYYYYYYYYYYYYYYY")
 	if !eligible {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetEligibleDidByPubkey] failed. There is no eligible client to serve this DPR.")
+
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetClientDid] failed. There is no eligible client to serve this DPR.")
 	}
 
 	if logger != nil {
