@@ -6720,7 +6720,7 @@ paths:
                       format: uint64
                     DPRendTime:
                       type: string
-                      title: Adding DPRendTime as a uint64 field
+                      title: Adding DPRendTime
               pagination:
                 type: object
                 properties:
@@ -6858,7 +6858,7 @@ paths:
                     format: uint64
                   DPRendTime:
                     type: string
-                    title: Adding DPRendTime as a uint64 field
+                    title: Adding DPRendTime
         default:
           description: An unexpected error response.
           schema:
@@ -17436,7 +17436,7 @@ definitions:
         format: uint64
       DPRendTime:
         type: string
-        title: Adding DPRendTime as a uint64 field
+        title: Adding DPRendTime
   soarchain.dpr.MsgActivateDprResponse:
     type: object
   soarchain.dpr.MsgDeactivateDprResponse:
@@ -17481,7 +17481,7 @@ definitions:
               format: uint64
             DPRendTime:
               type: string
-              title: Adding DPRendTime as a uint64 field
+              title: Adding DPRendTime
       pagination:
         type: object
         properties:
@@ -17534,7 +17534,7 @@ definitions:
             format: uint64
           DPRendTime:
             type: string
-            title: Adding DPRendTime as a uint64 field
+            title: Adding DPRendTime
   soarchain.dpr.QueryParamsResponse:
     type: object
     properties:
