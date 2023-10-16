@@ -20,34 +20,23 @@ func remainedPubKeys(pubkey string, clientPubkeys []string) []string {
 	return newPubkeys
 }
 
-func remainedVins(vin string, vins []string) []string {
-	var newVins = []string{}
-	for _, dprVin := range vins {
-		if dprVin != vin {
-			newVins = append(newVins, dprVin)
-		}
-	}
-	return newVins
-}
-
 func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*types.MsgLeaveDprResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
 	log.Println("############## Leaving a dpr Transaction is Started ##############")
 
-	_, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
+	reputation, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetEligibleDidByPubkey] failed. Only motus owner can send the joinDPR transaction.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetReputationsByAddress] failed. Only motus owner can send the leaveDPR transaction.")
 	}
 
-	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
+	_, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
 	if !eligible {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetClientDid] failed. The sender is not eligible for the DPR.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetClientDid] failed. Client not in this DPR.")
 	}
-
 	if logger != nil {
-		logger.Info("Eligible client is found successfully", "transaction", "EnterDpr")
+		logger.Info("Eligible client is found successfully", "transaction", "LeaveDpr")
 	}
 
 	dpr, found := k.GetDpr(ctx, msg.DprId)
@@ -61,8 +50,7 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 		Creator:       dpr.Creator,
 		SupportedPIDs: dpr.SupportedPIDs,
 		IsActive:      dpr.IsActive,
-		Vin:           remainedVins(did.Vehicle.Vin, dpr.Vin),
-		ClientPubkeys: remainedPubKeys(msg.PubKey, dpr.ClientPubkeys),
+		ClientPubkeys: remainedPubKeys(reputation.PubKey, dpr.ClientPubkeys),
 		Duration:      dpr.Duration,
 	}
 	k.SetDpr(ctx, newDpr)
@@ -71,7 +59,7 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 		logger.Info("Dpr is vali and active", "transaction", "LeaveDpr", "dpr-objects")
 	}
 
-	log.Println("############## End of Generating dpr Transaction ##############")
+	log.Println("############## End of Leaving dpr Transaction ##############")
 
 	return &types.MsgLeaveDprResponse{}, nil
 }
