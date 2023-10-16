@@ -32,7 +32,6 @@ func CreateDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dpr {
 		items[i].Creator = CREATOR
 		items[i].Duration = 12
 		items[i].IsActive = false
-		items[i].Vin = []string{VIN}
 
 		keeper.SetDpr(ctx, items[i])
 	}
@@ -60,7 +59,6 @@ func SetupSecondDpr(n int) []types.Dpr {
 		items[i].Creator = CREATOR
 		items[i].Duration = 12
 		items[i].IsActive = false
-		items[i].Vin = []string{VIN}
 		items[i].SupportedPIDs = "FFFFF"
 	}
 	return items
@@ -103,7 +101,7 @@ func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Conte
 }
 
 const (
-	CREATOR = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
+	CREATOR = "soar1dx4yutqz8kmdfwejexxvtljch6j8x8nqnvywqp"
 	ADDRESS = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
 	PUBKEY  = "3059301306072a8648ce3d020106082a8648ce3d030107034200046c28e2efdf94600435dbba5ae7f195cb619e3dd128b7e0e2877f9a1da489027819001c3e0141cb579dc3d9e913a45644401bd2458313dc37d15dd58adcaff154"
 	VIN     = "1HGCM82636c678d14c93ad5bf14448da57f4f241b77e30a013d54f5d76c8126a7029aeb86"
@@ -115,7 +113,7 @@ const (
 	Did                  = "did:soar:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm"
 	SecondDid            = "did1:soar:1Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgap"
 	VerificationMethodId = Did + "#key1"
-	DprId                = "uuid-Id"
+	DprId                = "990d4bfb-7fdb-47c9-9b87-eef81dd79a7f"
 )
 
 func CreateEpochData(keeper *epochKeeper.Keeper, ctx sdk.Context) epochTypes.EpochData {
