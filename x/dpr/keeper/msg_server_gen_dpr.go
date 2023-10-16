@@ -26,7 +26,7 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 	}
 
 	if logger != nil {
-		logger.Info("Validationg DPR is successfully Done.", "transaction", "GenDpr")
+		logger.Info("Validating DPR is successfully Done.", "transaction", "GenDpr")
 	}
 
 	//Save dpr into storage
@@ -35,7 +35,6 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		Creator:       msg.Creator,
 		SupportedPIDs: msg.SupportedPIDs,
 		IsActive:      false,
-		Vin:           []string{},
 		ClientPubkeys: []string{},
 		Duration:      msg.Duration,
 		DPRendTime:    "",
