@@ -24,6 +24,9 @@ service Query {
 		option (google.api.http).get = "/soarchain/dpr/dpr/{id}";
 	}
 
+	rpc DPRsByClientPubkey(QueryDPRsByClientPubkeyRequest) returns (QueryDPRsByClientPubkeyResponse) {
+		option (google.api.http).get = "/soarchain/dpr/dpr/{client_pubkey}";
+	};
 // this line is used by starport scaffolding # 2
 }
 
@@ -51,5 +54,15 @@ message QueryAllDprRequest {
 
 message QueryAllDprResponse {
 	repeated Dpr dpr = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryDPRsByClientPubkeyRequest {
+	string client_pubkey = 1;
+	cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+  
+message QueryDPRsByClientPubkeyResponse {
+	repeated Dpr dpr = 1;
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
