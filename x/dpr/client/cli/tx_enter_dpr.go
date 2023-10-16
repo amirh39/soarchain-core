@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdEnterDpr() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "enter-dpr [pubkey] [pdrId]",
+		Use:   "enter-dpr [pubkey] [dprId]",
 		Short: "Broadcast message enter-dpr",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
