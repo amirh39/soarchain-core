@@ -2,6 +2,7 @@ package keeper_test
 
 import (
 	"log"
+	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/types"
 	poatypes "soarchain/x/poa/types"
 
@@ -16,21 +17,18 @@ func (helper *KeeperTestHelper) Test_Enter_DPR() {
 		poakeeper := helper.App.PoaKeeper
 		didKeeper := helper.App.DidKeeper
 		dprKeeper := helper.App.DprKeeper
-
+		helper.MsgServer = keeper.NewMsgServerImpl(helper.App.DprKeeper)
 		ctx := sdk.WrapSDKContext(helper.Ctx)
 
 		dpr := SetupDpr(1)
 		dprKeeper.SetDpr(helper.Ctx, dpr[0])
+		dprx, _ := dprKeeper.GetDpr(helper.Ctx, DprId)
+		log.Println(dprx)
 		helper.Require().NotEmpty(dpr)
-
-		vin := didtypes.Vehicle{
-			Vin: VIN,
-		}
 
 		newDid := didtypes.ClientDid{
 			Id:            Did,
 			PubKey:        PUBKEY,
-			Vehicle:       &vin,
 			SupportedPIDs: "FFFFF",
 			Address:       ADDRESS,
 		}
@@ -55,7 +53,6 @@ func (helper *KeeperTestHelper) Test_Enter_DPR() {
 		log.Println(rep, found)
 
 		helper.MsgServer.EnterDpr(ctx, &types.MsgEnterDpr{
-			PubKey: PUBKEY,
 			Sender: ADDRESS,
 			DprId:  DprId,
 		})

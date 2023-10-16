@@ -17,9 +17,9 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 
 	log.Println("############## Entering a dpr Transaction is Started ##############")
 
-	_, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
+	reputation, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetEligibleDidByPubkey] failed. Only motus owner can send the leaveDPR transaction.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetReputationsByAddress] failed. Only motus owner can send the joinDPR transaction.")
 	}
 
 	dpr, found := k.GetDpr(ctx, msg.DprId)
@@ -27,10 +27,16 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetDpr] failed. There is no DPR with this DPRid.")
 	}
 
-	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
-	log.Println("BEFORE tryyyYYYYYYYYYYYYYYY")
-	if !eligible {
+	//TODO: create a function in utils
+	for _, pubKey := range dpr.ClientPubkeys {
+		if reputation.PubKey == pubKey {
+			// Return an error if a match is found
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][REFACTOR] failed. PubKey already exists. Your device has already registered to this DPR.")
+		}
+	}
 
+	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
+	if !eligible {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetClientDid] failed. There is no eligible client to serve this DPR.")
 	}
 
@@ -39,16 +45,19 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 	}
 
 	eligible, err := utility.ArePIDsSupported(did.SupportedPIDs, dpr.SupportedPIDs)
-	if eligible {
-		logger.Info("Client's PID's are supporting the DPR", "transaction", "EnterDpr")
-	} else {
+	if !eligible {
 		return nil, sdkerrors.Wrap(err, "[EnterDpr][ArePIDsSupported] failed. Client's PID's are not supporting the DPR.")
 	}
+
+	if logger != nil {
+		logger.Info("Client's PID's are supporting the DPR", "transaction", "EnterDpr")
+	}
+
 	// Initialize a slice to store client public keys
 	var clientPubKeys []string
 	clientPubKeys = dpr.ClientPubkeys
 	// Function to add a new public key
-	clientPubKeys = append(clientPubKeys, msg.PubKey)
+	clientPubKeys = append(clientPubKeys, reputation.PubKey)
 
 	// Save dpr into storage
 	newDpr := types.Dpr{
