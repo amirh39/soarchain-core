@@ -10,6 +10,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+//TODO: check logic
 func (k msgServer) DeactivateDpr(goCtx context.Context, msg *types.MsgDeactivateDpr) (*types.MsgDeactivateDprResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
@@ -49,9 +50,9 @@ func (k msgServer) DeactivateDpr(goCtx context.Context, msg *types.MsgDeactivate
 		Creator:       dpr.Creator,
 		SupportedPIDs: dpr.SupportedPIDs,
 		IsActive:      false,
-		Vin:           dpr.Vin,
 		ClientPubkeys: dpr.ClientPubkeys,
 		Duration:      newDuration,
+		DPRendTime:    "",
 	}
 	k.SetDpr(ctx, newDpr)
 
