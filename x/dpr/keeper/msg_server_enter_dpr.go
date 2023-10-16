@@ -19,7 +19,7 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 
 	_, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetEligibleDidByPubkey] failed. Only motus owner can send the joinDPR transaction.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetEligibleDidByPubkey] failed. Only motus owner can send the leaveDPR transaction.")
 	}
 
 	dpr, found := k.GetDpr(ctx, msg.DprId)
@@ -44,11 +44,11 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 	} else {
 		return nil, sdkerrors.Wrap(err, "[EnterDpr][ArePIDsSupported] failed. Client's PID's are not supporting the DPR.")
 	}
-	clientPubKey := []string{}
-	clientPubKey = append(clientPubKey, msg.PubKey)
-
-	vin := []string{}
-	vin = append(vin, did.Vehicle.Vin)
+	// Initialize a slice to store client public keys
+	var clientPubKeys []string
+	clientPubKeys = dpr.ClientPubkeys
+	// Function to add a new public key
+	clientPubKeys = append(clientPubKeys, msg.PubKey)
 
 	// Save dpr into storage
 	newDpr := types.Dpr{
@@ -56,8 +56,7 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 		Creator:       dpr.Creator,
 		SupportedPIDs: dpr.SupportedPIDs,
 		IsActive:      dpr.IsActive,
-		Vin:           vin,
-		ClientPubkeys: clientPubKey,
+		ClientPubkeys: clientPubKeys,
 		Duration:      dpr.Duration,
 	}
 
