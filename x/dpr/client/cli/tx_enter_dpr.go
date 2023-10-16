@@ -17,11 +17,10 @@ func CmdEnterDpr() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "enter-dpr [pubkey] [dprId]",
 		Short: "Broadcast message enter-dpr",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-			argPubkey := args[0]
-			argDprId := args[1]
+			argDprId := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,7 +29,6 @@ func CmdEnterDpr() *cobra.Command {
 
 			msg := types.NewMsgEnterDpr(
 				clientCtx.GetFromAddress().String(),
-				argPubkey,
 				argDprId,
 			)
 			if err := msg.ValidateBasic(); err != nil {
