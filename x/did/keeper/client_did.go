@@ -17,12 +17,11 @@ func (k Keeper) SetClientDid(ctx sdk.Context, didDocument types.ClientDid) {
 }
 
 func (k Keeper) GetClientDid(ctx sdk.Context, Address string) (val types.ClientDid, found bool) {
-	log.Println("BEFORE STORING")
+
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
 	b := store.Get(types.DidKey(
 		Address,
 	))
-	log.Println("AFTER STORING")
 
 	if b == nil {
 		return val, false
