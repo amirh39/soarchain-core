@@ -15,7 +15,7 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
-	log.Println("############## Entering a dpr Transaction is Started ##############")
+	log.Println("############## Entering to a DPR Transaction is Started ##############")
 
 	reputation, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
 	if !found {

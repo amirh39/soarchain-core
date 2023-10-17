@@ -24,11 +24,11 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
-	log.Println("############## Leaving a dpr Transaction is Started ##############")
+	log.Println("############## Leaving from DPR Transaction is Started ##############")
 
 	reputation, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetReputationsByAddress] failed. Only motus owner can send the leaveDPR transaction.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetReputationsByAddress] failed. Only motus owner can send the leaveDPR transaction.")
 	}
 
 	_, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
@@ -41,7 +41,7 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 
 	dpr, found := k.GetDpr(ctx, msg.DprId)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetDpr] failed. Dpr not registered.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetDpr] failed. DPR not registered.")
 	}
 
 	// Save dpr into storage
@@ -56,10 +56,10 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 	k.SetDpr(ctx, newDpr)
 
 	if logger != nil {
-		logger.Info("Dpr is vali and active", "transaction", "LeaveDpr", "dpr-objects")
+		logger.Info("DPR is valid", "transaction", "LeaveDpr", "dpr-objects")
 	}
 
-	log.Println("############## End of Leaving dpr Transaction ##############")
+	log.Println("############## End of Leaving DPR Transaction ##############")
 
 	return &types.MsgLeaveDprResponse{}, nil
 }
