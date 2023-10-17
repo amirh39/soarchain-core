@@ -23,7 +23,7 @@ func (msg *MsgGenChallenger) Route() string {
 }
 
 func (msg *MsgGenChallenger) Type() string {
-	return TypeMsgGenClient
+	return TypeMsgGenChallenger
 }
 
 func (msg *MsgGenChallenger) GetSigners() []sdk.AccAddress {
