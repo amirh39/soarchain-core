@@ -6,6 +6,7 @@ import (
 
 	didtypes "soarchain/x/did/types"
 	epochtypes "soarchain/x/epoch/types"
+	poatypes "soarchain/x/poa/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
@@ -29,11 +30,12 @@ type BankKeeper interface {
 type DidKeeper interface {
 	SetClientDid(ctx sdk.Context, didDocument didtypes.ClientDid)
 	GetClientDid(ctx sdk.Context, address string) (val didtypes.ClientDid, found bool)
-	GetEligibleDidByPubkey(ctx sdk.Context, pubkey string) (didDocument didtypes.ClientDid, eligible bool)
-	GetEligibleDids(ctx sdk.Context, pins []uint) (found bool)
 }
 
 type EpochKeeper interface {
 	GetEpochData(ctx sdk.Context) (epochtypes.EpochData, bool)
 	SetEpochData(ctx sdk.Context, epochData epochtypes.EpochData)
+}
+type PoaKeeper interface {
+	GetReputationsByAddress(ctx sdk.Context, address string) (val poatypes.Reputation, found bool)
 }

@@ -1077,7 +1077,7 @@ var (
 
 	pattern_Query_GetRunnerDidByIp_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "did", "get_runner_did_by_ip", "ipAddress"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetChallengerDidByPubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "did", "get_challenger_did_by_PubKey", "pubkey"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetChallengerDidByPubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "did", "query_challenger_did_by_pubKey", "pubkey"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_GetRunnerDidByPubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "did", "get_runner_did_by_PubKey", "pubkey"}, "", runtime.AssumeColonVerbOpt(true)))
 

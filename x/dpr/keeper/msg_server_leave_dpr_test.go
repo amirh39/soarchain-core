@@ -3,6 +3,7 @@ package keeper_test
 import (
 	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/types"
+	poatypes "soarchain/x/poa/types"
 
 	didtypes "soarchain/x/did/types"
 
@@ -12,6 +13,7 @@ import (
 func (helper *KeeperTestHelper) Test_Leave_DPR() {
 	helper.Run("TestLeaveDpr", func() {
 		helper.Setup()
+		poaKeeper := helper.App.PoaKeeper
 		didKeeper := helper.App.DidKeeper
 		dprKeeper := helper.App.DprKeeper
 		helper.MsgServer = keeper.NewMsgServerImpl(helper.App.DprKeeper)
@@ -29,19 +31,31 @@ func (helper *KeeperTestHelper) Test_Leave_DPR() {
 			Id:      Did,
 			PubKey:  PUBKEY,
 			Vehicle: &vin,
+			Address: ADDRESS,
 		}
 
 		didDocument := didtypes.ClientDidWithSeq{
 			Document: &newDid,
 			Sequence: 0,
 		}
+		reputation := poatypes.Reputation{
+			PubKey:             PUBKEY,
+			Address:            ADDRESS,
+			Score:              ClientScroe,
+			RewardMultiplier:   ClientRewardMultiplier,
+			NetEarnings:        ClientNetEarnings,
+			LastTimeChallenged: LastTimeChallenged,
+			CoolDownTolerance:  CoolDownTolerance,
+		}
+		poaKeeper.SetReputation(helper.Ctx, reputation)
 		didKeeper.SetClientDid(helper.Ctx, *didDocument.Document)
+
 		res, err := helper.MsgServer.LeaveDpr(ctx, &types.MsgLeaveDpr{
-			PubKey: PUBKEY,
-			Sender: CREATOR,
+			Sender: ADDRESS,
 			DprId:  DprId,
 		})
 		helper.Require().Empty(res)
 		helper.Require().Nil(err)
+
 	})
 }

@@ -17,29 +17,24 @@ service Msg {
 
 message MsgGenDpr {
   string creator = 1;
-  bool pidSupportedOneToTwnety = 2; 
-  bool pidSupportedTwentyOneToForthy = 3; 
-  bool pidSupportedForthyOneToSixty = 4; 
-  uint64 duration = 5;
+  string SupportedPIDs = 2; 
+  uint64 duration = 3;
 }
 
 message MsgGenDprResponse {}
 
 message MsgUpdateDpr {
   string dprId = 1;
-  bool pidSupportedOneToTwnety = 2; 
-  bool pidSupportedTwentyOneToForthy = 3; 
-  bool pidSupportedForthyOneToSixty = 4; 
-  uint64 duration = 5;
-  string sender = 6;
+  string SupportedPIDs = 2; 
+  uint64 duration = 3;
+  string sender = 4;
 }
 
 message MsgUpdateDprResponse {}
 
 message MsgEnterDpr {
-  string pubKey =1;
-  string sender = 2;
-  string dprId = 3;
+  string sender = 1;
+  string dprId = 2;
 }
 
 message MsgEnterDprResponse {}
@@ -52,9 +47,8 @@ message MsgActivateDpr {
 message MsgActivateDprResponse {}
 
 message MsgLeaveDpr {
-  string pubKey = 1;
-  string sender = 2;
-  string dprId = 3;
+  string sender = 1;
+  string dprId = 2;
 }
 
 message MsgLeaveDprResponse {}

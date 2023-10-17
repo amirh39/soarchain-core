@@ -9,9 +9,8 @@ const TypeMsgEnterDpr = "enter_dpr"
 
 var _ sdk.Msg = &MsgGenDpr{}
 
-func NewMsgEnterDpr(sender string, pubKey string, dprId string) *MsgEnterDpr {
+func NewMsgEnterDpr(sender string, dprId string) *MsgEnterDpr {
 	return &MsgEnterDpr{
-		PubKey: pubKey,
 		Sender: sender,
 		DprId:  dprId,
 	}

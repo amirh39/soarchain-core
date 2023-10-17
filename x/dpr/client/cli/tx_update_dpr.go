@@ -21,11 +21,8 @@ func CmdUpdateDpr() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			dprId := args[0]
-			pidSupportedOneToTwnety, _ := strconv.ParseBool(args[1])
-			pidSupportedTwentyOneToForthy, _ := strconv.ParseBool(args[2])
-			pidSupportedForthyOneToSixty, _ := strconv.ParseBool(args[3])
-			duration, _ := strconv.ParseUint(args[4], 10, 64)
-
+			SupportedPIDs := args[1]
+			duration, _ := strconv.ParseUint(args[2], 10, 64)
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -33,9 +30,7 @@ func CmdUpdateDpr() *cobra.Command {
 
 			msg := types.NewMsgUpdateDpr(
 				dprId,
-				pidSupportedOneToTwnety,
-				pidSupportedTwentyOneToForthy,
-				pidSupportedForthyOneToSixty,
+				SupportedPIDs,
 				duration,
 				clientCtx.GetFromAddress().String(),
 			)

@@ -442,7 +442,7 @@ var (
 
 	pattern_Query_Dpr_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"soarchain", "dpr", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_DPRsByClientPubkey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"soarchain", "dpr", "client_pubkey"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_DPRsByClientPubkey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"soarchain", "dpr", "client", "client_pubkey"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

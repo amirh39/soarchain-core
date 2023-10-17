@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"soarchain/x/dpr/types"
+	"soarchain/x/dpr/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -36,17 +37,20 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. There is no client to activate Dpr.")
 	}
 
+	dprEndTime, err := utility.CalculateDPREndTime(ctx.BlockHeader().Time, int(dpr.Duration))
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[CalculateDPREndTime] failed. End time of the DPR couldn't calculated.")
+	}
+
 	//Save dpr into storage
 	newDpr := types.Dpr{
-		Id:                            dpr.Id,
-		Creator:                       dpr.Creator,
-		PidSupportedOneToTwnety:       dpr.PidSupportedOneToTwnety,
-		PidSupportedTwentyOneToForthy: dpr.PidSupportedTwentyOneToForthy,
-		PidSupportedForthyOneToSixty:  dpr.PidSupportedForthyOneToSixty,
-		IsActive:                      true,
-		Vin:                           dpr.Vin,
-		ClientPubkeys:                 dpr.ClientPubkeys,
-		Duration:                      dpr.Duration,
+		Id:            dpr.Id,
+		Creator:       dpr.Creator,
+		SupportedPIDs: dpr.SupportedPIDs,
+		IsActive:      true,
+		ClientPubkeys: dpr.ClientPubkeys,
+		Duration:      dpr.Duration,
+		DPRendTime:    dprEndTime,
 	}
 	k.SetDpr(ctx, newDpr)
 

@@ -81,16 +81,18 @@ func (k Keeper) GetReputationsByAddress(ctx sdk.Context, address string) (val ty
 	return types.Reputation{}, false
 }
 
-func (k Keeper) GetReputationByType(ctx sdk.Context, Address string, Type string) (val types.Reputation, found bool) {
+func (k Keeper) GetReputationsByAddressAndType(ctx sdk.Context, address, reputationType string) (val types.Reputation, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
-	b := store.Get(types.ReputationKey(
-		Address,
-	))
+	defer iterator.Close()
 
-	k.cdc.MustUnmarshal(b, &val)
-	if val.Type == Type {
-		return val, true
+	for ; iterator.Valid(); iterator.Next() {
+		var reputation types.Reputation
+		k.cdc.MustUnmarshal(iterator.Value(), &reputation)
+		if reputation.Address == address && reputation.Type == reputationType {
+			return reputation, true
+		}
 	}
 	return types.Reputation{}, false
 }

@@ -24,6 +24,7 @@ type (
 
 		bankKeeper  types.BankKeeper
 		epochKeeper types.EpochKeeper
+		poaKeeper   types.PoaKeeper
 		didKeeper   types.DidKeeper
 	}
 )
@@ -36,6 +37,7 @@ func NewDprKeeper(
 
 	bankKeeper types.BankKeeper,
 	epochKeeper types.EpochKeeper,
+	poaKeeper types.PoaKeeper,
 	didKeeper types.DidKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
@@ -51,6 +53,7 @@ func NewDprKeeper(
 		paramstore:  ps,
 		bankKeeper:  bankKeeper,
 		epochKeeper: epochKeeper,
+		poaKeeper:   poaKeeper,
 		didKeeper:   didKeeper,
 	}
 }

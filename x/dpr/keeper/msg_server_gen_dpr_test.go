@@ -24,11 +24,9 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		epochKeeper.SetEpochData(helper.Ctx, epochData)
 
 		newDid := didtypes.ClientDid{
-			Id:                            Did,
-			PubKey:                        PUBKEY,
-			PidSupportedOneToTwnety:       true,
-			PidSupportedTwentyOneToForthy: false,
-			PidSupportedForthyOneToSixty:  false,
+			Id:            Did,
+			PubKey:        PUBKEY,
+			SupportedPIDs: "FFFFFFF",
 		}
 
 		didDocument := didtypes.ClientDidWithSeq{
@@ -38,11 +36,9 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		didKeeper.SetClientDid(helper.Ctx, *didDocument.Document)
 
 		res, err := helper.MsgServer.GenDpr(ctx, &types.MsgGenDpr{
-			Creator:                       CREATOR,
-			PidSupportedOneToTwnety:       true,
-			PidSupportedTwentyOneToForthy: false,
-			PidSupportedForthyOneToSixty:  false,
-			Duration:                      45,
+			Creator:       CREATOR,
+			SupportedPIDs: "BE1FA813",
+			Duration:      45,
 		})
 		helper.Require().Empty(res)
 		helper.Require().Nil(err)

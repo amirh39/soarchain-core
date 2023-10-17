@@ -11,15 +11,13 @@ func DefaultGenesis() *GenesisState {
 		// this line is used by starport scaffolding # genesis/types/default
 		DprList: []Dpr{},
 		Dpr: Dpr{
-			Id:                            "",
-			Creator:                       "",
-			PidSupportedOneToTwnety:       false,
-			PidSupportedTwentyOneToForthy: false,
-			PidSupportedForthyOneToSixty:  false,
-			IsActive:                      false,
-			Vin:                           []string{},
-			ClientPubkeys:                 []string{},
-			Duration:                      0,
+			Id:            "",
+			Creator:       "",
+			SupportedPIDs: "",
+			IsActive:      false,
+			ClientPubkeys: []string{},
+			Duration:      0,
+			DPRendTime:    "",
 		},
 		Params: DefaultParams(),
 	}

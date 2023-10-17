@@ -25,15 +25,12 @@ func (k msgServer) UpdateDpr(goCtx context.Context, msg *types.MsgUpdateDpr) (*t
 
 	//Update dpr into storage
 	newDpr := types.Dpr{
-		Id:                            msg.DprId,
-		Creator:                       dpr.Creator,
-		PidSupportedOneToTwnety:       msg.PidSupportedOneToTwnety,
-		PidSupportedTwentyOneToForthy: msg.PidSupportedTwentyOneToForthy,
-		PidSupportedForthyOneToSixty:  msg.PidSupportedForthyOneToSixty,
-		IsActive:                      dpr.IsActive,
-		Vin:                           dpr.Vin,
-		ClientPubkeys:                 dpr.ClientPubkeys,
-		Duration:                      msg.Duration,
+		Id:            msg.DprId,
+		Creator:       dpr.Creator,
+		SupportedPIDs: msg.SupportedPIDs,
+		IsActive:      dpr.IsActive,
+		ClientPubkeys: dpr.ClientPubkeys,
+		Duration:      msg.Duration,
 	}
 	k.SetDpr(ctx, newDpr)
 

@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"soarchain/x/dpr/types"
-	"soarchain/x/dpr/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -27,27 +26,18 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 	}
 
 	if logger != nil {
-		logger.Info("Validationg DPR is successfully Done.", "transaction", "GenDpr")
-	}
-
-	pinNumbers := utility.CalculatePinNumber(msg)
-
-	eligible := k.Keeper.didKeeper.GetEligibleDids(ctx, pinNumbers)
-	if !eligible {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][GetEligibleDids] failed. There is no eligible client to serve this DPR.")
+		logger.Info("Validating DPR is successfully Done.", "transaction", "GenDpr")
 	}
 
 	//Save dpr into storage
 	newDpr := types.Dpr{
-		Id:                            uuid.New().String(),
-		Creator:                       msg.Creator,
-		PidSupportedOneToTwnety:       msg.PidSupportedOneToTwnety,
-		PidSupportedTwentyOneToForthy: msg.PidSupportedTwentyOneToForthy,
-		PidSupportedForthyOneToSixty:  msg.PidSupportedForthyOneToSixty,
-		IsActive:                      false,
-		Vin:                           []string{},
-		ClientPubkeys:                 []string{},
-		Duration:                      msg.Duration,
+		Id:            uuid.New().String(),
+		Creator:       msg.Creator,
+		SupportedPIDs: msg.SupportedPIDs,
+		IsActive:      false,
+		ClientPubkeys: []string{},
+		Duration:      msg.Duration,
+		DPRendTime:    "",
 	}
 	k.SetDpr(ctx, newDpr)
 

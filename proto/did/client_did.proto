@@ -20,11 +20,9 @@ message ClientDid {
   repeated Service services = 8 [json_name = "service"];
   Vehicle vehicle = 9 [json_name = "vehicle"];
   Owner owner = 10 [json_name = "owner"];
-  bool pidSupportedOneToTwnety = 11;
-  bool pidSupportedTwentyOneToForthy = 12;
-  bool pidSupportedForthyOneToSixty = 13;
-  string created = 14;
-  string updated = 15;
+  string SupportedPIDs = 11;
+  string created = 12;
+  string updated = 13;
 }
 
 message Keys {
