@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"log"
 	"soarchain/x/did/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
@@ -26,7 +25,6 @@ func (k Keeper) GetClientDid(ctx sdk.Context, Address string) (val types.ClientD
 	if b == nil {
 		return val, false
 	}
-	log.Println(b)
 
 	k.cdc.MustUnmarshal(b, &val)
 	return val, true
