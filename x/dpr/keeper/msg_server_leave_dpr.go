@@ -11,12 +11,21 @@ import (
 )
 
 func remainedPubKeys(pubkey string, clientPubkeys []string) []string {
-	var newPubkeys = []string{}
+	// Convert the slice into a map
+	pubkeyMap := make(map[string]struct{})
 	for _, clientPubkey := range clientPubkeys {
-		if clientPubkey != pubkey {
-			newPubkeys = append(newPubkeys, clientPubkey)
-		}
+		pubkeyMap[clientPubkey] = struct{}{}
 	}
+
+	// Remove the pubkey from the map
+	delete(pubkeyMap, pubkey)
+
+	// Convert the map back into a slice struct
+	var newPubkeys []string
+	for clientPubkey := range pubkeyMap {
+		newPubkeys = append(newPubkeys, clientPubkey)
+	}
+
 	return newPubkeys
 }
 
