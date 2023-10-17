@@ -31,18 +31,21 @@ func (k Keeper) updateChallengerReputation(ctx sdk.Context, challengerReputation
 	}
 
 	if len(earnedRewardsBigInt) > 0 {
-		totalEarnings, err = k.calculateTotalEarnings(ctx, challengerReputation.NetEarnings, earnedRewardsBigInt[0], constants.Runner)
+		totalEarnings, err = k.calculateTotalEarnings(ctx, challengerReputation.NetEarnings, earnedRewardsBigInt[0], constants.Challenger)
 		if err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
 		}
 	}
 
 	updatedChallenger := types.Reputation{
-		PubKey:           challengerReputation.PubKey,
-		Address:          challengerReputation.Address,
-		Score:            strconv.FormatFloat(newScore[0], 'f', -1, 64),
-		NetEarnings:      totalEarnings.String(),
-		RewardMultiplier: strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
+		PubKey:             challengerReputation.PubKey,
+		Address:            challengerReputation.Address,
+		Score:              strconv.FormatFloat(newScore[0], 'f', -1, 64),
+		NetEarnings:        totalEarnings.String(),
+		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
+		LastTimeChallenged: ctx.BlockTime().String(),
+		CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, challengerReputation.Address), 10),
+		Type:               challengerReputation.Type,
 	}
 
 	k.SetReputation(ctx, updatedChallenger)
@@ -121,6 +124,7 @@ func (k Keeper) updateRunnerReputation(ctx sdk.Context, creator string, runnerPu
 		NetEarnings:        totalEarnings.String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, creator), 10),
+		Type:               runner.Type,
 	}
 	k.SetReputation(ctx, updatedRunner)
 
@@ -163,7 +167,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 		rewardMultiplier, score := k.rewardAndScore(reputation.Score)
 
 		if len(earnedRewardsBigInt) > 0 {
-			totalEarnings, err = k.calculateTotalEarnings(ctx, reputation.NetEarnings, earnedRewardsBigInt[i], constants.Runner)
+			totalEarnings, err = k.calculateTotalEarnings(ctx, reputation.NetEarnings, earnedRewardsBigInt[i], constants.V2NBX)
 			if err != nil {
 				return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.TotalEarnings)
 			}
@@ -171,11 +175,13 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 
 		updatedReputation := types.Reputation{
 			PubKey:             reputation.PubKey,
+			Address:            reputation.Address,
 			Score:              strconv.FormatFloat(score, 'f', -1, 64),
 			NetEarnings:        totalEarnings.String(),
 			LastTimeChallenged: ctx.BlockTime().String(),
 			CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, msg.Creator), 10),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
+			Type:               reputation.Type,
 		}
 
 		k.SetReputation(ctx, updatedReputation)
@@ -212,7 +218,7 @@ func (k msgServer) RunnerChallenge(goCtx context.Context, msg *types.MsgRunnerCh
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[RunnerChallenge][GetEpochData] failed. Epoch data is not found!")
 	}
 
-	challengerReputation, found := k.GetReputationByType(ctx, msg.Creator, constants.V2NChallenger)
+	challengerReputation, found := k.GetReputationsByAddressAndType(ctx, msg.Creator, constants.V2NChallenger)
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, errors.GetChallengerByType)
 	}
