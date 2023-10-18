@@ -6714,9 +6714,12 @@ paths:
                     duration:
                       type: string
                       format: uint64
-                    DPRendTime:
+                    dprEndTime:
                       type: string
                       title: Adding DPRendTime
+                    dprStartEpoch:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -6854,9 +6857,12 @@ paths:
                     duration:
                       type: string
                       format: uint64
-                    DPRendTime:
+                    dprEndTime:
                       type: string
                       title: Adding DPRendTime
+                    dprStartEpoch:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -6988,9 +6994,12 @@ paths:
                   duration:
                     type: string
                     format: uint64
-                  DPRendTime:
+                  dprEndTime:
                     type: string
                     title: Adding DPRendTime
+                  dprStartEpoch:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -17562,9 +17571,12 @@ definitions:
       duration:
         type: string
         format: uint64
-      DPRendTime:
+      dprEndTime:
         type: string
         title: Adding DPRendTime
+      dprStartEpoch:
+        type: string
+        format: uint64
   soarchain.dpr.MsgActivateDprResponse:
     type: object
   soarchain.dpr.MsgDeactivateDprResponse:
@@ -17603,9 +17615,12 @@ definitions:
             duration:
               type: string
               format: uint64
-            DPRendTime:
+            dprEndTime:
               type: string
               title: Adding DPRendTime
+            dprStartEpoch:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:
@@ -17654,9 +17669,12 @@ definitions:
             duration:
               type: string
               format: uint64
-            DPRendTime:
+            dprEndTime:
               type: string
               title: Adding DPRendTime
+            dprStartEpoch:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:
@@ -17703,9 +17721,12 @@ definitions:
           duration:
             type: string
             format: uint64
-          DPRendTime:
+          dprEndTime:
             type: string
             title: Adding DPRendTime
+          dprStartEpoch:
+            type: string
+            format: uint64
   soarchain.dpr.QueryParamsResponse:
     type: object
     properties:

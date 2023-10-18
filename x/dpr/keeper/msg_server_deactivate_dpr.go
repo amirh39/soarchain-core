@@ -52,7 +52,8 @@ func (k msgServer) DeactivateDpr(goCtx context.Context, msg *types.MsgDeactivate
 		IsActive:      false,
 		ClientPubkeys: dpr.ClientPubkeys,
 		Duration:      newDuration,
-		DPRendTime:    "",
+		DprEndTime:    "",
+		DprStartEpoch: 0,
 	}
 	k.SetDpr(ctx, newDpr)
 

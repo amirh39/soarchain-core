@@ -31,6 +31,8 @@ func (k msgServer) UpdateDpr(goCtx context.Context, msg *types.MsgUpdateDpr) (*t
 		IsActive:      dpr.IsActive,
 		ClientPubkeys: dpr.ClientPubkeys,
 		Duration:      msg.Duration,
+		DprEndTime:    "",
+		DprStartEpoch: 0,
 	}
 	k.SetDpr(ctx, newDpr)
 
