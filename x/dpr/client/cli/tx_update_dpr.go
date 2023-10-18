@@ -15,9 +15,9 @@ var _ = strconv.Itoa(0)
 
 func CmdUpdateDpr() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-dpr [pdrId] [pidSupportedOneToTwnety] [pidSupportedTwentyOneToForthy] [pidSupportedForthyOneToSixty]",
+		Use:   "update-dpr [pdrId] [SupportedPIDs] [duration]",
 		Short: "Broadcast message update-dpr",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			dprId := args[0]
