@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"log"
-
 	"soarchain/x/dpr/types"
 	"soarchain/x/dpr/utility"
 
@@ -39,9 +38,13 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 
 	dprEndTime, err := utility.CalculateDPREndTime(ctx.BlockHeader().Time, int(dpr.Duration))
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[CalculateDPREndTime] failed. End time of the DPR couldn't calculated.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr][CalculateDPREndTime] failed. End time of the DPR couldn't calculated.")
 	}
 
+	epochData, isFound := k.epochKeeper.GetEpochData(ctx)
+	if !isFound {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ActivateDpr][GetEpochData] failed. Epoch data is not found!")
+	}
 	//Save dpr into storage
 	newDpr := types.Dpr{
 		Id:            dpr.Id,
@@ -50,7 +53,8 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 		IsActive:      true,
 		ClientPubkeys: dpr.ClientPubkeys,
 		Duration:      dpr.Duration,
-		DPRendTime:    dprEndTime,
+		DprEndTime:    dprEndTime,
+		DprStartEpoch: epochData.TotalEpochs,
 	}
 	k.SetDpr(ctx, newDpr)
 
