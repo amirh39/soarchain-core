@@ -61,6 +61,8 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 		IsActive:      dpr.IsActive,
 		ClientPubkeys: remainedPubKeys(reputation.PubKey, dpr.ClientPubkeys),
 		Duration:      dpr.Duration,
+		DprEndTime:    "",
+		DprStartEpoch: 0,
 	}
 	k.SetDpr(ctx, newDpr)
 

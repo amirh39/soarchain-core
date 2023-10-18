@@ -37,7 +37,8 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		IsActive:      false,
 		ClientPubkeys: []string{},
 		Duration:      msg.Duration,
-		DPRendTime:    "",
+		DprEndTime:    "",
+		DprStartEpoch: 0,
 	}
 	k.SetDpr(ctx, newDpr)
 

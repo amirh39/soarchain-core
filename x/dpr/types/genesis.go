@@ -17,7 +17,8 @@ func DefaultGenesis() *GenesisState {
 			IsActive:      false,
 			ClientPubkeys: []string{},
 			Duration:      0,
-			DPRendTime:    "",
+			DprEndTime:    "",
+			DprStartEpoch: 0,
 		},
 		Params: DefaultParams(),
 	}

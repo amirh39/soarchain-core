@@ -67,6 +67,8 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 		IsActive:      dpr.IsActive,
 		ClientPubkeys: clientPubKeys,
 		Duration:      dpr.Duration,
+		DprEndTime:    "",
+		DprStartEpoch: 0,
 	}
 
 	k.SetDpr(ctx, newDpr)
