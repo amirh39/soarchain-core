@@ -15,11 +15,11 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
-	log.Println("############## Activation a dpr Transaction is Started ##############")
+	log.Println("############## Activation of DPR Transaction is Started ##############")
 
 	dpr, found := k.GetDpr(ctx, msg.DprId)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ActivateDpr][GetDpr] failed. Dpr not registered.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ActivateDpr][GetDpr] failed. DPR not registered.")
 	}
 	if dpr.Creator != msg.Sender {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[ActivateDpr] failed. There is no valid owner for this DPR [ %T ]", msg.DprId)
@@ -34,7 +34,7 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 	}
 
 	if len(dpr.ClientPubkeys) == 0 || dpr.ClientPubkeys == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. There is no client to activate Dpr.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. There is no client to activate DPR.")
 	}
 
 	dprEndTime, err := utility.CalculateDPREndTime(ctx.BlockHeader().Time, int(dpr.Duration))

@@ -6703,7 +6703,7 @@ paths:
                       type: string
                     creator:
                       type: string
-                    SupportedPIDs:
+                    supportedPIDs:
                       type: string
                     isActive:
                       type: boolean
@@ -6843,7 +6843,7 @@ paths:
                       type: string
                     creator:
                       type: string
-                    SupportedPIDs:
+                    supportedPIDs:
                       type: string
                     isActive:
                       type: boolean
@@ -6977,7 +6977,7 @@ paths:
                     type: string
                   creator:
                     type: string
-                  SupportedPIDs:
+                  supportedPIDs:
                     type: string
                   isActive:
                     type: boolean
@@ -17551,7 +17551,7 @@ definitions:
         type: string
       creator:
         type: string
-      SupportedPIDs:
+      supportedPIDs:
         type: string
       isActive:
         type: boolean
@@ -17592,7 +17592,7 @@ definitions:
               type: string
             creator:
               type: string
-            SupportedPIDs:
+            supportedPIDs:
               type: string
             isActive:
               type: boolean
@@ -17643,7 +17643,7 @@ definitions:
               type: string
             creator:
               type: string
-            SupportedPIDs:
+            supportedPIDs:
               type: string
             isActive:
               type: boolean
@@ -17692,7 +17692,7 @@ definitions:
             type: string
           creator:
             type: string
-          SupportedPIDs:
+          supportedPIDs:
             type: string
           isActive:
             type: boolean

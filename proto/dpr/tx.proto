@@ -17,7 +17,7 @@ service Msg {
 
 message MsgGenDpr {
   string creator = 1;
-  string SupportedPIDs = 2; 
+  string supportedPIDs = 2; 
   uint64 duration = 3;
 }
 
@@ -25,7 +25,7 @@ message MsgGenDprResponse {}
 
 message MsgUpdateDpr {
   string dprId = 1;
-  string SupportedPIDs = 2; 
+  string supportedPIDs = 2; 
   uint64 duration = 3;
   string sender = 4;
 }

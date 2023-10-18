@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdLeaveDpr() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "leave-dpr [pubkey] [pdrId]",
+		Use:   "leave-dpr [pubkey] [dprId]",
 		Short: "Broadcast message leave-dpr",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

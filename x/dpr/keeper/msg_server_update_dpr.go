@@ -16,11 +16,11 @@ func (k msgServer) UpdateDpr(goCtx context.Context, msg *types.MsgUpdateDpr) (*t
 
 	dpr, found := k.GetDpr(ctx, msg.DprId)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateDpr][GetDpr] failed. There is no valid Dpr.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateDpr][GetDpr] failed. There is no valid DPR.")
 	}
 
 	if msg.Sender != dpr.Creator {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateDpr] failed. Dpr not belong to the sender.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateDpr] failed. DPR not belong to the sender.")
 	}
 
 	//Update dpr into storage
