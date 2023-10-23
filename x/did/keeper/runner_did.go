@@ -30,7 +30,7 @@ func (k Keeper) GetRunnerDid(ctx sdk.Context, Address string) (val types.RunnerD
 }
 
 func (k Keeper) GetRunnerDidId(ctx sdk.Context, id string) (clientDid types.RunnerDid, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RunnerDidKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
