@@ -15,27 +15,27 @@ func (k msgServer) DeactivateDid(goCtx context.Context, msg *types.MsgDeactivate
 
 	log.Println("############## Deactivating a did Transaction is Started ##############")
 
-	_, found := k.GetClientDid(ctx, msg.Did)
+	_, found := k.GetClientDid(ctx, msg.Creator)
 	if found {
-		k.RemoveClientDid(ctx, msg.Did)
+		k.RemoveClientDid(ctx, msg.Creator)
 
 		log.Println("############## End of Deactivating did Transaction ##############")
 
 		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
-	_, found = k.GetRunnerDid(ctx, msg.Did)
+	_, found = k.GetRunnerDid(ctx, msg.Creator)
 	if found {
-		k.RemoveRunnerDid(ctx, msg.Did)
+		k.RemoveRunnerDid(ctx, msg.Creator)
 
 		log.Println("############## End of Deactivating did Transaction ##############")
 
 		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
-	_, found = k.GetChallengerDid(ctx, msg.Did)
+	_, found = k.GetChallengerDid(ctx, msg.Creator)
 	if found {
-		k.RemoveChallengerDid(ctx, msg.Did)
+		k.RemoveChallengerDid(ctx, msg.Creator)
 
 		log.Println("############## End of Deactivating did Transaction ##############")
 
