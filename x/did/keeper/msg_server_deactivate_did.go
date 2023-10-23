@@ -15,27 +15,31 @@ func (k msgServer) DeactivateDid(goCtx context.Context, msg *types.MsgDeactivate
 
 	log.Println("############## Deactivating a did Transaction is Started ##############")
 
-	_, found := k.GetClientDid(ctx, msg.Creator)
+	if msg.FromAddress == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][Validate address] failed. make sure using valid address.")
+	}
+
+	_, found := k.GetClientDid(ctx, msg.FromAddress)
 	if found {
-		k.RemoveClientDid(ctx, msg.Creator)
+		k.RemoveClientDid(ctx, msg.FromAddress)
 
 		log.Println("############## End of Deactivating did Transaction ##############")
 
 		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
-	_, found = k.GetRunnerDid(ctx, msg.Creator)
+	_, found = k.GetRunnerDid(ctx, msg.FromAddress)
 	if found {
-		k.RemoveRunnerDid(ctx, msg.Creator)
+		k.RemoveRunnerDid(ctx, msg.FromAddress)
 
 		log.Println("############## End of Deactivating did Transaction ##############")
 
 		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
-	_, found = k.GetChallengerDid(ctx, msg.Creator)
+	_, found = k.GetChallengerDid(ctx, msg.FromAddress)
 	if found {
-		k.RemoveChallengerDid(ctx, msg.Creator)
+		k.RemoveChallengerDid(ctx, msg.FromAddress)
 
 		log.Println("############## End of Deactivating did Transaction ##############")
 
