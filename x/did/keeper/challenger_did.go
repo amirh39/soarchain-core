@@ -30,7 +30,7 @@ func (k Keeper) GetChallengerDid(ctx sdk.Context, Address string) (val types.Cha
 }
 
 func (k Keeper) GetChallengerDidId(ctx sdk.Context, id string) (clientDid types.ChallengerDid, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerDidKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
