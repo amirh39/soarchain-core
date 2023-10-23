@@ -19,8 +19,8 @@ import (
 )
 
 func clientType(deviceCert *x509.Certificate) string {
-	if deviceCert.Issuer.Names[1].Value == nil {
-		return "No Type"
+	if len(deviceCert.Issuer.Names) < 1 || deviceCert.Issuer.Names[1].Value == nil {
+		return "[GenClient][ClientType] failed. No Type for device certificate."
 	}
 	results := fmt.Sprintf("%v", deviceCert.Issuer.Names[1].Value)
 	if results[41:43] == "01" {
