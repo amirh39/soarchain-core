@@ -29,6 +29,23 @@ func (k Keeper) GetRunnerDid(ctx sdk.Context, Address string) (val types.RunnerD
 	return val, true
 }
 
+func (k Keeper) GetRunnerDidId(ctx sdk.Context, id string) (clientDid types.RunnerDid, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.RunnerDid
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.Id == id {
+			return val, true
+		}
+	}
+
+	return types.RunnerDid{}, false
+}
+
 func (k Keeper) GetAllRunnerDid(ctx sdk.Context) (list []types.RunnerDid) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RunnerDidKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
