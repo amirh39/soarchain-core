@@ -30,6 +30,23 @@ func (k Keeper) GetClientDid(ctx sdk.Context, Address string) (val types.ClientD
 	return val, true
 }
 
+func (k Keeper) GetClientDidId(ctx sdk.Context, id string) (clientDid types.ClientDid, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.ClientDid
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.Id == id {
+			return val, true
+		}
+	}
+
+	return types.ClientDid{}, false
+}
+
 func (k Keeper) GetEligibleDidByPubkey(ctx sdk.Context, pubkey string) (didDocument types.ClientDid, eligible bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
