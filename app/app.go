@@ -497,6 +497,7 @@ func NewSoarchainApp(
 		keys[dprmoduletypes.MemStoreKey],
 		app.GetSubspace(dprmoduletypes.ModuleName),
 
+		app.AccountKeeper,
 		app.BankKeeper,
 		app.EpochKeeper,
 		app.PoaKeeper,
