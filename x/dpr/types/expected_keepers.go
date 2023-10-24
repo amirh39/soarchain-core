@@ -2,16 +2,22 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
 	didtypes "soarchain/x/did/types"
 	epochtypes "soarchain/x/epoch/types"
 	poatypes "soarchain/x/poa/types"
+
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
 type AccountKeeper interface {
-	GetAccount(ctx sdk.Context, addr sdk.AccAddress) types.AccountI
+	GetModuleAddress(moduleName string) sdk.AccAddress
+	NewAccountWithAddress(ctx sdk.Context, addr sdk.AccAddress) authtypes.AccountI
+	GetAllAccounts(ctx sdk.Context) (accounts []authtypes.AccountI)
+	HasAccount(ctx sdk.Context, addr sdk.AccAddress) bool
+	SetModuleAccount(ctx sdk.Context, macc authtypes.ModuleAccountI)
+	GetAccount(ctx sdk.Context, addr sdk.AccAddress) authtypes.AccountI
 	// Methods imported from account should be defined here
 }
 
