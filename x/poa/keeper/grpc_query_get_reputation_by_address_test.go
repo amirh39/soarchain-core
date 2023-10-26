@@ -17,7 +17,6 @@ func Test_GetReputationByAddress(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	reputations := CreateNReputation(keeper, ctx, 2)
-	keeper.SetReputation(ctx, reputations[0])
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetReputationByAddressRequest
