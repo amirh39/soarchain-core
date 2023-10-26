@@ -13,7 +13,6 @@ message RunnerDid {
   repeated VerificationMethod verificationMethods = 4 [json_name = "verificationMethod"];
   repeated VerificationRelationship authentications = 5 [json_name = "authentication", (gogoproto.customtype) = "VerificationRelationship"];
   repeated Service services = 6 [json_name = "service"];
-  string stakedAmount = 7; 
   string ipAddress = 8;
   string created = 9;
   string updated = 10;
