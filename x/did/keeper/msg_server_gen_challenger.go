@@ -26,6 +26,10 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenChallenger][ValidateDid] failed. Make sure challenger did document is valid.")
 	}
 
+	if msg.ChallengerStake == "" {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GenChallenger] failed. Challenger Stake must be declared in the tx.")
+	}
+
 	if msg.ChallengerType != constants.V2NChallengerType && msg.ChallengerType != constants.V2XChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ValidateChallengerType] failed. Invalid challenger type. Must be 'v2n' or 'v2x'.")
 	}
@@ -92,14 +96,13 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	err := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
 		PubKey:             pubKeyHex,
-		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 		Type:               msg.ChallengerType,
-	}, msg.Certificate)
+	}, msg.Certificate, msg.ChallengerStake, msg.Creator)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenChallenger][InitializeReputation] failed. Invalid certificate validation.")
 	}
