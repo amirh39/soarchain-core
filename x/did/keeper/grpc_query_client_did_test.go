@@ -24,21 +24,21 @@ func Test_GetDidDocument(t *testing.T) {
 		{
 			desc: "Valid Did Id",
 			request: &types.QueryGetClientDidRequest{
-				Id: didDocument.Document.Id,
+				Address: didDocument.Document.Address,
 			},
 			response: &types.QueryGetClientDidResponse{ClientDid: *didDocument.Document},
 		},
 		{
 			desc: "Not Valid Did Id",
 			request: &types.QueryGetClientDidRequest{
-				Id: "Not-Valid",
+				Address: "Not-Valid",
 			},
 			response: &types.QueryGetClientDidResponse{ClientDid: *didDocument.Document},
 		},
 		{
 			desc: "Empty",
 			request: &types.QueryGetClientDidRequest{
-				Id: "",
+				Address: "",
 			},
 			response: &types.QueryGetClientDidResponse{ClientDid: *didDocument.Document},
 		},
