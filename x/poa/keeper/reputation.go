@@ -33,14 +33,9 @@ func (k Keeper) verifyDeviceCertificate(ctx sdk.Context, certificate string) err
 
 func (k Keeper) InitializeReputation(ctx sdk.Context, reputation types.Reputation, certificate string, stakeAmount string, address string) error {
 
-	deviceCert, err := k.CreateX509CertFromString(certificate)
-	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[verifyDeviceCertificate][CreateX509CertFromString] failed. Device certificate and reputation can not be empty.")
-	}
-
-	err = k.ValidateCertificate(ctx, deviceCert)
-	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[verifyDeviceCertificate][ValidateCertificate] failed. Device certificate is not valid.")
+	certificateValidationError := k.verifyDeviceCertificate(ctx, certificate)
+	if certificateValidationError != nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[InitializeReputation][verifyDeviceCertificate] failed. Couldn't verify device certification.")
 	}
 
 	// Check runner stake amount
@@ -60,10 +55,10 @@ func (k Keeper) InitializeReputation(ctx sdk.Context, reputation types.Reputatio
 
 	//Transfer stakedAmount to poa modules account:
 	transferError := k.bankKeeper.SendCoinsFromAccountToModule(ctx, senderAddress, types.ModuleName, requiredStake)
+
 	if transferError != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrPanic, "Stake(runner) funds couldn't be transferred to POA module!")
 	}
-
 	reputation.Address = senderAddress.String()
 	reputation.StakedAmount = parsedStakeAmount.String()
 	k.SetReputation(ctx, reputation)
@@ -71,14 +66,9 @@ func (k Keeper) InitializeReputation(ctx sdk.Context, reputation types.Reputatio
 }
 
 func (k Keeper) InitializeClientReputation(ctx sdk.Context, reputation types.Reputation, certificate string) error {
-	deviceCert, err := k.CreateX509CertFromString(certificate)
-	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][SetReputation][CreateX509CertFromString] failed. Device certificate and reputation can not be empty.")
-	}
-
-	err = k.ValidateCertificate(ctx, deviceCert)
-	if err != nil {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenClient][SetReputation][ValidateCertificate] failed. Device certificate is not valid.")
+	certificateValidationError := k.verifyDeviceCertificate(ctx, certificate)
+	if certificateValidationError != nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[InitializeReputation][verifyDeviceCertificate] failed. Couldn't verify device certification.")
 	}
 
 	k.SetReputation(ctx, reputation)
@@ -277,7 +267,6 @@ func (k Keeper) RemoveChallengerReputation(ctx sdk.Context, challengerAddress st
 		if transferError != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrPanic, "[RemoveChallengerReputation][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
 		}
-
 		store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ReputationKeyPrefix))
 		store.Delete(types.ReputationKey(
 			reputation.PubKey,
