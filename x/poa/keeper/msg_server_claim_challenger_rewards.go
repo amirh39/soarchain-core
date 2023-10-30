@@ -62,9 +62,18 @@ func (k msgServer) ClaimChallengerRewards(goCtx context.Context, msg *types.MsgC
 		logger.Info("Calculating new net earning successfully done.", "transaction", "ClaimChallengerRewards")
 	}
 
-	// Update challenger object with only necessary fields
-	reputation.NetEarnings = netEarnings.String()
-	k.SetReputation(ctx, reputation)
+	updateReputation := types.Reputation{
+		PubKey:             reputation.PubKey,
+		Address:            reputation.Address,
+		Score:              reputation.Score,
+		RewardMultiplier:   reputation.RewardMultiplier,
+		LastTimeChallenged: reputation.RewardMultiplier,
+		CoolDownTolerance:  reputation.CoolDownTolerance,
+		Type:               reputation.Type,
+		StakedAmount:       reputation.StakedAmount,
+		NetEarnings:        netEarnings.String(),
+	}
+	k.SetReputation(ctx, updateReputation)
 
 	if logger != nil {
 		logger.Info("Updating target challenger successfully done.", "transaction", "ClaimChallengerRewards")
