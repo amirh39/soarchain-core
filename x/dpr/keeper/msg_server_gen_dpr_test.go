@@ -2,9 +2,11 @@ package keeper_test
 
 import (
 	"log"
+	"soarchain/app/params"
 	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/types"
 
+	"github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	didtypes "soarchain/x/did/types"
@@ -14,10 +16,11 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 
 	helper.Run("TestGenDpr", func() {
 		helper.Setup()
-
+		//actor := RandomAccountAddress()
 		didKeeper := helper.App.DidKeeper
 		epochKeeper := helper.App.EpochKeeper
 		accountKeeper := helper.App.AccountKeeper
+		bankKeeper := helper.App.BankKeeper
 
 		helper.MsgServer = keeper.NewMsgServerImpl(helper.App.DprKeeper)
 		ctx := sdk.WrapSDKContext(helper.Ctx)
@@ -37,22 +40,33 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		}
 		didKeeper.SetClientDid(helper.Ctx, *didDocument.Document)
 		//addr, err := sdk.AccAddressFromBech32(CREATOR)
-		acc := accountKeeper.GetAccount(helper.Ctx, accountKeeper.GetModuleAddress("dpr"))
-		log.Println("ACC=", acc)
-		val := accountKeeper.NewAccountWithAddress(helper.Ctx, sdk.AccAddress(CREATOR))
-		log.Println(sdk.AccAddress(CREATOR), "val=", val)
 
-		has := accountKeeper.GetAllAccounts(helper.Ctx)
-		log.Println(has)
+		//testAcc := helper.TestAccs[0]
 
-		log.Println(has)
+		actorAmount := sdk.NewCoins(sdk.NewCoin(params.BondDenom, sdk.NewInt(1000000000000000)))
+		// testAccountPubkey := secp256k1.GenPrivKeyFromSecret([]byte("acc")).PubKey()
+		// testAccountAddress := sdk.AccAddress(testAccountPubkey.Address())
+		// modAcc := authtypes.NewModuleAccount(authtypes.NewBaseAccount(testAccountAddress, testAccountPubkey, 1, 0),
+		// 	"mint",
+		// 	"permission",
+		// )
+		// accountKeeper.SetModuleAccount(helper.Ctx, modAcc)
 
-		//accountKeeper.Account(ctx)
+		dprModuleAcc := accountKeeper.GetModuleAddress(types.ModuleName)
+		mintModuleAcc := accountKeeper.GetModuleAddress("soarmint")
+		log.Println(dprModuleAcc, mintModuleAcc)
+		simapp.FundAccount(helper.App.BankKeeper, helper.Ctx, sdk.AccAddress(CREATOR), actorAmount)
+
+		log.Println(accountKeeper.GetAccount(helper.Ctx, sdk.AccAddress(CREATOR)))
+
+		log.Println(bankKeeper.GetBalance(helper.Ctx, sdk.AccAddress(CREATOR), params.BondDenom))
 
 		res, err := helper.MsgServer.GenDpr(ctx, &types.MsgGenDpr{
-			Creator:       CREATOR,
-			SupportedPIDs: "BE1FA813",
-			Duration:      45,
+			Creator:        CREATOR,
+			SupportedPIDs:  "BE1FA813",
+			Duration:       45,
+			DprBudget:      "1000udmotus",
+			MaxClientCount: 10,
 		})
 		helper.Require().Empty(res)
 		helper.Require().Nil(err)
