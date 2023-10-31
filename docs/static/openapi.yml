@@ -6720,6 +6720,11 @@ paths:
                     dprStartEpoch:
                       type: string
                       format: uint64
+                    dprBudget:
+                      type: string
+                    maxClientCount:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -6863,6 +6868,11 @@ paths:
                     dprStartEpoch:
                       type: string
                       format: uint64
+                    dprBudget:
+                      type: string
+                    maxClientCount:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -6998,6 +7008,11 @@ paths:
                     type: string
                     title: Adding DPRendTime
                   dprStartEpoch:
+                    type: string
+                    format: uint64
+                  dprBudget:
+                    type: string
+                  maxClientCount:
                     type: string
                     format: uint64
         default:
@@ -7433,6 +7448,10 @@ paths:
                     type: string
                   type:
                     type: string
+                  staking:
+                    type: string
+                  dprEarnings:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -7600,6 +7619,10 @@ paths:
                       type: string
                     type:
                       type: string
+                    staking:
+                      type: string
+                    dprEarnings:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -7731,6 +7754,10 @@ paths:
                   coolDownTolerance:
                     type: string
                   type:
+                    type: string
+                  staking:
+                    type: string
+                  dprEarnings:
                     type: string
         default:
           description: An unexpected error response.
@@ -17577,6 +17604,11 @@ definitions:
       dprStartEpoch:
         type: string
         format: uint64
+      dprBudget:
+        type: string
+      maxClientCount:
+        type: string
+        format: uint64
   soarchain.dpr.MsgActivateDprResponse:
     type: object
   soarchain.dpr.MsgDeactivateDprResponse:
@@ -17619,6 +17651,11 @@ definitions:
               type: string
               title: Adding DPRendTime
             dprStartEpoch:
+              type: string
+              format: uint64
+            dprBudget:
+              type: string
+            maxClientCount:
               type: string
               format: uint64
       pagination:
@@ -17675,6 +17712,11 @@ definitions:
             dprStartEpoch:
               type: string
               format: uint64
+            dprBudget:
+              type: string
+            maxClientCount:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:
@@ -17725,6 +17767,11 @@ definitions:
             type: string
             title: Adding DPRendTime
           dprStartEpoch:
+            type: string
+            format: uint64
+          dprBudget:
+            type: string
+          maxClientCount:
             type: string
             format: uint64
   soarchain.dpr.QueryParamsResponse:
@@ -17951,6 +17998,10 @@ definitions:
             type: string
           type:
             type: string
+          staking:
+            type: string
+          dprEarnings:
+            type: string
   soarchain.poa.MsgSelectRandomRunnerResponse:
     type: object
     properties:
@@ -17972,6 +18023,10 @@ definitions:
           coolDownTolerance:
             type: string
           type:
+            type: string
+          staking:
+            type: string
+          dprEarnings:
             type: string
   soarchain.poa.Params:
     type: object
@@ -18037,6 +18092,10 @@ definitions:
             coolDownTolerance:
               type: string
             type:
+              type: string
+            staking:
+              type: string
+            dprEarnings:
               type: string
       pagination:
         type: object
@@ -18163,6 +18222,10 @@ definitions:
             type: string
           type:
             type: string
+          staking:
+            type: string
+          dprEarnings:
+            type: string
   soarchain.poa.QueryGetReputationResponse:
     type: object
     properties:
@@ -18184,6 +18247,10 @@ definitions:
           coolDownTolerance:
             type: string
           type:
+            type: string
+          staking:
+            type: string
+          dprEarnings:
             type: string
   soarchain.poa.QueryGetVrfDataResponse:
     type: object
@@ -18252,6 +18319,10 @@ definitions:
       coolDownTolerance:
         type: string
       type:
+        type: string
+      staking:
+        type: string
+      dprEarnings:
         type: string
   soarchain.poa.VrfData:
     type: object
