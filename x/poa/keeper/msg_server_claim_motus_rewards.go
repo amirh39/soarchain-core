@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -19,8 +18,6 @@ func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimM
 	log.Println("############## Claim Motus Rewards Transaction Started ##############")
 
 	reputation, isFound := k.GetReputationsByAddress(ctx, msg.Creator)
-	fmt.Print("00000000000000000000000000000000", reputation)
-	fmt.Print("11111111111111111111111111111", isFound)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimMotusRewards][GetReputation] failed. Creator is not valid address.")
 	}
