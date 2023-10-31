@@ -22,7 +22,7 @@ service Query {
 	}
 
 	rpc ClientDid(QueryGetClientDidRequest) returns (QueryGetClientDidResponse) {
-		option (google.api.http).get = "/soarchain/did/client_did/{id}";
+		option (google.api.http).get = "/soarchain/did/client_did/{address}";
 	}
 
 	rpc RunnerDidAll(QueryAllRunnerDidRequest) returns (QueryAllRunnerDidResponse) {
@@ -70,7 +70,7 @@ message QueryParamsResponse {
 }
 
 message QueryGetClientDidRequest {
-  string id = 1;
+  string address = 1;
 }
 
 message QueryGetClientDidResponse {

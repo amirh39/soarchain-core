@@ -12,5 +12,6 @@ message Reputation {
   string lastTimeChallenged = 7;
   string coolDownTolerance = 8;
   string type = 9;
+  string stakedAmount = 10; 
 }
 

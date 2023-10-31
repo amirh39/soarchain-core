@@ -114,3 +114,11 @@ func ValidString(input string) bool {
 	}
 	return true
 }
+
+func ValidateDeactivatingDidInputs(fromAddress string, didType string) bool {
+
+	if fromAddress == "" || didType == "" {
+		return false
+	}
+	return true
+}

@@ -78,10 +78,10 @@ func (k Keeper) GetAllClientDid(ctx sdk.Context) (list []types.ClientDid) {
 	return
 }
 
-func (k Keeper) RemoveClientDid(ctx sdk.Context, id string) {
+func (k Keeper) RemoveClientDid(ctx sdk.Context, address string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.DidKeyPrefix))
 	store.Delete(types.DidKey(
-		id,
+		address,
 	))
 }
 

@@ -36,7 +36,7 @@ func (k Keeper) ClientDid(c context.Context, req *types.QueryGetClientDidRequest
 
 	val, found := k.GetClientDid(
 		ctx,
-		req.Id,
+		req.Address,
 	)
 
 	if !found {

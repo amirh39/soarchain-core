@@ -61,10 +61,10 @@ func (k Keeper) GetAllChallengerDid(ctx sdk.Context) (list []types.ChallengerDid
 	return
 }
 
-func (k Keeper) RemoveChallengerDid(ctx sdk.Context, id string) {
+func (k Keeper) RemoveChallengerDid(ctx sdk.Context, address string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerDidKeyPrefix))
 	store.Delete(types.ChallengerDidKey(
-		id,
+		address,
 	))
 }
 

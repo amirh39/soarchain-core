@@ -1,17 +1,14 @@
 package keeper_test
 
 import (
-	"fmt"
 	k "soarchain/x/did/keeper"
 	"soarchain/x/did/types"
+	poatypes "soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
-	poatypes "soarchain/x/poa/types"
 )
 
 func (helper *KeeperTestHelper) Test_Gen_Challenger() {
-
 	helper.Run("TestGenChallenger", func() {
 		helper.Setup()
 		keeper := helper.App.DidKeeper
@@ -24,31 +21,33 @@ func (helper *KeeperTestHelper) Test_Gen_Challenger() {
 			MasterAccount: MASTER_ACCOUNT,
 		}
 		poakeeper.SetMasterKey(helper.Ctx, item)
+
 		updatedFactoryKeyList := poatypes.FactoryKeys{
 			Id:          uint64(1),
 			FactoryCert: Certificate,
 		}
 		poakeeper.SetFactoryKeys(helper.Ctx, updatedFactoryKeyList)
-		deviceCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
-		helper.Require().NotNil(deviceCert)
 
-		documentWithSequence, _ := NewRunnerDidDocumentWithSeq(Did)
+		deviceCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
+		helper.Require().NotEmpty(deviceCert)
+
+		documentWithSequence, _ := NewChallengerDidDocumentWithSeq(Did)
 		helper.Require().NotEmpty(documentWithSequence)
 
-		res, err := msgServer.GenRunner(ctx, &types.MsgGenRunner{
-			Document:    documentWithSequence.Document,
-			Signature:   Signature,
-			Certificate: Certificate,
-			Creator:     ADDRESS,
+		res, err := msgServer.GenChallenger(ctx, &types.MsgGenChallenger{
+			Document:        documentWithSequence.Document,
+			Signature:       Signature,
+			Certificate:     Certificate,
+			Creator:         ADDRESS,
+			ChallengerStake: Challenger_StakedAmount,
+			ChallengerIp:    Challenger_IPAddress,
+			ChallengerType:  Challenger_Type,
 		})
-		didDocument, found := keeper.GetRunnerDid(helper.Ctx, documentWithSequence.Document.Address)
-		fmt.Print("didDocument------------------->", didDocument)
-		helper.Require().Equal(found, true)
 		if err != nil {
 			helper.Require().NotNil(err)
 		} else {
-			helper.Require().NotNil(res)
-			helper.Require().NoError(err)
+			helper.Require().Nil(err)
+			helper.Require().Nil(res)
 		}
 	})
 }

@@ -405,6 +405,17 @@ func CreateEpochData(keeper *epochKeeper.Keeper, ctx sdk.Context) epochTypes.Epo
 func CreateNReputation(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
 	items := make([]types.Reputation, n)
 	for i := range items {
+		items[i].PubKey = PUBLICKEY
+		items[i].Address = ADDRESS
+
+		keeper.SetReputation(ctx, items[i])
+	}
+	return items
+}
+
+func CreateNRandomReputation(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Reputation {
+	items := make([]types.Reputation, n)
+	for i := range items {
 		items[i].PubKey = strconv.Itoa(i)
 		items[i].Address = strconv.Itoa(i)
 

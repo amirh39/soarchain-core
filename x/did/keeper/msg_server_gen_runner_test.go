@@ -40,6 +40,8 @@ func (helper *KeeperTestHelper) Test_Gen_Runner() {
 			Signature:   Signature,
 			Certificate: Certificate,
 			Creator:     ADDRESS,
+			RunnerStake: RunnerStake,
+			RunnerIp:    RunnerIp,
 		})
 		didDocument, found := keeper.GetRunnerDid(helper.Ctx, documentWithSequence.Document.Address)
 		fmt.Print("didDocument------------------->", didDocument)

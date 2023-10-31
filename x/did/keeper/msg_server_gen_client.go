@@ -101,7 +101,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)
 
-	err := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
+	err := k.Keeper.poaKeeper.InitializeClientReputation(ctx, poatypes.Reputation{
 		PubKey:             pubKeyHex,
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
