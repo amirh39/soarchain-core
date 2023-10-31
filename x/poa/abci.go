@@ -36,7 +36,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
 
 		// apply halving
-		if epochData.TotalEpochs%10 == 0 {
+		if epochData.TotalEpochs%192 == 0 {
 			epochData, err = k.keeper.ComputeAdaptiveHalving(ctx, epochData)
 			if err != nil {
 				// Log the error
