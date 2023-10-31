@@ -30,6 +30,19 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		logger.Info("Validating DPR is successfully Done.", "transaction", "GenDpr")
 	}
 
+	// Coin denomination check already done
+	budget, err := sdk.ParseCoinsNormalized(msg.DprBudget)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[GenDpr][ParseCoinsNormalized] failed. Couldn't parse budget.")
+	}
+
+	dprOwner, _ := sdk.AccAddressFromBech32(msg.Creator)
+
+	errTransfer := k.bankKeeper.SendCoinsFromAccountToModule(ctx, dprOwner, types.ModuleName, budget)
+	if errTransfer != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[GenDpr][SendCoinsFromAccountToModule] failed. Couldn't send coins.")
+	}
+
 	timestampStr := ctx.BlockTime().String()
 	hashPayload := msg.Creator + "|" + timestampStr
 	hash := sha256.Sum256([]byte(hashPayload))
@@ -37,14 +50,16 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 
 	//Save dpr into storage
 	newDpr := types.Dpr{
-		Id:            dprID,
-		Creator:       msg.Creator,
-		SupportedPIDs: msg.SupportedPIDs,
-		IsActive:      false,
-		ClientPubkeys: []string{},
-		Duration:      msg.Duration,
-		DprEndTime:    "",
-		DprStartEpoch: 0,
+		Id:             dprID,
+		Creator:        msg.Creator,
+		SupportedPIDs:  msg.SupportedPIDs,
+		IsActive:       false,
+		ClientPubkeys:  []string{},
+		Duration:       msg.Duration,
+		DprEndTime:     "",
+		DprStartEpoch:  0,
+		DprBudget:      budget.String(),
+		MaxClientCount: msg.MaxClientCount,
 	}
 	k.SetDpr(ctx, newDpr)
 
