@@ -23,6 +23,8 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 			logger.Error("[Dpr Module][BeginBlocker] Fetching epoch data failed.", "path", "BeginBlocker")
 		}
 		k.keeper.DeactivateDpr(ctx, epochData.TotalEpochs)
+
+		k.keeper.DistributeRewards(ctx)
 	}
 }
 
