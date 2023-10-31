@@ -36,15 +36,21 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 	if (ctx.BlockHeight()%30 == 0) && (ctx.BlockHeight() != 0) {
 
 		// apply halving
-		if epochData.TotalEpochs%192 == 0 {
+		if epochData.TotalEpochs%10 == 0 {
 			epochData, err = k.keeper.ComputeAdaptiveHalving(ctx, epochData)
-			if logger != nil && err == nil {
+			if err != nil {
+				// Log the error
+				if logger != nil {
+					logger.Error("[Poa Module][BeginBlocker] Error in Compute Adaptive Halving.", "path", "BeginBlocker", "error", err)
+				}
+
+			} else if logger != nil {
+				// If there's no error, log the success message
 				logger.Info("[Poa Module][BeginBlocker] Compute Adaptive Halving successfully done.", "path", "BeginBlocker")
 			}
 
 			k.epochKeeper.SetEpochData(ctx, epochData)
 		}
-
 		k.epochKeeper.UpdateEpoch(ctx)
 		if logger != nil {
 			logger.Info("[Poa Module][BeginBlocker] Update epoch successfully done.", "path", "BeginBlocker", "epoch data", epochData, "found", found)
