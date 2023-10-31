@@ -12,5 +12,7 @@ message Dpr {
   uint64 duration = 6;
   string dprEndTime = 7; // Adding DPRendTime 
   uint64 dprStartEpoch = 8;
+  string dprBudget = 9;
+  uint64 maxClientCount = 10;
 }
 

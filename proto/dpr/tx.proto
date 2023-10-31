@@ -19,6 +19,8 @@ message MsgGenDpr {
   string creator = 1;
   string supportedPIDs = 2; 
   uint64 duration = 3;
+  string dprBudget = 4;
+  uint64 maxClientCount = 5;
 }
 
 message MsgGenDprResponse {}
