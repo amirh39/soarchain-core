@@ -18,7 +18,7 @@ func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
 		return false
 	}
 
-	if msg.Document.SupportedPIDs == "" || msg.Document.Address == "" || msg.Document.PubKey == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" {
+	if msg.Document.SupportedPIDs == "" || msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" {
 		return false
 	}
 
@@ -31,7 +31,7 @@ func (k Keeper) RunnerDidValidateInputs(msg *types.MsgGenRunner) bool {
 		return false
 	}
 
-	if msg.Document.Address == "" || msg.Document.PubKey == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.RunnerStake == "" {
+	if msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.RunnerStake == "" {
 		return false
 	}
 
@@ -44,7 +44,7 @@ func (k Keeper) ChallengerDidValidateInputs(msg *types.MsgGenChallenger) bool {
 		return false
 	}
 
-	if msg.Document.Address == "" || msg.Document.PubKey == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.ChallengerStake == "" || msg.ChallengerType == "" {
+	if msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.ChallengerStake == "" || msg.ChallengerType == "" {
 		return false
 	}
 
