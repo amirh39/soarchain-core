@@ -22,21 +22,13 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	log.Println("############## Generating a challenger did Transaction Started ##############")
 
-	if msg.Document == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenChallenger][ValidateDid] failed. Make sure challenger did document is valid.")
-	}
-
-	if msg.ChallengerStake == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GenChallenger] failed. Challenger Stake must be declared in the tx.")
+	result := k.ChallengerDidValidateInputs(msg)
+	if !result {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenChallenger][ChallengerDidValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
 
 	if msg.ChallengerType != constants.V2NChallengerType && msg.ChallengerType != constants.V2XChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ValidateChallengerType] failed. Invalid challenger type. Must be 'v2n' or 'v2x'.")
-	}
-
-	result := k.ValidateInputs(msg.Creator, msg.Certificate, msg.Signature, msg.Document.VerificationMethods[0].Id)
-	if !result {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenChallenger][ValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
 
 	deviceCert, error := CreateX509CertFromString(msg.Certificate)
