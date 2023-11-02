@@ -174,3 +174,31 @@ func Test_ClaimChallengerRewards_FullWithdrawal(t *testing.T) {
 	require.True(t, found)
 	require.Equal(t, "0udmotus", updatedChallenger.NetEarnings)
 }
+
+func (helper *KeeperTestHelper) Test_ClaimChallengerRewards_FullWithdrawal_AppLevel() {
+	helper.Run("Test_ClaimChallengerRewards_FullWithdrawal_AppLevel", func() {
+		helper.Setup()
+		keeper := helper.App.PoaKeeper
+		bankKeeper := helper.App.BankKeeper
+		parsedCoin, err := sdk.ParseCoinNormalized("10000udmotus")
+		bankKeeper.MintCoins(helper.Ctx, "poa", sdk.Coins{parsedCoin})
+
+		CreateNChallengerReputationWithNormalScore(&keeper, helper.Ctx, 1)
+
+		challenger, _ := keeper.GetReputation(helper.Ctx, Challenger_PubKey)
+		challenger.NetEarnings = "100udmotus"
+		keeper.SetReputation(helper.Ctx, challenger)
+
+		msgServer := k.NewMsgServerImpl(keeper)
+
+		msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "100udmotus")
+		res, err := msgServer.ClaimChallengerRewards(sdk.WrapSDKContext(helper.Ctx), msg)
+		helper.NoError(err)
+		helper.Empty(res)
+
+		updatedChallenger, found := keeper.GetReputation(helper.Ctx, Challenger_PubKey)
+		helper.True(found)
+		helper.Equal("0udmotus", updatedChallenger.NetEarnings)
+
+	})
+}
