@@ -149,3 +149,28 @@ func Test_ClaimChallengerRewards_InvalidChallengerAddress(t *testing.T) {
 	require.Nil(t, res)
 }
 
+func Test_ClaimChallengerRewards_FullWithdrawal(t *testing.T) {
+	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
+	defer ctrl.Finish()
+
+	ctx := sdk.UnwrapSDKContext(context)
+	bank.ExpectAny(context)
+
+	reputation := types.Reputation{
+		PubKey:      Challenger_PubKey,
+		Address:     Challenger_Address,
+		Score:       Challenger_Score,
+		NetEarnings: "100udmotus",
+		Type:        Challenger_Type,
+	}
+	k.SetReputation(ctx, reputation)
+
+	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "100udmotus")
+	res, err := msgServer.ClaimChallengerRewards(context, msg)
+	require.NoError(t, err)
+	require.NotNil(t, res)
+
+	updatedChallenger, found := k.GetReputation(ctx, Challenger_PubKey)
+	require.True(t, found)
+	require.Equal(t, "0udmotus", updatedChallenger.NetEarnings)
+}
