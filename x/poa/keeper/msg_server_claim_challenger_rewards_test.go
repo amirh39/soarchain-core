@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	k "soarchain/x/poa/keeper"
 	"soarchain/x/poa/types"
 	"testing"
 
@@ -66,3 +67,24 @@ func Test_ClaimChallengerRewards_InsufficientFunds(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, res)
 }
+
+func Test_ClaimChallengerRewards_InvalidChallengerType(t *testing.T) {
+	msgServer, k, context, ctrl, _ := SetupMsgServerClaimMotusRewards(t)
+	defer ctrl.Finish()
+	ctx := sdk.UnwrapSDKContext(context)
+
+	reputation := types.Reputation{
+		PubKey:      Challenger_PubKey,
+		Address:     Challenger_Address,
+		Score:       Challenger_Score,
+		NetEarnings: "100udmotus",
+		Type:        "InvalidType",
+	}
+	k.SetReputation(ctx, reputation)
+
+	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "50udmotus")
+	res, err := msgServer.ClaimChallengerRewards(context, msg)
+	require.Error(t, err)
+	require.Nil(t, res)
+}
+
