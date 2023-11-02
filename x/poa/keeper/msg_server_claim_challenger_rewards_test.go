@@ -88,3 +88,12 @@ func Test_ClaimChallengerRewards_InvalidChallengerType(t *testing.T) {
 	require.Nil(t, res)
 }
 
+func Test_ClaimChallengerRewards_InvalidAmountFormat(t *testing.T) {
+	msgServer, _, context, ctrl, _ := SetupMsgServerClaimMotusRewards(t)
+	defer ctrl.Finish()
+
+	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "abcudmotus")
+	res, err := msgServer.ClaimChallengerRewards(context, msg)
+	require.Error(t, err)
+	require.Nil(t, res)
+}
