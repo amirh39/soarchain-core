@@ -73,7 +73,7 @@ func (k msgServer) ClaimChallengerRewards(goCtx context.Context, msg *types.MsgC
 		Address:            reputation.Address,
 		Score:              reputation.Score,
 		RewardMultiplier:   reputation.RewardMultiplier,
-		LastTimeChallenged: reputation.RewardMultiplier,
+		LastTimeChallenged: reputation.LastTimeChallenged,
 		CoolDownTolerance:  reputation.CoolDownTolerance,
 		Type:               reputation.Type,
 		StakedAmount:       reputation.StakedAmount,
