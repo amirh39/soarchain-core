@@ -117,3 +117,24 @@ func (helper *KeeperTestHelper) Test_ClaimChallengerRewards_ZeroWithdrawAmount()
 		helper.Equal("0udmotus", updatedChallenger.NetEarnings)
 	})
 }
+
+func Test_ClaimChallengerRewards_EmptyNetEarnings(t *testing.T) {
+	msgServer, k, context, ctrl, _ := SetupMsgServerClaimMotusRewards(t)
+	defer ctrl.Finish()
+	ctx := sdk.UnwrapSDKContext(context)
+
+	reputation := types.Reputation{
+		PubKey:      Challenger_PubKey,
+		Address:     Challenger_Address,
+		Score:       Challenger_Score,
+		NetEarnings: "",
+		Type:        Challenger_Type,
+	}
+	k.SetReputation(ctx, reputation)
+
+	msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "50udmotus")
+	res, err := msgServer.ClaimChallengerRewards(context, msg)
+	require.Error(t, err)
+	require.Nil(t, res)
+}
+
