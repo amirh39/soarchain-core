@@ -22,17 +22,9 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 
 	log.Println("############## Generating a runner did Transaction Started ##############")
 
-	if msg.Document == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenRunner][ValidateDid] failed. Make sure runner did document is valid.")
-	}
-
-	if msg.RunnerStake == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[GenRunner] failed. Runner Stake must be declared in the tx.")
-	}
-
-	result := k.ValidateInputs(msg.Creator, msg.Certificate, msg.Signature, msg.Document.VerificationMethods[0].Id)
+	result := k.RunnerDidValidateInputs(msg)
 	if !result {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenRunner][ValidateInputs] failed. Make sure transaction inputs are valid.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenRunner][RunnerDidValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
 
 	deviceCert, error := CreateX509CertFromString(msg.Certificate)
