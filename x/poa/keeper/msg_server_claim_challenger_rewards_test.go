@@ -97,3 +97,23 @@ func Test_ClaimChallengerRewards_InvalidAmountFormat(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, res)
 }
+
+func (helper *KeeperTestHelper) Test_ClaimChallengerRewards_ZeroWithdrawAmount() {
+	helper.Run("Test_ClaimChallengerRewards_ZeroWithdrawAmount", func() {
+		helper.Setup()
+		keeper := helper.App.PoaKeeper
+
+		CreateNChallengerReputationWithNormalScore(&keeper, helper.Ctx, 1)
+
+		msgServer := k.NewMsgServerImpl(keeper)
+
+		msg := types.NewMsgClaimChallengerRewards(Challenger_Address, "0udmotus")
+		res, err := msgServer.ClaimChallengerRewards(sdk.WrapSDKContext(helper.Ctx), msg)
+		helper.NoError(err)
+		helper.Empty(res)
+
+		updatedChallenger, found := keeper.GetReputation(helper.Ctx, Challenger_PubKey)
+		helper.True(found)
+		helper.Equal("0udmotus", updatedChallenger.NetEarnings)
+	})
+}
