@@ -46,14 +46,14 @@ func (k msgServer) ClaimChallengerRewards(goCtx context.Context, msg *types.MsgC
 	}
 
 	challengerAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
-	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, challengerAddress, withdrawAmount)
+	transferErr := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, challengerAddress, withdrawAmount)
 
-	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimChallengerRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
+	if transferErr != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimChallengerRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins from PoA module to the challenger account.")
 	}
 
 	if logger != nil {
-		logger.Info("Transfering coins to the challenger account successfully done.", "transaction", "ClaimChallengerRewards")
+		logger.Info("Transferring coins to the challenger account successfully done.", "transaction", "ClaimChallengerRewards")
 	}
 
 	// Calculate new net earnings
