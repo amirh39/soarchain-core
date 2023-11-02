@@ -138,3 +138,14 @@ func Test_ClaimChallengerRewards_EmptyNetEarnings(t *testing.T) {
 	require.Nil(t, res)
 }
 
+func Test_ClaimChallengerRewards_InvalidChallengerAddress(t *testing.T) {
+	msgServer, _, context, ctrl, _ := SetupMsgServerClaimMotusRewards(t)
+	defer ctrl.Finish()
+
+	invalidAddress := "InvalidAddress"
+	msg := types.NewMsgClaimChallengerRewards(invalidAddress, "50udmotus")
+	res, err := msgServer.ClaimChallengerRewards(context, msg)
+	require.Error(t, err)
+	require.Nil(t, res)
+}
+
