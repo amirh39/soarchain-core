@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	params "soarchain/app/params"
+	"soarchain/x/did/constants"
 	"soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -19,6 +20,9 @@ func (k msgServer) ClaimChallengerRewards(goCtx context.Context, msg *types.MsgC
 	reputation, isFound := k.GetReputationsByAddress(ctx, msg.Creator)
 	if !isFound {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimChallengerRewards][GetReputationsByAddress] failed. Target challenger is not registered in the store by this address: [ %T ]. Make sure the address is valid and not empty.", msg.Creator)
+	}
+	if reputation.Type != constants.V2NChallengerType && reputation.Type != constants.V2XChallenger {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[ClaimChallengerRewards] failed. The creator is not registered as a valid challenger type.")
 	}
 
 	if logger != nil {
