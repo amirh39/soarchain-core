@@ -67,3 +67,25 @@ func Test_ClaimRunnerReward_InsufficientFound(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, res)
 }
+
+func Test_ClaimRunnerRewards_InvalidNetEarningsFormat(t *testing.T) {
+	msgServer, k, context, _, _ := SetupMsgServerClaimMotusRewards(t)
+	ctx := sdk.UnwrapSDKContext(context)
+
+	// Set up a runner reputation with invalid net earnings format
+	reputation := types.Reputation{
+		PubKey:      RunnerPubKey,
+		Address:     RunnerAddress,
+		Score:       RunnerScore,
+		NetEarnings: "invalidformat",
+		Type:        RunnerType,
+	}
+	k.SetReputation(ctx, reputation)
+
+	// Try to withdraw with a valid amount
+	msg := types.NewMsgClaimRunnerRewards(RunnerAddress, "10udmotus")
+	res, err := msgServer.ClaimRunnerRewards(context, msg)
+	require.Error(t, err)
+	require.Nil(t, res)
+	require.Contains(t, err.Error(), "couldn't be parsed")
+}
