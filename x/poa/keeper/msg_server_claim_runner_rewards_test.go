@@ -144,3 +144,34 @@ func Test_ClaimRunnerRewards_FullWithdrawal(t *testing.T) {
 	require.True(t, found)
 	require.Equal(t, "0udmotus", updatedRunner.NetEarnings)
 }
+
+func (helper *KeeperTestHelper) Test_ClaimRunnerRewards_FullWithdrawal_AppLevel() {
+	helper.Run("Test_ClaimRunnerRewards_FullWithdrawal_AppLevel", func() {
+		helper.Setup()
+		keeper := helper.App.PoaKeeper
+		bankKeeper := helper.App.BankKeeper
+
+		// Mint coins to ensure the module account has enough balance to cover the withdrawal
+		parsedCoin, _ := sdk.ParseCoinNormalized("10000udmotus")
+		bankKeeper.MintCoins(helper.Ctx, "poa", sdk.Coins{parsedCoin})
+
+		// Set up the runner's reputation with net earnings that will be fully withdrawn
+		CreateNRunnerReputation(&keeper, helper.Ctx, 1)
+
+		runner, _ := keeper.GetReputation(helper.Ctx, RunnerPubKey)
+		runner.NetEarnings = "100udmotus"
+		keeper.SetReputation(helper.Ctx, runner)
+
+		// Use the msgServer to handle the claim rewards message
+		msgServer := k.NewMsgServerImpl(keeper)
+		msg := types.NewMsgClaimRunnerRewards(RunnerAddress, "100udmotus")
+		res, err := msgServer.ClaimRunnerRewards(sdk.WrapSDKContext(helper.Ctx), msg)
+		helper.NoError(err)
+		helper.NotNil(res)
+
+		// Check if the runner's net earnings have been updated to zero
+		updatedRunner, found := keeper.GetReputation(helper.Ctx, RunnerPubKey)
+		helper.True(found)
+		helper.Equal("0udmotus", updatedRunner.NetEarnings)
+	})
+}
