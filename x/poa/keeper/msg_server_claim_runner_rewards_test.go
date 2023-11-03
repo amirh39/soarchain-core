@@ -3,6 +3,7 @@ package keeper_test
 import (
 	k "soarchain/x/poa/keeper"
 	"soarchain/x/poa/types"
+	"strings"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -27,6 +28,32 @@ func Test_ClaimRunnerRewards(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotNil(t, res)
+}
+
+func Test_ClaimRunnerRewards_NotRegisteredAsRunner(t *testing.T) {
+	msgServer, k, context, ctrl, _ := SetupMsgServerClaimMotusRewards(t)
+	defer ctrl.Finish()
+
+	ctx := sdk.UnwrapSDKContext(context)
+
+	// Create a reputation for an address with a non-runner type
+	nonRunnerReputation := types.Reputation{
+		Address: Challenger_Address,
+		Type:    Challenger_Type,
+	}
+	k.SetReputation(ctx, nonRunnerReputation)
+
+	// Try to claim runner rewards with an address not registered as a runner
+	msg := &types.MsgClaimRunnerRewards{
+		Creator: Challenger_Address,
+		Amount:  "10udmotus",
+	}
+
+	res, err := msgServer.ClaimRunnerRewards(context, msg)
+
+	require.Error(t, err, "Expected error when non-runner address attempts to claim runner rewards")
+	require.True(t, strings.Contains(err.Error(), "not registered as a runner"), "Error message should indicate the address is not registered as a runner")
+	require.Nil(t, res, "Result should be nil when claiming is unauthorized")
 }
 
 /** Using not valid runner key, response should raise proper error message*/
