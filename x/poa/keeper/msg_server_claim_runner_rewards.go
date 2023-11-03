@@ -60,10 +60,6 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 	newNetEarnings := earnedAmount.Sub(withdrawAmount)
 	netEarnings := sdk.NewCoin(params.BondDenom, newNetEarnings.AmountOf(params.BondDenom))
 
-	if newNetEarnings.IsZero() {
-		netEarnings = sdk.NewCoin(params.BondDenom, sdk.ZeroInt())
-	}
-
 	if logger != nil {
 		logger.Info("Calculating new net earning successfully done.", "transaction", "ClaimRunnerRewards")
 	}
