@@ -73,7 +73,7 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 		Address:            reputation.Address,
 		Score:              reputation.Score,
 		RewardMultiplier:   reputation.RewardMultiplier,
-		LastTimeChallenged: reputation.RewardMultiplier,
+		LastTimeChallenged: reputation.LastTimeChallenged,
 		CoolDownTolerance:  reputation.CoolDownTolerance,
 		Type:               reputation.Type,
 		StakedAmount:       reputation.StakedAmount,
