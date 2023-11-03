@@ -36,9 +36,11 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 	if err != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", reputation.NetEarnings, err)
 	}
-
+	if earnedAmount == nil || withdrawAmount == nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards] failed. Failed to retrieve either earned amount or withdrawal amount.")
+	}
 	if earnedAmount.IsAllLT(withdrawAmount) || !withdrawAmount.DenomsSubsetOf(earnedAmount) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[ClaimRunnerRewards][DenomsSubsetOf] failed. Not enough coins to claim.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "[ClaimRunnerRewards] failed. Claimed amount exceeds the earned amount or is not a subset of the earned amount.")
 	}
 
 	runnerAccount, _ := sdk.AccAddressFromBech32(msg.Creator)
