@@ -20,10 +20,10 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 
 	reputation, isFound := k.GetReputationsByAddress(ctx, msg.Creator)
 	if !isFound {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimRunnerRewards][GetReputationByClientAddress] failed. Target reputation is not registered in the store by this address: [ %T ]. Make sure the address is valid and not empty.", msg.Creator)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimRunnerRewards][GetReputationByClientAddress] failed. Target reputation is not registered in the store by this address: [ %s ]. Make sure the address is valid and not empty.", msg.Creator)
 	}
 	if reputation.Type != "" { // Right now the type that is being set for Runner's inside the reputation object is "", which needs to be changed
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[ClaimRunnerRewards] failed. Address %s is not registered as a runner", msg.Creator)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[ClaimRunnerRewards] failed. Address [%s] is not registered as a runner", msg.Creator)
 	}
 
 	if logger != nil {
@@ -32,12 +32,12 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 
 	withdrawAmount, err := sdk.ParseCoinsNormalized(msg.Amount)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", msg.Amount, err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %s ] couldn't be parsed. Error: [ %s ]", msg.Amount, err)
 	}
 
 	earnedAmount, err := sdk.ParseCoinsNormalized(reputation.NetEarnings)
 	if err != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %T ] couldn't be parsed. Error: [ %T ]", reputation.NetEarnings, err)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards][ParseCoinsNormalized] failed. Withdraw amount: [ %s ] couldn't be parsed. Error: [ %s ]", reputation.NetEarnings, err)
 	}
 	if earnedAmount == nil || withdrawAmount == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[ClaimRunnerRewards] failed. Failed to retrieve either earned amount or withdrawal amount.")
