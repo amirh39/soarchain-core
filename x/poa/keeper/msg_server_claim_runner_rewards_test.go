@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	k "soarchain/x/poa/keeper"
 	"soarchain/x/poa/types"
 	"testing"
 
@@ -88,6 +89,32 @@ func Test_ClaimRunnerRewards_InvalidNetEarningsFormat(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, res)
 	require.Contains(t, err.Error(), "couldn't be parsed")
+}
+
+func (helper *KeeperTestHelper) Test_ClaimRunnerRewards_InvalidNetEarningsFormat_AppLevel() {
+	helper.Run("Test_ClaimRunnerRewards_InvalidNetEarningsFormat_AppLevel", func() {
+		helper.Setup()
+		keeper := helper.App.PoaKeeper
+		bankKeeper := helper.App.BankKeeper
+
+		// Mint coins to ensure the module account has enough balance
+		parsedCoin, _ := sdk.ParseCoinNormalized("10000udmotus")
+		bankKeeper.MintCoins(helper.Ctx, "poa", sdk.Coins{parsedCoin})
+
+		// Set up the runner's reputation with an invalid format for net earnings
+		CreateNRunnerReputation(&keeper, helper.Ctx, 1)
+
+		runner, _ := keeper.GetReputation(helper.Ctx, RunnerPubKey)
+		runner.NetEarnings = "invalidformat"
+		keeper.SetReputation(helper.Ctx, runner)
+
+		// Attempt to claim rewards with a valid amount
+		msgServer := k.NewMsgServerImpl(keeper)
+		msg := types.NewMsgClaimRunnerRewards(RunnerAddress, "10udmotus")
+		res, err := msgServer.ClaimRunnerRewards(sdk.WrapSDKContext(helper.Ctx), msg)
+		helper.Error(err)
+		helper.Nil(res)
+	})
 }
 
 func Test_ClaimRunnerRewards_FullWithdrawal(t *testing.T) {
