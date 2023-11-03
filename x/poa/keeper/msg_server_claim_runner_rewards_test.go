@@ -29,7 +29,7 @@ func Test_ClaimRunnerRewards(t *testing.T) {
 }
 
 /** Using not valid runner key, response should raise proper error message*/
-func Test_RegisterNotValidClaimRunnerReward_KeyNotFound(t *testing.T) {
+func Test_ClaimRunnerReward_KeyNotFound(t *testing.T) {
 	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
@@ -49,7 +49,7 @@ func Test_RegisterNotValidClaimRunnerReward_KeyNotFound(t *testing.T) {
 }
 
 /** Using not valid amount, response should raise proper error message*/
-func Test_RegisterClaimRunnerReward_InsufficientFound(t *testing.T) {
+func Test_ClaimRunnerReward_InsufficientFound(t *testing.T) {
 	msgServer, k, context, ctrl, bank := SetupMsgServerClaimMotusRewards(t)
 	defer ctrl.Finish()
 
