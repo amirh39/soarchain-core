@@ -202,3 +202,47 @@ func (helper *KeeperTestHelper) Test_ClaimRunnerRewards_FullWithdrawal_AppLevel(
 		helper.Equal("0udmotus", updatedRunner.NetEarnings)
 	})
 }
+
+func (helper *KeeperTestHelper) Test_ClaimRunnerRewards_MultipleWithdrawals_AppLevel() {
+	helper.Run("Test_ClaimRunnerRewards_MultipleWithdrawals_AppLevel", func() {
+		helper.Setup()
+		keeper := helper.App.PoaKeeper
+		bankKeeper := helper.App.BankKeeper
+
+		initialBalance, _ := sdk.ParseCoinNormalized("10000udmotus")
+		// Mint coins to ensure the module account has enough balance
+		bankKeeper.MintCoins(helper.Ctx, types.ModuleName, sdk.Coins{initialBalance})
+
+		// Set up the runner's reputation with initial net earnings
+		runnerReputation := CreateNRunnerReputation(&keeper, helper.Ctx, 1)
+		runnerReputation[0].NetEarnings = initialBalance.String()
+		keeper.SetReputation(helper.Ctx, runnerReputation[0])
+
+		withdrawalAmounts := []string{"200udmotus", "50udmotus", "1000udmotus"}
+
+		// Perform the withdrawals and check the balances after each withdrawal
+		for _, amount := range withdrawalAmounts {
+			msg := types.NewMsgClaimRunnerRewards(RunnerAddress, amount)
+			msgServer := k.NewMsgServerImpl(keeper)
+			_, err := msgServer.ClaimRunnerRewards(sdk.WrapSDKContext(helper.Ctx), msg)
+			helper.NoError(err)
+
+			withdrawalCoin, _ := sdk.ParseCoinNormalized(amount)
+			initialBalance = initialBalance.Sub(withdrawalCoin)
+
+			updatedRunner, found := keeper.GetReputation(helper.Ctx, runnerReputation[0].PubKey)
+			helper.True(found)
+
+			updatedBalance, _ := sdk.ParseCoinNormalized(updatedRunner.NetEarnings)
+
+			helper.Equal(initialBalance, updatedBalance)
+		}
+
+		finalRunner, found := keeper.GetReputation(helper.Ctx, runnerReputation[0].PubKey)
+		helper.True(found)
+
+		finalBalance, _ := sdk.ParseCoinNormalized(finalRunner.NetEarnings)
+
+		helper.Equal(initialBalance, finalBalance)
+	})
+}
