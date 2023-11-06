@@ -77,8 +77,15 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 
 	seq := types.InitialSequence
 	msg.Document.PubKey = pubKeyHex
+	msg.Document.Address = msg.Creator
 	didDocument := types.NewRunnerDidDocumentWithSeq(msg.Document, uint64(seq))
 	k.SetRunnerDid(ctx, *didDocument.Document)
+
+	_, found := k.GetRunnerDid(ctx, msg.Creator)
+	if !found {
+		logger.Error("Generating runner did failed.", "transaction", "GenRunner", "document", didDocument)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][GetRunnerDid] failed. Couldn't store Runner object successfully.")
+	}
 
 	if logger != nil {
 		logger.Info("Generating runner did successfully done.", "transaction", "GenRunner", "document", didDocument)
@@ -88,18 +95,21 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 
 	initializeError := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
 		PubKey:             pubKeyHex,
+		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 		Type:               "",
+		StakedAmount:       msg.RunnerStake,
 	}, msg.Certificate, msg.RunnerStake, msg.Creator)
 	if initializeError != nil {
+		k.RemoveRunnerDid(ctx, msg.Creator)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenRunner][InitializeReputation] failed. Invalid certificate validation.")
 	}
 
-	log.Println("############## End of Generating did Transaction ##############")
+	log.Println("############## End of Generating Runner did Transaction ##############")
 
 	return &types.MsgGenRunnerResponse{}, nil
 }
