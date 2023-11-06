@@ -24,7 +24,7 @@ func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k AppModule) {
 		}
 		k.keeper.DeactivateDpr(ctx, epochData.TotalEpochs)
 
-		k.keeper.DistributeRewards(ctx)
+		//k.keeper.DistributeRewards(ctx)
 	}
 }
 
