@@ -28,14 +28,13 @@ func clientType(deviceCert *x509.Certificate) string {
 	} else {
 		return "pro"
 	}
-
 }
 
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
-	log.Println("############## Generating a did Transaction Started ##############")
+	log.Println("############## Generating a client did Transaction Started ##############")
 
 	result := k.ClientDidValidateInputs(msg)
 	if !result {
@@ -97,8 +96,14 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
 	k.SetClientDid(ctx, *didDocument.Document)
 
+	_, found := k.GetClientDid(ctx, msg.Creator)
+	if !found {
+		logger.Error("Generating client did failed.", "transaction", "GenClient", "document", didDocument)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][GetClientDid] failed. Couldn't store client object successfully.")
+	}
+
 	if logger != nil {
-		logger.Info("Generating did successfully done.", "transaction", "GenClient", "document", didDocument)
+		logger.Info("Generating client did successfully done.", "transaction", "GenClient", "document", didDocument)
 	}
 
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)
@@ -112,13 +117,15 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 		Type:               clientType(deviceCert),
+		StakedAmount:       "",
 	}, msg.Certificate)
 
 	if err != nil {
+		k.RemoveClientDid(ctx, msg.Creator)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenClient][InitializeReputation] failed. Invalid certificate validation.")
 	}
 
-	log.Println("############## End of Generating did Transaction ##############")
+	log.Println("############## End of Generating client did Transaction ##############")
 
 	return &types.MsgGenClientResponse{}, nil
 }
