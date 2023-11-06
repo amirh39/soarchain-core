@@ -18,7 +18,7 @@ func (k Keeper) GetChallengerDidByAddress(goCtx context.Context, req *types.Quer
 
 	challenger, found := k.GetChallengerDid(ctx, req.Address)
 	if !found {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownAddress, "[GetChallengerDidByAddress][GetChallengerDid] failed. Couldn't find a challenger by the this address: [ %T ], Make sure address is not empty OR invalid.", req.Address)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownAddress, "[GetChallengerDidByAddress][GetChallengerDid] failed. Couldn't find a challenger by the this address: [ %s ], Make sure address is not empty OR invalid.", req.Address)
 	}
 
 	return &types.QueryGetChallengerDidByAddressResponse{ChallengerDid: &challenger}, nil
