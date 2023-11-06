@@ -22,6 +22,11 @@ func (k Keeper) ClientDidAll(c context.Context, req *types.QueryAllClientDidRequ
 	var clientDids []types.ClientDid
 	ctx := sdk.UnwrapSDKContext(c)
 
+	limit := req.Pagination.GetLimit()
+	if limit == 0 || limit > 100 {
+		limit = 100
+	}
+
 	store := ctx.KVStore(k.storeKey)
 	clientStore := prefix.NewStore(store, types.KeyPrefix(types.DidKeyPrefix))
 
@@ -30,13 +35,12 @@ func (k Keeper) ClientDidAll(c context.Context, req *types.QueryAllClientDidRequ
 		if err := k.cdc.Unmarshal(value, &clientDid); err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ClientDidAll][Unmarshal] failed. Couldn't parse the reputation data encoded.")
 		}
-
 		clientDids = append(clientDids, clientDid)
 		return nil
 	})
 
 	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, "[ClientDidAll] failed. Couldn't find a client did.")
 	}
 
 	return &types.QueryAllClientDidResponse{ClientDid: clientDids, Pagination: pageRes}, nil
@@ -54,7 +58,7 @@ func (k Keeper) ClientDid(c context.Context, req *types.QueryGetClientDidRequest
 	)
 
 	if !found {
-		return nil, status.Error(codes.NotFound, "[ClientDid][GetClientDidDocument] failed. Couldn't find a did document from the request.")
+		return nil, status.Error(codes.NotFound, "[ClientDid][GetClientDid] failed. Couldn't find a did document from the request.")
 	}
 
 	return &types.QueryGetClientDidResponse{ClientDid: val}, nil
