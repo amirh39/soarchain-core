@@ -402,6 +402,7 @@ type VerificationRelationship struct {
 	// VerificationRelationship can be one of a single ID or a VerificationMethod.
 	//
 	// Types that are valid to be assigned to Content:
+	//
 	//	*VerificationRelationship_VerificationMethodId
 	//	*VerificationRelationship_VerificationMethod
 	Content isVerificationRelationship_Content `protobuf_oneof:"content"`
