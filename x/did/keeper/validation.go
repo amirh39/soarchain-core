@@ -20,7 +20,6 @@ func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
 		return false
 	}
 
-	// We do not use this address but I put the check
 	_, err := sdk.AccAddressFromBech32(msg.Document.Address)
 	if err != nil {
 		return false
@@ -44,7 +43,6 @@ func (k Keeper) RunnerDidValidateInputs(msg *types.MsgGenRunner) bool {
 		return false
 	}
 
-	// We do not use this address but I put the check
 	_, err := sdk.AccAddressFromBech32(msg.Document.Address)
 	if err != nil {
 		return false
@@ -69,7 +67,6 @@ func (k Keeper) ChallengerDidValidateInputs(msg *types.MsgGenChallenger) bool {
 		return false
 	}
 
-	// We do not use this address but I put the check
 	_, err := sdk.AccAddressFromBech32(msg.Document.Address)
 	if err != nil {
 		return false
