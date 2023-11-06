@@ -21,6 +21,11 @@ func (k Keeper) ReputationAll(c context.Context, req *types.QueryAllReputationRe
 	var reputations []types.Reputation
 	ctx := sdk.UnwrapSDKContext(c)
 
+	limit := req.Pagination.GetLimit()
+	if limit == 0 || limit > 100 {
+		limit = 100
+	}
+
 	store := ctx.KVStore(k.storeKey)
 	clientStore := prefix.NewStore(store, types.KeyPrefix(types.ReputationKeyPrefix))
 
