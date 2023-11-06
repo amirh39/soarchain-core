@@ -23,12 +23,12 @@ func (k Keeper) RunnerDidAll(c context.Context, req *types.QueryAllRunnerDidRequ
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
-	clientStore := prefix.NewStore(store, types.KeyPrefix(types.DidKeyPrefix))
+	clientStore := prefix.NewStore(store, types.KeyPrefix(types.RunnerDidKeyPrefix))
 
 	pageRes, err := query.Paginate(clientStore, req.Pagination, func(key []byte, value []byte) error {
 		var runnerDid types.RunnerDid
 		if err := k.cdc.Unmarshal(value, &runnerDid); err != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[RunnerDidAll][Unmarshal] failed. Couldn't parse the reputation data encoded.")
+			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[RunnerDidAll][Unmarshal] failed. Couldn't parse the runner did data encoded.")
 		}
 
 		runnerDids = append(runnerDids, runnerDid)
