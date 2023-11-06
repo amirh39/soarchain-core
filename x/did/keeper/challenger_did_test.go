@@ -23,3 +23,17 @@ func Test_SetGetChallengerDid(t *testing.T) {
 	require.NotNil(t, resDids)
 	require.Equal(t, 1, len(resDids))
 }
+
+func Test_GetChallengerDidByPubkey(t *testing.T) {
+	keeper, ctx := keepertest.DidKeeper(t)
+
+	didDocument, privkey := NewChallengerDidDocumentWithSeq(Did)
+	require.NotNil(t, privkey)
+	keeper.SetChallengerDid(ctx, *didDocument.Document)
+
+	got, found := keeper.GetChallengerDidUsingPubKey(ctx, didDocument.Document.PubKey)
+	t.Log("challenger did -->", got, found)
+	require.Equal(t, true, found)
+	require.NotNil(t, got)
+
+}
