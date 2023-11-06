@@ -6,6 +6,7 @@ import (
 	"soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -17,16 +18,11 @@ func (k Keeper) GetReputationByAddress(goCtx context.Context, req *types.QueryGe
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	reputations := k.GetAllReputation(ctx)
+	reputations, found := k.GetReputationsByAddress(ctx, req.Address)
 
-	targetReputation := types.Reputation{}
-
-	for _, reputation := range reputations {
-		if req.Address == reputation.Address {
-			targetReputation = reputation
-			break
-		}
+	if !found {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[GetReputationByAddress][GetReputationsByAddress] failed. Couldn't find a valid reputationd.")
 	}
 
-	return &types.QueryGetReputationByAddressResponse{Reputation: &targetReputation}, nil
+	return &types.QueryGetReputationByAddressResponse{Reputation: &reputations}, nil
 }
