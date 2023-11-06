@@ -20,8 +20,13 @@ func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
 		return false
 	}
 
-	_, err := sdk.AccAddressFromBech32(msg.Document.Address)
-	if err != nil {
+	isValidDidAddress := types.ValidateDidAddress(msg.Document.Address)
+	if !isValidDidAddress {
+		return false
+	}
+
+	isValidateSupportedPIDs := types.ValidateSupportedPIDs(msg.Document.SupportedPIDs)
+	if !isValidateSupportedPIDs {
 		return false
 	}
 
@@ -43,8 +48,13 @@ func (k Keeper) RunnerDidValidateInputs(msg *types.MsgGenRunner) bool {
 		return false
 	}
 
-	_, err := sdk.AccAddressFromBech32(msg.Document.Address)
-	if err != nil {
+	isValidDidAddress := types.ValidateDidAddress(msg.Document.Address)
+	if !isValidDidAddress {
+		return false
+	}
+
+	isValidStakeAmount := types.ValidateStakeAmount(msg.RunnerStake)
+	if !isValidStakeAmount {
 		return false
 	}
 
@@ -67,8 +77,13 @@ func (k Keeper) ChallengerDidValidateInputs(msg *types.MsgGenChallenger) bool {
 		return false
 	}
 
-	_, err := sdk.AccAddressFromBech32(msg.Document.Address)
-	if err != nil {
+	isValidDidAddress := types.ValidateDidAddress(msg.Document.Address)
+	if !isValidDidAddress {
+		return false
+	}
+
+	isValidStakeAmount := types.ValidateStakeAmount(msg.ChallengerStake)
+	if !isValidStakeAmount {
 		return false
 	}
 
