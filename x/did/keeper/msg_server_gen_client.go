@@ -88,6 +88,8 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	seq := types.InitialSequence
 	msg.Document.PubKey = pubKeyHex
+	msg.Document.Address = msg.Creator
+	msg.Document.Type = clientType(deviceCert)
 	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
 	k.SetClientDid(ctx, *didDocument.Document)
 
