@@ -5745,6 +5745,18 @@ paths:
                           type: string
                     SupportedPIDs:
                       type: string
+                    dprInfos:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          claimed:
+                            type: string
+                        title: >-
+                          Define the DprInfo message that holds id and claimed
+                          information
                     created:
                       type: string
                     updated:
@@ -5917,6 +5929,18 @@ paths:
                         type: string
                   SupportedPIDs:
                     type: string
+                  dprInfos:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        claimed:
+                          type: string
+                      title: >-
+                        Define the DprInfo message that holds id and claimed
+                        information
                   created:
                     type: string
                   updated:
@@ -6138,6 +6162,11 @@ paths:
                     type: string
                   address:
                     type: string
+                    title: |-
+                      string moniker =12;
+                         string website = 13;
+                         string security_contact =14 ;
+                         string details = 15;
         default:
           description: An unexpected error response.
           schema:
@@ -6246,6 +6275,11 @@ paths:
                     type: string
                   address:
                     type: string
+                    title: |-
+                      string moniker =12;
+                         string website = 13;
+                         string security_contact =14 ;
+                         string details = 15;
         default:
           description: An unexpected error response.
           schema:
@@ -6500,6 +6534,11 @@ paths:
                       type: string
                     address:
                       type: string
+                      title: |-
+                        string moniker =12;
+                           string website = 13;
+                           string security_contact =14 ;
+                           string details = 15;
         default:
           description: An unexpected error response.
           schema:
@@ -6660,6 +6699,11 @@ paths:
                     type: string
                   address:
                     type: string
+                    title: |-
+                      string moniker =12;
+                         string website = 13;
+                         string security_contact =14 ;
+                         string details = 15;
         default:
           description: An unexpected error response.
           schema:
@@ -6707,10 +6751,6 @@ paths:
                       type: string
                     isActive:
                       type: boolean
-                    clientPubkeys:
-                      type: array
-                      items:
-                        type: string
                     duration:
                       type: string
                       format: uint64
@@ -6723,6 +6763,9 @@ paths:
                     dprBudget:
                       type: string
                     maxClientCount:
+                      type: string
+                      format: uint64
+                    clientCounter:
                       type: string
                       format: uint64
               pagination:
@@ -6855,10 +6898,6 @@ paths:
                       type: string
                     isActive:
                       type: boolean
-                    clientPubkeys:
-                      type: array
-                      items:
-                        type: string
                     duration:
                       type: string
                       format: uint64
@@ -6871,6 +6910,9 @@ paths:
                     dprBudget:
                       type: string
                     maxClientCount:
+                      type: string
+                      format: uint64
+                    clientCounter:
                       type: string
                       format: uint64
               pagination:
@@ -6997,10 +7039,6 @@ paths:
                     type: string
                   isActive:
                     type: boolean
-                  clientPubkeys:
-                    type: array
-                    items:
-                      type: string
                   duration:
                     type: string
                     format: uint64
@@ -7013,6 +7051,9 @@ paths:
                   dprBudget:
                     type: string
                   maxClientCount:
+                    type: string
+                    format: uint64
+                  clientCounter:
                     type: string
                     format: uint64
         default:
@@ -16638,10 +16679,28 @@ definitions:
             type: string
       SupportedPIDs:
         type: string
+      dprInfos:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            claimed:
+              type: string
+          title: Define the DprInfo message that holds id and claimed information
       created:
         type: string
       updated:
         type: string
+  soarchain.did.DprInfo:
+    type: object
+    properties:
+      id:
+        type: string
+      claimed:
+        type: string
+    title: Define the DprInfo message that holds id and claimed information
   soarchain.did.Keys:
     type: object
     properties:
@@ -16838,6 +16897,18 @@ definitions:
                   type: string
             SupportedPIDs:
               type: string
+            dprInfos:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  claimed:
+                    type: string
+                title: >-
+                  Define the DprInfo message that holds id and claimed
+                  information
             created:
               type: string
             updated:
@@ -16921,6 +16992,11 @@ definitions:
               type: string
             address:
               type: string
+              title: |-
+                string moniker =12;
+                   string website = 13;
+                   string security_contact =14 ;
+                   string details = 15;
   soarchain.did.QueryGetChallengerDidByAddressResponse:
     type: object
     properties:
@@ -17229,6 +17305,16 @@ definitions:
                 type: string
           SupportedPIDs:
             type: string
+          dprInfos:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                claimed:
+                  type: string
+              title: Define the DprInfo message that holds id and claimed information
           created:
             type: string
           updated:
@@ -17308,6 +17394,11 @@ definitions:
             type: string
           address:
             type: string
+            title: |-
+              string moniker =12;
+                 string website = 13;
+                 string security_contact =14 ;
+                 string details = 15;
   soarchain.did.QueryGetRunnerDidByPubKeyResponse:
     type: object
     properties:
@@ -17383,6 +17474,11 @@ definitions:
             type: string
           address:
             type: string
+            title: |-
+              string moniker =12;
+                 string website = 13;
+                 string security_contact =14 ;
+                 string details = 15;
   soarchain.did.QueryGetRunnerDidResponse:
     type: object
     properties:
@@ -17458,6 +17554,11 @@ definitions:
             type: string
           address:
             type: string
+            title: |-
+              string moniker =12;
+                 string website = 13;
+                 string security_contact =14 ;
+                 string details = 15;
   soarchain.did.QueryParamsResponse:
     type: object
     properties:
@@ -17537,6 +17638,11 @@ definitions:
         type: string
       address:
         type: string
+        title: |-
+          string moniker =12;
+             string website = 13;
+             string security_contact =14 ;
+             string details = 15;
   soarchain.did.Service:
     type: object
     properties:
@@ -17591,10 +17697,6 @@ definitions:
         type: string
       isActive:
         type: boolean
-      clientPubkeys:
-        type: array
-        items:
-          type: string
       duration:
         type: string
         format: uint64
@@ -17609,9 +17711,12 @@ definitions:
       maxClientCount:
         type: string
         format: uint64
+      clientCounter:
+        type: string
+        format: uint64
   soarchain.dpr.MsgActivateDprResponse:
     type: object
-  soarchain.dpr.MsgDeactivateDprResponse:
+  soarchain.dpr.MsgClaimDprRewardsResponse:
     type: object
   soarchain.dpr.MsgEnterDprResponse:
     type: object
@@ -17640,10 +17745,6 @@ definitions:
               type: string
             isActive:
               type: boolean
-            clientPubkeys:
-              type: array
-              items:
-                type: string
             duration:
               type: string
               format: uint64
@@ -17656,6 +17757,9 @@ definitions:
             dprBudget:
               type: string
             maxClientCount:
+              type: string
+              format: uint64
+            clientCounter:
               type: string
               format: uint64
       pagination:
@@ -17699,10 +17803,6 @@ definitions:
               type: string
             isActive:
               type: boolean
-            clientPubkeys:
-              type: array
-              items:
-                type: string
             duration:
               type: string
               format: uint64
@@ -17715,6 +17815,9 @@ definitions:
             dprBudget:
               type: string
             maxClientCount:
+              type: string
+              format: uint64
+            clientCounter:
               type: string
               format: uint64
       pagination:
@@ -17756,10 +17859,6 @@ definitions:
             type: string
           isActive:
             type: boolean
-          clientPubkeys:
-            type: array
-            items:
-              type: string
           duration:
             type: string
             format: uint64
@@ -17772,6 +17871,9 @@ definitions:
           dprBudget:
             type: string
           maxClientCount:
+            type: string
+            format: uint64
+          clientCounter:
             type: string
             format: uint64
   soarchain.dpr.QueryParamsResponse:
