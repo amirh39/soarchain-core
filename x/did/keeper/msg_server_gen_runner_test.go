@@ -45,12 +45,13 @@ func (helper *KeeperTestHelper) Test_Gen_Runner() {
 		})
 		didDocument, found := keeper.GetRunnerDid(helper.Ctx, documentWithSequence.Document.Address)
 		fmt.Print("didDocument------------------->", didDocument)
-		helper.Require().Equal(found, true)
 		if err != nil {
 			helper.Require().NotNil(err)
+			helper.Require().Equal(found, false)
 		} else {
 			helper.Require().NotNil(res)
 			helper.Require().NoError(err)
+			helper.Require().Equal(found, true)
 		}
 	})
 }
