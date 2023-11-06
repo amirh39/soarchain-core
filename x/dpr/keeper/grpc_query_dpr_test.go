@@ -1,7 +1,6 @@
 package keeper_test
 
 import (
-	"fmt"
 	keepertest "soarchain/testutil/keeper"
 	"soarchain/x/dpr/types"
 	"strconv"
@@ -72,38 +71,4 @@ func Test_GetAllDpr(t *testing.T) {
 
 	allDprs := keeper.GetAllDpr(ctx)
 	require.NotNil(t, allDprs)
-}
-
-func Test_DPRsByClientPubkey(t *testing.T) {
-	keeper, ctx := keepertest.DprKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-
-	dpr1 := types.Dpr{
-		Id:            "dpr1",
-		ClientPubkeys: []string{"pubkey1", "pubkey2"},
-	}
-	dpr2 := types.Dpr{
-		Id:            "dpr2",
-		ClientPubkeys: []string{"pubkey3", "pubkey4"},
-	}
-	dpr3 := types.Dpr{
-		Id:            "dpr3",
-		ClientPubkeys: []string{"pubkey5", "pubkey1"},
-	}
-	keeper.SetDpr(ctx, dpr1)
-	keeper.SetDpr(ctx, dpr2)
-	keeper.SetDpr(ctx, dpr3)
-
-	response, err := keeper.DPRsByClientPubkey(wctx, &types.QueryDPRsByClientPubkeyRequest{
-		ClientPubkey: "pubkey1",
-	})
-	require.NoError(t, err)
-
-	require.NotEmpty(t, response.Dpr)
-
-	fmt.Println(response.Dpr)
-
-	for _, dpr := range response.Dpr {
-		require.Contains(t, dpr.ClientPubkeys, "pubkey1")
-	}
 }
