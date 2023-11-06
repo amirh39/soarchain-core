@@ -1,9 +1,8 @@
 package cli
 
 import (
-	"strconv"
-
 	"soarchain/x/dpr/types"
+	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -13,25 +12,19 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdDeactivateDpr() *cobra.Command {
+func CmdClaimDprRewards() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "deactivate-dpr [pdrId] [duration]",
-		Short: "Broadcast message activate-dpr",
-		Args:  cobra.ExactArgs(2),
+		Use:   "claim-dpr-rewards",
+		Short: "Broadcast message claim-dpr-rewards",
+
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
-			argDprId := args[0]
-			argDuration, _ := strconv.ParseUint(args[2], 10, 64)
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgDeactivateDpr(
+			msg := types.NewMsgClaimDprRewards(
 				clientCtx.GetFromAddress().String(),
-				argDprId,
-				argDuration,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -39,7 +32,6 @@ func CmdDeactivateDpr() *cobra.Command {
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
-
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
