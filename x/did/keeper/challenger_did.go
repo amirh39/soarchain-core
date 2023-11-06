@@ -68,14 +68,18 @@ func (k Keeper) RemoveChallengerDid(ctx sdk.Context, address string) {
 	))
 }
 
-func (k Keeper) GetChallengerDidUsingPubKey(ctx sdk.Context, pubKey string) (challenger types.ChallengerDid, found bool) {
-	challengers := k.GetAllChallengerDid(ctx)
+func (k Keeper) GetChallengerDidUsingPubKey(ctx sdk.Context, pubKey string) (runner types.ChallengerDid, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ChallengerDidKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
-	for _, c := range challengers {
-		if c.PubKey == pubKey {
-			return c, true
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.ChallengerDid
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.PubKey == pubKey {
+			return val, true
 		}
 	}
-
-	return challenger, false
+	return types.ChallengerDid{}, false
 }
