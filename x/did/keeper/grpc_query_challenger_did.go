@@ -2,30 +2,44 @@ package keeper
 
 import (
 	"context"
-	"log"
 
-	"soarchain/x/did/errors"
 	"soarchain/x/did/types"
 
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/cosmos/cosmos-sdk/types/query"
 )
 
 func (k Keeper) ChallengerDidAll(c context.Context, req *types.QueryAllChallengerDidRequest) (*types.QueryAllChallengerDidResponse, error) {
-	log.Println("############## Fetching all challenger did is Started ##############")
-
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, errors.InvalidRequest)
+		return nil, status.Error(codes.InvalidArgument, "[ChallengerDidAll] failed. Invalid request.")
 	}
 
+	var challengerDids []types.ChallengerDid
 	ctx := sdk.UnwrapSDKContext(c)
 
-	dids := k.GetAllChallengerDid(ctx)
+	store := ctx.KVStore(k.storeKey)
+	clientStore := prefix.NewStore(store, types.KeyPrefix(types.DidKeyPrefix))
 
-	log.Println("############## End of fetching all challenger dids ##############")
+	pageRes, err := query.Paginate(clientStore, req.Pagination, func(key []byte, value []byte) error {
+		var challengerDid types.ChallengerDid
+		if err := k.cdc.Unmarshal(value, &challengerDid); err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ChallengerDidAll][Unmarshal] failed. Couldn't parse the reputation data encoded.")
+		}
 
-	return &types.QueryAllChallengerDidResponse{ChallengerDid: dids}, nil
+		challengerDids = append(challengerDids, challengerDid)
+		return nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryAllChallengerDidResponse{ChallengerDid: challengerDids, Pagination: pageRes}, nil
 }
 
 func (k Keeper) ChallengerDid(c context.Context, req *types.QueryGetChallengerDidRequest) (*types.QueryGetChallengerDidResponse, error) {
