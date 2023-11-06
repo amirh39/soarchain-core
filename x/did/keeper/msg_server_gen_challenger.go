@@ -85,6 +85,12 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 	didDocument := types.NewChallengerDidDocumentWithSeq(msg.Document, uint64(seq))
 	k.SetChallengerDid(ctx, *didDocument.Document)
 
+	_, found := k.GetChallengerDid(ctx, msg.Creator)
+	if !found {
+		logger.Error("Generating challenger did failed.", "transaction", "GenChallenger", "document", didDocument)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][GetChallengerDid] failed. Couldn't store Challenger object successfully.")
+	}
+
 	if logger != nil {
 		logger.Info("Generating challenger did successfully done.", "transaction", "GenChallenger", "document", didDocument)
 	}
@@ -93,18 +99,21 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	err := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
 		PubKey:             pubKeyHex,
+		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 		Type:               msg.ChallengerType,
+		StakedAmount:       msg.ChallengerStake,
 	}, msg.Certificate, msg.ChallengerStake, msg.Creator)
 	if err != nil {
+		k.RemoveChallengerDid(ctx, msg.Creator)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenChallenger][InitializeReputation] failed. Invalid certificate validation.")
 	}
 
-	log.Println("############## End of Generating challenger did Transaction ##############")
+	log.Println("############## End of generating challenger did Transaction ##############")
 
 	return &types.MsgGenChallengerResponse{}, nil
 }
