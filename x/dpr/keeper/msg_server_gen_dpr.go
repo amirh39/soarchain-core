@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"log"
 
+	"soarchain/app/params"
 	"soarchain/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -36,6 +37,20 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[GenDpr][ParseCoinsNormalized] failed. Couldn't parse budget.")
 	}
 
+	// Calculate 1% of the budget amount for the specific denomination
+	onePercentAmt := budget.AmountOf(params.BondDenom).QuoRaw(100)
+
+	// Create a coin with 1% of the budget
+	onePercentCoin := sdk.NewCoin(params.BondDenom, onePercentAmt)
+
+	// Subtract 1% from the original budget
+	remainingBudget := budget.Sub(sdk.NewCoins(onePercentCoin))
+	if !remainingBudget.IsValid() {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Subtracting %1 from the budget results in invalid coins.")
+	}
+
+	// TODO: find an efficient way to distribute rewards to runners
+
 	dprOwner, _ := sdk.AccAddressFromBech32(msg.Creator)
 
 	errTransfer := k.bankKeeper.SendCoinsFromAccountToModule(ctx, dprOwner, types.ModuleName, budget)
@@ -54,7 +69,6 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		Creator:        msg.Creator,
 		SupportedPIDs:  msg.SupportedPIDs,
 		IsActive:       false,
-		ClientPubkeys:  []string{},
 		Duration:       msg.Duration,
 		DprEndTime:     "",
 		DprStartEpoch:  0,
