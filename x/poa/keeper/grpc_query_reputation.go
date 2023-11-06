@@ -27,7 +27,7 @@ func (k Keeper) ReputationAll(c context.Context, req *types.QueryAllReputationRe
 	pageRes, err := query.Paginate(clientStore, req.Pagination, func(key []byte, value []byte) error {
 		var reputation types.Reputation
 		if err := k.cdc.Unmarshal(value, &reputation); err != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ReputationAll][Unmarshal] failed. Couldn't parse the reputation data encoded."+err.Error())
+			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ReputationAll][Unmarshal] failed. Couldn't parse the reputation data encoded.")
 		}
 
 		reputations = append(reputations, reputation)
