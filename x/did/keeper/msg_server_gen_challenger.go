@@ -43,7 +43,7 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	pubKeyHex, error := ExtractPubkeyFromCertificate(msg.Certificate)
 	if pubKeyHex == "" || error != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ExtractPubkeyFromX509Cert] failed. Invalid certificate validation. Error: [ %T ]")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ExtractPubkeyFromX509Cert] failed. Invalid certificate validation.")
 	}
 
 	if logger != nil {
@@ -62,20 +62,25 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 	// check if the address is uniqe
 	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
 	if isUniqueAddress {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniqueAddress] failed. Challenger did with the address [ %T ] is already registered.", msg.Creator)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniqueAddress] failed. Challenger did with the address [ %s ] is already registered.", msg.Creator)
 	}
 
 	// check if the pubKey is uniqe
 	isUniquePubkey := IsUniquePubKey(k, ctx, pubKeyHex)
 	if isUniquePubkey {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniquePubKey] failed. Challenger did with the PubKey [ %T ] is already registered.", pubKeyHex)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniquePubKey] failed. Challenger did with the PubKey [ %s ] is already registered.", pubKeyHex)
 	}
 
 	if logger != nil {
 		logger.Info("Checking for challenger did address and pubKey successfully done.", "transaction", "GenChallengerDid")
 	}
 
+	if msg.Creator != msg.Document.Address {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger] failed. Challenger did address [ %s ]  is not creator address.", msg.Document.Address)
+	}
+
 	seq := types.InitialSequence
+	msg.Document.Address = msg.Creator
 	msg.Document.PubKey = pubKeyHex
 	didDocument := types.NewChallengerDidDocumentWithSeq(msg.Document, uint64(seq))
 	k.SetChallengerDid(ctx, *didDocument.Document)

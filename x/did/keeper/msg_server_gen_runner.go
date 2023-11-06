@@ -39,7 +39,7 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 
 	pubKeyHex, error := ExtractPubkeyFromCertificate(msg.Certificate)
 	if pubKeyHex == "" || error != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenRunner][ExtractPubkeyFromX509Cert] failed. Invalid certificate validation. Error: [ %T ]")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenRunner][ExtractPubkeyFromX509Cert] failed. Invalid certificate validation.")
 	}
 
 	if logger != nil {
@@ -58,17 +58,21 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 	// check if the address is uniqe
 	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
 	if isUniqueAddress {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][IsUniqueAddress] failed. Runner did with the address [ %T ] is already registered.", msg.Creator)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][IsUniqueAddress] failed. Runner did with the address [ %s ] is already registered.", msg.Creator)
 	}
 
 	// check if the pubKey is uniqe
 	isUniquePubkey := IsUniquePubKey(k, ctx, pubKeyHex)
 	if isUniquePubkey {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][IsUniquePubKey] failed. Runner did with the PubKey [ %T ] is already registered.", pubKeyHex)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][IsUniquePubKey] failed. Runner did with the PubKey [ %s ] is already registered.", pubKeyHex)
 	}
 
 	if logger != nil {
 		logger.Info("Checking for runner did address and pubKey successfully done.", "transaction", "GenRunnerDid")
+	}
+
+	if msg.Creator != msg.Document.Address {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner] failed. Runner did address [ %s ]  is not creator address.", msg.Document.Address)
 	}
 
 	seq := types.InitialSequence
