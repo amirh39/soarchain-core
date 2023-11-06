@@ -140,10 +140,11 @@ func (m *MsgGenDprResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgGenDprResponse proto.InternalMessageInfo
 
 type MsgUpdateDpr struct {
-	DprId         string `protobuf:"bytes,1,opt,name=dprId,proto3" json:"dprId,omitempty"`
-	SupportedPIDs string `protobuf:"bytes,2,opt,name=supportedPIDs,proto3" json:"supportedPIDs,omitempty"`
-	Duration      uint64 `protobuf:"varint,3,opt,name=duration,proto3" json:"duration,omitempty"`
-	Sender        string `protobuf:"bytes,4,opt,name=sender,proto3" json:"sender,omitempty"`
+	DprId          string `protobuf:"bytes,1,opt,name=dprId,proto3" json:"dprId,omitempty"`
+	Duration       uint64 `protobuf:"varint,2,opt,name=duration,proto3" json:"duration,omitempty"`
+	MaxClientCount uint64 `protobuf:"varint,3,opt,name=maxClientCount,proto3" json:"maxClientCount,omitempty"`
+	DprBudget      string `protobuf:"bytes,4,opt,name=dprBudget,proto3" json:"dprBudget,omitempty"`
+	Sender         string `protobuf:"bytes,5,opt,name=sender,proto3" json:"sender,omitempty"`
 }
 
 func (m *MsgUpdateDpr) Reset()         { *m = MsgUpdateDpr{} }
@@ -186,18 +187,25 @@ func (m *MsgUpdateDpr) GetDprId() string {
 	return ""
 }
 
-func (m *MsgUpdateDpr) GetSupportedPIDs() string {
-	if m != nil {
-		return m.SupportedPIDs
-	}
-	return ""
-}
-
 func (m *MsgUpdateDpr) GetDuration() uint64 {
 	if m != nil {
 		return m.Duration
 	}
 	return 0
+}
+
+func (m *MsgUpdateDpr) GetMaxClientCount() uint64 {
+	if m != nil {
+		return m.MaxClientCount
+	}
+	return 0
+}
+
+func (m *MsgUpdateDpr) GetDprBudget() string {
+	if m != nil {
+		return m.DprBudget
+	}
+	return ""
 }
 
 func (m *MsgUpdateDpr) GetSender() string {
@@ -507,24 +515,22 @@ func (m *MsgLeaveDprResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgLeaveDprResponse proto.InternalMessageInfo
 
-type MsgDeactivateDpr struct {
-	DprId    string `protobuf:"bytes,1,opt,name=dprId,proto3" json:"dprId,omitempty"`
-	Sender   string `protobuf:"bytes,2,opt,name=sender,proto3" json:"sender,omitempty"`
-	Duration uint64 `protobuf:"varint,3,opt,name=duration,proto3" json:"duration,omitempty"`
+type MsgClaimDprRewards struct {
+	Sender string `protobuf:"bytes,1,opt,name=sender,proto3" json:"sender,omitempty"`
 }
 
-func (m *MsgDeactivateDpr) Reset()         { *m = MsgDeactivateDpr{} }
-func (m *MsgDeactivateDpr) String() string { return proto.CompactTextString(m) }
-func (*MsgDeactivateDpr) ProtoMessage()    {}
-func (*MsgDeactivateDpr) Descriptor() ([]byte, []int) {
+func (m *MsgClaimDprRewards) Reset()         { *m = MsgClaimDprRewards{} }
+func (m *MsgClaimDprRewards) String() string { return proto.CompactTextString(m) }
+func (*MsgClaimDprRewards) ProtoMessage()    {}
+func (*MsgClaimDprRewards) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dec6b5e510091bca, []int{10}
 }
-func (m *MsgDeactivateDpr) XXX_Unmarshal(b []byte) error {
+func (m *MsgClaimDprRewards) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDeactivateDpr) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgClaimDprRewards) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDeactivateDpr.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgClaimDprRewards.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -534,54 +540,40 @@ func (m *MsgDeactivateDpr) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return b[:n], nil
 	}
 }
-func (m *MsgDeactivateDpr) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeactivateDpr.Merge(m, src)
+func (m *MsgClaimDprRewards) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgClaimDprRewards.Merge(m, src)
 }
-func (m *MsgDeactivateDpr) XXX_Size() int {
+func (m *MsgClaimDprRewards) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDeactivateDpr) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeactivateDpr.DiscardUnknown(m)
+func (m *MsgClaimDprRewards) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgClaimDprRewards.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDeactivateDpr proto.InternalMessageInfo
+var xxx_messageInfo_MsgClaimDprRewards proto.InternalMessageInfo
 
-func (m *MsgDeactivateDpr) GetDprId() string {
-	if m != nil {
-		return m.DprId
-	}
-	return ""
-}
-
-func (m *MsgDeactivateDpr) GetSender() string {
+func (m *MsgClaimDprRewards) GetSender() string {
 	if m != nil {
 		return m.Sender
 	}
 	return ""
 }
 
-func (m *MsgDeactivateDpr) GetDuration() uint64 {
-	if m != nil {
-		return m.Duration
-	}
-	return 0
+type MsgClaimDprRewardsResponse struct {
 }
 
-type MsgDeactivateDprResponse struct {
-}
-
-func (m *MsgDeactivateDprResponse) Reset()         { *m = MsgDeactivateDprResponse{} }
-func (m *MsgDeactivateDprResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgDeactivateDprResponse) ProtoMessage()    {}
-func (*MsgDeactivateDprResponse) Descriptor() ([]byte, []int) {
+func (m *MsgClaimDprRewardsResponse) Reset()         { *m = MsgClaimDprRewardsResponse{} }
+func (m *MsgClaimDprRewardsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgClaimDprRewardsResponse) ProtoMessage()    {}
+func (*MsgClaimDprRewardsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dec6b5e510091bca, []int{11}
 }
-func (m *MsgDeactivateDprResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgClaimDprRewardsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgDeactivateDprResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgClaimDprRewardsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgDeactivateDprResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgClaimDprRewardsResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -591,17 +583,17 @@ func (m *MsgDeactivateDprResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *MsgDeactivateDprResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeactivateDprResponse.Merge(m, src)
+func (m *MsgClaimDprRewardsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgClaimDprRewardsResponse.Merge(m, src)
 }
-func (m *MsgDeactivateDprResponse) XXX_Size() int {
+func (m *MsgClaimDprRewardsResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgDeactivateDprResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeactivateDprResponse.DiscardUnknown(m)
+func (m *MsgClaimDprRewardsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgClaimDprRewardsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgDeactivateDprResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgClaimDprRewardsResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgGenDpr)(nil), "soarchain.dpr.MsgGenDpr")
@@ -614,44 +606,46 @@ func init() {
 	proto.RegisterType((*MsgActivateDprResponse)(nil), "soarchain.dpr.MsgActivateDprResponse")
 	proto.RegisterType((*MsgLeaveDpr)(nil), "soarchain.dpr.MsgLeaveDpr")
 	proto.RegisterType((*MsgLeaveDprResponse)(nil), "soarchain.dpr.MsgLeaveDprResponse")
-	proto.RegisterType((*MsgDeactivateDpr)(nil), "soarchain.dpr.MsgDeactivateDpr")
-	proto.RegisterType((*MsgDeactivateDprResponse)(nil), "soarchain.dpr.MsgDeactivateDprResponse")
+	proto.RegisterType((*MsgClaimDprRewards)(nil), "soarchain.dpr.MsgClaimDprRewards")
+	proto.RegisterType((*MsgClaimDprRewardsResponse)(nil), "soarchain.dpr.MsgClaimDprRewardsResponse")
 }
 
 func init() { proto.RegisterFile("dpr/tx.proto", fileDescriptor_dec6b5e510091bca) }
 
 var fileDescriptor_dec6b5e510091bca = []byte{
-	// 479 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x94, 0xcd, 0x6e, 0x13, 0x31,
-	0x14, 0x85, 0xe3, 0xa4, 0x0d, 0xcd, 0x6d, 0x53, 0x81, 0xdb, 0x46, 0x96, 0x81, 0x21, 0x1a, 0xfe,
-	0xba, 0x4a, 0x24, 0x58, 0x22, 0x21, 0xd1, 0x06, 0xa1, 0x22, 0x46, 0x42, 0x41, 0x2c, 0x40, 0x6c,
-	0x4c, 0x6c, 0x0d, 0x91, 0xc0, 0xb6, 0x6c, 0xa7, 0x0a, 0x1b, 0x9e, 0x81, 0x17, 0xe1, 0x3d, 0x58,
-	0x76, 0xc9, 0x12, 0x25, 0x2f, 0x82, 0x32, 0x8d, 0x3d, 0x33, 0x49, 0x3b, 0x48, 0x55, 0x97, 0xd7,
-	0xc7, 0xe7, 0xf8, 0xbb, 0xca, 0xc9, 0xc0, 0x0e, 0xd7, 0xa6, 0xef, 0xa6, 0x3d, 0x6d, 0x94, 0x53,
-	0xb8, 0x6d, 0x15, 0x33, 0xa3, 0x2f, 0x6c, 0x2c, 0x7b, 0x5c, 0x1b, 0xda, 0x5e, 0x88, 0x5c, 0x9b,
-	0x73, 0x35, 0xfe, 0x85, 0xa0, 0x95, 0xd8, 0xf4, 0x95, 0x90, 0x03, 0x6d, 0x30, 0x81, 0x1b, 0x23,
-	0x23, 0x98, 0x53, 0x86, 0xa0, 0x2e, 0x3a, 0x6c, 0x0d, 0xfd, 0x88, 0x1f, 0x40, 0xdb, 0x4e, 0xb4,
-	0x56, 0xc6, 0x09, 0xfe, 0xf6, 0x64, 0x60, 0x49, 0x3d, 0xd3, 0xcb, 0x87, 0x98, 0xc2, 0x16, 0x9f,
-	0x18, 0xe6, 0xc6, 0x4a, 0x92, 0x46, 0x17, 0x1d, 0x6e, 0x0c, 0xc3, 0x8c, 0xef, 0x40, 0x8b, 0x6b,
-	0x73, 0x34, 0xe1, 0xa9, 0x70, 0x64, 0x23, 0x73, 0xe7, 0x07, 0xf8, 0x11, 0xec, 0x7e, 0x63, 0xd3,
-	0xe3, 0xaf, 0x63, 0x21, 0xdd, 0xb1, 0x9a, 0x48, 0x47, 0x36, 0x33, 0xff, 0xca, 0x69, 0xbc, 0x07,
-	0xb7, 0x02, 0xee, 0x50, 0x58, 0xad, 0xa4, 0x15, 0xf1, 0x0f, 0xd8, 0x49, 0x6c, 0xfa, 0x5e, 0x73,
-	0xe6, 0xc4, 0x62, 0x8d, 0x7d, 0xd8, 0xe4, 0xda, 0x9c, 0xf0, 0xe5, 0x12, 0xe7, 0xc3, 0x35, 0xac,
-	0xd0, 0x81, 0xa6, 0x15, 0x92, 0x0b, 0xb3, 0xe4, 0x5f, 0x4e, 0x71, 0x07, 0xf6, 0x8b, 0xef, 0x07,
-	0xae, 0x67, 0xb0, 0x9d, 0xd8, 0xf4, 0xa5, 0x74, 0xc2, 0x2c, 0xb0, 0x72, 0x3b, 0x2a, 0xda, 0x73,
-	0xdc, 0x7a, 0x01, 0x37, 0x3e, 0x80, 0xbd, 0x82, 0x39, 0x64, 0x3e, 0x87, 0xdd, 0xc4, 0xa6, 0x2f,
-	0x46, 0x6e, 0x7c, 0x5a, 0xb9, 0x6d, 0xfe, 0x58, 0xbd, 0xc4, 0x4a, 0xa0, 0x53, 0xf6, 0xaf, 0xd0,
-	0xbe, 0x11, 0xec, 0x54, 0x5c, 0x95, 0xd6, 0x9b, 0x43, 0xe6, 0x27, 0xb8, 0x99, 0xd8, 0x74, 0x20,
-	0xd8, 0x55, 0x79, 0xab, 0x7e, 0x8f, 0x98, 0x02, 0x59, 0x4d, 0xf7, 0x2f, 0x3f, 0x99, 0x35, 0xa0,
-	0x91, 0xd8, 0x14, 0x0f, 0xa0, 0xe9, 0xcb, 0xdd, 0x2b, 0xfd, 0x13, 0x7a, 0xa1, 0x47, 0xb4, 0x7b,
-	0x99, 0xe2, 0xd3, 0x70, 0x02, 0xad, 0xbc, 0x5e, 0xb7, 0xd7, 0xaf, 0x07, 0x91, 0xde, 0xaf, 0x10,
-	0x43, 0xdc, 0x6b, 0xd8, 0x0a, 0xad, 0xa0, 0xeb, 0x06, 0xaf, 0xd1, 0xf8, 0x72, 0x2d, 0x64, 0xbd,
-	0x83, 0xed, 0x62, 0x1b, 0xee, 0xae, 0x5b, 0x0a, 0x32, 0x7d, 0x58, 0x29, 0x17, 0x01, 0x43, 0x11,
-	0x2e, 0x00, 0xf4, 0xda, 0x45, 0x80, 0xab, 0x1d, 0xc0, 0x1f, 0xa0, 0x5d, 0x2e, 0xc0, 0xbd, 0x75,
-	0x53, 0xe9, 0x02, 0x7d, 0xfc, 0x9f, 0x0b, 0x3e, 0xfa, 0xa8, 0xff, 0x7b, 0x16, 0xa1, 0xb3, 0x59,
-	0x84, 0xfe, 0xce, 0x22, 0xf4, 0x73, 0x1e, 0xd5, 0xce, 0xe6, 0x51, 0xed, 0xcf, 0x3c, 0xaa, 0x7d,
-	0x3c, 0x08, 0x09, 0xfd, 0x69, 0x3f, 0xfb, 0x1e, 0x7e, 0xd7, 0xc2, 0x7e, 0x6e, 0x66, 0x5f, 0xbd,
-	0xa7, 0xff, 0x02, 0x00, 0x00, 0xff, 0xff, 0x57, 0x23, 0xd8, 0x1c, 0x23, 0x05, 0x00, 0x00,
+	// 497 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0xdd, 0x6a, 0x13, 0x41,
+	0x14, 0xce, 0x24, 0x6d, 0xec, 0x9e, 0x36, 0x15, 0xa7, 0x6d, 0x58, 0xc6, 0xba, 0xc4, 0xf5, 0x87,
+	0x0a, 0x92, 0x80, 0x5e, 0x0a, 0x82, 0x4d, 0x44, 0x2a, 0x2e, 0x48, 0xc4, 0x1b, 0x6f, 0x64, 0xcc,
+	0x0c, 0xeb, 0x42, 0xbb, 0x3b, 0xcc, 0xcc, 0xd6, 0xf8, 0x16, 0x3e, 0x81, 0x6f, 0xe0, 0x7b, 0x78,
+	0xd9, 0x4b, 0x2f, 0x25, 0xb9, 0xf1, 0x31, 0x24, 0xdb, 0xce, 0xec, 0x5f, 0x92, 0x42, 0x2f, 0xcf,
+	0xf9, 0xce, 0xf7, 0x9d, 0xef, 0xcc, 0x39, 0x0c, 0xec, 0x30, 0x21, 0x07, 0x7a, 0xda, 0x17, 0x32,
+	0xd1, 0x09, 0xee, 0xa8, 0x84, 0xca, 0xc9, 0x57, 0x1a, 0xc5, 0x7d, 0x26, 0x24, 0xe9, 0x2c, 0x40,
+	0x26, 0xe4, 0x25, 0xea, 0xff, 0x42, 0xe0, 0x04, 0x2a, 0x7c, 0xc3, 0xe3, 0x91, 0x90, 0xd8, 0x85,
+	0x5b, 0x13, 0xc9, 0xa9, 0x4e, 0xa4, 0x8b, 0x7a, 0xe8, 0xc8, 0x19, 0x9b, 0x10, 0x3f, 0x84, 0x8e,
+	0x4a, 0x85, 0x48, 0xa4, 0xe6, 0xec, 0xfd, 0xc9, 0x48, 0xb9, 0xcd, 0x0c, 0x2f, 0x27, 0x31, 0x81,
+	0x2d, 0x96, 0x4a, 0xaa, 0xa3, 0x24, 0x76, 0x5b, 0x3d, 0x74, 0xb4, 0x31, 0xb6, 0x31, 0x3e, 0x04,
+	0x87, 0x09, 0x79, 0x9c, 0xb2, 0x90, 0x6b, 0x77, 0x23, 0x63, 0xe7, 0x09, 0xfc, 0x18, 0x76, 0xcf,
+	0xe8, 0x74, 0x78, 0x1a, 0xf1, 0x58, 0x0f, 0x93, 0x34, 0xd6, 0xee, 0x66, 0xc6, 0xaf, 0x64, 0xfd,
+	0x3d, 0xb8, 0x63, 0xed, 0x8e, 0xb9, 0x12, 0x49, 0xac, 0xb8, 0xff, 0x13, 0xc1, 0x4e, 0xa0, 0xc2,
+	0x8f, 0x82, 0x51, 0xcd, 0x17, 0x73, 0xec, 0xc3, 0x26, 0x13, 0xf2, 0x84, 0x5d, 0x4d, 0x71, 0x19,
+	0x94, 0xdc, 0x35, 0x2b, 0xee, 0xea, 0xfd, 0x5b, 0xcb, 0xfa, 0x5f, 0x33, 0x45, 0x17, 0xda, 0x8a,
+	0xc7, 0x8c, 0xcb, 0xcc, 0xbd, 0x33, 0xbe, 0x8a, 0xfc, 0x2e, 0xec, 0x17, 0xfd, 0x59, 0xe3, 0x2f,
+	0x60, 0x3b, 0x50, 0xe1, 0xeb, 0x58, 0x73, 0xb9, 0xb0, 0x9d, 0xd3, 0x51, 0x91, 0x9e, 0x8f, 0xd3,
+	0x2c, 0x8c, 0xe3, 0x1f, 0xc0, 0x5e, 0x81, 0x6c, 0x35, 0x5f, 0xc2, 0x6e, 0xa0, 0xc2, 0x57, 0x13,
+	0x1d, 0x9d, 0xaf, 0x7d, 0x8d, 0xbc, 0x59, 0xb3, 0xe4, 0xd5, 0x85, 0x6e, 0x99, 0x5f, 0x71, 0xfb,
+	0x8e, 0xd3, 0x73, 0x7e, 0x53, 0xb7, 0x86, 0x6c, 0x35, 0x9f, 0x02, 0x0e, 0x54, 0x38, 0x3c, 0xa5,
+	0xd1, 0x59, 0x96, 0xfe, 0x46, 0x25, 0x53, 0xab, 0xa4, 0xfd, 0x43, 0x20, 0xf5, 0x6a, 0xa3, 0xf5,
+	0xec, 0x5f, 0x0b, 0x5a, 0x81, 0x0a, 0xf1, 0x08, 0xda, 0xe6, 0x9e, 0xfb, 0xa5, 0xe3, 0xef, 0xdb,
+	0xd3, 0x21, 0xbd, 0x55, 0x88, 0x51, 0xc3, 0x01, 0x38, 0xf9, 0x41, 0xdd, 0xad, 0x97, 0x5b, 0x90,
+	0x3c, 0x58, 0x03, 0x5a, 0xb9, 0xb7, 0xb0, 0x65, 0xf7, 0x4c, 0xea, 0x04, 0x83, 0x11, 0x7f, 0x35,
+	0x66, 0xb5, 0x3e, 0xc0, 0x76, 0x71, 0xbf, 0xf7, 0xea, 0x94, 0x02, 0x4c, 0x1e, 0xad, 0x85, 0x8b,
+	0x06, 0xed, 0x6a, 0x97, 0x18, 0x34, 0xd8, 0x32, 0x83, 0xd5, 0xad, 0xe2, 0xcf, 0x70, 0xbb, 0xba,
+	0xd2, 0xfb, 0x75, 0x5a, 0xa5, 0x84, 0x3c, 0xb9, 0xb6, 0xc4, 0x34, 0x38, 0x1e, 0xfc, 0x9e, 0x79,
+	0xe8, 0x62, 0xe6, 0xa1, 0xbf, 0x33, 0x0f, 0xfd, 0x98, 0x7b, 0x8d, 0x8b, 0xb9, 0xd7, 0xf8, 0x33,
+	0xf7, 0x1a, 0x9f, 0x0e, 0xac, 0xc6, 0x60, 0x3a, 0xc8, 0x3e, 0xc2, 0xef, 0x82, 0xab, 0x2f, 0xed,
+	0xec, 0xbb, 0x7b, 0xfe, 0x3f, 0x00, 0x00, 0xff, 0xff, 0x76, 0xa4, 0x47, 0xf8, 0x1c, 0x05, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -671,7 +665,7 @@ type MsgClient interface {
 	EnterDpr(ctx context.Context, in *MsgEnterDpr, opts ...grpc.CallOption) (*MsgEnterDprResponse, error)
 	ActivateDpr(ctx context.Context, in *MsgActivateDpr, opts ...grpc.CallOption) (*MsgActivateDprResponse, error)
 	LeaveDpr(ctx context.Context, in *MsgLeaveDpr, opts ...grpc.CallOption) (*MsgLeaveDprResponse, error)
-	DeactivateDpr(ctx context.Context, in *MsgDeactivateDpr, opts ...grpc.CallOption) (*MsgDeactivateDprResponse, error)
+	ClaimDprRewards(ctx context.Context, in *MsgClaimDprRewards, opts ...grpc.CallOption) (*MsgClaimDprRewardsResponse, error)
 }
 
 type msgClient struct {
@@ -727,9 +721,9 @@ func (c *msgClient) LeaveDpr(ctx context.Context, in *MsgLeaveDpr, opts ...grpc.
 	return out, nil
 }
 
-func (c *msgClient) DeactivateDpr(ctx context.Context, in *MsgDeactivateDpr, opts ...grpc.CallOption) (*MsgDeactivateDprResponse, error) {
-	out := new(MsgDeactivateDprResponse)
-	err := c.cc.Invoke(ctx, "/soarchain.dpr.Msg/DeactivateDpr", in, out, opts...)
+func (c *msgClient) ClaimDprRewards(ctx context.Context, in *MsgClaimDprRewards, opts ...grpc.CallOption) (*MsgClaimDprRewardsResponse, error) {
+	out := new(MsgClaimDprRewardsResponse)
+	err := c.cc.Invoke(ctx, "/soarchain.dpr.Msg/ClaimDprRewards", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -743,7 +737,7 @@ type MsgServer interface {
 	EnterDpr(context.Context, *MsgEnterDpr) (*MsgEnterDprResponse, error)
 	ActivateDpr(context.Context, *MsgActivateDpr) (*MsgActivateDprResponse, error)
 	LeaveDpr(context.Context, *MsgLeaveDpr) (*MsgLeaveDprResponse, error)
-	DeactivateDpr(context.Context, *MsgDeactivateDpr) (*MsgDeactivateDprResponse, error)
+	ClaimDprRewards(context.Context, *MsgClaimDprRewards) (*MsgClaimDprRewardsResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -765,8 +759,8 @@ func (*UnimplementedMsgServer) ActivateDpr(ctx context.Context, req *MsgActivate
 func (*UnimplementedMsgServer) LeaveDpr(ctx context.Context, req *MsgLeaveDpr) (*MsgLeaveDprResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LeaveDpr not implemented")
 }
-func (*UnimplementedMsgServer) DeactivateDpr(ctx context.Context, req *MsgDeactivateDpr) (*MsgDeactivateDprResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeactivateDpr not implemented")
+func (*UnimplementedMsgServer) ClaimDprRewards(ctx context.Context, req *MsgClaimDprRewards) (*MsgClaimDprRewardsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClaimDprRewards not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -863,20 +857,20 @@ func _Msg_LeaveDpr_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_DeactivateDpr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeactivateDpr)
+func _Msg_ClaimDprRewards_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgClaimDprRewards)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).DeactivateDpr(ctx, in)
+		return srv.(MsgServer).ClaimDprRewards(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/soarchain.dpr.Msg/DeactivateDpr",
+		FullMethod: "/soarchain.dpr.Msg/ClaimDprRewards",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeactivateDpr(ctx, req.(*MsgDeactivateDpr))
+		return srv.(MsgServer).ClaimDprRewards(ctx, req.(*MsgClaimDprRewards))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -906,8 +900,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_LeaveDpr_Handler,
 		},
 		{
-			MethodName: "DeactivateDpr",
-			Handler:    _Msg_DeactivateDpr_Handler,
+			MethodName: "ClaimDprRewards",
+			Handler:    _Msg_ClaimDprRewards_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1016,19 +1010,24 @@ func (m *MsgUpdateDpr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.Sender)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Sender)))
 		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.DprBudget) > 0 {
+		i -= len(m.DprBudget)
+		copy(dAtA[i:], m.DprBudget)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.DprBudget)))
+		i--
 		dAtA[i] = 0x22
+	}
+	if m.MaxClientCount != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.MaxClientCount))
+		i--
+		dAtA[i] = 0x18
 	}
 	if m.Duration != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.Duration))
 		i--
-		dAtA[i] = 0x18
-	}
-	if len(m.SupportedPIDs) > 0 {
-		i -= len(m.SupportedPIDs)
-		copy(dAtA[i:], m.SupportedPIDs)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.SupportedPIDs)))
-		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if len(m.DprId) > 0 {
 		i -= len(m.DprId)
@@ -1243,7 +1242,7 @@ func (m *MsgLeaveDprResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDeactivateDpr) Marshal() (dAtA []byte, err error) {
+func (m *MsgClaimDprRewards) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1253,39 +1252,27 @@ func (m *MsgDeactivateDpr) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDeactivateDpr) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgClaimDprRewards) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDeactivateDpr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgClaimDprRewards) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Duration != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.Duration))
-		i--
-		dAtA[i] = 0x18
-	}
 	if len(m.Sender) > 0 {
 		i -= len(m.Sender)
 		copy(dAtA[i:], m.Sender)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Sender)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.DprId) > 0 {
-		i -= len(m.DprId)
-		copy(dAtA[i:], m.DprId)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.DprId)))
 		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgDeactivateDprResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgClaimDprRewardsResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1295,12 +1282,12 @@ func (m *MsgDeactivateDprResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgDeactivateDprResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgClaimDprRewardsResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgDeactivateDprResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgClaimDprRewardsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1365,12 +1352,15 @@ func (m *MsgUpdateDpr) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.SupportedPIDs)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
 	if m.Duration != 0 {
 		n += 1 + sovTx(uint64(m.Duration))
+	}
+	if m.MaxClientCount != 0 {
+		n += 1 + sovTx(uint64(m.MaxClientCount))
+	}
+	l = len(m.DprBudget)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
 	}
 	l = len(m.Sender)
 	if l > 0 {
@@ -1466,27 +1456,20 @@ func (m *MsgLeaveDprResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgDeactivateDpr) Size() (n int) {
+func (m *MsgClaimDprRewards) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.DprId)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
 	l = len(m.Sender)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if m.Duration != 0 {
-		n += 1 + sovTx(uint64(m.Duration))
-	}
 	return n
 }
 
-func (m *MsgDeactivateDprResponse) Size() (n int) {
+func (m *MsgClaimDprRewardsResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1797,8 +1780,46 @@ func (m *MsgUpdateDpr) Unmarshal(dAtA []byte) error {
 			m.DprId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Duration", wireType)
+			}
+			m.Duration = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Duration |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxClientCount", wireType)
+			}
+			m.MaxClientCount = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.MaxClientCount |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SupportedPIDs", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DprBudget", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1826,28 +1847,9 @@ func (m *MsgUpdateDpr) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.SupportedPIDs = string(dAtA[iNdEx:postIndex])
+			m.DprBudget = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Duration", wireType)
-			}
-			m.Duration = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Duration |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 4:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Sender", wireType)
 			}
@@ -2442,7 +2444,7 @@ func (m *MsgLeaveDprResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDeactivateDpr) Unmarshal(dAtA []byte) error {
+func (m *MsgClaimDprRewards) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2465,45 +2467,13 @@ func (m *MsgDeactivateDpr) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeactivateDpr: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgClaimDprRewards: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeactivateDpr: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgClaimDprRewards: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DprId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.DprId = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Sender", wireType)
 			}
@@ -2535,25 +2505,6 @@ func (m *MsgDeactivateDpr) Unmarshal(dAtA []byte) error {
 			}
 			m.Sender = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Duration", wireType)
-			}
-			m.Duration = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Duration |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -2575,7 +2526,7 @@ func (m *MsgDeactivateDpr) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgDeactivateDprResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgClaimDprRewardsResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2598,10 +2549,10 @@ func (m *MsgDeactivateDprResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeactivateDprResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgClaimDprRewardsResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeactivateDprResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgClaimDprRewardsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

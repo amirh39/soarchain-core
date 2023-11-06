@@ -12,7 +12,7 @@ service Msg {
   rpc EnterDpr(MsgEnterDpr) returns (MsgEnterDprResponse);
   rpc ActivateDpr(MsgActivateDpr) returns (MsgActivateDprResponse);
   rpc LeaveDpr(MsgLeaveDpr) returns (MsgLeaveDprResponse);
-  rpc DeactivateDpr(MsgDeactivateDpr) returns (MsgDeactivateDprResponse);
+  rpc ClaimDprRewards(MsgClaimDprRewards) returns (MsgClaimDprRewardsResponse);
 }
 
 message MsgGenDpr {
@@ -27,9 +27,10 @@ message MsgGenDprResponse {}
 
 message MsgUpdateDpr {
   string dprId = 1;
-  string supportedPIDs = 2; 
-  uint64 duration = 3;
-  string sender = 4;
+  uint64 duration = 2;
+  uint64 maxClientCount = 3;
+  string dprBudget = 4;
+  string sender = 5;
 }
 
 message MsgUpdateDprResponse {}
@@ -55,10 +56,8 @@ message MsgLeaveDpr {
 
 message MsgLeaveDprResponse {}
 
-message MsgDeactivateDpr {
-  string dprId = 1; 
-  string sender = 2;
-  uint64 duration = 3;
+message MsgClaimDprRewards {
+  string sender = 1;
 }
 
-message MsgDeactivateDprResponse {}
+message MsgClaimDprRewardsResponse {}
