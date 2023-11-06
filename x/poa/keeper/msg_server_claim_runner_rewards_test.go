@@ -52,7 +52,7 @@ func Test_ClaimRunnerRewards_NotRegisteredAsRunner(t *testing.T) {
 	res, err := msgServer.ClaimRunnerRewards(context, msg)
 
 	require.Error(t, err, "Expected error when non-runner address attempts to claim runner rewards")
-	require.True(t, strings.Contains(err.Error(), "not registered as a runner"), "Error message should indicate the address is not registered as a runner")
+	require.True(t, strings.Contains(err.Error(), "not registered"), "Error message should indicate the address is not registered as a runner")
 	require.Nil(t, res, "Result should be nil when claiming is unauthorized")
 }
 

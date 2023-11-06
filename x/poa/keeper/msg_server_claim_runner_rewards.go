@@ -18,12 +18,10 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 
 	log.Println("############## Claim Runner Rewards Transaction Started ##############")
 
-	reputation, isFound := k.GetReputationsByAddress(ctx, msg.Creator)
+	// Right now the type that is being set for Runner's inside the reputation object is "", which needs to be changed
+	reputation, isFound := k.GetReputationsByAddressAndType(ctx, msg.Creator, "")
 	if !isFound {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[ClaimRunnerRewards][GetReputationByClientAddress] failed. Target reputation is not registered in the store by this address: [ %s ]. Make sure the address is valid and not empty.", msg.Creator)
-	}
-	if reputation.Type != "" { // Right now the type that is being set for Runner's inside the reputation object is "", which needs to be changed
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnauthorized, "[ClaimRunnerRewards] failed. Address [%s] is not registered as a runner", msg.Creator)
 	}
 
 	if logger != nil {
