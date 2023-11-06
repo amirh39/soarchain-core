@@ -34,3 +34,17 @@ func Test_SetGetRunnerDidDocument(t *testing.T) {
 	require.NotNil(t, resDids)
 	require.Equal(t, 2, len(resDids))
 }
+
+func Test_GetRunnerDidByPubkey(t *testing.T) {
+	keeper, ctx := keepertest.DidKeeper(t)
+
+	didDocument, privkey := NewRunnerDidDocumentWithSeq(Did)
+	require.NotNil(t, privkey)
+	keeper.SetRunnerDid(ctx, *didDocument.Document)
+
+	got, found := keeper.GetRunnerDidUsingPubKey(ctx, didDocument.Document.PubKey)
+	t.Log("runner did -->", got, found)
+	require.Equal(t, true, found)
+	require.NotNil(t, got)
+
+}
