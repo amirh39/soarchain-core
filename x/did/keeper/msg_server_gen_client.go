@@ -37,13 +37,9 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	log.Println("############## Generating a did Transaction Started ##############")
 
-	if msg.Document == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][ValidateDid] failed. Make sure client did document is valid.")
-	}
-
-	result := k.ValidateInputs(msg.Creator, msg.Certificate, msg.Signature, msg.Document.VerificationMethods[0].Id)
+	result := k.ClientDidValidateInputs(msg)
 	if !result {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][ValidateInputs] failed. Make sure transaction inputs are valid.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][ClientDidValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
 
 	deviceCert, error := CreateX509CertFromString(msg.Certificate)
@@ -101,7 +97,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)
 
-	err := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
+	err := k.Keeper.poaKeeper.InitializeClientReputation(ctx, poatypes.Reputation{
 		PubKey:             pubKeyHex,
 		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),

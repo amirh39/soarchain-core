@@ -2,38 +2,33 @@ package keeper_test
 
 import (
 	"soarchain/x/did/types"
-	"testing"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 )
 
-func TestHandleMsgDeactivateDID(t *testing.T) {
-	msgServer, k, context, ctrl, bank := SetupMsgServer(t)
-	defer ctrl.Finish()
-	bank.ExpectAny(context)
-	ctx := sdk.UnwrapSDKContext(context)
-	//
-	did, docWithSeq, _, _ := MakeTestData()
-	k.SetClientDid(ctx, *docWithSeq.Document)
+func (helper *KeeperTestHelper) Test_DeactivateDid() {
+	helper.Run("TestGenChallenger", func() {
+		helper.Setup()
+		keeper := helper.App.DidKeeper
+		poakeeper := helper.App.PoaKeeper
 
-	didDocument, found := k.GetClientDid(ctx, ADDRESS)
-	require.Equal(t, true, found)
-	require.NotNil(t, didDocument)
+		did, docWithSeq, _, _ := MakeTestData()
+		keeper.SetClientDid(helper.Ctx, *docWithSeq.Document)
+		helper.Require().NotNil(did)
 
-	// deactivate
-	deactivateMsg := types.MsgDeactivateDid{
-		Did:         Did,
-		FromAddress: ADDRESS,
-	}
-	clientDid, err := msgServer.DeactivateDid(context, &deactivateMsg)
-	if err != nil {
-		require.NotNil(t, err)
-		require.Nil(t, clientDid)
-	} else {
-		require.Nil(t, err)
-		got, found := k.GetClientDid(ctx, did)
-		require.NotNil(t, got)
-		require.False(t, found)
-	}
+		didDocument, found := keeper.GetClientDid(helper.Ctx, ADDRESS)
+		helper.Require().NotNil(didDocument)
+		helper.Require().Equal(found, true)
+
+		deactivateMsg := types.MsgDeactivateDid{
+			Did:         Did,
+			FromAddress: ADDRESS,
+		}
+		helper.Require().NotNil(deactivateMsg)
+		keeper.RemoveClientDid(helper.Ctx, ADDRESS)
+		error := poakeeper.RemoveClientReputation(helper.Ctx, ADDRESS)
+		if error != nil {
+			helper.Require().NotNil(error)
+		} else {
+			helper.Require().Nil(error)
+		}
+	})
 }

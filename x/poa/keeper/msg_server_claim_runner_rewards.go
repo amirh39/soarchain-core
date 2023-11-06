@@ -63,12 +63,18 @@ func (k msgServer) ClaimRunnerRewards(goCtx context.Context, msg *types.MsgClaim
 		logger.Info("Calculating new net earning successfully done.", "transaction", "ClaimRunnerRewards")
 	}
 
-	updatedReputation := types.Reputation{
-		PubKey:      reputation.PubKey,
-		NetEarnings: netEarnings.String(),
+	updateReputation := types.Reputation{
+		PubKey:             reputation.PubKey,
+		Address:            reputation.Address,
+		Score:              reputation.Score,
+		RewardMultiplier:   reputation.RewardMultiplier,
+		LastTimeChallenged: reputation.RewardMultiplier,
+		CoolDownTolerance:  reputation.CoolDownTolerance,
+		Type:               reputation.Type,
+		StakedAmount:       reputation.StakedAmount,
+		NetEarnings:        netEarnings.String(),
 	}
-
-	k.SetReputation(ctx, updatedReputation)
+	k.SetReputation(ctx, updateReputation)
 
 	if logger != nil {
 		logger.Info("Updating target reputation successfully done.", "transaction", "ClaimRunnerRewards")

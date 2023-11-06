@@ -5,6 +5,7 @@ import (
 	"log"
 	"soarchain/x/dpr/types"
 	"soarchain/x/dpr/utility"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -36,6 +37,8 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr][CalculateDPREndTime] failed. End time of the DPR couldn't calculated.")
 	}
+	// Convert dprEndTime from int64 to string
+	dprEndTimeStr := strconv.FormatInt(dprEndTime, 10)
 
 	epochData, isFound := k.epochKeeper.GetEpochData(ctx)
 	if !isFound {
@@ -48,7 +51,7 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 		SupportedPIDs:  dpr.SupportedPIDs,
 		IsActive:       true,
 		Duration:       dpr.Duration,
-		DprEndTime:     dprEndTime,
+		DprEndTime:     dprEndTimeStr,
 		DprStartEpoch:  epochData.TotalEpochs,
 		DprBudget:      dpr.DprBudget,
 		MaxClientCount: dpr.MaxClientCount,

@@ -6,15 +6,48 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"encoding/pem"
+	"soarchain/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k Keeper) ValidateInputs(creator string, certificate string, signature string, verificationMethidId string) bool {
-	if creator == "" || certificate == "" || signature == "" || verificationMethidId == "" {
+func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
+
+	if msg.Document == nil || msg.Document.VerificationMethods == nil || len(msg.Document.VerificationMethods) < 1 || msg.Document.VerificationMethods[0].Id == "" {
 		return false
 	}
+
+	if msg.Document.SupportedPIDs == "" || msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" {
+		return false
+	}
+
+	return true
+}
+
+func (k Keeper) RunnerDidValidateInputs(msg *types.MsgGenRunner) bool {
+
+	if msg.Document == nil || msg.Document.VerificationMethods == nil || len(msg.Document.VerificationMethods) < 1 || msg.Document.VerificationMethods[0].Id == "" {
+		return false
+	}
+
+	if msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.RunnerStake == "" {
+		return false
+	}
+
+	return true
+}
+
+func (k Keeper) ChallengerDidValidateInputs(msg *types.MsgGenChallenger) bool {
+
+	if msg.Document == nil || msg.Document.VerificationMethods == nil || len(msg.Document.VerificationMethods) < 1 || msg.Document.VerificationMethods[0].Id == "" {
+		return false
+	}
+
+	if msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.ChallengerStake == "" || msg.ChallengerType == "" {
+		return false
+	}
+
 	return true
 }
 
@@ -110,6 +143,14 @@ func ValidateX509Cert(derivedCert *x509.Certificate, signerCert *x509.Certificat
 
 func ValidString(input string) bool {
 	if len(input) == 0 || input == "" {
+		return false
+	}
+	return true
+}
+
+func ValidateDeactivatingDidInputs(fromAddress string, didType string) bool {
+
+	if fromAddress == "" || didType == "" {
 		return false
 	}
 	return true

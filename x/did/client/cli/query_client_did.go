@@ -55,7 +55,7 @@ func CmdShowClientDid() *cobra.Command {
 			argId := args[0]
 
 			params := &types.QueryGetClientDidRequest{
-				Id: argId,
+				Address: argId,
 			}
 
 			res, err := queryClient.ClientDid(context.Background(), params)

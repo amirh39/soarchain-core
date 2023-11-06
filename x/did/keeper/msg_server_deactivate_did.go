@@ -16,32 +16,58 @@ func (k msgServer) DeactivateDid(goCtx context.Context, msg *types.MsgDeactivate
 	log.Println("############## Deactivating a did Transaction is Started ##############")
 
 	if msg.FromAddress == "" {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][Validate address] failed. make sure using valid address.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][Validate from address] failed. make sure using valid address.")
 	}
 
 	_, found := k.GetClientDid(ctx, msg.FromAddress)
 	if found {
+
 		k.RemoveClientDid(ctx, msg.FromAddress)
 
-		log.Println("############## End of Deactivating did Transaction ##############")
+		error := k.poaKeeper.RemoveClientReputation(ctx, msg.FromAddress)
+		if error != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][RemoveClientReputation] failed. There is an error during deleteting client did. Make sure using valid client did address.")
+		}
+
+		log.Println("############## End of Deactivating Client did Transaction ##############")
 
 		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
 	_, found = k.GetRunnerDid(ctx, msg.FromAddress)
 	if found {
+
+		if msg.Creator == "" {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][Validate runner creator address] failed. make sure using valid address.")
+		}
+
 		k.RemoveRunnerDid(ctx, msg.FromAddress)
 
-		log.Println("############## End of Deactivating did Transaction ##############")
+		error := k.poaKeeper.RemoveRunnerReputation(ctx, msg.FromAddress, msg.Creator)
+		if error != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][RemoveClientReputation] failed. There is an error during deleteting runner did. Make sure using valid runner did address.")
+		}
+
+		log.Println("############## End of Deactivating Runner did Transaction ##############")
 
 		return &types.MsgDeactivateDidResponse{}, nil
 	}
 
 	_, found = k.GetChallengerDid(ctx, msg.FromAddress)
 	if found {
+
+		if msg.Creator == "" {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][Validate challenger creator address] failed. make sure using valid address.")
+		}
+
 		k.RemoveChallengerDid(ctx, msg.FromAddress)
 
-		log.Println("############## End of Deactivating did Transaction ##############")
+		error := k.poaKeeper.RemoveChallengerReputation(ctx, msg.FromAddress, msg.Creator)
+		if error != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[DeactivateDid][RemoveClientReputation] failed. There is an error during deleteting runner did. Make sure using valid runner did address.")
+		}
+
+		log.Println("############## End of Deactivating Challenger did Transaction ##############")
 
 		return &types.MsgDeactivateDidResponse{}, nil
 	}

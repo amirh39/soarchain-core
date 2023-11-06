@@ -69,7 +69,7 @@ func Test_ReputationQuerySingle(t *testing.T) {
 func Test_ClientQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.PoaKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := CreateNReputation(keeper, ctx, 5)
+	msgs := CreateNRandomReputation(keeper, ctx, 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllReputationRequest {
 		return &types.QueryAllReputationRequest{

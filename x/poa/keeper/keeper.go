@@ -22,8 +22,9 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 
-		bankKeeper  types.BankKeeper
-		epochKeeper types.EpochKeeper
+		accountKeeper types.AccountKeeper
+		bankKeeper    types.BankKeeper
+		epochKeeper   types.EpochKeeper
 	}
 )
 
@@ -33,6 +34,7 @@ func NewKeeper(
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
 
+	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 	epochKeeper types.EpochKeeper,
 ) *Keeper {
@@ -43,12 +45,13 @@ func NewKeeper(
 
 	return &Keeper{
 
-		cdc:         cdc,
-		storeKey:    storeKey,
-		memKey:      memKey,
-		paramstore:  ps,
-		bankKeeper:  bankKeeper,
-		epochKeeper: epochKeeper,
+		cdc:           cdc,
+		storeKey:      storeKey,
+		memKey:        memKey,
+		paramstore:    ps,
+		accountKeeper: accountKeeper,
+		bankKeeper:    bankKeeper,
+		epochKeeper:   epochKeeper,
 	}
 }
 

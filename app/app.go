@@ -476,6 +476,7 @@ func NewSoarchainApp(
 		keys[poamoduletypes.MemStoreKey],
 		app.GetSubspace(poamoduletypes.ModuleName),
 
+		app.AccountKeeper,
 		app.BankKeeper,
 		app.EpochKeeper,
 	)

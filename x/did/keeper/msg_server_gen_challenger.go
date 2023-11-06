@@ -22,17 +22,13 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	log.Println("############## Generating a challenger did Transaction Started ##############")
 
-	if msg.Document == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenChallenger][ValidateDid] failed. Make sure challenger did document is valid.")
+	result := k.ChallengerDidValidateInputs(msg)
+	if !result {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenChallenger][ChallengerDidValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
 
 	if msg.ChallengerType != constants.V2NChallengerType && msg.ChallengerType != constants.V2XChallenger {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ValidateChallengerType] failed. Invalid challenger type. Must be 'v2n' or 'v2x'.")
-	}
-
-	result := k.ValidateInputs(msg.Creator, msg.Certificate, msg.Signature, msg.Document.VerificationMethods[0].Id)
-	if !result {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenChallenger][ValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
 
 	deviceCert, error := CreateX509CertFromString(msg.Certificate)
@@ -92,14 +88,13 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	err := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
 		PubKey:             pubKeyHex,
-		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 		Type:               msg.ChallengerType,
-	}, msg.Certificate)
+	}, msg.Certificate, msg.ChallengerStake, msg.Creator)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenChallenger][InitializeReputation] failed. Invalid certificate validation.")
 	}

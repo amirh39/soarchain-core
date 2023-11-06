@@ -30,6 +30,8 @@ message MsgGenRunner {
   string creator = 2; 
   string certificate = 3;
   string signature = 4;
+  string runnerStake = 5;
+  string runnerIp = 6;
 }
   
 message MsgGenRunnerResponse {}
@@ -40,6 +42,8 @@ message MsgGenChallenger {
   string challengerType = 3;
   string certificate = 4;
   string signature = 5;
+  string ChallengerStake = 6;
+  string ChallengerIp = 7;
 }
   
 message MsgGenChallengerResponse {}
@@ -47,7 +51,8 @@ message MsgGenChallengerResponse {}
 // MsgDeactivateDid defines the Msg/DeactivateDID request type.
 message MsgDeactivateDid {
   string did = 1;
-  string fromAddress = 4;
+  string creator = 2;
+  string fromAddress = 3;
 }
 
 // MsgDeactivateDIDResponse defines the Msg/DeactivateDID response type.
