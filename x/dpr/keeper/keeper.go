@@ -25,8 +25,8 @@ type (
 		accountKeeper types.AccountKeeper
 		bankKeeper    types.BankKeeper
 		epochKeeper   types.EpochKeeper
-		poaKeeper     types.PoaKeeper
 		didKeeper     types.DidKeeper
+		poaKeeper     types.PoaKeeper
 	}
 )
 
@@ -39,8 +39,8 @@ func NewDprKeeper(
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 	epochKeeper types.EpochKeeper,
-	poaKeeper types.PoaKeeper,
 	didKeeper types.DidKeeper,
+	poaKeeper types.PoaKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -56,8 +56,8 @@ func NewDprKeeper(
 		accountKeeper: accountKeeper,
 		bankKeeper:    bankKeeper,
 		epochKeeper:   epochKeeper,
-		poaKeeper:     poaKeeper,
 		didKeeper:     didKeeper,
+		poaKeeper:     poaKeeper,
 	}
 }
 

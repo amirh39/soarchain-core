@@ -42,8 +42,8 @@ type EpochKeeper interface {
 	GetEpochData(ctx sdk.Context) (epochtypes.EpochData, bool)
 	SetEpochData(ctx sdk.Context, epochData epochtypes.EpochData)
 }
+
 type PoaKeeper interface {
-	GetReputationsByAddress(ctx sdk.Context, address string) (val poatypes.Reputation, found bool)
-	GetReputation(ctx sdk.Context, pubkey string) (val poatypes.Reputation, found bool)
 	SetReputation(ctx sdk.Context, reputation poatypes.Reputation)
+	GetReputation(ctx sdk.Context, pubkey string) (val poatypes.Reputation, found bool)
 }
