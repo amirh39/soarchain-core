@@ -38,6 +38,8 @@ message MsgUpdateDprResponse {}
 message MsgEnterDpr {
   string sender = 1;
   string dprId = 2;
+  string supportedPIDs = 3;
+//string signature = 4; TODO: add motus signature check 
 }
 
 message MsgEnterDprResponse {}
