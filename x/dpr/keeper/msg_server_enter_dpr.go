@@ -24,12 +24,12 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 	}
 
 	if dpr.MaxClientCount <= dpr.ClientCounter {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][MaxClientCount] achieved.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][MaxClientCount] achieved.")
 	}
 
 	result := k.VerifyEnterDprInputs(msg)
 	if !result {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][VerifyDprInputs] failed. Make sure you are using valid inputs.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][VerifyDprInputs] failed. Make sure you are using valid inputs.")
 	}
 
 	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
