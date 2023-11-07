@@ -46,6 +46,7 @@ func (k Keeper) updateChallengerReputation(ctx sdk.Context, challengerReputation
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, challengerReputation.Address), 10),
 		Type:               challengerReputation.Type,
+		StakedAmount:       challengerReputation.StakedAmount,
 	}
 
 	k.SetReputation(ctx, updatedChallenger)
@@ -125,6 +126,7 @@ func (k Keeper) updateRunnerReputation(ctx sdk.Context, creator string, runnerPu
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, creator), 10),
 		Type:               runner.Type,
+		StakedAmount:       runner.StakedAmount,
 	}
 	k.SetReputation(ctx, updatedRunner)
 
@@ -182,6 +184,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 			CoolDownTolerance:  strconv.FormatUint(k.coolDownMultiplier(ctx, msg.Creator), 10),
 			RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 			Type:               reputation.Type,
+			StakedAmount:       reputation.StakedAmount,
 		}
 
 		k.SetReputation(ctx, updatedReputation)

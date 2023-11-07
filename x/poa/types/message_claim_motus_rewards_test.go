@@ -3,9 +3,10 @@ package types
 import (
 	"testing"
 
+	"soarchain/testutil/sample"
+
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
-	"soarchain/testutil/sample"
 )
 
 func TestMsgClaimMotusRewards_ValidateBasic(t *testing.T) {
@@ -18,12 +19,14 @@ func TestMsgClaimMotusRewards_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgClaimMotusRewards{
 				Creator: "invalid_address",
+				Amount:  "1000udmotus",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgClaimMotusRewards{
 				Creator: sample.AccAddress(),
+				Amount:  "1000udmotus",
 			},
 		},
 	}

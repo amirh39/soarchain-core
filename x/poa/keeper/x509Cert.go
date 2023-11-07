@@ -39,7 +39,7 @@ func (k Keeper) ValidateCertificate(ctx sdk.Context, deviceCert *x509.Certificat
 		if isFound {
 			factoryCert, err := k.CreateX509CertFromString(factoryKey.FactoryCert)
 			if err != nil {
-				return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[validateCertificate][CreateX509CertFromString] failed. Factory certificate couldn't be created from the storage."+err.Error())
+				return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[validateCertificate][CreateX509CertFromString] failed. Factory certificate couldn't be created from the storage.")
 			}
 
 			validated, err := k.ValidateX509Cert(deviceCert, factoryCert)

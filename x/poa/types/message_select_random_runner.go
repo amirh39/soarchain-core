@@ -42,7 +42,7 @@ func (msg *MsgSelectRandomRunner) GetSignBytes() []byte {
 func (msg *MsgSelectRandomRunner) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[NewMsgSelectRandomRunner] failed. Invalid creator address (%s)", msg.Creator)
 	}
 	return nil
 }
