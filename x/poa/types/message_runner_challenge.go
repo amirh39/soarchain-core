@@ -1,7 +1,9 @@
 package types
 
 import (
+	"soarchain/x/poa/constants"
 	"soarchain/x/poa/errors"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -45,7 +47,21 @@ func (msg *MsgRunnerChallenge) GetSignBytes() []byte {
 func (msg *MsgRunnerChallenge) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid creator address [ %s ] ,", msg.Creator)
 	}
+	if msg.RunnerPubkey == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidPubKey, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid runner pubkey [ %s ] ", msg.RunnerPubkey)
+	}
+	if len(msg.ClientPubkeys) < 1 || msg.ClientPubkeys == nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid client pubkey [ %s ] ", msg.ClientPubkeys)
+	}
+
+	reward := strings.Compare(msg.ChallengeResult, constants.Reward)
+	punish := strings.Compare(msg.ChallengeResult, constants.Punish)
+
+	if reward != 0 && punish != 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid challenge result [ %s ] ", msg.ChallengeResult)
+	}
+
 	return nil
 }
