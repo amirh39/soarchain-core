@@ -67,7 +67,7 @@ func (k Keeper) DPRsByClientPubkey(c context.Context, req *types.QueryDPRsByClie
 	}
 
 	ctx := sdk.UnwrapSDKContext(c)
-	clientDid, found := k.didKeeper.GetClientDid(ctx, req.ClientPubkey)
+	clientDid, found := k.didKeeper.GetEligibleDidByPubkey(ctx, req.ClientPubkey)
 	if !found {
 		return nil, status.Error(codes.NotFound, "Client DID not found")
 	}
