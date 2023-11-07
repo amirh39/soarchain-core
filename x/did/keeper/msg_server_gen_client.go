@@ -2,8 +2,6 @@ package keeper
 
 import (
 	"context"
-	"crypto/x509"
-	"fmt"
 	"log"
 	"strconv"
 
@@ -18,18 +16,6 @@ import (
 	poatypes "soarchain/x/poa/types"
 )
 
-func clientType(deviceCert *x509.Certificate) string {
-	if len(deviceCert.Issuer.Names) < 1 || deviceCert.Issuer.Names[1].Value == nil {
-		return "[GenClient][ClientType] failed. No Type for device certificate."
-	}
-	results := fmt.Sprintf("%v", deviceCert.Issuer.Names[1].Value)
-	if results[41:43] == "01" {
-		return "mini"
-	} else {
-		return "pro"
-	}
-}
-
 func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*types.MsgGenClientResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
@@ -41,19 +27,9 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][ClientDidValidateInputs] failed. Make sure transaction inputs are valid.")
 	}
 
-	deviceCert, error := CreateX509CertFromString(msg.Certificate)
-	if error != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][CreateX509CertFromString] failed. Invalid device certificate.")
-	}
-
-	isValide := ValidateX509CertByASN1(msg.Creator, msg.Signature, deviceCert)
-	if !isValide {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][ValidateX509CertByASN1] failed. Invalid device certificate and signature.")
-	}
-
-	pubKeyHex, error := ExtractPubkeyFromCertificate(msg.Certificate)
-	if pubKeyHex == "" || error != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][ExtractPubkeyFromX509Cert] failed. Invalid certificate validation.")
+	pubKeyHex, deviceCertificate, pubkeyGeneratingError := k.GeneratePubkey(msg)
+	if pubkeyGeneratingError != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenClient][GeneratePubkey] failed. Make sure transaction inputs are valid.")
 	}
 
 	if logger != nil {
@@ -62,7 +38,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	isUnique := k.IsNotUniqueDid(ctx, msg.Document.Id)
 	if isUnique {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenClient][IsNotUniqueDid] failed. Did is already registered.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "[GenClient][IsNotUniqueDid] failed. Did: [ %s ] is already registered.", msg.Document.Id)
 	}
 
 	if logger != nil {
@@ -89,10 +65,12 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient] failed. Client did address [ %s ]  is not creator address.", msg.Document.Address)
 	}
 
+	clientType := k.ClientType(deviceCertificate)
+
 	seq := types.InitialSequence
 	msg.Document.PubKey = pubKeyHex
 	msg.Document.Address = msg.Creator
-	msg.Document.Type = clientType(deviceCert)
+	msg.Document.Type = clientType
 	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
 	k.SetClientDid(ctx, *didDocument.Document)
 
@@ -116,7 +94,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
-		Type:               clientType(deviceCert),
+		Type:               clientType,
 		StakedAmount:       "",
 	}, msg.Certificate)
 
