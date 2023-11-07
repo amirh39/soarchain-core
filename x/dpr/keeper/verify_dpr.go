@@ -8,7 +8,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k Keeper) VerifyDprInputs(msg *types.MsgGenDpr, totalEpoch uint64) bool {
+func (k Keeper) VerifyDprInputs(msg *types.MsgGenDpr) bool {
 	return isValidCreator(msg) &&
 		isValidSupportedPIDs(msg) &&
 		isValidDprBudget(msg) &&
@@ -40,4 +40,14 @@ func isValidDprBudget(msg *types.MsgGenDpr) bool {
 func isValidMaxClientCount(msg *types.MsgGenDpr) bool {
 	// Negative or 0
 	return msg.MaxClientCount != 0
+}
+
+func (k Keeper) VerifyEnterDprInputs(msg *types.MsgEnterDpr) bool {
+
+	return isValidSupportedPID(msg)
+}
+
+func isValidSupportedPID(msg *types.MsgEnterDpr) bool {
+	// Check if hex is valid using regex
+	return utility.IsValidHex(msg.SupportedPIDs)
 }

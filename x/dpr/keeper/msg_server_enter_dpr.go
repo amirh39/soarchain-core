@@ -27,6 +27,11 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][MaxClientCount] achieved.")
 	}
 
+	result := k.VerifyEnterDprInputs(msg)
+	if !result {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][VerifyDprInputs] failed. Make sure you are using valid inputs.")
+	}
+
 	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
 	if !eligible {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetClientDid] failed. There is no eligible client to serve this DPR.")
@@ -57,7 +62,7 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 		logger.Info("Eligible client is found successfully", "transaction", "EnterDpr")
 	}
 
-	eligible, err := utility.ArePIDsSupported(did.SupportedPIDs, dpr.SupportedPIDs)
+	eligible, err := utility.ArePIDsSupported(msg.SupportedPIDs, dpr.SupportedPIDs)
 	if !eligible {
 		return nil, sdkerrors.Wrap(err, "[EnterDpr][ArePIDsSupported] failed. Client's PID's are not supporting the DPR.")
 	}
@@ -67,7 +72,7 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 	}
 
 	// Save dpr into storage
-	dpr.ClientCounter = dpr.ClientCounter + 1
+	dpr.ClientCounter++
 	k.SetDpr(ctx, dpr)
 
 	if logger != nil {
