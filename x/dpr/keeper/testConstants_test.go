@@ -30,7 +30,7 @@ func CreateDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dpr {
 		items[i].Id = DprId
 		items[i].Creator = CREATOR
 		items[i].Duration = 12
-		items[i].IsActive = false
+		items[i].Status = 0
 
 		keeper.SetDpr(ctx, items[i])
 	}
@@ -44,11 +44,11 @@ func SetupDpr(n int) []types.Dpr {
 			Id:             DprId, // Should be unique for each DPR
 			Creator:        CREATOR,
 			SupportedPIDs:  SupportedPIDs,
-			IsActive:       false,
+			Status:         0,
 			Duration:       DprDuration,
 			DprEndTime:     "",
 			DprStartEpoch:  0,
-			DprBudget:      "20323231913udmotus",
+			DprBudget:      "2udmotus",
 			MaxClientCount: MaxClientCount,
 			ClientCounter:  0,
 		}
@@ -63,11 +63,11 @@ func SetupSecondDpr(n int) []types.Dpr {
 			Id:             DprID, // Should be unique for each DPR
 			Creator:        CREATOR,
 			SupportedPIDs:  SupportedPIDs,
-			IsActive:       false,
+			Status:         0,
 			Duration:       DprDuration,
 			DprEndTime:     "",
-			DprStartEpoch:  7,
-			DprBudget:      "20323231313udmotus",
+			DprStartEpoch:  2,
+			DprBudget:      "2udmotus",
 			MaxClientCount: MaxClientCount,
 			ClientCounter:  0,
 		}
@@ -81,7 +81,7 @@ func CreateDeactiveDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dp
 		items[i].Id = strconv.Itoa(i)
 		items[i].Creator = strconv.Itoa(i)
 		items[i].Duration = 12
-		items[i].IsActive = false
+		items[i].Status = 0
 
 		keeper.SetDpr(ctx, items[i])
 	}
@@ -94,7 +94,7 @@ func CreateAeactiveDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dp
 		items[i].Id = strconv.Itoa(i)
 		items[i].Creator = strconv.Itoa(i)
 		items[i].Duration = 12
-		items[i].IsActive = true
+		items[i].Status = 0
 		keeper.SetDpr(ctx, items[i])
 	}
 	return items

@@ -29,9 +29,8 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		epochKeeper.SetEpochData(helper.Ctx, epochData)
 
 		newDid := didtypes.ClientDid{
-			Id:            Did,
-			PubKey:        PUBKEY,
-			SupportedPIDs: "FFFFFFF",
+			Id:     Did,
+			PubKey: PUBKEY,
 		}
 
 		didDocument := didtypes.ClientDidWithSeq{

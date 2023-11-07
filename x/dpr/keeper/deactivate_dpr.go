@@ -22,7 +22,7 @@ func (k Keeper) DeactivateDpr(ctx sdk.Context, totalEpoch uint64) {
 				Id:             dpr.Id,
 				Creator:        "",
 				SupportedPIDs:  dpr.SupportedPIDs,
-				IsActive:       false,
+				Status:         3,
 				Duration:       dpr.Duration,
 				DprEndTime:     "",
 				DprStartEpoch:  dpr.DprStartEpoch,

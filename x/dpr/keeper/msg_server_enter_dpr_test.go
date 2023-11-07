@@ -30,10 +30,9 @@ func (helper *KeeperTestHelper) Test_Enter_DPR() {
 		}
 
 		newDid := didtypes.ClientDid{
-			Id:            Did,
-			PubKey:        PUBKEY,
-			SupportedPIDs: "ffffff",
-			Address:       ADDRESS,
+			Id:      Did,
+			PubKey:  PUBKEY,
+			Address: ADDRESS,
 		}
 
 		didDocument := didtypes.ClientDidWithSeq{

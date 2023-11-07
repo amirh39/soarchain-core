@@ -30,7 +30,7 @@ func (helper *KeeperTestHelper) Test_Activate_DPR() {
 		log.Println(dprSecond)
 		helper.Require().Empty(res)
 		helper.Require().Nil(err)
-		helper.Require().Equal(dprSecond.IsActive, true)
+		helper.Require().Equal(dprSecond.Status, uint32(1))
 		helper.Require().NotNil(dprSecond.DprEndTime)
 	})
 }

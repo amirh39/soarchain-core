@@ -33,7 +33,7 @@ func (k msgServer) UpdateDpr(goCtx context.Context, msg *types.MsgUpdateDpr) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateDpr][GetDpr] failed. There is no valid DPR.")
 	}
 
-	if dpr.IsActive {
+	if dpr.Status == 1 {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[UpdateDpr] failed. an active DPR cannot be modified.")
 	}
 
@@ -46,7 +46,7 @@ func (k msgServer) UpdateDpr(goCtx context.Context, msg *types.MsgUpdateDpr) (*t
 		Id:             dpr.Id,
 		Creator:        dpr.Creator,
 		SupportedPIDs:  dpr.SupportedPIDs,
-		IsActive:       dpr.IsActive,
+		Status:         dpr.Status,
 		Duration:       overrideIfNonZero(dpr.Duration, msg.Duration),
 		DprEndTime:     dpr.DprEndTime,
 		DprStartEpoch:  dpr.DprStartEpoch,

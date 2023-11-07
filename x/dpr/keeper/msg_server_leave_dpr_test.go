@@ -32,12 +32,11 @@ func (helper *KeeperTestHelper) Test_Leave_DPR() {
 		}
 
 		newDid := didtypes.ClientDid{
-			Id:            Did,
-			PubKey:        PUBKEY,
-			SupportedPIDs: "ffffff",
-			Address:       ADDRESS,
-			DprInfos:      []*didtypes.DprInfo{dprinfo},
-			Vehicle:       &vin,
+			Id:       Did,
+			PubKey:   PUBKEY,
+			Address:  ADDRESS,
+			DprInfos: []*didtypes.DprInfo{dprinfo},
+			Vehicle:  &vin,
 		}
 
 		didDocument := didtypes.ClientDidWithSeq{

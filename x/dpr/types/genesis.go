@@ -14,7 +14,7 @@ func DefaultGenesis() *GenesisState {
 			Id:            "",
 			Creator:       "",
 			SupportedPIDs: "",
-			IsActive:      false,
+			Status:        0,
 			Duration:      0,
 			DprEndTime:    "",
 			DprStartEpoch: 0,

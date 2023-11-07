@@ -39,7 +39,7 @@ func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*typ
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetDpr] failed. DPR not registered.")
 	}
-	if dpr.IsActive {
+	if dpr.Status == 1 {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[LeaveDpr] failed. Clients cannot leave an active DPR.")
 	}
 	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
