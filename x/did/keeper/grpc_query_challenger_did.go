@@ -15,7 +15,7 @@ import (
 )
 
 func (k Keeper) ChallengerDidAll(c context.Context, req *types.QueryAllChallengerDidRequest) (*types.QueryAllChallengerDidResponse, error) {
-	if req == nil {
+	if req == nil || req.Pagination == nil {
 		return nil, status.Error(codes.InvalidArgument, "[ChallengerDidAll] failed. Invalid request.")
 	}
 
@@ -43,7 +43,7 @@ func (k Keeper) ChallengerDidAll(c context.Context, req *types.QueryAllChallenge
 }
 
 func (k Keeper) ChallengerDid(c context.Context, req *types.QueryGetChallengerDidRequest) (*types.QueryGetChallengerDidResponse, error) {
-	if req == nil {
+	if req == nil || req.Address == "" {
 		return nil, status.Error(codes.InvalidArgument, "[ChallengerDid] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)

@@ -15,7 +15,7 @@ import (
 )
 
 func (k Keeper) RunnerDidAll(c context.Context, req *types.QueryAllRunnerDidRequest) (*types.QueryAllRunnerDidResponse, error) {
-	if req == nil {
+	if req == nil || req.Pagination == nil {
 		return nil, status.Error(codes.InvalidArgument, "[RunnerDidAll] failed. Invalid request.")
 	}
 
@@ -43,7 +43,7 @@ func (k Keeper) RunnerDidAll(c context.Context, req *types.QueryAllRunnerDidRequ
 }
 
 func (k Keeper) RunnerDid(c context.Context, req *types.QueryGetRunnerDidRequest) (*types.QueryGetRunnerDidResponse, error) {
-	if req == nil {
+	if req == nil || req.Address == "" {
 		return nil, status.Error(codes.InvalidArgument, "[RunnerDid] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
