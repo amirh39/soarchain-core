@@ -33,6 +33,7 @@ func (helper *KeeperTestHelper) Test_Gen_Client() {
 		helper.Require().NotNil(deviceCert)
 
 		documentWithSequence, _ := NewDIDDocumentWithSeq(Did)
+		documentWithSequence.Document.Address = ADDRESS
 		helper.Require().NotEmpty(documentWithSequence)
 
 		res, err := msgServer.GenClient(ctx, &types.MsgGenClient{
@@ -43,12 +44,13 @@ func (helper *KeeperTestHelper) Test_Gen_Client() {
 		})
 		didDocument, found := keeper.GetClientDid(helper.Ctx, documentWithSequence.Document.Address)
 		fmt.Print("didDocument------------------->", didDocument)
-		helper.Require().Equal(found, true)
 		if err != nil {
 			helper.Require().NotNil(err)
+			helper.Require().Equal(found, false)
 		} else {
 			helper.Require().NotNil(res)
 			helper.Require().NoError(err)
+			helper.Require().Equal(found, true)
 		}
 	})
 }

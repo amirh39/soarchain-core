@@ -14,12 +14,17 @@ import (
 )
 
 func (k Keeper) ReputationAll(c context.Context, req *types.QueryAllReputationRequest) (*types.QueryAllReputationResponse, error) {
-	if req == nil {
+	if req == nil || req.Pagination == nil {
 		return nil, status.Error(codes.InvalidArgument, "[ReputationAll] failed. Invalid request.")
 	}
 
 	var reputations []types.Reputation
 	ctx := sdk.UnwrapSDKContext(c)
+
+	limit := req.Pagination.GetLimit()
+	if limit == 0 || limit > 100 {
+		limit = 100
+	}
 
 	store := ctx.KVStore(k.storeKey)
 	clientStore := prefix.NewStore(store, types.KeyPrefix(types.ReputationKeyPrefix))
@@ -27,7 +32,7 @@ func (k Keeper) ReputationAll(c context.Context, req *types.QueryAllReputationRe
 	pageRes, err := query.Paginate(clientStore, req.Pagination, func(key []byte, value []byte) error {
 		var reputation types.Reputation
 		if err := k.cdc.Unmarshal(value, &reputation); err != nil {
-			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ReputationAll][Unmarshal] failed. Couldn't parse the reputation data encoded."+err.Error())
+			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ReputationAll][Unmarshal] failed. Couldn't parse the reputation data encoded.")
 		}
 
 		reputations = append(reputations, reputation)
@@ -42,7 +47,7 @@ func (k Keeper) ReputationAll(c context.Context, req *types.QueryAllReputationRe
 }
 
 func (k Keeper) Reputation(c context.Context, req *types.QueryGetReputationRequest) (*types.QueryGetReputationResponse, error) {
-	if req == nil {
+	if req == nil || req.Pubkey == "" {
 		return nil, status.Error(codes.InvalidArgument, "[Reputation] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)

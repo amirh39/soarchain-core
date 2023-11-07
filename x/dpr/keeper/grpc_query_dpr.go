@@ -23,6 +23,11 @@ func (k Keeper) DprAll(c context.Context, req *types.QueryAllDprRequest) (*types
 	var dprs []types.Dpr
 	ctx := sdk.UnwrapSDKContext(c)
 
+	limit := req.Pagination.GetLimit()
+	if limit == 0 || limit > 100 {
+		limit = 100
+	}
+
 	store := ctx.KVStore(k.storeKey)
 	clientStore := prefix.NewStore(store, types.KeyPrefix(types.DprKeyPrefix))
 
@@ -37,7 +42,7 @@ func (k Keeper) DprAll(c context.Context, req *types.QueryAllDprRequest) (*types
 	})
 
 	if err != nil {
-		return nil, status.Error(codes.NotFound, "[Dpr][DprAll] failed. Error getting DPRs")
+		return nil, status.Error(codes.NotFound, "[Dpr][DprAll] failed. Couldn't get dprs.")
 	}
 
 	return &types.QueryAllDprResponse{Dpr: dprs, Pagination: pageRes}, nil

@@ -43,7 +43,7 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	pubKeyHex, error := ExtractPubkeyFromCertificate(msg.Certificate)
 	if pubKeyHex == "" || error != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ExtractPubkeyFromX509Cert] failed. Invalid certificate validation. Error: [ %T ]")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ExtractPubkeyFromX509Cert] failed. Invalid certificate validation.")
 	}
 
 	if logger != nil {
@@ -62,23 +62,34 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 	// check if the address is uniqe
 	isUniqueAddress := IsUniqueAddress(k, ctx, msg.Creator)
 	if isUniqueAddress {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniqueAddress] failed. Challenger did with the address [ %T ] is already registered.", msg.Creator)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniqueAddress] failed. Challenger did with the address [ %s ] is already registered.", msg.Creator)
 	}
 
 	// check if the pubKey is uniqe
 	isUniquePubkey := IsUniquePubKey(k, ctx, pubKeyHex)
 	if isUniquePubkey {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniquePubKey] failed. Challenger did with the PubKey [ %T ] is already registered.", pubKeyHex)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][IsUniquePubKey] failed. Challenger did with the PubKey [ %s ] is already registered.", pubKeyHex)
 	}
 
 	if logger != nil {
 		logger.Info("Checking for challenger did address and pubKey successfully done.", "transaction", "GenChallengerDid")
 	}
 
+	if msg.Creator != msg.Document.Address {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger] failed. Challenger did address [ %s ]  is not creator address.", msg.Document.Address)
+	}
+
 	seq := types.InitialSequence
+	msg.Document.Address = msg.Creator
 	msg.Document.PubKey = pubKeyHex
 	didDocument := types.NewChallengerDidDocumentWithSeq(msg.Document, uint64(seq))
 	k.SetChallengerDid(ctx, *didDocument.Document)
+
+	_, found := k.GetChallengerDid(ctx, msg.Creator)
+	if !found {
+		logger.Error("Generating challenger did failed.", "transaction", "GenChallenger", "document", didDocument)
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][GetChallengerDid] failed. Couldn't store Challenger object successfully.")
+	}
 
 	if logger != nil {
 		logger.Info("Generating challenger did successfully done.", "transaction", "GenChallenger", "document", didDocument)
@@ -88,18 +99,21 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	err := k.Keeper.poaKeeper.InitializeReputation(ctx, poatypes.Reputation{
 		PubKey:             pubKeyHex,
+		Address:            msg.Creator,
 		Score:              strconv.FormatFloat(constants.InitialScore, 'f', -1, 64),
 		RewardMultiplier:   strconv.FormatFloat(rewardMultiplier, 'f', -1, 64),
 		NetEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 		LastTimeChallenged: ctx.BlockTime().String(),
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 		Type:               msg.ChallengerType,
+		StakedAmount:       msg.ChallengerStake,
 	}, msg.Certificate, msg.ChallengerStake, msg.Creator)
 	if err != nil {
+		k.RemoveChallengerDid(ctx, msg.Creator)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenChallenger][InitializeReputation] failed. Invalid certificate validation.")
 	}
 
-	log.Println("############## End of Generating challenger did Transaction ##############")
+	log.Println("############## End of generating challenger did Transaction ##############")
 
 	return &types.MsgGenChallengerResponse{}, nil
 }

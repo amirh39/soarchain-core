@@ -69,13 +69,17 @@ func (k Keeper) RemoveRunnerDid(ctx sdk.Context, address string) {
 }
 
 func (k Keeper) GetRunnerDidUsingPubKey(ctx sdk.Context, pubKey string) (runner types.RunnerDid, found bool) {
-	runners := k.GetAllRunnerDid(ctx)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.RunnerDidKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
-	for _, c := range runners {
-		if c.PubKey == pubKey {
-			return c, true
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.RunnerDid
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		if val.PubKey == pubKey {
+			return val, true
 		}
 	}
-
-	return runner, false
+	return types.RunnerDid{}, false
 }
