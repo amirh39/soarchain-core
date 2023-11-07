@@ -36,6 +36,7 @@ type BankKeeper interface {
 type DidKeeper interface {
 	SetClientDid(ctx sdk.Context, didDocument didtypes.ClientDid)
 	GetClientDid(ctx sdk.Context, address string) (val didtypes.ClientDid, found bool)
+	GetEligibleDidByPubkey(ctx sdk.Context, pubkey string) (didDocument didtypes.ClientDid, eligible bool)
 }
 
 type EpochKeeper interface {

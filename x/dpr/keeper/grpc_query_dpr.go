@@ -71,32 +71,19 @@ func (k Keeper) DPRsByClientPubkey(c context.Context, req *types.QueryDPRsByClie
 		return nil, status.Error(codes.InvalidArgument, "Invalid request")
 	}
 
-	// TODO: Add a check to verify that the provided pubkey is a registered client
-
-	var matchingDprs []*types.Dpr
 	ctx := sdk.UnwrapSDKContext(c)
-
-	store := ctx.KVStore(k.storeKey)
-	dprStore := prefix.NewStore(store, types.KeyPrefix(types.DprKeyPrefix))
-
-	pageRes, err := query.Paginate(dprStore, req.Pagination, func(_ []byte, value []byte) error {
-		var dpr types.Dpr
-		if err := k.cdc.Unmarshal(value, &dpr); err != nil {
-			return err
-		}
-
-		// for _, pubkey := range dpr.ClientPubkeys {
-		// 	if pubkey == req.ClientPubkey {
-		// 		matchingDprs = append(matchingDprs, &dpr)
-		// 		break
-		// 	}
-		// }
-		return nil
-	})
-
-	if err != nil {
-		return nil, status.Error(codes.NotFound, "[Dpr][DPRsByClientPubkey] failed. Invalid query parameters")
+	clientDid, found := k.didKeeper.GetEligibleDidByPubkey(ctx, req.ClientPubkey)
+	if !found {
+		return nil, status.Error(codes.NotFound, "Client DID not found")
 	}
 
-	return &types.QueryDPRsByClientPubkeyResponse{Dpr: matchingDprs, Pagination: pageRes}, nil
+	matchingDprs := make([]*types.Dpr, 0, len(clientDid.DprInfos))
+	for _, dprInfo := range clientDid.DprInfos {
+		dpr, found := k.GetDpr(ctx, dprInfo.Id)
+		if found {
+			matchingDprs = append(matchingDprs, &dpr)
+		}
+	}
+
+	return &types.QueryDPRsByClientPubkeyResponse{Dpr: matchingDprs}, nil
 }
