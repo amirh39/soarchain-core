@@ -3,17 +3,19 @@ package keeper
 import (
 	"context"
 
+	"soarchain/x/poa/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/poa/types"
 )
 
 func (k Keeper) VrfDataAll(c context.Context, req *types.QueryAllVrfDataRequest) (*types.QueryAllVrfDataResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	if req == nil || req.Pagination == nil {
+		return nil, status.Error(codes.InvalidArgument, "[VrfDataAll] failed. Invalid request.")
 	}
 
 	var vrfDatas []types.VrfData
@@ -40,8 +42,8 @@ func (k Keeper) VrfDataAll(c context.Context, req *types.QueryAllVrfDataRequest)
 }
 
 func (k Keeper) VrfData(c context.Context, req *types.QueryGetVrfDataRequest) (*types.QueryGetVrfDataResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	if req == nil || req.Index == "" {
+		return nil, status.Error(codes.InvalidArgument, "[VrfData] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
@@ -50,8 +52,7 @@ func (k Keeper) VrfData(c context.Context, req *types.QueryGetVrfDataRequest) (*
 		req.Index,
 	)
 	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[VrfData][GetVrfData] failed. Couldn't find a valid vrf for this index: [ %s ].", req.Index)
 	}
-
 	return &types.QueryGetVrfDataResponse{VrfData: val}, nil
 }
