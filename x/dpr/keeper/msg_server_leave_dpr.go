@@ -10,61 +10,50 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func remainedPubKeys(pubkey string, clientPubkeys []string) []string {
-	// Convert the slice into a map
-	pubkeyMap := make(map[string]struct{})
-	for _, clientPubkey := range clientPubkeys {
-		pubkeyMap[clientPubkey] = struct{}{}
-	}
-
-	// Remove the pubkey from the map
-	delete(pubkeyMap, pubkey)
-
-	// Convert the map back into a slice struct
-	var newPubkeys []string
-	for clientPubkey := range pubkeyMap {
-		newPubkeys = append(newPubkeys, clientPubkey)
-	}
-
-	return newPubkeys
-}
-
 func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*types.MsgLeaveDprResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
 	log.Println("############## Leaving from DPR Transaction is Started ##############")
 
-	reputation, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
+	dpr, found := k.GetDpr(ctx, msg.DprId)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetReputationsByAddress] failed. Only motus owner can send the leaveDPR transaction.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetDpr] failed. DPR not registered.")
+	}
+	if dpr.Status == 1 {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[LeaveDpr] failed. Clients cannot leave an active DPR.")
+	}
+	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
+	if !eligible {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetClientDid] failed. Only motus owners can leave the DPR.")
 	}
 
-	_, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
-	if !eligible {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetClientDid] failed. Client not in this DPR.")
+	targetDprId := dpr.Id
+	found = false
+
+	// Iterate over the dprInfos slice to find the matching DprInfo entry by ID
+	for i, dprInfo := range did.DprInfos {
+		if dprInfo.Id == targetDprId {
+			// Remove the element at index i from did.DprInfos
+			did.DprInfos = append(did.DprInfos[:i], did.DprInfos[i+1:]...)
+			found = true
+			break
+		}
+	}
+
+	if found {
+		// After removing the dpr.Id, set the updated DID using the keeper
+		k.didKeeper.SetClientDid(ctx, did)
+	} else {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][GetClientDid] failed. Client is not in this DPR.")
 	}
 	if logger != nil {
 		logger.Info("Eligible client is found successfully", "transaction", "LeaveDpr")
 	}
 
-	dpr, found := k.GetDpr(ctx, msg.DprId)
-	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[LeaveDpr][GetDpr] failed. DPR not registered.")
-	}
-
 	// Save dpr into storage
-	newDpr := types.Dpr{
-		Id:            dpr.Id,
-		Creator:       dpr.Creator,
-		SupportedPIDs: dpr.SupportedPIDs,
-		IsActive:      dpr.IsActive,
-		ClientPubkeys: remainedPubKeys(reputation.PubKey, dpr.ClientPubkeys),
-		Duration:      dpr.Duration,
-		DprEndTime:    "",
-		DprStartEpoch: 0,
-	}
-	k.SetDpr(ctx, newDpr)
+	dpr.ClientCounter = dpr.ClientCounter - 1
+	k.SetDpr(ctx, dpr)
 
 	if logger != nil {
 		logger.Info("DPR is valid", "transaction", "LeaveDpr", "dpr-objects")

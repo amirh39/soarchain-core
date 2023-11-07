@@ -294,6 +294,7 @@ const (
 const (
 	RunnerPubKey             = "3056301006072a8648ce3d020106052b8104000a034200044c1db1a1b1e19d6c423b1af88203ce79b6e4705d1dedaf65daeb0eedbe2c1fc6db010fa7f81443229d90181691df2e209be1c1278af42cc0f5ade03db549a795"
 	RunnerAddress            = "soar1k9ee7xx2mqzehrt56y7ezyqnegzfy8afrs754n"
+	RunnerType               = ""
 	RunnerCreator            = "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8"
 	RunnerScore              = "70.01360618066334"
 	RunnerRewardMultiplier   = "4901.905050421021"

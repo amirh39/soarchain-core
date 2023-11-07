@@ -2,34 +2,48 @@ package keeper
 
 import (
 	"context"
-	"log"
 
-	"soarchain/x/did/errors"
 	"soarchain/x/did/types"
 
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/cosmos/cosmos-sdk/types/query"
 )
 
 func (k Keeper) RunnerDidAll(c context.Context, req *types.QueryAllRunnerDidRequest) (*types.QueryAllRunnerDidResponse, error) {
-	log.Println("############## Fetching all runner did is Started ##############")
-
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, errors.InvalidRequest)
+	if req == nil || req.Pagination == nil {
+		return nil, status.Error(codes.InvalidArgument, "[RunnerDidAll] failed. Invalid request.")
 	}
 
+	var runnerDids []types.RunnerDid
 	ctx := sdk.UnwrapSDKContext(c)
 
-	dids := k.GetAllRunnerDid(ctx)
+	store := ctx.KVStore(k.storeKey)
+	clientStore := prefix.NewStore(store, types.KeyPrefix(types.RunnerDidKeyPrefix))
 
-	log.Println("############## End of fetching all runner dids ##############")
+	pageRes, err := query.Paginate(clientStore, req.Pagination, func(key []byte, value []byte) error {
+		var runnerDid types.RunnerDid
+		if err := k.cdc.Unmarshal(value, &runnerDid); err != nil {
+			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[RunnerDidAll][Unmarshal] failed. Couldn't parse the runner did data encoded.")
+		}
 
-	return &types.QueryAllRunnerDidResponse{RunnerDid: dids}, nil
+		runnerDids = append(runnerDids, runnerDid)
+		return nil
+	})
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryAllRunnerDidResponse{RunnerDid: runnerDids, Pagination: pageRes}, nil
 }
 
 func (k Keeper) RunnerDid(c context.Context, req *types.QueryGetRunnerDidRequest) (*types.QueryGetRunnerDidResponse, error) {
-	if req == nil {
+	if req == nil || req.Address == "" {
 		return nil, status.Error(codes.InvalidArgument, "[RunnerDid] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
@@ -40,7 +54,7 @@ func (k Keeper) RunnerDid(c context.Context, req *types.QueryGetRunnerDidRequest
 	)
 
 	if !found {
-		return nil, status.Error(codes.NotFound, "[RunnerDid][GetRunnerDidDocument] failed. Couldn't find a did document from the request.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[RunnerDid][GetRunnerDid] failed. Couldn't find a valid runner for this address: [ %s ] .", req.Address)
 	}
 
 	return &types.QueryGetRunnerDidResponse{RunnerDid: val}, nil

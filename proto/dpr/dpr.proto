@@ -6,11 +6,14 @@ option go_package = "soarchain/x/dpr/types";
 message Dpr {
   string id = 1;
   string creator = 2;
-  string supportedPIDs = 3;
-  bool isActive = 4;
-  repeated string clientPubkeys = 5;
+  string name = 3;
+  string supportedPIDs = 4;
+  uint32 status = 5;
   uint64 duration = 6;
-  string dprEndTime = 7; // Adding DPRendTime 
+  string dprEndTime = 7; 
   uint64 dprStartEpoch = 8;
+  string dprBudget = 9;
+  uint64 maxClientCount = 10;
+  uint64 clientCounter = 11;
 }
 

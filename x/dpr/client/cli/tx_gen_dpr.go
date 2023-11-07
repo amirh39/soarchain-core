@@ -15,13 +15,15 @@ var _ = strconv.Itoa(0)
 
 func CmdGenDpr() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "gen-dpr [supportedPIDs] [duration]",
+		Use:   "gen-dpr [supportedPIDs] [duration] [dprBudget] [maxClientCount]",
 		Short: "Broadcast message gen-dpr",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			supportedPIDs := args[0]
 			duration, _ := strconv.ParseUint(args[1], 10, 64)
+			dprBudget := args[2]
+			maxClientCount, _ := strconv.ParseUint(args[3], 10, 64)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -32,6 +34,8 @@ func CmdGenDpr() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				supportedPIDs,
 				duration,
+				dprBudget,
+				maxClientCount,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

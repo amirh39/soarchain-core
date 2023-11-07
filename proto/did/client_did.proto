@@ -20,9 +20,15 @@ message ClientDid {
   repeated Service services = 8 [json_name = "service"];
   Vehicle vehicle = 9 [json_name = "vehicle"];
   Owner owner = 10 [json_name = "owner"];
-  string SupportedPIDs = 11;
+  repeated DprInfo dprInfos = 11;
   string created = 12;
   string updated = 13;
+}
+
+// Define the DprInfo message that holds id and claimed information
+message DprInfo {
+  string id = 1;
+  string claimed = 2; 
 }
 
 message Keys {

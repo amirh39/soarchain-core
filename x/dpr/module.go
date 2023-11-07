@@ -104,6 +104,7 @@ type AppModule struct {
 	bankKeeper    types.BankKeeper
 	epochKeeper   types.EpochKeeper
 	didKeeper     types.DidKeeper
+	poaKeeper     types.PoaKeeper
 }
 
 func NewAppModule(
@@ -112,6 +113,7 @@ func NewAppModule(
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 	epochKeeper types.EpochKeeper,
+	poaKeeper types.PoaKeeper,
 
 ) AppModule {
 	return AppModule{
@@ -120,6 +122,7 @@ func NewAppModule(
 		accountKeeper:  accountKeeper,
 		bankKeeper:     bankKeeper,
 		epochKeeper:    epochKeeper,
+		poaKeeper:      poaKeeper,
 	}
 }
 

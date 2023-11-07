@@ -23,14 +23,17 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Dpr struct {
-	Id            string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Creator       string   `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	SupportedPIDs string   `protobuf:"bytes,3,opt,name=supportedPIDs,proto3" json:"supportedPIDs,omitempty"`
-	IsActive      bool     `protobuf:"varint,4,opt,name=isActive,proto3" json:"isActive,omitempty"`
-	ClientPubkeys []string `protobuf:"bytes,5,rep,name=clientPubkeys,proto3" json:"clientPubkeys,omitempty"`
-	Duration      uint64   `protobuf:"varint,6,opt,name=duration,proto3" json:"duration,omitempty"`
-	DprEndTime    string   `protobuf:"bytes,7,opt,name=dprEndTime,proto3" json:"dprEndTime,omitempty"`
-	DprStartEpoch uint64   `protobuf:"varint,8,opt,name=dprStartEpoch,proto3" json:"dprStartEpoch,omitempty"`
+	Id             string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Creator        string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	Name           string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	SupportedPIDs  string `protobuf:"bytes,4,opt,name=supportedPIDs,proto3" json:"supportedPIDs,omitempty"`
+	Status         uint32 `protobuf:"varint,5,opt,name=status,proto3" json:"status,omitempty"`
+	Duration       uint64 `protobuf:"varint,6,opt,name=duration,proto3" json:"duration,omitempty"`
+	DprEndTime     string `protobuf:"bytes,7,opt,name=dprEndTime,proto3" json:"dprEndTime,omitempty"`
+	DprStartEpoch  uint64 `protobuf:"varint,8,opt,name=dprStartEpoch,proto3" json:"dprStartEpoch,omitempty"`
+	DprBudget      string `protobuf:"bytes,9,opt,name=dprBudget,proto3" json:"dprBudget,omitempty"`
+	MaxClientCount uint64 `protobuf:"varint,10,opt,name=maxClientCount,proto3" json:"maxClientCount,omitempty"`
+	ClientCounter  uint64 `protobuf:"varint,11,opt,name=clientCounter,proto3" json:"clientCounter,omitempty"`
 }
 
 func (m *Dpr) Reset()         { *m = Dpr{} }
@@ -80,6 +83,13 @@ func (m *Dpr) GetCreator() string {
 	return ""
 }
 
+func (m *Dpr) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
 func (m *Dpr) GetSupportedPIDs() string {
 	if m != nil {
 		return m.SupportedPIDs
@@ -87,18 +97,11 @@ func (m *Dpr) GetSupportedPIDs() string {
 	return ""
 }
 
-func (m *Dpr) GetIsActive() bool {
+func (m *Dpr) GetStatus() uint32 {
 	if m != nil {
-		return m.IsActive
+		return m.Status
 	}
-	return false
-}
-
-func (m *Dpr) GetClientPubkeys() []string {
-	if m != nil {
-		return m.ClientPubkeys
-	}
-	return nil
+	return 0
 }
 
 func (m *Dpr) GetDuration() uint64 {
@@ -122,6 +125,27 @@ func (m *Dpr) GetDprStartEpoch() uint64 {
 	return 0
 }
 
+func (m *Dpr) GetDprBudget() string {
+	if m != nil {
+		return m.DprBudget
+	}
+	return ""
+}
+
+func (m *Dpr) GetMaxClientCount() uint64 {
+	if m != nil {
+		return m.MaxClientCount
+	}
+	return 0
+}
+
+func (m *Dpr) GetClientCounter() uint64 {
+	if m != nil {
+		return m.ClientCounter
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Dpr)(nil), "soarchain.dpr.Dpr")
 }
@@ -129,24 +153,26 @@ func init() {
 func init() { proto.RegisterFile("dpr/dpr.proto", fileDescriptor_221c37c1dd019f8d) }
 
 var fileDescriptor_221c37c1dd019f8d = []byte{
-	// 262 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x54, 0x90, 0xb1, 0x4a, 0xf4, 0x40,
-	0x14, 0x46, 0x33, 0xc9, 0xfe, 0xbb, 0xf9, 0x07, 0x62, 0x31, 0x20, 0x0c, 0x16, 0x43, 0x10, 0x8b,
-	0x54, 0x9b, 0xc2, 0x27, 0x50, 0x76, 0x0b, 0xbb, 0x25, 0x5a, 0xd9, 0x65, 0x73, 0x07, 0x76, 0x50,
-	0x33, 0x97, 0x3b, 0x13, 0x71, 0xdf, 0xc2, 0xc7, 0xb2, 0xdc, 0xd2, 0x52, 0x92, 0xa7, 0xb0, 0x93,
-	0x0c, 0x18, 0x4c, 0xf9, 0x9d, 0x81, 0x33, 0x97, 0xc3, 0x33, 0x40, 0x2a, 0x01, 0x69, 0x8d, 0x64,
-	0xbd, 0x15, 0x99, 0xb3, 0x35, 0x35, 0x87, 0xda, 0xb4, 0x6b, 0x40, 0xba, 0xfc, 0x66, 0x3c, 0xd9,
-	0x20, 0x89, 0x33, 0x1e, 0x1b, 0x90, 0x2c, 0x67, 0xc5, 0xff, 0x2a, 0x36, 0x20, 0x24, 0x5f, 0x35,
-	0xa4, 0x6b, 0x6f, 0x49, 0xc6, 0x01, 0xfe, 0x4e, 0x71, 0xc5, 0x33, 0xd7, 0x21, 0x5a, 0xf2, 0x1a,
-	0x76, 0x77, 0x1b, 0x27, 0x93, 0xf0, 0x3e, 0x87, 0xe2, 0x82, 0xa7, 0xc6, 0xdd, 0x34, 0xde, 0xbc,
-	0x6a, 0xb9, 0xc8, 0x59, 0x91, 0x56, 0xd3, 0x1e, 0x0d, 0xcd, 0xb3, 0xd1, 0xad, 0xdf, 0x75, 0xfb,
-	0x27, 0x7d, 0x74, 0xf2, 0x5f, 0x9e, 0x8c, 0x86, 0x19, 0x1c, 0x0d, 0xd0, 0x51, 0xed, 0x8d, 0x6d,
-	0xe5, 0x32, 0x67, 0xc5, 0xa2, 0x9a, 0xb6, 0x50, 0x9c, 0x03, 0xd2, 0xb6, 0x85, 0x07, 0xf3, 0xa2,
-	0xe5, 0x2a, 0x1c, 0xf0, 0x87, 0x8c, 0x3f, 0x00, 0xd2, 0xbd, 0xaf, 0xc9, 0x6f, 0xd1, 0x36, 0x07,
-	0x99, 0x06, 0xc1, 0x1c, 0xde, 0x96, 0x1f, 0xbd, 0x62, 0xa7, 0x5e, 0xb1, 0xaf, 0x5e, 0xb1, 0xf7,
-	0x41, 0x45, 0xa7, 0x41, 0x45, 0x9f, 0x83, 0x8a, 0x1e, 0xcf, 0xa7, 0x48, 0xe5, 0xdb, 0xd8, 0xae,
-	0xf4, 0x47, 0xd4, 0x6e, 0xbf, 0x0c, 0x09, 0xaf, 0x7f, 0x02, 0x00, 0x00, 0xff, 0xff, 0xa9, 0x02,
-	0x5f, 0xaf, 0x53, 0x01, 0x00, 0x00,
+	// 296 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x5c, 0x91, 0xcd, 0x4a, 0x03, 0x31,
+	0x14, 0x85, 0x9b, 0x69, 0xed, 0xcf, 0x95, 0xe9, 0x22, 0xa0, 0x04, 0x91, 0x50, 0x44, 0xa4, 0xab,
+	0xce, 0xc2, 0x37, 0xe8, 0xcf, 0xc2, 0x9d, 0x54, 0x57, 0xee, 0xe2, 0x24, 0xd8, 0x01, 0x3b, 0xb9,
+	0xdc, 0xdc, 0x81, 0xfa, 0x16, 0x3e, 0x96, 0x3b, 0xbb, 0x74, 0x29, 0xed, 0x8b, 0x48, 0xa3, 0xb6,
+	0x8e, 0xbb, 0x9c, 0x2f, 0xf0, 0x1d, 0xb8, 0x07, 0x52, 0x8b, 0x94, 0x59, 0xa4, 0x11, 0x92, 0x67,
+	0x2f, 0xd3, 0xe0, 0x0d, 0xe5, 0x0b, 0x53, 0x94, 0x23, 0x8b, 0x74, 0xf1, 0x9e, 0x40, 0x73, 0x8a,
+	0x24, 0xfb, 0x90, 0x14, 0x56, 0x89, 0x81, 0x18, 0xf6, 0xe6, 0x49, 0x61, 0xa5, 0x82, 0x4e, 0x4e,
+	0xce, 0xb0, 0x27, 0x95, 0x44, 0xf8, 0x1b, 0xa5, 0x84, 0x56, 0x69, 0x96, 0x4e, 0x35, 0x23, 0x8e,
+	0x6f, 0x79, 0x09, 0x69, 0xa8, 0x10, 0x3d, 0xb1, 0xb3, 0xb7, 0x37, 0xd3, 0xa0, 0x5a, 0xf1, 0xb3,
+	0x0e, 0xe5, 0x29, 0xb4, 0x03, 0x1b, 0xae, 0x82, 0x3a, 0x1a, 0x88, 0x61, 0x3a, 0xff, 0x49, 0xf2,
+	0x0c, 0xba, 0xb6, 0x22, 0xc3, 0x85, 0x2f, 0x55, 0x7b, 0x20, 0x86, 0xad, 0xf9, 0x3e, 0x4b, 0x0d,
+	0x60, 0x91, 0x66, 0xa5, 0xbd, 0x2f, 0x96, 0x4e, 0x75, 0xa2, 0xf6, 0x0f, 0xd9, 0x35, 0x5b, 0xa4,
+	0x3b, 0x36, 0xc4, 0x33, 0xf4, 0xf9, 0x42, 0x75, 0xa3, 0xa0, 0x0e, 0xe5, 0x39, 0xf4, 0x2c, 0xd2,
+	0xb8, 0xb2, 0x4f, 0x8e, 0x55, 0x2f, 0x4a, 0x0e, 0x40, 0x5e, 0x41, 0x7f, 0x69, 0x56, 0x93, 0xe7,
+	0xc2, 0x95, 0x3c, 0xf1, 0x55, 0xc9, 0x0a, 0xa2, 0xe4, 0x1f, 0xdd, 0x75, 0xe5, 0x87, 0xe8, 0x48,
+	0x1d, 0x7f, 0x77, 0xd5, 0xe0, 0x38, 0x7b, 0xdb, 0x68, 0xb1, 0xde, 0x68, 0xf1, 0xb9, 0xd1, 0xe2,
+	0x75, 0xab, 0x1b, 0xeb, 0xad, 0x6e, 0x7c, 0x6c, 0x75, 0xe3, 0xe1, 0x64, 0x7f, 0xfa, 0x6c, 0xb5,
+	0x5b, 0x24, 0xe3, 0x17, 0x74, 0xe1, 0xb1, 0x1d, 0x87, 0xb9, 0xfe, 0x0a, 0x00, 0x00, 0xff, 0xff,
+	0x59, 0x77, 0xb5, 0x47, 0xa9, 0x01, 0x00, 0x00,
 }
 
 func (m *Dpr) Marshal() (dAtA []byte, err error) {
@@ -169,6 +195,23 @@ func (m *Dpr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.ClientCounter != 0 {
+		i = encodeVarintDpr(dAtA, i, uint64(m.ClientCounter))
+		i--
+		dAtA[i] = 0x58
+	}
+	if m.MaxClientCount != 0 {
+		i = encodeVarintDpr(dAtA, i, uint64(m.MaxClientCount))
+		i--
+		dAtA[i] = 0x50
+	}
+	if len(m.DprBudget) > 0 {
+		i -= len(m.DprBudget)
+		copy(dAtA[i:], m.DprBudget)
+		i = encodeVarintDpr(dAtA, i, uint64(len(m.DprBudget)))
+		i--
+		dAtA[i] = 0x4a
+	}
 	if m.DprStartEpoch != 0 {
 		i = encodeVarintDpr(dAtA, i, uint64(m.DprStartEpoch))
 		i--
@@ -186,29 +229,22 @@ func (m *Dpr) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x30
 	}
-	if len(m.ClientPubkeys) > 0 {
-		for iNdEx := len(m.ClientPubkeys) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.ClientPubkeys[iNdEx])
-			copy(dAtA[i:], m.ClientPubkeys[iNdEx])
-			i = encodeVarintDpr(dAtA, i, uint64(len(m.ClientPubkeys[iNdEx])))
-			i--
-			dAtA[i] = 0x2a
-		}
-	}
-	if m.IsActive {
+	if m.Status != 0 {
+		i = encodeVarintDpr(dAtA, i, uint64(m.Status))
 		i--
-		if m.IsActive {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x20
+		dAtA[i] = 0x28
 	}
 	if len(m.SupportedPIDs) > 0 {
 		i -= len(m.SupportedPIDs)
 		copy(dAtA[i:], m.SupportedPIDs)
 		i = encodeVarintDpr(dAtA, i, uint64(len(m.SupportedPIDs)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintDpr(dAtA, i, uint64(len(m.Name)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -254,18 +290,16 @@ func (m *Dpr) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovDpr(uint64(l))
 	}
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovDpr(uint64(l))
+	}
 	l = len(m.SupportedPIDs)
 	if l > 0 {
 		n += 1 + l + sovDpr(uint64(l))
 	}
-	if m.IsActive {
-		n += 2
-	}
-	if len(m.ClientPubkeys) > 0 {
-		for _, s := range m.ClientPubkeys {
-			l = len(s)
-			n += 1 + l + sovDpr(uint64(l))
-		}
+	if m.Status != 0 {
+		n += 1 + sovDpr(uint64(m.Status))
 	}
 	if m.Duration != 0 {
 		n += 1 + sovDpr(uint64(m.Duration))
@@ -276,6 +310,16 @@ func (m *Dpr) Size() (n int) {
 	}
 	if m.DprStartEpoch != 0 {
 		n += 1 + sovDpr(uint64(m.DprStartEpoch))
+	}
+	l = len(m.DprBudget)
+	if l > 0 {
+		n += 1 + l + sovDpr(uint64(l))
+	}
+	if m.MaxClientCount != 0 {
+		n += 1 + sovDpr(uint64(m.MaxClientCount))
+	}
+	if m.ClientCounter != 0 {
+		n += 1 + sovDpr(uint64(m.ClientCounter))
 	}
 	return n
 }
@@ -381,6 +425,38 @@ func (m *Dpr) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowDpr
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthDpr
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthDpr
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field SupportedPIDs", wireType)
 			}
 			var stringLen uint64
@@ -411,31 +487,11 @@ func (m *Dpr) Unmarshal(dAtA []byte) error {
 			}
 			m.SupportedPIDs = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field IsActive", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowDpr
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.IsActive = bool(v != 0)
 		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ClientPubkeys", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
-			var stringLen uint64
+			m.Status = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowDpr
@@ -445,24 +501,11 @@ func (m *Dpr) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.Status |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthDpr
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthDpr
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ClientPubkeys = append(m.ClientPubkeys, string(dAtA[iNdEx:postIndex]))
-			iNdEx = postIndex
 		case 6:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Duration", wireType)
@@ -529,6 +572,76 @@ func (m *Dpr) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.DprStartEpoch |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DprBudget", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowDpr
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthDpr
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthDpr
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DprBudget = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxClientCount", wireType)
+			}
+			m.MaxClientCount = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowDpr
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.MaxClientCount |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClientCounter", wireType)
+			}
+			m.ClientCounter = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowDpr
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ClientCounter |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

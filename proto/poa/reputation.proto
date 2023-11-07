@@ -13,5 +13,6 @@ message Reputation {
   string coolDownTolerance = 8;
   string type = 9;
   string stakedAmount = 10; 
+  string dprEarnings =11;
 }
 

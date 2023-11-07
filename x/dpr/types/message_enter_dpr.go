@@ -7,12 +7,13 @@ import (
 
 const TypeMsgEnterDpr = "enter_dpr"
 
-var _ sdk.Msg = &MsgGenDpr{}
+var _ sdk.Msg = &MsgEnterDpr{}
 
-func NewMsgEnterDpr(sender string, dprId string) *MsgEnterDpr {
+func NewMsgEnterDpr(sender string, dprId string, supportedPIDs string) *MsgEnterDpr {
 	return &MsgEnterDpr{
-		Sender: sender,
-		DprId:  dprId,
+		Sender:        sender,
+		DprId:         dprId,
+		SupportedPIDs: supportedPIDs,
 	}
 }
 

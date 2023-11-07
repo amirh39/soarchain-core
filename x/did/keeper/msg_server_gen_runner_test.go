@@ -1,7 +1,6 @@
 package keeper_test
 
 import (
-	"fmt"
 	k "soarchain/x/did/keeper"
 	"soarchain/x/did/types"
 
@@ -43,14 +42,14 @@ func (helper *KeeperTestHelper) Test_Gen_Runner() {
 			RunnerStake: RunnerStake,
 			RunnerIp:    RunnerIp,
 		})
-		didDocument, found := keeper.GetRunnerDid(helper.Ctx, documentWithSequence.Document.Address)
-		fmt.Print("didDocument------------------->", didDocument)
-		helper.Require().Equal(found, true)
 		if err != nil {
 			helper.Require().NotNil(err)
+			helper.Require().Nil(res)
 		} else {
-			helper.Require().NotNil(res)
+			didDocument, found := keeper.GetRunnerDid(helper.Ctx, documentWithSequence.Document.Address)
+			helper.Require().NotNil(didDocument)
 			helper.Require().NoError(err)
+			helper.Require().Equal(found, true)
 		}
 	})
 }

@@ -29,12 +29,16 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 		logger.Info("A Valid DPR is found successfully", "transaction", "ActivateDpr")
 	}
 
-	if dpr.IsActive {
+	if dpr.Status == 1 {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. DPR is already active.")
 	}
 
-	if len(dpr.ClientPubkeys) == 0 || dpr.ClientPubkeys == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. There is no client to activate DPR.")
+	if dpr.Status == 3 {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. DPR is finished.")
+	}
+
+	if dpr.ClientCounter == 0 {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. ClientCounter is 0.")
 	}
 
 	dprEndTime, err := utility.CalculateDPREndTime(ctx.BlockHeader().Time, int(dpr.Duration))
@@ -50,14 +54,16 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 	}
 	//Save dpr into storage
 	newDpr := types.Dpr{
-		Id:            dpr.Id,
-		Creator:       dpr.Creator,
-		SupportedPIDs: dpr.SupportedPIDs,
-		IsActive:      true,
-		ClientPubkeys: dpr.ClientPubkeys,
-		Duration:      dpr.Duration,
-		DprEndTime:    dprEndTimeStr,
-		DprStartEpoch: epochData.TotalEpochs,
+		Id:             dpr.Id,
+		Creator:        dpr.Creator,
+		SupportedPIDs:  dpr.SupportedPIDs,
+		Status:         1,
+		Duration:       dpr.Duration,
+		DprEndTime:     dprEndTimeStr,
+		DprStartEpoch:  epochData.TotalEpochs,
+		DprBudget:      dpr.DprBudget,
+		MaxClientCount: dpr.MaxClientCount,
+		ClientCounter:  dpr.ClientCounter,
 	}
 	k.SetDpr(ctx, newDpr)
 
