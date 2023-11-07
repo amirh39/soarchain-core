@@ -6,6 +6,7 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"encoding/pem"
+	"fmt"
 	"soarchain/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -201,4 +202,34 @@ func ValidateDeactivatingDidInputs(fromAddress string, didType string) bool {
 		return false
 	}
 	return true
+}
+
+func (k Keeper) ClientType(deviceCert *x509.Certificate) string {
+	if len(deviceCert.Issuer.Names) < 1 || deviceCert.Issuer.Names[1].Value == nil {
+		return "[GenClient][ClientType] failed. No Type for device certificate."
+	}
+	results := fmt.Sprintf("%v", deviceCert.Issuer.Names[1].Value)
+	if results[41:43] == "01" {
+		return "mini"
+	} else {
+		return "pro"
+	}
+}
+
+func (k Keeper) GeneratePubkey(msg *types.MsgGenClient) (pubkey string, deviceCert *x509.Certificate, err error) {
+	deviceCert, error := CreateX509CertFromString(msg.Certificate)
+	if error != nil {
+		return "", nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][CreateX509CertFromString] failed. Invalid device certificate.")
+	}
+
+	isValide := ValidateX509CertByASN1(msg.Creator, msg.Signature, deviceCert)
+	if !isValide {
+		return "", nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][ValidateX509CertByASN1] failed. Invalid device certificate and signature.")
+	}
+
+	pubKeyHex, error := ExtractPubkeyFromCertificate(msg.Certificate)
+	if pubKeyHex == "" || error != nil {
+		return "", nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenClient][ExtractPubkeyFromX509Cert] failed. Invalid certificate validation.")
+	}
+	return pubKeyHex, deviceCert, nil
 }
