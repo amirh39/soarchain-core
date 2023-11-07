@@ -12,17 +12,16 @@ import (
 )
 
 func (k Keeper) GetReputationByAddress(goCtx context.Context, req *types.QueryGetReputationByAddressRequest) (*types.QueryGetReputationByAddressResponse, error) {
-	if req == nil {
+	if req == nil || req.Address == "" {
 		return nil, status.Error(codes.InvalidArgument, "[GetReputationByAddress] failed. Invalid request.")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	reputations, found := k.GetReputationsByAddress(ctx, req.Address)
-
+	reputation, found := k.GetReputationsByAddress(ctx, req.Address)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[GetReputationByAddress][GetReputationsByAddress] failed. Couldn't find a valid reputationd.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[GetReputationByAddress][GetReputationsByAddress] failed. Couldn't find a valid reputation for this address: [ %s ].", req.Address)
 	}
 
-	return &types.QueryGetReputationByAddressResponse{Reputation: &reputations}, nil
+	return &types.QueryGetReputationByAddressResponse{Reputation: &reputation}, nil
 }
