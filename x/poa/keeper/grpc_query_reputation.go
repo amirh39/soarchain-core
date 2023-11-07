@@ -14,7 +14,7 @@ import (
 )
 
 func (k Keeper) ReputationAll(c context.Context, req *types.QueryAllReputationRequest) (*types.QueryAllReputationResponse, error) {
-	if req == nil {
+	if req == nil || req.Pagination == nil {
 		return nil, status.Error(codes.InvalidArgument, "[ReputationAll] failed. Invalid request.")
 	}
 
@@ -47,7 +47,7 @@ func (k Keeper) ReputationAll(c context.Context, req *types.QueryAllReputationRe
 }
 
 func (k Keeper) Reputation(c context.Context, req *types.QueryGetReputationRequest) (*types.QueryGetReputationResponse, error) {
-	if req == nil {
+	if req == nil || req.Pubkey == "" {
 		return nil, status.Error(codes.InvalidArgument, "[Reputation] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
