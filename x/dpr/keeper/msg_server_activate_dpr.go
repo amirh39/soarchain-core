@@ -37,6 +37,10 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. DPR is finished.")
 	}
 
+	if dpr.ClientCounter == 0 {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. ClientCounter is 0.")
+	}
+
 	dprEndTime, err := utility.CalculateDPREndTime(ctx.BlockHeader().Time, int(dpr.Duration))
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr][CalculateDPREndTime] failed. End time of the DPR couldn't calculated.")
