@@ -1,6 +1,8 @@
 package types
 
 import (
+	"soarchain/x/poa/utility"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -38,7 +40,10 @@ func (msg *MsgClaimChallengerRewards) GetSignBytes() []byte {
 func (msg *MsgClaimChallengerRewards) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[NewMsgClaimChallengerRewards][ValidateBasic] failed. Invalid creator address (%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[NewMsgClaimChallengerRewards][ValidateBasic] failed. Invalid creator address: [ %s ] .", msg.Creator)
+	}
+	if isValidRewardAmount := utility.ValidateRewardAmount(msg.Amount); !isValidRewardAmount {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "[NewMsgClaimChallengerRewards][ValidateBasic] failed. Invalid reward amount: [ %s ].", msg.Amount)
 	}
 	return nil
 }
