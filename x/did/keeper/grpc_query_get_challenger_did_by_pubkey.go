@@ -17,10 +17,10 @@ func (k Keeper) GetChallengerDidByPubKey(goCtx context.Context, req *types.Query
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	challengers, found := k.GetChallengerDidUsingPubKey(ctx, req.Pubkey)
+	challenger, found := k.GetChallengerDidUsingPubKey(ctx, req.Pubkey)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[GetChallengerDidByPubKey][GetRunnerDidUsingPubKey] failed. Couldn't find a valid challenger.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[GetChallengerDidByPubKey][GetRunnerDidUsingPubKey] failed. Couldn't find a valid challenger for this pubkey: [ %s ] .", req.Pubkey)
 	}
 
-	return &types.QueryGetChallengerDidByPubKeyResponse{ChallengerDid: &challengers}, nil
+	return &types.QueryGetChallengerDidByPubKeyResponse{ChallengerDid: &challenger}, nil
 }

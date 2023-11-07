@@ -17,10 +17,10 @@ func (k Keeper) GetRunnerDidByPubKey(goCtx context.Context, req *types.QueryGetR
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	runners, found := k.GetRunnerDidUsingPubKey(ctx, req.Pubkey)
+	runner, found := k.GetRunnerDidUsingPubKey(ctx, req.Pubkey)
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[GetRunnerDidByPubKey][GetRunnerDidUsingPubKey] failed. Couldn't find a valid runner.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[GetRunnerDidByPubKey][GetRunnerDidUsingPubKey] failed. Couldn't find a valid runner for this pubkey: [ %s ] .", req.Pubkey)
 	}
 
-	return &types.QueryGetRunnerDidByPubKeyResponse{RunnerDid: &runners}, nil
+	return &types.QueryGetRunnerDidByPubKeyResponse{RunnerDid: &runner}, nil
 }
