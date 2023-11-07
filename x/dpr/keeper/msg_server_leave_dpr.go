@@ -10,25 +10,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func remainedPubKeys(pubkey string, clientPubkeys []string) []string {
-	// Convert the slice into a map
-	pubkeyMap := make(map[string]struct{})
-	for _, clientPubkey := range clientPubkeys {
-		pubkeyMap[clientPubkey] = struct{}{}
-	}
-
-	// Remove the pubkey from the map
-	delete(pubkeyMap, pubkey)
-
-	// Convert the map back into a slice struct
-	var newPubkeys []string
-	for clientPubkey := range pubkeyMap {
-		newPubkeys = append(newPubkeys, clientPubkey)
-	}
-
-	return newPubkeys
-}
-
 func (k msgServer) LeaveDpr(goCtx context.Context, msg *types.MsgLeaveDpr) (*types.MsgLeaveDprResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
