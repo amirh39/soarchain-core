@@ -17,12 +17,7 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
-	epochData, found := k.epochKeeper.GetEpochData(ctx)
-	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][GetEpochData] failed. Couldn't find epoch data.")
-	}
-
-	result := k.VerifyDprInputs(msg, epochData.TotalEpochs)
+	result := k.VerifyDprInputs(msg)
 	if !result {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[GenDpr][VerifyDprInputs] failed. Make sure you are using valid inputs for creating Dpr object.")
 	}
@@ -68,7 +63,7 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		Id:             dprID,
 		Creator:        msg.Creator,
 		SupportedPIDs:  msg.SupportedPIDs,
-		IsActive:       false,
+		Status:         0,
 		Duration:       msg.Duration,
 		DprEndTime:     "",
 		DprStartEpoch:  0,
