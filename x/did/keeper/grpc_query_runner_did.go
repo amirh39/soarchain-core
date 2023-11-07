@@ -54,7 +54,7 @@ func (k Keeper) RunnerDid(c context.Context, req *types.QueryGetRunnerDidRequest
 	)
 
 	if !found {
-		return nil, status.Error(codes.NotFound, "[RunnerDid][GetRunnerDidDocument] failed. Couldn't find a did document from the request.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[RunnerDid][GetRunnerDid] failed. Couldn't find a valid runner for this address: [ %s ] .", req.Address)
 	}
 
 	return &types.QueryGetRunnerDidResponse{RunnerDid: val}, nil
