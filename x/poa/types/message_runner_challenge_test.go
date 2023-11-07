@@ -3,9 +3,10 @@ package types
 import (
 	"testing"
 
+	"soarchain/testutil/sample"
+
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
-	"soarchain/testutil/sample"
 )
 
 func TestMsgRunnerChallenge_ValidateBasic(t *testing.T) {
@@ -17,13 +18,19 @@ func TestMsgRunnerChallenge_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgRunnerChallenge{
-				Creator: "invalid_address",
+				Creator:         "invalid_address",
+				RunnerPubkey:    "runnerpubkey",
+				ClientPubkeys:   []string{"clientpubkey"},
+				ChallengeResult: "reward",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgRunnerChallenge{
-				Creator: sample.AccAddress(),
+				Creator:         sample.AccAddress(),
+				RunnerPubkey:    "runnerpubkey",
+				ClientPubkeys:   []string{"clientpubkey"},
+				ChallengeResult: "reward",
 			},
 		},
 	}
