@@ -10,7 +10,7 @@ import (
 )
 
 func (k Keeper) GetChallengerDidByAddress(goCtx context.Context, req *types.QueryGetChallengerDidByAddressRequest) (*types.QueryGetChallengerDidByAddressResponse, error) {
-	if req == nil {
+	if req == nil || req.Address == "" {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "[GetChallengerDidByAddress] failed. Invalid request: %T.", req)
 	}
 
