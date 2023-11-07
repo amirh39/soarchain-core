@@ -85,12 +85,12 @@ func (k Keeper) DPRsByClientPubkey(c context.Context, req *types.QueryDPRsByClie
 			return err
 		}
 
-		for _, pubkey := range dpr.ClientPubkeys {
-			if pubkey == req.ClientPubkey {
-				matchingDprs = append(matchingDprs, &dpr)
-				break
-			}
-		}
+		// for _, pubkey := range dpr.ClientPubkeys {
+		// 	if pubkey == req.ClientPubkey {
+		// 		matchingDprs = append(matchingDprs, &dpr)
+		// 		break
+		// 	}
+		// }
 		return nil
 	})
 

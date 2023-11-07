@@ -501,10 +501,10 @@ func NewSoarchainApp(
 		app.AccountKeeper,
 		app.BankKeeper,
 		app.EpochKeeper,
-		app.PoaKeeper,
 		app.DidKeeper,
+		app.PoaKeeper,
 	)
-	dprModule := dprmodule.NewAppModule(appCodec, app.DprKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper)
+	dprModule := dprmodule.NewAppModule(appCodec, app.DprKeeper, app.AccountKeeper, app.BankKeeper, app.EpochKeeper, app.PoaKeeper)
 
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)

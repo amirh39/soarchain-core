@@ -54,7 +54,7 @@ func (k Keeper) GetAllActiveDpr(ctx sdk.Context) (list []types.Dpr) {
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Dpr
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		if val.IsActive {
+		if val.Status == 1 {
 			list = append(list, val)
 		}
 	}

@@ -5457,8 +5457,6 @@ paths:
                           serviceEndpoint:
                             type: string
                         description: Service defines a service in the W3C Did.
-                    stakedAmount:
-                      type: string
                     ipAddress:
                       type: string
                     created:
@@ -5617,8 +5615,6 @@ paths:
                         serviceEndpoint:
                           type: string
                       description: Service defines a service in the W3C Did.
-                  stakedAmount:
-                    type: string
                   ipAddress:
                     type: string
                   created:
@@ -5743,8 +5739,18 @@ paths:
                           type: string
                         purchaseDate:
                           type: string
-                    SupportedPIDs:
-                      type: string
+                    dprInfos:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          claimed:
+                            type: string
+                        title: >-
+                          Define the DprInfo message that holds id and claimed
+                          information
                     created:
                       type: string
                     updated:
@@ -5826,7 +5832,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/soarchain/did/client_did/{id}':
+  '/soarchain/did/client_did/{address}':
     get:
       operationId: SoarchainDidClientDid
       responses:
@@ -5915,8 +5921,18 @@ paths:
                         type: string
                       purchaseDate:
                         type: string
-                  SupportedPIDs:
-                    type: string
+                  dprInfos:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        claimed:
+                          type: string
+                      title: >-
+                        Define the DprInfo message that holds id and claimed
+                        information
                   created:
                     type: string
                   updated:
@@ -5940,7 +5956,7 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: id
+        - name: address
           in: path
           required: true
           type: string
@@ -6019,8 +6035,6 @@ paths:
                         serviceEndpoint:
                           type: string
                       description: Service defines a service in the W3C Did.
-                  stakedAmount:
-                    type: string
                   ipAddress:
                     type: string
                   created:
@@ -6128,8 +6142,6 @@ paths:
                         serviceEndpoint:
                           type: string
                       description: Service defines a service in the W3C Did.
-                  stakedAmount:
-                    type: string
                   ipAddress:
                     type: string
                   created:
@@ -6236,8 +6248,6 @@ paths:
                         serviceEndpoint:
                           type: string
                       description: Service defines a service in the W3C Did.
-                  stakedAmount:
-                    type: string
                   ipAddress:
                     type: string
                   created:
@@ -6380,8 +6390,6 @@ paths:
                         serviceEndpoint:
                           type: string
                       description: Service defines a service in the W3C Did.
-                  stakedAmount:
-                    type: string
                   ipAddress:
                     type: string
                   created:
@@ -6490,8 +6498,6 @@ paths:
                           serviceEndpoint:
                             type: string
                         description: Service defines a service in the W3C Did.
-                    stakedAmount:
-                      type: string
                     ipAddress:
                       type: string
                     created:
@@ -6650,8 +6656,6 @@ paths:
                         serviceEndpoint:
                           type: string
                       description: Service defines a service in the W3C Did.
-                  stakedAmount:
-                    type: string
                   ipAddress:
                     type: string
                   created:
@@ -6703,21 +6707,27 @@ paths:
                       type: string
                     creator:
                       type: string
+                    name:
+                      type: string
                     supportedPIDs:
                       type: string
-                    isActive:
-                      type: boolean
-                    clientPubkeys:
-                      type: array
-                      items:
-                        type: string
+                    status:
+                      type: integer
+                      format: int64
                     duration:
                       type: string
                       format: uint64
                     dprEndTime:
                       type: string
-                      title: Adding DPRendTime
                     dprStartEpoch:
+                      type: string
+                      format: uint64
+                    dprBudget:
+                      type: string
+                    maxClientCount:
+                      type: string
+                      format: uint64
+                    clientCounter:
                       type: string
                       format: uint64
               pagination:
@@ -6846,21 +6856,27 @@ paths:
                       type: string
                     creator:
                       type: string
+                    name:
+                      type: string
                     supportedPIDs:
                       type: string
-                    isActive:
-                      type: boolean
-                    clientPubkeys:
-                      type: array
-                      items:
-                        type: string
+                    status:
+                      type: integer
+                      format: int64
                     duration:
                       type: string
                       format: uint64
                     dprEndTime:
                       type: string
-                      title: Adding DPRendTime
                     dprStartEpoch:
+                      type: string
+                      format: uint64
+                    dprBudget:
+                      type: string
+                    maxClientCount:
+                      type: string
+                      format: uint64
+                    clientCounter:
                       type: string
                       format: uint64
               pagination:
@@ -6983,21 +6999,27 @@ paths:
                     type: string
                   creator:
                     type: string
+                  name:
+                    type: string
                   supportedPIDs:
                     type: string
-                  isActive:
-                    type: boolean
-                  clientPubkeys:
-                    type: array
-                    items:
-                      type: string
+                  status:
+                    type: integer
+                    format: int64
                   duration:
                     type: string
                     format: uint64
                   dprEndTime:
                     type: string
-                    title: Adding DPRendTime
                   dprStartEpoch:
+                    type: string
+                    format: uint64
+                  dprBudget:
+                    type: string
+                  maxClientCount:
+                    type: string
+                    format: uint64
+                  clientCounter:
                     type: string
                     format: uint64
         default:
@@ -7433,6 +7455,10 @@ paths:
                     type: string
                   type:
                     type: string
+                  stakedAmount:
+                    type: string
+                  dprEarnings:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -7600,6 +7626,10 @@ paths:
                       type: string
                     type:
                       type: string
+                    stakedAmount:
+                      type: string
+                    dprEarnings:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -7731,6 +7761,10 @@ paths:
                   coolDownTolerance:
                     type: string
                   type:
+                    type: string
+                  stakedAmount:
+                    type: string
+                  dprEarnings:
                     type: string
         default:
           description: An unexpected error response.
@@ -16521,8 +16555,6 @@ definitions:
             serviceEndpoint:
               type: string
           description: Service defines a service in the W3C Did.
-      stakedAmount:
-        type: string
       ipAddress:
         type: string
       created:
@@ -16609,12 +16641,28 @@ definitions:
             type: string
           purchaseDate:
             type: string
-      SupportedPIDs:
-        type: string
+      dprInfos:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            claimed:
+              type: string
+          title: Define the DprInfo message that holds id and claimed information
       created:
         type: string
       updated:
         type: string
+  soarchain.did.DprInfo:
+    type: object
+    properties:
+      id:
+        type: string
+      claimed:
+        type: string
+    title: Define the DprInfo message that holds id and claimed information
   soarchain.did.Keys:
     type: object
     properties:
@@ -16714,8 +16762,6 @@ definitions:
                   serviceEndpoint:
                     type: string
                 description: Service defines a service in the W3C Did.
-            stakedAmount:
-              type: string
             ipAddress:
               type: string
             created:
@@ -16809,8 +16855,18 @@ definitions:
                   type: string
                 purchaseDate:
                   type: string
-            SupportedPIDs:
-              type: string
+            dprInfos:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  claimed:
+                    type: string
+                title: >-
+                  Define the DprInfo message that holds id and claimed
+                  information
             created:
               type: string
             updated:
@@ -16884,8 +16940,6 @@ definitions:
                   serviceEndpoint:
                     type: string
                 description: Service defines a service in the W3C Did.
-            stakedAmount:
-              type: string
             ipAddress:
               type: string
             created:
@@ -16959,8 +17013,6 @@ definitions:
                 serviceEndpoint:
                   type: string
               description: Service defines a service in the W3C Did.
-          stakedAmount:
-            type: string
           ipAddress:
             type: string
           created:
@@ -17034,8 +17086,6 @@ definitions:
                 serviceEndpoint:
                   type: string
               description: Service defines a service in the W3C Did.
-          stakedAmount:
-            type: string
           ipAddress:
             type: string
           created:
@@ -17109,8 +17159,6 @@ definitions:
                 serviceEndpoint:
                   type: string
               description: Service defines a service in the W3C Did.
-          stakedAmount:
-            type: string
           ipAddress:
             type: string
           created:
@@ -17200,8 +17248,16 @@ definitions:
                 type: string
               purchaseDate:
                 type: string
-          SupportedPIDs:
-            type: string
+          dprInfos:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                claimed:
+                  type: string
+              title: Define the DprInfo message that holds id and claimed information
           created:
             type: string
           updated:
@@ -17271,8 +17327,6 @@ definitions:
                 serviceEndpoint:
                   type: string
               description: Service defines a service in the W3C Did.
-          stakedAmount:
-            type: string
           ipAddress:
             type: string
           created:
@@ -17346,8 +17400,6 @@ definitions:
                 serviceEndpoint:
                   type: string
               description: Service defines a service in the W3C Did.
-          stakedAmount:
-            type: string
           ipAddress:
             type: string
           created:
@@ -17421,8 +17473,6 @@ definitions:
                 serviceEndpoint:
                   type: string
               description: Service defines a service in the W3C Did.
-          stakedAmount:
-            type: string
           ipAddress:
             type: string
           created:
@@ -17500,8 +17550,6 @@ definitions:
             serviceEndpoint:
               type: string
           description: Service defines a service in the W3C Did.
-      stakedAmount:
-        type: string
       ipAddress:
         type: string
       created:
@@ -17560,26 +17608,32 @@ definitions:
         type: string
       creator:
         type: string
+      name:
+        type: string
       supportedPIDs:
         type: string
-      isActive:
-        type: boolean
-      clientPubkeys:
-        type: array
-        items:
-          type: string
+      status:
+        type: integer
+        format: int64
       duration:
         type: string
         format: uint64
       dprEndTime:
         type: string
-        title: Adding DPRendTime
       dprStartEpoch:
+        type: string
+        format: uint64
+      dprBudget:
+        type: string
+      maxClientCount:
+        type: string
+        format: uint64
+      clientCounter:
         type: string
         format: uint64
   soarchain.dpr.MsgActivateDprResponse:
     type: object
-  soarchain.dpr.MsgDeactivateDprResponse:
+  soarchain.dpr.MsgClaimDprRewardsResponse:
     type: object
   soarchain.dpr.MsgEnterDprResponse:
     type: object
@@ -17604,21 +17658,27 @@ definitions:
               type: string
             creator:
               type: string
+            name:
+              type: string
             supportedPIDs:
               type: string
-            isActive:
-              type: boolean
-            clientPubkeys:
-              type: array
-              items:
-                type: string
+            status:
+              type: integer
+              format: int64
             duration:
               type: string
               format: uint64
             dprEndTime:
               type: string
-              title: Adding DPRendTime
             dprStartEpoch:
+              type: string
+              format: uint64
+            dprBudget:
+              type: string
+            maxClientCount:
+              type: string
+              format: uint64
+            clientCounter:
               type: string
               format: uint64
       pagination:
@@ -17658,21 +17718,27 @@ definitions:
               type: string
             creator:
               type: string
+            name:
+              type: string
             supportedPIDs:
               type: string
-            isActive:
-              type: boolean
-            clientPubkeys:
-              type: array
-              items:
-                type: string
+            status:
+              type: integer
+              format: int64
             duration:
               type: string
               format: uint64
             dprEndTime:
               type: string
-              title: Adding DPRendTime
             dprStartEpoch:
+              type: string
+              format: uint64
+            dprBudget:
+              type: string
+            maxClientCount:
+              type: string
+              format: uint64
+            clientCounter:
               type: string
               format: uint64
       pagination:
@@ -17710,21 +17776,27 @@ definitions:
             type: string
           creator:
             type: string
+          name:
+            type: string
           supportedPIDs:
             type: string
-          isActive:
-            type: boolean
-          clientPubkeys:
-            type: array
-            items:
-              type: string
+          status:
+            type: integer
+            format: int64
           duration:
             type: string
             format: uint64
           dprEndTime:
             type: string
-            title: Adding DPRendTime
           dprStartEpoch:
+            type: string
+            format: uint64
+          dprBudget:
+            type: string
+          maxClientCount:
+            type: string
+            format: uint64
+          clientCounter:
             type: string
             format: uint64
   soarchain.dpr.QueryParamsResponse:
@@ -17951,6 +18023,10 @@ definitions:
             type: string
           type:
             type: string
+          stakedAmount:
+            type: string
+          dprEarnings:
+            type: string
   soarchain.poa.MsgSelectRandomRunnerResponse:
     type: object
     properties:
@@ -17972,6 +18048,10 @@ definitions:
           coolDownTolerance:
             type: string
           type:
+            type: string
+          stakedAmount:
+            type: string
+          dprEarnings:
             type: string
   soarchain.poa.Params:
     type: object
@@ -18037,6 +18117,10 @@ definitions:
             coolDownTolerance:
               type: string
             type:
+              type: string
+            stakedAmount:
+              type: string
+            dprEarnings:
               type: string
       pagination:
         type: object
@@ -18163,6 +18247,10 @@ definitions:
             type: string
           type:
             type: string
+          stakedAmount:
+            type: string
+          dprEarnings:
+            type: string
   soarchain.poa.QueryGetReputationResponse:
     type: object
     properties:
@@ -18184,6 +18272,10 @@ definitions:
           coolDownTolerance:
             type: string
           type:
+            type: string
+          stakedAmount:
+            type: string
+          dprEarnings:
             type: string
   soarchain.poa.QueryGetVrfDataResponse:
     type: object
@@ -18252,6 +18344,10 @@ definitions:
       coolDownTolerance:
         type: string
       type:
+        type: string
+      stakedAmount:
+        type: string
+      dprEarnings:
         type: string
   soarchain.poa.VrfData:
     type: object

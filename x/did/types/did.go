@@ -346,11 +346,10 @@ type ClientDidDocumentOption func(opts *ClientDid)
 
 func NewClientDidDocument(id string, index string, address string, soarchainType string, pids []bool, opts ...ClientDidDocumentOption) ClientDid {
 	doc := ClientDid{
-		Id:            id,
-		PubKey:        index,
-		Address:       address,
-		Type:          soarchainType,
-		SupportedPIDs: "",
+		Id:      id,
+		PubKey:  index,
+		Address: address,
+		Type:    soarchainType,
 	}
 
 	for _, opt := range opts {

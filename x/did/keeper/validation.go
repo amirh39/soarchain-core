@@ -35,7 +35,7 @@ func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
 		return false
 	}
 
-	if msg.Document.SupportedPIDs == "" || msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" {
+	if msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" {
 		return false
 	}
 	return true

@@ -9,12 +9,13 @@ const TypeMsgUpdateDpr = "update_dpr"
 
 var _ sdk.Msg = &MsgUpdateDpr{}
 
-func NewMsgUpdateDpr(dprId string, SupportedPIDs string, duration uint64, sender string) *MsgUpdateDpr {
+func NewMsgUpdateDpr(DprId string, duration uint64, MaxClientCount uint64, DprBudget string, sender string) *MsgUpdateDpr {
 	return &MsgUpdateDpr{
-		DprId:         dprId,
-		SupportedPIDs: SupportedPIDs,
-		Duration:      duration,
-		Sender:        sender,
+		DprId:          DprId,
+		Duration:       duration,
+		MaxClientCount: MaxClientCount,
+		DprBudget:      DprBudget,
+		Sender:         sender,
 	}
 }
 

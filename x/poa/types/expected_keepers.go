@@ -35,3 +35,7 @@ type EpochKeeper interface {
 	GetAllRandomNumber(ctx sdk.Context) (list []epochtypes.RandomData)
 	RandomNumber(ctx sdk.Context, epochTotal uint64) (string, bool)
 }
+
+// type DprKeeper interface {
+// 	DistributeRewards(ctx sdk.Context, address string) (sdk.DecCoins, error)
+// }

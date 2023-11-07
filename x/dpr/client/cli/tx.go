@@ -24,8 +24,8 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdEnterDpr())
 	cmd.AddCommand(CmdLeaveDpr())
 	cmd.AddCommand(CmdActivateDpr())
-	cmd.AddCommand(CmdDeactivateDpr())
 	cmd.AddCommand(CmdUpdateDpr())
+	cmd.AddCommand(CmdClaimDprRewards())
 
 	return cmd
 }

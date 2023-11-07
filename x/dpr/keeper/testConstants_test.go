@@ -28,10 +28,9 @@ func CreateDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dpr {
 	items := make([]types.Dpr, n)
 	for i := range items {
 		items[i].Id = DprId
-		items[i].ClientPubkeys = []string{PUBKEY}
 		items[i].Creator = CREATOR
 		items[i].Duration = 12
-		items[i].IsActive = false
+		items[i].Status = 0
 
 		keeper.SetDpr(ctx, items[i])
 	}
@@ -41,12 +40,18 @@ func CreateDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dpr {
 func SetupDpr(n int) []types.Dpr {
 	items := make([]types.Dpr, n)
 	for i := range items {
-		items[i].Id = DprId
-		items[i].Creator = CREATOR
-		items[i].Duration = 12
-		items[i].IsActive = false
-		items[i].SupportedPIDs = "FFF"
-
+		items[i] = types.Dpr{
+			Id:             DprId, // Should be unique for each DPR
+			Creator:        CREATOR,
+			SupportedPIDs:  SupportedPIDs,
+			Status:         0,
+			Duration:       DprDuration,
+			DprEndTime:     "",
+			DprStartEpoch:  0,
+			DprBudget:      "2udmotus",
+			MaxClientCount: MaxClientCount,
+			ClientCounter:  0,
+		}
 	}
 	return items
 }
@@ -54,12 +59,18 @@ func SetupDpr(n int) []types.Dpr {
 func SetupSecondDpr(n int) []types.Dpr {
 	items := make([]types.Dpr, n)
 	for i := range items {
-		items[i].Id = DprId
-		items[i].ClientPubkeys = []string{PUBKEY}
-		items[i].Creator = CREATOR
-		items[i].Duration = 12
-		items[i].IsActive = false
-		items[i].SupportedPIDs = "FFFFF"
+		items[i] = types.Dpr{
+			Id:             DprID, // Should be unique for each DPR
+			Creator:        CREATOR,
+			SupportedPIDs:  SupportedPIDs,
+			Status:         0,
+			Duration:       DprDuration,
+			DprEndTime:     "",
+			DprStartEpoch:  2,
+			DprBudget:      "2udmotus",
+			MaxClientCount: MaxClientCount,
+			ClientCounter:  0,
+		}
 	}
 	return items
 }
@@ -70,7 +81,7 @@ func CreateDeactiveDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dp
 		items[i].Id = strconv.Itoa(i)
 		items[i].Creator = strconv.Itoa(i)
 		items[i].Duration = 12
-		items[i].IsActive = false
+		items[i].Status = 0
 
 		keeper.SetDpr(ctx, items[i])
 	}
@@ -83,7 +94,7 @@ func CreateAeactiveDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dp
 		items[i].Id = strconv.Itoa(i)
 		items[i].Creator = strconv.Itoa(i)
 		items[i].Duration = 12
-		items[i].IsActive = true
+		items[i].Status = 0
 		keeper.SetDpr(ctx, items[i])
 	}
 	return items
@@ -203,4 +214,13 @@ const (
 	NotValid_Score              = ""
 	ClientRewardMultiplier      = "3778.8750839306153"
 	ClientNetEarnings           = "107755123udmotus"
+)
+
+const (
+	DprID          = "unique_dpr_id" // Replace with actual logic to generate unique IDs
+	Creator        = "creator_id"    // Replace with actual creator id
+	SupportedPIDs  = "FFFF"
+	InitialBudget  = "1000000udmotus"
+	DprDuration    = uint64(10) // 10 can be replaced with any default duration
+	MaxClientCount = uint64(10) // Example maximum client count
 )

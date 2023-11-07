@@ -24,13 +24,13 @@ func (helper *KeeperTestHelper) Test_Activate_DPR() {
 		log.Println(dprFirst)
 		res, err := helper.MsgServer.ActivateDpr(ctx, &types.MsgActivateDpr{
 			Sender: CREATOR,
-			DprId:  DprId,
+			DprId:  DprID,
 		})
 		dprSecond, _ := dprKeeper.GetDpr(helper.Ctx, dpr[0].Id)
 		log.Println(dprSecond)
 		helper.Require().Empty(res)
 		helper.Require().Nil(err)
-		helper.Require().Equal(dprSecond.IsActive, true)
+		helper.Require().Equal(dprSecond.Status, uint32(1))
 		helper.Require().NotNil(dprSecond.DprEndTime)
 	})
 }

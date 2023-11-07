@@ -21,10 +21,9 @@ func (helper *KeeperTestHelper) Test_Update_DPR() {
 		helper.Require().NotEmpty(dpr)
 
 		res, err := helper.MsgServer.UpdateDpr(ctx, &types.MsgUpdateDpr{
-			DprId:         DprId,
-			SupportedPIDs: "BE1FA813",
-			Duration:      45,
-			Sender:        CREATOR,
+			DprId:    DprID,
+			Duration: 45,
+			Sender:   CREATOR,
 		})
 		helper.Require().Empty(res)
 		helper.Require().Nil(err)
