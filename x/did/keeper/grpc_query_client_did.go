@@ -15,7 +15,7 @@ import (
 )
 
 func (k Keeper) ClientDidAll(c context.Context, req *types.QueryAllClientDidRequest) (*types.QueryAllClientDidResponse, error) {
-	if req == nil {
+	if req == nil || req.Pagination == nil {
 		return nil, status.Error(codes.InvalidArgument, "[ClientDidAll] failed. Invalid request.")
 	}
 
@@ -47,7 +47,7 @@ func (k Keeper) ClientDidAll(c context.Context, req *types.QueryAllClientDidRequ
 }
 
 func (k Keeper) ClientDid(c context.Context, req *types.QueryGetClientDidRequest) (*types.QueryGetClientDidResponse, error) {
-	if req == nil {
+	if req == nil || req.Address == "" {
 		return nil, status.Error(codes.InvalidArgument, "[ClientDid] failed. Invalid request.")
 	}
 	ctx := sdk.UnwrapSDKContext(c)
@@ -58,7 +58,7 @@ func (k Keeper) ClientDid(c context.Context, req *types.QueryGetClientDidRequest
 	)
 
 	if !found {
-		return nil, status.Error(codes.NotFound, "[ClientDid][GetClientDid] failed. Couldn't find a did document from the request.")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrUnknownAddress, "[ClientDid][GetClientDid] failed. Couldn't find a valid client did by the this address: [ %s ], Make sure address is not empty OR invalid.", req.Address)
 	}
 
 	return &types.QueryGetClientDidResponse{ClientDid: val}, nil
