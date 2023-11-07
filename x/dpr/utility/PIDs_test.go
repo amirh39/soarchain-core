@@ -23,7 +23,7 @@ func TestHexToBin(t *testing.T) {
 
 func TestArePIDsSupported(t *testing.T) {
 	t.Run("All PIDs Supported", func(t *testing.T) {
-		carHex := "FFFFFFFF"
+		carHex := "FFFFFFFFFFFFFFF"
 		dprHex := "AAAAAAAA"
 		supported, err := ArePIDsSupported(carHex, dprHex)
 		require.NoError(t, err)

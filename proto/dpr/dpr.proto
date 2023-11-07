@@ -8,9 +8,11 @@ message Dpr {
   string creator = 2;
   string supportedPIDs = 3;
   bool isActive = 4;
-  repeated string clientPubkeys = 5;
-  uint64 duration = 6;
-  string dprEndTime = 7; // Adding DPRendTime 
-  uint64 dprStartEpoch = 8;
+  uint64 duration = 5;
+  string dprEndTime = 6; // Adding DPRendTime 
+  uint64 dprStartEpoch = 7;
+  string dprBudget = 8;
+  uint64 maxClientCount = 9;
+  uint64 clientCounter = 10;
 }
 

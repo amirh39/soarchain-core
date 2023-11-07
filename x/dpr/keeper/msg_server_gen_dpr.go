@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"log"
 
+	"soarchain/app/params"
 	"soarchain/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -30,6 +31,33 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		logger.Info("Validating DPR is successfully Done.", "transaction", "GenDpr")
 	}
 
+	// Coin denomination check already done
+	budget, err := sdk.ParseCoinsNormalized(msg.DprBudget)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[GenDpr][ParseCoinsNormalized] failed. Couldn't parse budget.")
+	}
+
+	// Calculate 1% of the budget amount for the specific denomination
+	onePercentAmt := budget.AmountOf(params.BondDenom).QuoRaw(100)
+
+	// Create a coin with 1% of the budget
+	onePercentCoin := sdk.NewCoin(params.BondDenom, onePercentAmt)
+
+	// Subtract 1% from the original budget
+	remainingBudget := budget.Sub(sdk.NewCoins(onePercentCoin))
+	if !remainingBudget.IsValid() {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Subtracting %1 from the budget results in invalid coins.")
+	}
+
+	// TODO: find an efficient way to distribute rewards to runners
+
+	dprOwner, _ := sdk.AccAddressFromBech32(msg.Creator)
+
+	errTransfer := k.bankKeeper.SendCoinsFromAccountToModule(ctx, dprOwner, types.ModuleName, budget)
+	if errTransfer != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[GenDpr][SendCoinsFromAccountToModule] failed. Couldn't send coins.")
+	}
+
 	timestampStr := ctx.BlockTime().String()
 	hashPayload := msg.Creator + "|" + timestampStr
 	hash := sha256.Sum256([]byte(hashPayload))
@@ -37,14 +65,15 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 
 	//Save dpr into storage
 	newDpr := types.Dpr{
-		Id:            dprID,
-		Creator:       msg.Creator,
-		SupportedPIDs: msg.SupportedPIDs,
-		IsActive:      false,
-		ClientPubkeys: []string{},
-		Duration:      msg.Duration,
-		DprEndTime:    "",
-		DprStartEpoch: 0,
+		Id:             dprID,
+		Creator:        msg.Creator,
+		SupportedPIDs:  msg.SupportedPIDs,
+		IsActive:       false,
+		Duration:       msg.Duration,
+		DprEndTime:     "",
+		DprStartEpoch:  0,
+		DprBudget:      budget.String(),
+		MaxClientCount: msg.MaxClientCount,
 	}
 	k.SetDpr(ctx, newDpr)
 

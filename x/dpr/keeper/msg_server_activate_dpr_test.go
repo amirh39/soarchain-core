@@ -24,7 +24,7 @@ func (helper *KeeperTestHelper) Test_Activate_DPR() {
 		log.Println(dprFirst)
 		res, err := helper.MsgServer.ActivateDpr(ctx, &types.MsgActivateDpr{
 			Sender: CREATOR,
-			DprId:  DprId,
+			DprId:  DprID,
 		})
 		dprSecond, _ := dprKeeper.GetDpr(helper.Ctx, dpr[0].Id)
 		log.Println(dprSecond)

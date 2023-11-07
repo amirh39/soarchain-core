@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	didtypes "soarchain/x/did/types"
 	"soarchain/x/dpr/types"
 	utility "soarchain/x/dpr/utility"
 
@@ -17,27 +18,39 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 
 	log.Println("############## Entering to a DPR Transaction is Started ##############")
 
-	reputation, found := k.poaKeeper.GetReputationsByAddress(ctx, msg.Sender)
-	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetReputationsByAddress] failed. Only motus owner can send the joinDPR transaction.")
-	}
-
 	dpr, found := k.GetDpr(ctx, msg.DprId)
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetDpr] failed. There is no DPR with this DPRid.")
 	}
 
-	//TODO: create a function in utils
-	for _, pubKey := range dpr.ClientPubkeys {
-		if reputation.PubKey == pubKey {
-			// Return an error if a match is found
-			return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][REFACTOR] failed. PubKey already exists. Your device has already registered to this DPR.")
-		}
+	if dpr.MaxClientCount <= dpr.ClientCounter {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][MaxClientCount] achieved.")
 	}
 
 	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
 	if !eligible {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetClientDid] failed. There is no eligible client to serve this DPR.")
+	}
+	targetDprId := dpr.Id
+	found = false
+	for _, dprInfo := range did.DprInfos {
+		if dprInfo.Id == targetDprId {
+			found = true
+			break
+		}
+	}
+	if found {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][GetClientDid] failed. Client is already in this DPR.")
+	} else {
+		// Create a new DprInfo with the dpr.Id and default claimed value
+		newDprInfo := &didtypes.DprInfo{
+			Id:      dpr.Id,
+			Claimed: "0",
+		}
+		// Append the new *DprInfo to the did.DprInfos slice
+		did.DprInfos = append(did.DprInfos, newDprInfo)
+		k.didKeeper.SetClientDid(ctx, did)
+
 	}
 
 	if logger != nil {
@@ -53,25 +66,9 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 		logger.Info("Client's PID's are supporting the DPR", "transaction", "EnterDpr")
 	}
 
-	// Initialize a slice to store client public keys
-	var clientPubKeys []string
-	clientPubKeys = dpr.ClientPubkeys
-	// Function to add a new public key
-	clientPubKeys = append(clientPubKeys, reputation.PubKey)
-
 	// Save dpr into storage
-	newDpr := types.Dpr{
-		Id:            dpr.Id,
-		Creator:       dpr.Creator,
-		SupportedPIDs: dpr.SupportedPIDs,
-		IsActive:      dpr.IsActive,
-		ClientPubkeys: clientPubKeys,
-		Duration:      dpr.Duration,
-		DprEndTime:    "",
-		DprStartEpoch: 0,
-	}
-
-	k.SetDpr(ctx, newDpr)
+	dpr.ClientCounter = dpr.ClientCounter + 1
+	k.SetDpr(ctx, dpr)
 
 	if logger != nil {
 		logger.Info("Client is entered to the Dpr successfully", "transaction", "EnterDpr")
