@@ -21,16 +21,12 @@ func Test_SetGetChallengerDid(t *testing.T) {
 	require.Contains(t, challengersList, targetChallenger)
 }
 
-// func Test_GetChallengerDidByPubkey(t *testing.T) {
-// 	keeper, ctx := keepertest.DidKeeper(t)
+func Test_GetChallengerDidByPubKey(t *testing.T) {
+	keeper, ctx := keepertest.DidKeeper(t)
+	challengers := CreateNChallengerDid(keeper, ctx, 1)
+	targetChallenger := challengers[0]
 
-// 	didDocument, privkey := NewChallengerDidDocumentWithSeq(Did)
-// 	require.NotNil(t, privkey)
-// 	keeper.SetChallengerDid(ctx, *didDocument.Document)
-
-// 	got, found := keeper.GetChallengerDidUsingPubKey(ctx, didDocument.Document.PubKey)
-// 	t.Log("challenger did -->", got, found)
-// 	require.Equal(t, true, found)
-// 	require.NotNil(t, got)
-
-// }
+	res, found := keeper.GetChallengerDidUsingPubKey(ctx, targetChallenger.PubKey)
+	require.Equal(t, true, found)
+	require.Equal(t, res, targetChallenger)
+}
