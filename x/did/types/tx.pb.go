@@ -28,10 +28,9 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type MsgGenClient struct {
-	Document    *ClientDid `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
-	Signature   string     `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
-	Certificate string     `protobuf:"bytes,3,opt,name=certificate,proto3" json:"certificate,omitempty"`
-	Creator     string     `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
+	Signature   string `protobuf:"bytes,1,opt,name=signature,proto3" json:"signature,omitempty"`
+	Certificate string `protobuf:"bytes,2,opt,name=certificate,proto3" json:"certificate,omitempty"`
+	Creator     string `protobuf:"bytes,3,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
 func (m *MsgGenClient) Reset()         { *m = MsgGenClient{} }
@@ -66,13 +65,6 @@ func (m *MsgGenClient) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_MsgGenClient proto.InternalMessageInfo
-
-func (m *MsgGenClient) GetDocument() *ClientDid {
-	if m != nil {
-		return m.Document
-	}
-	return nil
-}
 
 func (m *MsgGenClient) GetSignature() string {
 	if m != nil {
@@ -132,11 +124,10 @@ func (m *MsgGenClientResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgGenClientResponse proto.InternalMessageInfo
 
 type MsgGenRunner struct {
-	Document    *RunnerDid `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
-	Creator     string     `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	Certificate string     `protobuf:"bytes,3,opt,name=certificate,proto3" json:"certificate,omitempty"`
-	Signature   string     `protobuf:"bytes,4,opt,name=signature,proto3" json:"signature,omitempty"`
-	RunnerStake string     `protobuf:"bytes,5,opt,name=runnerStake,proto3" json:"runnerStake,omitempty"`
+	Creator     string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Certificate string `protobuf:"bytes,2,opt,name=certificate,proto3" json:"certificate,omitempty"`
+	Signature   string `protobuf:"bytes,3,opt,name=signature,proto3" json:"signature,omitempty"`
+	RunnerStake string `protobuf:"bytes,4,opt,name=runnerStake,proto3" json:"runnerStake,omitempty"`
 }
 
 func (m *MsgGenRunner) Reset()         { *m = MsgGenRunner{} }
@@ -171,13 +162,6 @@ func (m *MsgGenRunner) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_MsgGenRunner proto.InternalMessageInfo
-
-func (m *MsgGenRunner) GetDocument() *RunnerDid {
-	if m != nil {
-		return m.Document
-	}
-	return nil
-}
 
 func (m *MsgGenRunner) GetCreator() string {
 	if m != nil {
@@ -244,12 +228,11 @@ func (m *MsgGenRunnerResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgGenRunnerResponse proto.InternalMessageInfo
 
 type MsgGenChallenger struct {
-	Document        *ChallengerDid `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
-	Creator         string         `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	ChallengerType  string         `protobuf:"bytes,3,opt,name=challengerType,proto3" json:"challengerType,omitempty"`
-	Certificate     string         `protobuf:"bytes,4,opt,name=certificate,proto3" json:"certificate,omitempty"`
-	Signature       string         `protobuf:"bytes,5,opt,name=signature,proto3" json:"signature,omitempty"`
-	ChallengerStake string         `protobuf:"bytes,6,opt,name=ChallengerStake,proto3" json:"ChallengerStake,omitempty"`
+	Creator         string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ChallengerType  string `protobuf:"bytes,2,opt,name=challengerType,proto3" json:"challengerType,omitempty"`
+	Certificate     string `protobuf:"bytes,3,opt,name=certificate,proto3" json:"certificate,omitempty"`
+	Signature       string `protobuf:"bytes,4,opt,name=signature,proto3" json:"signature,omitempty"`
+	ChallengerStake string `protobuf:"bytes,5,opt,name=ChallengerStake,proto3" json:"ChallengerStake,omitempty"`
 }
 
 func (m *MsgGenChallenger) Reset()         { *m = MsgGenChallenger{} }
@@ -284,13 +267,6 @@ func (m *MsgGenChallenger) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_MsgGenChallenger proto.InternalMessageInfo
-
-func (m *MsgGenChallenger) GetDocument() *ChallengerDid {
-	if m != nil {
-		return m.Document
-	}
-	return nil
-}
 
 func (m *MsgGenChallenger) GetCreator() string {
 	if m != nil {
@@ -365,9 +341,7 @@ var xxx_messageInfo_MsgGenChallengerResponse proto.InternalMessageInfo
 
 // MsgDeactivateDid defines the Msg/DeactivateDID request type.
 type MsgDeactivateDid struct {
-	Did         string `protobuf:"bytes,1,opt,name=did,proto3" json:"did,omitempty"`
-	Creator     string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
-	FromAddress string `protobuf:"bytes,3,opt,name=fromAddress,proto3" json:"fromAddress,omitempty"`
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
 func (m *MsgDeactivateDid) Reset()         { *m = MsgDeactivateDid{} }
@@ -403,23 +377,9 @@ func (m *MsgDeactivateDid) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgDeactivateDid proto.InternalMessageInfo
 
-func (m *MsgDeactivateDid) GetDid() string {
-	if m != nil {
-		return m.Did
-	}
-	return ""
-}
-
 func (m *MsgDeactivateDid) GetCreator() string {
 	if m != nil {
 		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgDeactivateDid) GetFromAddress() string {
-	if m != nil {
-		return m.FromAddress
 	}
 	return ""
 }
@@ -475,37 +435,33 @@ func init() {
 func init() { proto.RegisterFile("did/tx.proto", fileDescriptor_75f788725073a497) }
 
 var fileDescriptor_75f788725073a497 = []byte{
-	// 480 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0xc1, 0x6e, 0x13, 0x31,
-	0x10, 0x8d, 0x93, 0xb4, 0x10, 0xb7, 0x85, 0xca, 0x2a, 0xc8, 0x0a, 0xd5, 0x12, 0x05, 0x09, 0x72,
-	0x4a, 0xa4, 0xc2, 0x81, 0x2b, 0x10, 0x89, 0x53, 0x2e, 0x0b, 0x17, 0xb8, 0x80, 0x59, 0x4f, 0x53,
-	0x8b, 0xd4, 0x1b, 0xd9, 0x0e, 0x6a, 0xff, 0x82, 0x2f, 0xe0, 0x5b, 0x38, 0x72, 0xec, 0x11, 0x6e,
-	0x28, 0xf9, 0x09, 0x8e, 0xa8, 0x76, 0xd6, 0x6b, 0x2f, 0x4b, 0x93, 0x5b, 0x32, 0xf3, 0xf2, 0xe6,
-	0xbd, 0x37, 0x13, 0xe3, 0x7d, 0x2e, 0xf8, 0xc8, 0x5c, 0x0c, 0xe7, 0x2a, 0x37, 0x39, 0x39, 0xd0,
-	0x39, 0x53, 0xd9, 0x19, 0x13, 0x72, 0xc8, 0x05, 0xef, 0x1e, 0x5d, 0x37, 0xb3, 0x99, 0x00, 0x69,
-	0x3e, 0x70, 0xc1, 0x1d, 0xc8, 0x55, 0xd5, 0x42, 0x4a, 0x50, 0x41, 0x95, 0x5a, 0xec, 0x19, 0x9b,
-	0xcd, 0x40, 0x4e, 0xc3, 0x4e, 0xff, 0x1b, 0xc2, 0xfb, 0x13, 0x3d, 0x7d, 0x0d, 0xf2, 0x95, 0xa5,
-	0x22, 0xcf, 0xf0, 0x6d, 0x9e, 0x67, 0x8b, 0x73, 0x90, 0x86, 0xa2, 0x1e, 0x1a, 0xec, 0x9d, 0xd0,
-	0x61, 0x34, 0x78, 0xe8, 0x80, 0x63, 0xc1, 0x53, 0x8f, 0x24, 0xc7, 0xb8, 0xa3, 0xc5, 0x54, 0x32,
-	0xb3, 0x50, 0x40, 0x9b, 0x3d, 0x34, 0xe8, 0xa4, 0x65, 0x81, 0xf4, 0xf0, 0x5e, 0x06, 0xca, 0x88,
-	0x53, 0x91, 0x31, 0x03, 0xb4, 0x65, 0xfb, 0x61, 0x89, 0x50, 0x7c, 0x2b, 0x53, 0xc0, 0x4c, 0xae,
-	0x68, 0xdb, 0x76, 0x8b, 0xaf, 0xfd, 0xfb, 0xf8, 0x28, 0xd4, 0x97, 0x82, 0x9e, 0xe7, 0x52, 0x43,
-	0xff, 0xbb, 0x17, 0x9e, 0x5a, 0xb7, 0x5b, 0x08, 0x77, 0xc0, 0x58, 0x78, 0x30, 0xb8, 0x19, 0x0d,
-	0xde, 0x42, 0x74, 0x64, 0xba, 0x5d, 0x63, 0xda, 0xed, 0xe1, 0x8d, 0x61, 0x9f, 0x81, 0xee, 0xb8,
-	0xdf, 0x07, 0xa5, 0xd2, 0x9a, 0x13, 0xe6, 0xad, 0xfd, 0x41, 0xf8, 0x70, 0xed, 0xd9, 0xaf, 0x8c,
-	0x3c, 0xff, 0xc7, 0xde, 0x71, 0x75, 0x2f, 0x1e, 0xbc, 0xad, 0xc5, 0xc7, 0xf8, 0x4e, 0x79, 0x14,
-	0x6f, 0x2f, 0xe7, 0x85, 0xcb, 0x4a, 0xb5, 0x1a, 0x45, 0x7b, 0x43, 0x14, 0x3b, 0xd5, 0x28, 0x06,
-	0xf8, 0x6e, 0x29, 0xce, 0xc5, 0xb1, 0x6b, 0x31, 0xd5, 0x72, 0xbf, 0x8b, 0x69, 0xd5, 0xb9, 0x8f,
-	0xe5, 0xa3, 0x4d, 0x65, 0x0c, 0x2c, 0x33, 0xe2, 0x0b, 0x33, 0x30, 0x16, 0x9c, 0x1c, 0xe2, 0x16,
-	0x17, 0xdc, 0x06, 0xd2, 0x49, 0xaf, 0x3f, 0xde, 0xbc, 0xd0, 0x53, 0x95, 0x9f, 0xbf, 0xe0, 0x5c,
-	0x81, 0xd6, 0xc5, 0x42, 0x83, 0xd2, 0x7a, 0x7a, 0x34, 0xa1, 0x98, 0x7e, 0xf2, 0xab, 0x89, 0x5b,
-	0x13, 0x3d, 0x25, 0x13, 0xdc, 0x29, 0xff, 0x2c, 0x0f, 0x2a, 0x2b, 0x08, 0x2f, 0xb5, 0xfb, 0xe8,
-	0x86, 0x66, 0x41, 0xbb, 0xa6, 0x5b, 0x9f, 0x70, 0x3d, 0x9d, 0x6b, 0xfe, 0x87, 0x2e, 0x3e, 0x1d,
-	0xf2, 0x0e, 0x1f, 0xc4, 0x67, 0xf3, 0xb0, 0x5e, 0x84, 0x07, 0x74, 0x9f, 0x6c, 0x00, 0x84, 0xd4,
-	0x71, 0xf6, 0x35, 0xd4, 0x11, 0xa0, 0x8e, 0xba, 0x36, 0xdb, 0x97, 0xa3, 0x1f, 0xcb, 0x04, 0x5d,
-	0x2d, 0x13, 0xf4, 0x7b, 0x99, 0xa0, 0xaf, 0xab, 0xa4, 0x71, 0xb5, 0x4a, 0x1a, 0x3f, 0x57, 0x49,
-	0xe3, 0xfd, 0x3d, 0xcf, 0x30, 0xba, 0x18, 0xd9, 0xd7, 0xf0, 0x72, 0x0e, 0xfa, 0xd3, 0xae, 0x7d,
-	0xbc, 0x9e, 0xfe, 0x0d, 0x00, 0x00, 0xff, 0xff, 0x21, 0x06, 0xce, 0xce, 0x21, 0x05, 0x00, 0x00,
+	// 410 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x94, 0xbf, 0x4e, 0xeb, 0x30,
+	0x14, 0xc6, 0xeb, 0xa6, 0xf7, 0x5e, 0xd5, 0xb7, 0x05, 0x14, 0x15, 0x14, 0x05, 0x14, 0xaa, 0x20,
+	0x41, 0x07, 0x94, 0x48, 0xf0, 0x06, 0x50, 0x89, 0xa9, 0x4b, 0x61, 0x81, 0x05, 0x99, 0xc4, 0xa4,
+	0x16, 0x95, 0x13, 0x39, 0x2e, 0x6a, 0x5f, 0x81, 0x89, 0x27, 0x62, 0x66, 0xec, 0x08, 0x1b, 0x6a,
+	0x5f, 0x04, 0xe1, 0xfc, 0xb3, 0xa3, 0xb4, 0x65, 0xcc, 0x39, 0x5f, 0x3e, 0xff, 0xbe, 0xe3, 0x93,
+	0xc0, 0x96, 0x4f, 0x7c, 0x97, 0x4f, 0x9d, 0x88, 0x85, 0x3c, 0xd4, 0xdb, 0x71, 0x88, 0x98, 0x37,
+	0x42, 0x84, 0x3a, 0x3e, 0xf1, 0xcd, 0xce, 0x4f, 0xd3, 0x1b, 0x13, 0x4c, 0xf9, 0xbd, 0x4f, 0xfc,
+	0x44, 0x94, 0x54, 0xd9, 0x84, 0x52, 0xcc, 0xa4, 0xaa, 0x21, 0xb4, 0x23, 0x34, 0x1e, 0x63, 0x1a,
+	0xc8, 0x1d, 0x7b, 0x04, 0x5b, 0x83, 0x38, 0xb8, 0xc2, 0xf4, 0x52, 0x38, 0xe9, 0x07, 0xb0, 0x19,
+	0x93, 0x80, 0x22, 0x3e, 0x61, 0xd8, 0x00, 0x5d, 0xd0, 0x6b, 0x0e, 0x8b, 0x82, 0xde, 0x85, 0xff,
+	0x3d, 0xcc, 0x38, 0x79, 0x24, 0x1e, 0xe2, 0xd8, 0xa8, 0x8b, 0xbe, 0x5c, 0xd2, 0x0d, 0xf8, 0xcf,
+	0x63, 0x18, 0xf1, 0x90, 0x19, 0x9a, 0xe8, 0x66, 0x8f, 0xf6, 0x1e, 0xec, 0xc8, 0x27, 0x0d, 0x71,
+	0x1c, 0x85, 0x34, 0xc6, 0xf6, 0x0b, 0xc8, 0x10, 0x86, 0x02, 0x5b, 0xb6, 0x00, 0x8a, 0xc5, 0x2f,
+	0x8e, 0x57, 0xf0, 0xb5, 0x0a, 0xfc, 0x64, 0x34, 0xd7, 0x1c, 0x3d, 0x61, 0xa3, 0x91, 0xbc, 0x2f,
+	0x95, 0x0a, 0xc8, 0x84, 0x25, 0x87, 0x7c, 0x03, 0x70, 0x27, 0xa5, 0xcf, 0xa7, 0xb8, 0x06, 0xf4,
+	0x18, 0x6e, 0x15, 0xd3, 0xbe, 0x99, 0x45, 0x19, 0x6b, 0xa9, 0x5a, 0x0e, 0xa4, 0x6d, 0x08, 0xd4,
+	0x28, 0x07, 0xea, 0xc1, 0xed, 0x82, 0x27, 0x09, 0xf5, 0x47, 0x68, 0xca, 0x65, 0xdb, 0x84, 0x46,
+	0x99, 0x3f, 0x0f, 0x77, 0x2a, 0xb2, 0xf5, 0x31, 0xf2, 0x38, 0x79, 0x46, 0x1c, 0xf7, 0x89, 0xbf,
+	0x3a, 0x5b, 0xea, 0xa4, 0xa8, 0x33, 0xa7, 0xb3, 0xcf, 0x3a, 0xd4, 0x06, 0x71, 0xa0, 0x0f, 0x60,
+	0xb3, 0x58, 0xa9, 0x7d, 0x47, 0x59, 0x5c, 0x47, 0xde, 0x02, 0xf3, 0x68, 0x4d, 0x33, 0xb3, 0x4d,
+	0xed, 0xd2, 0xf5, 0xa8, 0xb6, 0x4b, 0x9a, 0x2b, 0xec, 0xd4, 0xcb, 0xd4, 0x6f, 0x61, 0x5b, 0xbd,
+	0xc8, 0xc3, 0x6a, 0x88, 0x5c, 0x60, 0x9e, 0x6c, 0x10, 0xc8, 0xd6, 0xea, 0x1c, 0x2b, 0xac, 0x15,
+	0x41, 0x95, 0x75, 0xe5, 0x6c, 0x2f, 0xdc, 0xf7, 0x85, 0x05, 0xe6, 0x0b, 0x0b, 0x7c, 0x2d, 0x2c,
+	0xf0, 0xba, 0xb4, 0x6a, 0xf3, 0xa5, 0x55, 0xfb, 0x58, 0x5a, 0xb5, 0xbb, 0xdd, 0xdc, 0xc1, 0x9d,
+	0xba, 0xe2, 0x97, 0x31, 0x8b, 0x70, 0xfc, 0xf0, 0x57, 0x7c, 0xe1, 0xe7, 0xdf, 0x01, 0x00, 0x00,
+	0xff, 0xff, 0xbd, 0x78, 0x4e, 0x7c, 0x46, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -721,31 +677,19 @@ func (m *MsgGenClient) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.Creator)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x1a
 	}
 	if len(m.Certificate) > 0 {
 		i -= len(m.Certificate)
 		copy(dAtA[i:], m.Certificate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Certificate)))
 		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x12
 	}
 	if len(m.Signature) > 0 {
 		i -= len(m.Signature)
 		copy(dAtA[i:], m.Signature)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Signature)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.Document != nil {
-		{
-			size, err := m.Document.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
 		i--
 		dAtA[i] = 0xa
 	}
@@ -800,38 +744,26 @@ func (m *MsgGenRunner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.RunnerStake)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.RunnerStake)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x22
 	}
 	if len(m.Signature) > 0 {
 		i -= len(m.Signature)
 		copy(dAtA[i:], m.Signature)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Signature)))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x1a
 	}
 	if len(m.Certificate) > 0 {
 		i -= len(m.Certificate)
 		copy(dAtA[i:], m.Certificate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Certificate)))
 		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x12
 	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
 		copy(dAtA[i:], m.Creator)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.Document != nil {
-		{
-			size, err := m.Document.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
 		i--
 		dAtA[i] = 0xa
 	}
@@ -886,45 +818,33 @@ func (m *MsgGenChallenger) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.ChallengerStake)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.ChallengerStake)))
 		i--
-		dAtA[i] = 0x32
+		dAtA[i] = 0x2a
 	}
 	if len(m.Signature) > 0 {
 		i -= len(m.Signature)
 		copy(dAtA[i:], m.Signature)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Signature)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x22
 	}
 	if len(m.Certificate) > 0 {
 		i -= len(m.Certificate)
 		copy(dAtA[i:], m.Certificate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Certificate)))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x1a
 	}
 	if len(m.ChallengerType) > 0 {
 		i -= len(m.ChallengerType)
 		copy(dAtA[i:], m.ChallengerType)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.ChallengerType)))
 		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x12
 	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
 		copy(dAtA[i:], m.Creator)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.Document != nil {
-		{
-			size, err := m.Document.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintTx(dAtA, i, uint64(size))
-		}
 		i--
 		dAtA[i] = 0xa
 	}
@@ -974,24 +894,10 @@ func (m *MsgDeactivateDid) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.FromAddress) > 0 {
-		i -= len(m.FromAddress)
-		copy(dAtA[i:], m.FromAddress)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.FromAddress)))
-		i--
-		dAtA[i] = 0x1a
-	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
 		copy(dAtA[i:], m.Creator)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Did) > 0 {
-		i -= len(m.Did)
-		copy(dAtA[i:], m.Did)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Did)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -1038,10 +944,6 @@ func (m *MsgGenClient) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.Document != nil {
-		l = m.Document.Size()
-		n += 1 + l + sovTx(uint64(l))
-	}
 	l = len(m.Signature)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
@@ -1072,10 +974,6 @@ func (m *MsgGenRunner) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.Document != nil {
-		l = m.Document.Size()
-		n += 1 + l + sovTx(uint64(l))
-	}
 	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
@@ -1110,10 +1008,6 @@ func (m *MsgGenChallenger) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.Document != nil {
-		l = m.Document.Size()
-		n += 1 + l + sovTx(uint64(l))
-	}
 	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
@@ -1152,15 +1046,7 @@ func (m *MsgDeactivateDid) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Did)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
 	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.FromAddress)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -1213,42 +1099,6 @@ func (m *MsgGenClient) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Document", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Document == nil {
-				m.Document = &ClientDid{}
-			}
-			if err := m.Document.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Signature", wireType)
 			}
 			var stringLen uint64
@@ -1279,7 +1129,7 @@ func (m *MsgGenClient) Unmarshal(dAtA []byte) error {
 			}
 			m.Signature = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Certificate", wireType)
 			}
@@ -1311,7 +1161,7 @@ func (m *MsgGenClient) Unmarshal(dAtA []byte) error {
 			}
 			m.Certificate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
@@ -1445,42 +1295,6 @@ func (m *MsgGenRunner) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Document", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Document == nil {
-				m.Document = &RunnerDid{}
-			}
-			if err := m.Document.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
@@ -1511,7 +1325,7 @@ func (m *MsgGenRunner) Unmarshal(dAtA []byte) error {
 			}
 			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Certificate", wireType)
 			}
@@ -1543,7 +1357,7 @@ func (m *MsgGenRunner) Unmarshal(dAtA []byte) error {
 			}
 			m.Certificate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Signature", wireType)
 			}
@@ -1575,7 +1389,7 @@ func (m *MsgGenRunner) Unmarshal(dAtA []byte) error {
 			}
 			m.Signature = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RunnerStake", wireType)
 			}
@@ -1709,42 +1523,6 @@ func (m *MsgGenChallenger) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Document", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Document == nil {
-				m.Document = &ChallengerDid{}
-			}
-			if err := m.Document.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
@@ -1775,7 +1553,7 @@ func (m *MsgGenChallenger) Unmarshal(dAtA []byte) error {
 			}
 			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ChallengerType", wireType)
 			}
@@ -1807,7 +1585,7 @@ func (m *MsgGenChallenger) Unmarshal(dAtA []byte) error {
 			}
 			m.ChallengerType = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Certificate", wireType)
 			}
@@ -1839,7 +1617,7 @@ func (m *MsgGenChallenger) Unmarshal(dAtA []byte) error {
 			}
 			m.Certificate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Signature", wireType)
 			}
@@ -1871,7 +1649,7 @@ func (m *MsgGenChallenger) Unmarshal(dAtA []byte) error {
 			}
 			m.Signature = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ChallengerStake", wireType)
 			}
@@ -2005,38 +1783,6 @@ func (m *MsgDeactivateDid) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Did", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Did = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
@@ -2066,38 +1812,6 @@ func (m *MsgDeactivateDid) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FromAddress", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.FromAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

@@ -17,40 +17,35 @@ service Msg {
 }
 
 message MsgGenClient {
-  ClientDid document = 1;
-  string signature = 2;
-  string certificate = 3;
-  string creator = 4;
+  string signature = 1;
+  string certificate = 2;
+  string creator = 3;
 }
   
 message MsgGenClientResponse {}
 
 message MsgGenRunner {
-  RunnerDid document = 1;
-  string creator = 2; 
-  string certificate = 3;
-  string signature = 4;
-  string runnerStake = 5;
+  string creator = 1; 
+  string certificate = 2;
+  string signature = 3;
+  string runnerStake = 4;
 }
   
 message MsgGenRunnerResponse {}
 
 message MsgGenChallenger {
-  ChallengerDid document = 1;
-  string creator = 2;
-  string challengerType = 3;
-  string certificate = 4;
-  string signature = 5;
-  string ChallengerStake = 6;
+  string creator = 1;
+  string challengerType = 2;
+  string certificate = 3;
+  string signature = 4;
+  string ChallengerStake = 5;
 }
   
 message MsgGenChallengerResponse {}
 
 // MsgDeactivateDid defines the Msg/DeactivateDID request type.
 message MsgDeactivateDid {
-  string did = 1;
-  string creator = 2;
-  string fromAddress = 3;
+  string creator = 1;
 }
 
 // MsgDeactivateDIDResponse defines the Msg/DeactivateDID response type.
