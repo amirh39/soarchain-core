@@ -4,6 +4,7 @@ import (
 	"soarchain/app/params"
 	"soarchain/x/dpr/types"
 	utility "soarchain/x/dpr/utility"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -12,7 +13,8 @@ func (k Keeper) VerifyDprInputs(msg *types.MsgGenDpr) bool {
 	return isValidCreator(msg) &&
 		isValidSupportedPIDs(msg) &&
 		isValidDprBudget(msg) &&
-		isValidMaxClientCount(msg)
+		isValidMaxClientCount(msg) &&
+		isValidName(msg)
 }
 
 func isValidCreator(msg *types.MsgGenDpr) bool {
@@ -40,6 +42,12 @@ func isValidDprBudget(msg *types.MsgGenDpr) bool {
 func isValidMaxClientCount(msg *types.MsgGenDpr) bool {
 	// Negative or 0
 	return msg.MaxClientCount != 0
+}
+
+func isValidName(msg *types.MsgGenDpr) bool {
+	trimmedName := strings.TrimSpace(msg.Name)
+	nameLength := len(trimmedName)
+	return nameLength > 0 && nameLength <= 100
 }
 
 func (k Keeper) VerifyEnterDprInputs(msg *types.MsgEnterDpr) bool {
