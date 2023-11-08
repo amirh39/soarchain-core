@@ -16,11 +16,6 @@ import (
 // TODO: After did structure changed, this need to refactor
 func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
 
-	isValidDidAddress := types.ValidateDidAddress(msg.Document.Address)
-	if !isValidDidAddress {
-		return false
-	}
-
 	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" {
 		return false
 	}
@@ -30,17 +25,12 @@ func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
 // TODO: After did structure changed, this need to refactor
 func (k Keeper) RunnerDidValidateInputs(msg *types.MsgGenRunner) bool {
 
-	isValidDidAddress := types.ValidateDidAddress(msg.Document.Address)
-	if !isValidDidAddress {
-		return false
-	}
-
 	isValidStakeAmount := types.ValidateStakeAmount(msg.RunnerStake)
 	if !isValidStakeAmount {
 		return false
 	}
 
-	if msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.RunnerStake == "" {
+	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.RunnerStake == "" {
 		return false
 	}
 
@@ -49,11 +39,6 @@ func (k Keeper) RunnerDidValidateInputs(msg *types.MsgGenRunner) bool {
 
 // TODO: After did structure changed, this need to refactor
 func (k Keeper) ChallengerDidValidateInputs(msg *types.MsgGenChallenger) bool {
-
-	isValidDidAddress := types.ValidateDidAddress(msg.Document.Address)
-	if !isValidDidAddress {
-		return false
-	}
 
 	isValidStakeAmount := types.ValidateStakeAmount(msg.ChallengerStake)
 	if !isValidStakeAmount {
@@ -64,7 +49,7 @@ func (k Keeper) ChallengerDidValidateInputs(msg *types.MsgGenChallenger) bool {
 		return false
 	}
 
-	if msg.Document.Address == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.ChallengerStake == "" || msg.ChallengerType == "" {
+	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.ChallengerStake == "" || msg.ChallengerType == "" {
 		return false
 	}
 
