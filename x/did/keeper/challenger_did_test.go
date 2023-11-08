@@ -1,28 +1,25 @@
 package keeper_test
 
-// import (
-// 	keepertest "soarchain/testutil/keeper"
-// 	"testing"
+import (
+	keepertest "soarchain/testutil/keeper"
+	"testing"
 
-// 	"github.com/stretchr/testify/require"
-// )
+	"github.com/stretchr/testify/require"
+)
 
-// func Test_SetGetChallengerDid(t *testing.T) {
-// 	keeper, ctx := keepertest.DidKeeper(t)
+func Test_SetGetChallengerDid(t *testing.T) {
+	keeper, ctx := keepertest.DidKeeper(t)
+	challengers := CreateNChallengerDid(keeper, ctx, 1)
+	targetChallenger := challengers[0]
 
-// 	didDocument, privkey := NewChallengerDidDocumentWithSeq(Did)
-// 	require.NotNil(t, privkey)
-// 	keeper.SetChallengerDid(ctx, *didDocument.Document)
+	res, found := keeper.GetChallengerDid(ctx, targetChallenger.Address)
+	require.Equal(t, true, found)
+	require.Equal(t, res, targetChallenger)
 
-// 	got, found := keeper.GetChallengerDid(ctx, ADDRESS)
-// 	require.Equal(t, true, found)
-// 	require.NotNil(t, got)
-
-// 	// Test all DIDs
-// 	resDids := keeper.GetAllChallengerDid(ctx)
-// 	require.NotNil(t, resDids)
-// 	require.Equal(t, 1, len(resDids))
-// }
+	challengersList := keeper.GetAllChallengerDid(ctx)
+	require.NotNil(t, challengersList)
+	require.Contains(t, challengersList, targetChallenger)
+}
 
 // func Test_GetChallengerDidByPubkey(t *testing.T) {
 // 	keeper, ctx := keepertest.DidKeeper(t)
