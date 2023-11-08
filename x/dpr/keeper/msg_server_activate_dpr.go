@@ -52,20 +52,13 @@ func (k msgServer) ActivateDpr(goCtx context.Context, msg *types.MsgActivateDpr)
 	if !isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[ActivateDpr][GetEpochData] failed. Epoch data is not found!")
 	}
+
+	dpr.Status = 1
+	dpr.DprEndTime = dprEndTimeStr
+	dpr.DprStartEpoch = epochData.TotalEpochs
+
 	//Save dpr into storage
-	newDpr := types.Dpr{
-		Id:             dpr.Id,
-		Creator:        dpr.Creator,
-		SupportedPIDs:  dpr.SupportedPIDs,
-		Status:         1,
-		Duration:       dpr.Duration,
-		DprEndTime:     dprEndTimeStr,
-		DprStartEpoch:  epochData.TotalEpochs,
-		DprBudget:      dpr.DprBudget,
-		MaxClientCount: dpr.MaxClientCount,
-		ClientCounter:  dpr.ClientCounter,
-	}
-	k.SetDpr(ctx, newDpr)
+	k.SetDpr(ctx, dpr)
 
 	if logger != nil {
 		logger.Info("Dpr activation successfully Done.", "transaction", "ActivateDpr")

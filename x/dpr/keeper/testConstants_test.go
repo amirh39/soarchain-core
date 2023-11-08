@@ -78,7 +78,7 @@ func SetupSecondDpr(n int) []types.Dpr {
 			DprStartEpoch:  2,
 			DprBudget:      "2udmotus",
 			MaxClientCount: MaxClientCount,
-			ClientCounter:  0,
+			ClientCounter:  1,
 		}
 	}
 	return items
