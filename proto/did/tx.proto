@@ -31,7 +31,6 @@ message MsgGenRunner {
   string certificate = 3;
   string signature = 4;
   string runnerStake = 5;
-  string runnerIp = 6;
 }
   
 message MsgGenRunnerResponse {}
@@ -43,7 +42,6 @@ message MsgGenChallenger {
   string certificate = 4;
   string signature = 5;
   string ChallengerStake = 6;
-  string ChallengerIp = 7;
 }
   
 message MsgGenChallengerResponse {}

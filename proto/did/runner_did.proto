@@ -4,29 +4,13 @@ package soarchain.did;
 option go_package = "soarchain/x/did/types";
 
 import "gogoproto/gogo.proto";
-import "did/client_did.proto";
+
 
 message RunnerDid {
   string id = 1;
   string pubKey = 2;
-  Keys keys = 3 [json_name = "keys"];
-  repeated VerificationMethod verificationMethods = 4 [json_name = "verificationMethod"];
-  repeated VerificationRelationship authentications = 5 [json_name = "authentication", (gogoproto.customtype) = "VerificationRelationship"];
-  repeated Service services = 6 [json_name = "service"];
-  string ipAddress = 8;
-  string created = 9;
-  string updated = 10;
-  string address = 11;
+  string address = 3;
+  string created = 4;
+  string updated = 5;
 }
 
-// RunnerDidWithSeq defines a message for Did with a sequence number for preventing replay attacks.
-message RunnerDidWithSeq {
-  RunnerDid document = 1;
-  uint64 sequence = 2;
-}
-
-// RunnerDataWithSeq defines a message for data with a sequence number for preventing replay attacks.
-message RunnerDataWithSeq {
-  bytes data = 1;
-  uint64 sequence = 2;
-}
