@@ -9,10 +9,9 @@ const TypeMsgDeactivateDid = "deactivate_did"
 
 var _ sdk.Msg = &MsgDeactivateDid{}
 
-func NewMsgDeactivateDid(did string, verificationMethodID string, signature []byte, fromAddress string) *MsgDeactivateDid {
+func NewMsgDeactivateDid(creator string) *MsgDeactivateDid {
 	return &MsgDeactivateDid{
-		Did:         did,
-		FromAddress: fromAddress,
+		Creator: creator,
 	}
 }
 
@@ -25,7 +24,7 @@ func (msg *MsgDeactivateDid) Type() string {
 }
 
 func (msg *MsgDeactivateDid) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.FromAddress)
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "[MsgDeactivateDid][AccAddressFromBech32] failed. Empty address string is not allowed.")
 		return nil
@@ -39,7 +38,7 @@ func (msg *MsgDeactivateDid) GetSignBytes() []byte {
 }
 
 func (msg *MsgDeactivateDid) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.FromAddress)
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[MsgDeactivateDid][ValidateBasic] failed. Invalid creator address (%s)", err)
 	}
