@@ -16,21 +16,12 @@ import (
 // TODO: After did structure changed, this need to refactor
 func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
 
-	isValidDid := types.ValidateDid(msg.Document.Id)
-	if !isValidDid {
-		return false
-	}
-
 	isValidDidAddress := types.ValidateDidAddress(msg.Document.Address)
 	if !isValidDidAddress {
 		return false
 	}
 
-	if msg.Document == nil || msg.Document.VerificationMethods == nil || len(msg.Document.VerificationMethods) < 1 || msg.Document.VerificationMethods[0].Id == "" {
-		return false
-	}
-
-	if msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" {
+	if msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" {
 		return false
 	}
 	return true
@@ -38,11 +29,6 @@ func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
 
 // TODO: After did structure changed, this need to refactor
 func (k Keeper) RunnerDidValidateInputs(msg *types.MsgGenRunner) bool {
-
-	isValidDid := types.ValidateDid(msg.Document.Id)
-	if !isValidDid {
-		return false
-	}
 
 	isValidDidAddress := types.ValidateDidAddress(msg.Document.Address)
 	if !isValidDidAddress {
@@ -54,11 +40,7 @@ func (k Keeper) RunnerDidValidateInputs(msg *types.MsgGenRunner) bool {
 		return false
 	}
 
-	if msg.Document == nil || msg.Document.VerificationMethods == nil || len(msg.Document.VerificationMethods) < 1 || msg.Document.VerificationMethods[0].Id == "" {
-		return false
-	}
-
-	if msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.RunnerStake == "" {
+	if msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.RunnerStake == "" {
 		return false
 	}
 
@@ -67,11 +49,6 @@ func (k Keeper) RunnerDidValidateInputs(msg *types.MsgGenRunner) bool {
 
 // TODO: After did structure changed, this need to refactor
 func (k Keeper) ChallengerDidValidateInputs(msg *types.MsgGenChallenger) bool {
-
-	isValidDid := types.ValidateDid(msg.Document.Id)
-	if !isValidDid {
-		return false
-	}
 
 	isValidDidAddress := types.ValidateDidAddress(msg.Document.Address)
 	if !isValidDidAddress {
@@ -83,11 +60,11 @@ func (k Keeper) ChallengerDidValidateInputs(msg *types.MsgGenChallenger) bool {
 		return false
 	}
 
-	if msg.Document == nil || msg.Document.VerificationMethods == nil || len(msg.Document.VerificationMethods) < 1 || msg.Document.VerificationMethods[0].Id == "" {
+	if msg.Creator == "" {
 		return false
 	}
 
-	if msg.Document.Address == "" || msg.Document.Id == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.ChallengerStake == "" || msg.ChallengerType == "" {
+	if msg.Document.Address == "" || msg.Creator == "" || msg.Certificate == "" || msg.Signature == "" || msg.ChallengerStake == "" || msg.ChallengerType == "" {
 		return false
 	}
 
