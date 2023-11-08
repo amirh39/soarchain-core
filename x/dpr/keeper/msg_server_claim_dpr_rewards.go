@@ -39,8 +39,13 @@ func (k msgServer) ClaimDprRewards(goCtx context.Context, msg *types.MsgClaimDpr
 	}
 	log.Printf("Existing DPR Earnings: %+v\n", existingDprEarnings)
 
+	// Ensure earnings is of type sdk.DecCoins and get the integer amount
+	earningsInt := earnings.AmountOf(params.BondDenom).TruncateInt()
+
 	// Calculate the new DPR earnings by adding the earnings from the existing DPR earnings
-	newDprEarnings := existingDprEarnings.Add(sdk.NewCoin(params.BondDenom, sdk.Int(earnings.AmountOf(params.BondDenom))))
+	newDprEarnings := existingDprEarnings.Add(sdk.NewCoin(params.BondDenom, earningsInt))
+
+	earningsCurrent := sdk.NewCoins(sdk.NewCoin(params.BondDenom, earningsInt))
 
 	log.Printf("New DPR Earnings after addition: %+v\n", newDprEarnings)
 
@@ -52,7 +57,10 @@ func (k msgServer) ClaimDprRewards(goCtx context.Context, msg *types.MsgClaimDpr
 
 	log.Printf("Updated reputation saved: %+v\n", reputation)
 	clientAccount, _ := sdk.AccAddressFromBech32(msg.Sender)
-	k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, newDprEarnings)
+	errTransfer := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, clientAccount, earningsCurrent)
+	if errTransfer != nil {
+		return nil, sdkerrors.Wrap(errTransfer, "[ClaimMotusRewards][SendCoinsFromModuleToAccount] failed. Couldn't send coins.")
+	}
 
 	// Save the updated DID back to the keeper
 	k.didKeeper.SetClientDid(ctx, did)

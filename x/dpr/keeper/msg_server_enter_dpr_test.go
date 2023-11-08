@@ -52,16 +52,13 @@ func (helper *KeeperTestHelper) Test_Enter_DPR() {
 			},
 		})
 
+		helper.Require().Empty(res)
+		helper.Require().Nil(err)
 		dprx, _ := dprKeeper.GetDpr(helper.Ctx, DprId)
 		helper.Require().Equal(dprx.ClientCounter, uint64(2))
 
 		did, _ := didKeeper.GetClientDid(helper.Ctx, ADDRESS)
-
 		helper.Require().Equal(did.DprInfos[0], dprinfo)
-
-		helper.Require().Empty(res)
-		helper.Require().Nil(err)
-
 		test := did.GetDprInfos()
 
 		// Create a slice to hold the IDs

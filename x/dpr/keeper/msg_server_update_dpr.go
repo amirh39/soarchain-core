@@ -57,6 +57,7 @@ func (k msgServer) UpdateDpr(goCtx context.Context, msg *types.MsgUpdateDpr) (*t
 		DprBudget:      overrideIfNotEmpty(dpr.DprBudget, msg.DprBudget),
 		MaxClientCount: overrideIfNonZero(dpr.MaxClientCount, msg.MaxClientCount),
 		ClientCounter:  dpr.ClientCounter,
+		Name:           dpr.Name,
 	}
 
 	k.SetDpr(ctx, newDpr)

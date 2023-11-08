@@ -46,7 +46,7 @@ func SetupDpr(n int) []types.Dpr {
 				Pid_81To_A0: "AAAAAAAA",
 				Pid_A1To_C0: "AAAAAAAA",
 				Pid_C1To_E0: "AAAAAAAA",
-				Pid_SVCTo_9: "AAAAAAAA",
+				Pid_SVCTo_9: "",
 			},
 			Status:         0,
 			Duration:       DprDuration,
@@ -74,6 +74,7 @@ func SetupSecondDpr(n int) []types.Dpr {
 			DprBudget:      "2udmotus",
 			MaxClientCount: MaxClientCount,
 			ClientCounter:  1,
+			Name:           "soarDpr",
 		}
 	}
 	return items
