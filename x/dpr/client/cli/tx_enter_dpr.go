@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"soarchain/x/dpr/types"
@@ -21,7 +23,11 @@ func CmdEnterDpr() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			argDprId := args[0]
-			argSupportedpids := args[1]
+			var argSupportedPIDs types.SupportedPIDs
+			err = json.Unmarshal([]byte(args[1]), &argSupportedPIDs)
+			if err != nil {
+				return fmt.Errorf("failed to parse supportedPIDs JSON: %w", err)
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -31,7 +37,7 @@ func CmdEnterDpr() *cobra.Command {
 			msg := types.NewMsgEnterDpr(
 				clientCtx.GetFromAddress().String(),
 				argDprId,
-				argSupportedpids,
+				argSupportedPIDs,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

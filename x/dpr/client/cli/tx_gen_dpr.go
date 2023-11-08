@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"soarchain/x/dpr/types"
@@ -20,7 +22,11 @@ func CmdGenDpr() *cobra.Command {
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-			supportedPIDs := args[0]
+			var supportedPIDs types.SupportedPIDs
+			err = json.Unmarshal([]byte(args[0]), &supportedPIDs)
+			if err != nil {
+				return fmt.Errorf("failed to parse supportedPIDs JSON: %w", err)
+			}
 			duration, _ := strconv.ParseUint(args[1], 10, 64)
 			dprBudget := args[2]
 			maxClientCount, _ := strconv.ParseUint(args[3], 10, 64)
