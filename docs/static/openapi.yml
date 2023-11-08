@@ -5465,6 +5465,33 @@ paths:
                       type: string
                     address:
                       type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
         default:
           description: An unexpected error response.
           schema:
@@ -5755,6 +5782,33 @@ paths:
                       type: string
                     updated:
                       type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
         default:
           description: An unexpected error response.
           schema:
@@ -6506,6 +6560,33 @@ paths:
                       type: string
                     address:
                       type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
         default:
           description: An unexpected error response.
           schema:
@@ -6730,6 +6811,7 @@ paths:
                     clientCounter:
                       type: string
                       format: uint64
+                      title: string name = 12;
               pagination:
                 type: object
                 properties:
@@ -6879,6 +6961,7 @@ paths:
                     clientCounter:
                       type: string
                       format: uint64
+                      title: string name = 12;
               pagination:
                 type: object
                 properties:
@@ -7022,6 +7105,7 @@ paths:
                   clientCounter:
                     type: string
                     format: uint64
+                    title: string name = 12;
         default:
           description: An unexpected error response.
           schema:
@@ -16770,6 +16854,31 @@ definitions:
               type: string
             address:
               type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   soarchain.did.QueryAllClientDidResponse:
     type: object
     properties:
@@ -16871,6 +16980,31 @@ definitions:
               type: string
             updated:
               type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   soarchain.did.QueryAllRunnerDidResponse:
     type: object
     properties:
@@ -16948,6 +17082,31 @@ definitions:
               type: string
             address:
               type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   soarchain.did.QueryGetChallengerDidByAddressResponse:
     type: object
     properties:
@@ -17631,6 +17790,7 @@ definitions:
       clientCounter:
         type: string
         format: uint64
+        title: string name = 12;
   soarchain.dpr.MsgActivateDprResponse:
     type: object
   soarchain.dpr.MsgClaimDprRewardsResponse:
@@ -17681,6 +17841,7 @@ definitions:
             clientCounter:
               type: string
               format: uint64
+              title: string name = 12;
       pagination:
         type: object
         properties:
@@ -17741,6 +17902,7 @@ definitions:
             clientCounter:
               type: string
               format: uint64
+              title: string name = 12;
       pagination:
         type: object
         properties:
@@ -17799,6 +17961,7 @@ definitions:
           clientCounter:
             type: string
             format: uint64
+            title: string name = 12;
   soarchain.dpr.QueryParamsResponse:
     type: object
     properties:
