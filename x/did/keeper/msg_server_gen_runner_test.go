@@ -30,12 +30,14 @@ func (helper *KeeperTestHelper) Test_Gen_Runner() {
 		poakeeper.SetFactoryKeys(helper.Ctx, updatedFactoryKeyList)
 		deviceCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
 		helper.Require().NotNil(deviceCert)
-
-		documentWithSequence, _ := NewRunnerDidDocumentWithSeq(Did)
-		helper.Require().NotEmpty(documentWithSequence)
+		newDid := types.RunnerDid{
+			Id:      Did,
+			PubKey:  PUBKEY,
+			Address: ADDRESS,
+		}
 
 		res, err := msgServer.GenRunner(ctx, &types.MsgGenRunner{
-			Document:    documentWithSequence.Document,
+			Document:    &newDid,
 			Signature:   Signature,
 			Certificate: Certificate,
 			Creator:     ADDRESS,
@@ -45,7 +47,7 @@ func (helper *KeeperTestHelper) Test_Gen_Runner() {
 			helper.Require().NotNil(err)
 			helper.Require().Nil(res)
 		} else {
-			didDocument, found := keeper.GetRunnerDid(helper.Ctx, documentWithSequence.Document.Address)
+			didDocument, found := keeper.GetRunnerDid(helper.Ctx, newDid.Address)
 			helper.Require().NotNil(didDocument)
 			helper.Require().NoError(err)
 			helper.Require().Equal(found, true)

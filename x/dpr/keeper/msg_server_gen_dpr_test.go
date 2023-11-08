@@ -33,11 +33,7 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 			PubKey: PUBKEY,
 		}
 
-		didDocument := didtypes.ClientDidWithSeq{
-			Document: &newDid,
-			Sequence: 0,
-		}
-		didKeeper.SetClientDid(helper.Ctx, *didDocument.Document)
+		didKeeper.SetClientDid(helper.Ctx, newDid)
 		//addr, err := sdk.AccAddressFromBech32(CREATOR)
 
 		//testAcc := helper.TestAccs[0]

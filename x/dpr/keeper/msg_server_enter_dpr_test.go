@@ -35,12 +35,7 @@ func (helper *KeeperTestHelper) Test_Enter_DPR() {
 			Address: ADDRESS,
 		}
 
-		didDocument := didtypes.ClientDidWithSeq{
-			Document: &newDid,
-			Sequence: 0,
-		}
-
-		didKeeper.SetClientDid(helper.Ctx, *didDocument.Document)
+		didKeeper.SetClientDid(helper.Ctx, newDid)
 
 		res, err := helper.MsgServer.EnterDpr(ctx, &types.MsgEnterDpr{
 			Sender: ADDRESS,

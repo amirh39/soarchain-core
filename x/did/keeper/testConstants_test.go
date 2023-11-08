@@ -12,14 +12,7 @@ import (
 	"github.com/golang/mock/gomock"
 
 	keepertest "soarchain/testutil/keeper"
-
-	tendermintcrypto "github.com/tendermint/tendermint/crypto"
 )
-
-func NewMsgDeactivateDID(doc types.ClientDid, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
-	sig, _ := types.Sign(&doc, seq, privKey)
-	return *types.NewMsgDeactivateDid(did, verificationMethodID, sig, sdk.AccAddress{}.String())
-}
 
 func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context,
 	*gomock.Controller, *testutil.MockBankKeeper) {
@@ -71,9 +64,10 @@ const (
 )
 
 const (
-	ADDRESS = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
-	PUBKEY  = "3059301306072a8648ce3d020106082a8648ce3d030107034200046c28e2efdf94600435dbba5ae7f195cb619e3dd128b7e0e2877f9a1da489027819001c3e0141cb579dc3d9e913a45644401bd2458313dc37d15dd58adcaff154"
-	VIN     = "1HGCM82636c678d14c93ad5bf14448da57f4f241b77e30a013d54f5d76c8126a7029aeb86"
+	ADDRESS  = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
+	ADDRESS2 = "soar1z68ga5gq0pks3zla7sg4c9svv8nmggr537m83c"
+	PUBKEY   = "3059301306072a8648ce3d020106082a8648ce3d030107034200046c28e2efdf94600435dbba5ae7f195cb619e3dd128b7e0e2877f9a1da489027819001c3e0141cb579dc3d9e913a45644401bd2458313dc37d15dd58adcaff154"
+	VIN      = "1HGCM82636c678d14c93ad5bf14448da57f4f241b77e30a013d54f5d76c8126a7029aeb86"
 )
 
 var PIDS = []bool{true, false, false}

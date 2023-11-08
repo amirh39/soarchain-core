@@ -3,8 +3,6 @@ package keeper_test
 
 import (
 	"context"
-	didtypes "soarchain/x/did/types"
-	"soarchain/x/did/utility/crypto"
 	"soarchain/x/dpr"
 	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/testutil"
@@ -19,9 +17,6 @@ import (
 
 	epochKeeper "soarchain/x/epoch/keeper"
 	epochTypes "soarchain/x/epoch/types"
-
-	tendermintcrypto "github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
 
 func CreateDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dpr {
@@ -185,31 +180,6 @@ const (
 	MASTER_CERTIFICATE = "-----BEGIN CERTIFICATE-----\nMIIB4TCCAYegAwIBAgIQTylBUpEkZd8CaYHSaLbBHzAKBggqhkjOPQQDAjBIMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMSgwJgYDVQQDDB9Tb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IENBMB4XDTIzMDMzMDA2NTUxNVoXDTQ4MDMzMDA2NTUxNVowSDEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjEoMCYGA1UEAwwfU29hciBSb2JvdGljcyBTZWN1cmUgRWxlbWVudCBDQTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABLaCOXbFw/dRJXzXtvhSFWt92aUkdwRZPLmJWZFBFX55+XIDQsCGsQeMmU4pqsnXEB4/r842uYUinWsdzg4xUoqjUzBRMB0GA1UdDgQWBBRqxTRE6ZPuogp88TrNw1cwAYyPMjAfBgNVHSMEGDAWgBRqxTRE6ZPuogp88TrNw1cwAYyPMjAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49BAMCA0gAMEUCIAHpI8Y6zPLaitMOGNAzzDAKb0PJw2r49vjzkFl5TIGPAiEArPJTReSmEnUJWFTcEIuYoWcRIBDI+GpianTVfX4uxNI=\n-----END CERTIFICATE-----"
 	MASTER_ACCOUNT     = "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8"
 )
-
-func NewDIDDocumentWithSeq(did string) (didtypes.ClientDidWithSeq, tendermintcrypto.PrivKey) {
-	privKey := secp256k1.GenPrivKey()
-	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
-	verificationMethodID := didtypes.NewVerificationMethodID(did, "key1")
-	es256VerificationMethod := didtypes.NewVerificationMethod(verificationMethodID, didtypes.ES256K_2019, did, pubKey)
-	blsVerificationMethod := didtypes.NewVerificationMethod(verificationMethodID, didtypes.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
-	verificationMethods := []*didtypes.VerificationMethod{
-		&es256VerificationMethod,
-		&blsVerificationMethod,
-	}
-	verificationRelationship := didtypes.NewVerificationRelationship(verificationMethods[0].Id)
-	authentications := []didtypes.VerificationRelationship{
-		verificationRelationship,
-	}
-	soarchainPublicKey := didtypes.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
-	vehicle := didtypes.NewVehicle(VIN)
-	owner := didtypes.NewOwner(OWNERID, PURCHESDATE)
-	doc := didtypes.NewClientDidDocument(did, INDEX, ADDRESS, TYPE, PIDS, didtypes.WithVerificationMethods(verificationMethods), didtypes.WithAuthentications(authentications), didtypes.WithKeys(&soarchainPublicKey), didtypes.WithVehicle(&vehicle), didtypes.WithOwner(&owner))
-	docWithSeq := didtypes.NewDidDocumentWithSeq(
-		&doc,
-		didtypes.InitialSequence,
-	)
-	return docWithSeq, privKey
-}
 
 const (
 	ClientPubKey                = "3059301306072a8648ce3d020106082a8648ce3d0301070342000402a530fa9267e1518e4d9069de38f2aecd3b508a2aca8b6d9cbd1b36b3b412e6db603ba6230728a7803acfdc8e57a21d24f648e10db24b4c957a2b2dad9a5817"
