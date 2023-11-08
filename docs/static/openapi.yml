@@ -6791,7 +6791,24 @@ paths:
                     name:
                       type: string
                     supportedPIDs:
-                      type: string
+                      type: object
+                      properties:
+                        pid_1_to_20:
+                          type: string
+                        pid_21_to_40:
+                          type: string
+                        pid_41_to_60:
+                          type: string
+                        pid_61_to_80:
+                          type: string
+                        pid_81_to_A0:
+                          type: string
+                        pid_A1_to_C0:
+                          type: string
+                        pid_C1_to_E0:
+                          type: string
+                        pid_SVC_to_9:
+                          type: string
                     status:
                       type: integer
                       format: int64
@@ -6811,7 +6828,6 @@ paths:
                     clientCounter:
                       type: string
                       format: uint64
-                      title: string name = 12;
               pagination:
                 type: object
                 properties:
@@ -6941,7 +6957,24 @@ paths:
                     name:
                       type: string
                     supportedPIDs:
-                      type: string
+                      type: object
+                      properties:
+                        pid_1_to_20:
+                          type: string
+                        pid_21_to_40:
+                          type: string
+                        pid_41_to_60:
+                          type: string
+                        pid_61_to_80:
+                          type: string
+                        pid_81_to_A0:
+                          type: string
+                        pid_A1_to_C0:
+                          type: string
+                        pid_C1_to_E0:
+                          type: string
+                        pid_SVC_to_9:
+                          type: string
                     status:
                       type: integer
                       format: int64
@@ -6961,7 +6994,6 @@ paths:
                     clientCounter:
                       type: string
                       format: uint64
-                      title: string name = 12;
               pagination:
                 type: object
                 properties:
@@ -7085,7 +7117,24 @@ paths:
                   name:
                     type: string
                   supportedPIDs:
-                    type: string
+                    type: object
+                    properties:
+                      pid_1_to_20:
+                        type: string
+                      pid_21_to_40:
+                        type: string
+                      pid_41_to_60:
+                        type: string
+                      pid_61_to_80:
+                        type: string
+                      pid_81_to_A0:
+                        type: string
+                      pid_A1_to_C0:
+                        type: string
+                      pid_C1_to_E0:
+                        type: string
+                      pid_SVC_to_9:
+                        type: string
                   status:
                     type: integer
                     format: int64
@@ -7105,7 +7154,6 @@ paths:
                   clientCounter:
                     type: string
                     format: uint64
-                    title: string name = 12;
         default:
           description: An unexpected error response.
           schema:
@@ -17770,7 +17818,24 @@ definitions:
       name:
         type: string
       supportedPIDs:
-        type: string
+        type: object
+        properties:
+          pid_1_to_20:
+            type: string
+          pid_21_to_40:
+            type: string
+          pid_41_to_60:
+            type: string
+          pid_61_to_80:
+            type: string
+          pid_81_to_A0:
+            type: string
+          pid_A1_to_C0:
+            type: string
+          pid_C1_to_E0:
+            type: string
+          pid_SVC_to_9:
+            type: string
       status:
         type: integer
         format: int64
@@ -17790,7 +17855,6 @@ definitions:
       clientCounter:
         type: string
         format: uint64
-        title: string name = 12;
   soarchain.dpr.MsgActivateDprResponse:
     type: object
   soarchain.dpr.MsgClaimDprRewardsResponse:
@@ -17821,7 +17885,24 @@ definitions:
             name:
               type: string
             supportedPIDs:
-              type: string
+              type: object
+              properties:
+                pid_1_to_20:
+                  type: string
+                pid_21_to_40:
+                  type: string
+                pid_41_to_60:
+                  type: string
+                pid_61_to_80:
+                  type: string
+                pid_81_to_A0:
+                  type: string
+                pid_A1_to_C0:
+                  type: string
+                pid_C1_to_E0:
+                  type: string
+                pid_SVC_to_9:
+                  type: string
             status:
               type: integer
               format: int64
@@ -17841,7 +17922,6 @@ definitions:
             clientCounter:
               type: string
               format: uint64
-              title: string name = 12;
       pagination:
         type: object
         properties:
@@ -17882,7 +17962,24 @@ definitions:
             name:
               type: string
             supportedPIDs:
-              type: string
+              type: object
+              properties:
+                pid_1_to_20:
+                  type: string
+                pid_21_to_40:
+                  type: string
+                pid_41_to_60:
+                  type: string
+                pid_61_to_80:
+                  type: string
+                pid_81_to_A0:
+                  type: string
+                pid_A1_to_C0:
+                  type: string
+                pid_C1_to_E0:
+                  type: string
+                pid_SVC_to_9:
+                  type: string
             status:
               type: integer
               format: int64
@@ -17902,7 +17999,6 @@ definitions:
             clientCounter:
               type: string
               format: uint64
-              title: string name = 12;
       pagination:
         type: object
         properties:
@@ -17941,7 +18037,24 @@ definitions:
           name:
             type: string
           supportedPIDs:
-            type: string
+            type: object
+            properties:
+              pid_1_to_20:
+                type: string
+              pid_21_to_40:
+                type: string
+              pid_41_to_60:
+                type: string
+              pid_61_to_80:
+                type: string
+              pid_81_to_A0:
+                type: string
+              pid_A1_to_C0:
+                type: string
+              pid_C1_to_E0:
+                type: string
+              pid_SVC_to_9:
+                type: string
           status:
             type: integer
             format: int64
@@ -17961,7 +18074,6 @@ definitions:
           clientCounter:
             type: string
             format: uint64
-            title: string name = 12;
   soarchain.dpr.QueryParamsResponse:
     type: object
     properties:
@@ -17969,6 +18081,25 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  soarchain.dpr.SupportedPIDs:
+    type: object
+    properties:
+      pid_1_to_20:
+        type: string
+      pid_21_to_40:
+        type: string
+      pid_41_to_60:
+        type: string
+      pid_61_to_80:
+        type: string
+      pid_81_to_A0:
+        type: string
+      pid_A1_to_C0:
+        type: string
+      pid_C1_to_E0:
+        type: string
+      pid_SVC_to_9:
+        type: string
   soarchain.epoch.EpochData:
     type: object
     properties:
