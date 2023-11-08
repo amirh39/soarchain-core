@@ -17,6 +17,11 @@ func (k Keeper) VerifyDprInputs(msg *types.MsgGenDpr) bool {
 		isValidName(msg)
 }
 
+func isValidDuration(msg *types.MsgGenDpr) bool {
+	// Check for positive and non-zero(uint)
+	return msg.Duration != 0
+}
+
 func isValidCreator(msg *types.MsgGenDpr) bool {
 	// Check the creator(no need)
 	return msg.Creator != ""

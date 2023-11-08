@@ -17,6 +17,11 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 
 	log.Println("############## Entering to a DPR Transaction is Started ##############")
 
+	result := k.VerifyEnterDprInputs(msg)
+	if !result {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][VerifyDprInputs] failed. Make sure you are using valid inputs.")
+	}
+
 	dpr, found := k.GetDpr(ctx, msg.DprId)
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetDpr] failed. There is no DPR with this DPRid.")
@@ -24,11 +29,6 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 
 	if dpr.MaxClientCount <= dpr.ClientCounter {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][MaxClientCount] achieved.")
-	}
-
-	result := k.VerifyEnterDprInputs(msg)
-	if !result {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][VerifyDprInputs] failed. Make sure you are using valid inputs.")
 	}
 
 	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
