@@ -41,16 +41,25 @@ func SetupDpr(n int) []types.Dpr {
 	items := make([]types.Dpr, n)
 	for i := range items {
 		items[i] = types.Dpr{
-			Id:             DprId, // Should be unique for each DPR
-			Creator:        CREATOR,
-			SupportedPIDs:  SupportedPIDs,
+			Id:      DprId, // Should be unique for each DPR
+			Creator: CREATOR,
+			SupportedPIDs: &types.SupportedPIDs{
+				Pid_1To_20:  "AAAAAAAA",
+				Pid_21To_40: "AAAAAAAA",
+				Pid_41To_60: "AAAAAAAA",
+				Pid_61To_80: "AAAAAAAA",
+				Pid_81To_A0: "AAAAAAAA",
+				Pid_A1To_C0: "AAAAAAAA",
+				Pid_C1To_E0: "AAAAAAAA",
+				Pid_SVCTo_9: "AAAAAAAA",
+			},
 			Status:         0,
 			Duration:       DprDuration,
 			DprEndTime:     "",
 			DprStartEpoch:  0,
 			DprBudget:      "2udmotus",
 			MaxClientCount: MaxClientCount,
-			ClientCounter:  0,
+			ClientCounter:  1,
 		}
 	}
 	return items
@@ -62,7 +71,7 @@ func SetupSecondDpr(n int) []types.Dpr {
 		items[i] = types.Dpr{
 			Id:             DprID, // Should be unique for each DPR
 			Creator:        CREATOR,
-			SupportedPIDs:  SupportedPIDs,
+			SupportedPIDs:  &types.SupportedPIDs{},
 			Status:         0,
 			Duration:       DprDuration,
 			DprEndTime:     "",
@@ -219,7 +228,6 @@ const (
 const (
 	DprID          = "unique_dpr_id" // Replace with actual logic to generate unique IDs
 	Creator        = "creator_id"    // Replace with actual creator id
-	SupportedPIDs  = "FFFF"
 	InitialBudget  = "1000000udmotus"
 	DprDuration    = uint64(10) // 10 can be replaced with any default duration
 	MaxClientCount = uint64(10) // Example maximum client count
