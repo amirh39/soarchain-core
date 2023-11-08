@@ -21,6 +21,7 @@ message MsgGenDpr {
   uint64 duration = 3;
   string dprBudget = 4;
   uint64 maxClientCount = 5;
+  string name = 6;
 }
 
 message MsgGenDprResponse {}
