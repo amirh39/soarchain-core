@@ -9,10 +9,10 @@ const TypeMsgGenDpr = "gen_dpr"
 
 var _ sdk.Msg = &MsgGenDpr{}
 
-func NewMsgGenDpr(creator string, SupportedPIDs string, duration uint64, dprBudget string, maxClientCount uint64, name string) *MsgGenDpr {
+func NewMsgGenDpr(creator string, supportedPIDs SupportedPIDs, duration uint64, dprBudget string, maxClientCount uint64, name string) *MsgGenDpr {
 	return &MsgGenDpr{
 		Creator:        creator,
-		SupportedPIDs:  SupportedPIDs,
+		SupportedPIDs:  &supportedPIDs,
 		Duration:       duration,
 		DprBudget:      dprBudget,
 		MaxClientCount: maxClientCount,

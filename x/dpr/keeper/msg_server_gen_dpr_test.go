@@ -55,11 +55,21 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		bankKeeper.SendCoinsFromModuleToAccount(helper.Ctx, types.ModuleName, sdk.AccAddress(CREATOR), actorAmount)
 
 		res, err := helper.MsgServer.GenDpr(ctx, &types.MsgGenDpr{
-			Creator:        CREATOR,
-			SupportedPIDs:  "BE1FA813",
+			Creator: CREATOR,
+			SupportedPIDs: &types.SupportedPIDs{
+				Pid_1To_20:  "BE1FA013",
+				Pid_21To_40: "8005B815",
+				Pid_41To_60: "7E1C8C11",
+				Pid_61To_80: "60880041",
+				Pid_81To_A0: "BE1FA013",
+				Pid_A1To_C0: "BE1FA013",
+				Pid_C1To_E0: "BE1FA013",
+				Pid_SVCTo_9: "55400000",
+			},
 			Duration:       45,
 			DprBudget:      "1000udmotus",
 			MaxClientCount: 10,
+			Name:           "test",
 		})
 		helper.Require().Empty(res)
 		helper.Require().Nil(err)
