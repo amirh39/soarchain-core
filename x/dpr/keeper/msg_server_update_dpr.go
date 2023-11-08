@@ -37,6 +37,10 @@ func (k msgServer) UpdateDpr(goCtx context.Context, msg *types.MsgUpdateDpr) (*t
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[UpdateDpr] failed. an active DPR cannot be modified.")
 	}
 
+	if dpr.Status == 3 {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "[ActivateDpr] failed. DPR is finished.")
+	}
+
 	if msg.Sender != dpr.Creator {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[UpdateDpr] failed. DPR not belong to the sender.")
 	}
