@@ -28,6 +28,8 @@ func (k Keeper) DeactivateDpr(ctx sdk.Context, totalEpoch uint64) {
 				DprStartEpoch:  dpr.DprStartEpoch,
 				DprBudget:      dpr.DprBudget,
 				MaxClientCount: dpr.MaxClientCount,
+				Name:           dpr.Name,
+				ClientCounter:  dpr.ClientCounter,
 			}
 			k.SetDpr(ctx, newDpr)
 		}
