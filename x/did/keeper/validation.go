@@ -26,11 +26,6 @@ func (k Keeper) ClientDidValidateInputs(msg *types.MsgGenClient) bool {
 		return false
 	}
 
-	isValidateSupportedPIDs := types.ValidateSupportedPIDs(msg.Document.SupportedPIDs)
-	if !isValidateSupportedPIDs {
-		return false
-	}
-
 	if msg.Document == nil || msg.Document.VerificationMethods == nil || len(msg.Document.VerificationMethods) < 1 || msg.Document.VerificationMethods[0].Id == "" {
 		return false
 	}

@@ -5465,6 +5465,33 @@ paths:
                       type: string
                     address:
                       type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
         default:
           description: An unexpected error response.
           schema:
@@ -5755,6 +5782,33 @@ paths:
                       type: string
                     updated:
                       type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
         default:
           description: An unexpected error response.
           schema:
@@ -6506,6 +6560,33 @@ paths:
                       type: string
                     address:
                       type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
         default:
           description: An unexpected error response.
           schema:
@@ -6710,7 +6791,24 @@ paths:
                     name:
                       type: string
                     supportedPIDs:
-                      type: string
+                      type: object
+                      properties:
+                        pid_1_to_20:
+                          type: string
+                        pid_21_to_40:
+                          type: string
+                        pid_41_to_60:
+                          type: string
+                        pid_61_to_80:
+                          type: string
+                        pid_81_to_A0:
+                          type: string
+                        pid_A1_to_C0:
+                          type: string
+                        pid_C1_to_E0:
+                          type: string
+                        pid_SVC_to_9:
+                          type: string
                     status:
                       type: integer
                       format: int64
@@ -6859,7 +6957,24 @@ paths:
                     name:
                       type: string
                     supportedPIDs:
-                      type: string
+                      type: object
+                      properties:
+                        pid_1_to_20:
+                          type: string
+                        pid_21_to_40:
+                          type: string
+                        pid_41_to_60:
+                          type: string
+                        pid_61_to_80:
+                          type: string
+                        pid_81_to_A0:
+                          type: string
+                        pid_A1_to_C0:
+                          type: string
+                        pid_C1_to_E0:
+                          type: string
+                        pid_SVC_to_9:
+                          type: string
                     status:
                       type: integer
                       format: int64
@@ -7002,7 +7117,24 @@ paths:
                   name:
                     type: string
                   supportedPIDs:
-                    type: string
+                    type: object
+                    properties:
+                      pid_1_to_20:
+                        type: string
+                      pid_21_to_40:
+                        type: string
+                      pid_41_to_60:
+                        type: string
+                      pid_61_to_80:
+                        type: string
+                      pid_81_to_A0:
+                        type: string
+                      pid_A1_to_C0:
+                        type: string
+                      pid_C1_to_E0:
+                        type: string
+                      pid_SVC_to_9:
+                        type: string
                   status:
                     type: integer
                     format: int64
@@ -16770,6 +16902,31 @@ definitions:
               type: string
             address:
               type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   soarchain.did.QueryAllClientDidResponse:
     type: object
     properties:
@@ -16871,6 +17028,31 @@ definitions:
               type: string
             updated:
               type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   soarchain.did.QueryAllRunnerDidResponse:
     type: object
     properties:
@@ -16948,6 +17130,31 @@ definitions:
               type: string
             address:
               type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   soarchain.did.QueryGetChallengerDidByAddressResponse:
     type: object
     properties:
@@ -17611,7 +17818,24 @@ definitions:
       name:
         type: string
       supportedPIDs:
-        type: string
+        type: object
+        properties:
+          pid_1_to_20:
+            type: string
+          pid_21_to_40:
+            type: string
+          pid_41_to_60:
+            type: string
+          pid_61_to_80:
+            type: string
+          pid_81_to_A0:
+            type: string
+          pid_A1_to_C0:
+            type: string
+          pid_C1_to_E0:
+            type: string
+          pid_SVC_to_9:
+            type: string
       status:
         type: integer
         format: int64
@@ -17661,7 +17885,24 @@ definitions:
             name:
               type: string
             supportedPIDs:
-              type: string
+              type: object
+              properties:
+                pid_1_to_20:
+                  type: string
+                pid_21_to_40:
+                  type: string
+                pid_41_to_60:
+                  type: string
+                pid_61_to_80:
+                  type: string
+                pid_81_to_A0:
+                  type: string
+                pid_A1_to_C0:
+                  type: string
+                pid_C1_to_E0:
+                  type: string
+                pid_SVC_to_9:
+                  type: string
             status:
               type: integer
               format: int64
@@ -17721,7 +17962,24 @@ definitions:
             name:
               type: string
             supportedPIDs:
-              type: string
+              type: object
+              properties:
+                pid_1_to_20:
+                  type: string
+                pid_21_to_40:
+                  type: string
+                pid_41_to_60:
+                  type: string
+                pid_61_to_80:
+                  type: string
+                pid_81_to_A0:
+                  type: string
+                pid_A1_to_C0:
+                  type: string
+                pid_C1_to_E0:
+                  type: string
+                pid_SVC_to_9:
+                  type: string
             status:
               type: integer
               format: int64
@@ -17779,7 +18037,24 @@ definitions:
           name:
             type: string
           supportedPIDs:
-            type: string
+            type: object
+            properties:
+              pid_1_to_20:
+                type: string
+              pid_21_to_40:
+                type: string
+              pid_41_to_60:
+                type: string
+              pid_61_to_80:
+                type: string
+              pid_81_to_A0:
+                type: string
+              pid_A1_to_C0:
+                type: string
+              pid_C1_to_E0:
+                type: string
+              pid_SVC_to_9:
+                type: string
           status:
             type: integer
             format: int64
@@ -17806,6 +18081,25 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  soarchain.dpr.SupportedPIDs:
+    type: object
+    properties:
+      pid_1_to_20:
+        type: string
+      pid_21_to_40:
+        type: string
+      pid_41_to_60:
+        type: string
+      pid_61_to_80:
+        type: string
+      pid_81_to_A0:
+        type: string
+      pid_A1_to_C0:
+        type: string
+      pid_C1_to_E0:
+        type: string
+      pid_SVC_to_9:
+        type: string
   soarchain.epoch.EpochData:
     type: object
     properties:

@@ -69,6 +69,7 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 		DprStartEpoch:  0,
 		DprBudget:      budget.String(),
 		MaxClientCount: msg.MaxClientCount,
+		Name:           msg.Name,
 	}
 	k.SetDpr(ctx, newDpr)
 

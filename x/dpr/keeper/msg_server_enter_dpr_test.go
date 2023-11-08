@@ -26,7 +26,7 @@ func (helper *KeeperTestHelper) Test_Enter_DPR() {
 
 		dprinfo := &didtypes.DprInfo{ // Note: create a pointer
 			Id:      DprId,
-			Claimed: "0udmotus",
+			Claimed: "0",
 		}
 
 		newDid := didtypes.ClientDid{
@@ -40,27 +40,25 @@ func (helper *KeeperTestHelper) Test_Enter_DPR() {
 			Sequence: 0,
 		}
 
-		// reputation := poatypes.Reputation{
-		// 	PubKey:             PUBKEY,
-		// 	Address:            ADDRESS,
-		// 	Score:              ClientScroe,
-		// 	RewardMultiplier:   ClientRewardMultiplier,
-		// 	NetEarnings:        ClientNetEarnings,
-		// 	LastTimeChallenged: LastTimeChallenged,
-		// 	CoolDownTolerance:  CoolDownTolerance,
-		// }
-		//poakeeper.SetReputation(helper.Ctx, reputation)
 		didKeeper.SetClientDid(helper.Ctx, *didDocument.Document)
-		// rep, found := poakeeper.GetReputation(helper.Ctx, PUBKEY)
-		// log.Println(rep, found)
 
 		res, err := helper.MsgServer.EnterDpr(ctx, &types.MsgEnterDpr{
 			Sender: ADDRESS,
 			DprId:  DprId,
+			SupportedPIDs: &types.SupportedPIDs{
+				Pid_1To_20:  "AAAAAAAA",
+				Pid_21To_40: "AAAAAAAA",
+				Pid_41To_60: "AAAAAAAA",
+				Pid_61To_80: "AAAAAAAA",
+				Pid_81To_A0: "AAAAAAAA",
+				Pid_A1To_C0: "AAAAAAAA",
+				Pid_C1To_E0: "AAAAAAAA",
+				Pid_SVCTo_9: "AAAAAAAA",
+			},
 		})
 
 		dprx, _ := dprKeeper.GetDpr(helper.Ctx, DprId)
-		helper.Require().Equal(dprx.ClientCounter, uint64(1))
+		helper.Require().Equal(dprx.ClientCounter, uint64(2))
 
 		did, _ := didKeeper.GetClientDid(helper.Ctx, ADDRESS)
 

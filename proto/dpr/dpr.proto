@@ -7,7 +7,7 @@ message Dpr {
   string id = 1;
   string creator = 2;
   string name = 3;
-  string supportedPIDs = 4;
+  SupportedPIDs supportedPIDs = 4;
   uint32 status = 5;
   uint64 duration = 6;
   string dprEndTime = 7; 
@@ -15,5 +15,16 @@ message Dpr {
   string dprBudget = 9;
   uint64 maxClientCount = 10;
   uint64 clientCounter = 11;
+}
+
+message SupportedPIDs {
+  string pid_1_to_20 = 1;
+  string pid_21_to_40 = 2;
+  string pid_41_to_60 = 3;
+  string pid_61_to_80 = 4;
+  string pid_81_to_A0 = 5;
+  string pid_A1_to_C0 = 6;
+  string pid_C1_to_E0 = 7;
+  string pid_SVC_to_9 = 8;
 }
 

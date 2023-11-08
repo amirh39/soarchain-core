@@ -17,10 +17,11 @@ service Msg {
 
 message MsgGenDpr {
   string creator = 1;
-  string supportedPIDs = 2; 
+  SupportedPIDs supportedPIDs = 2;
   uint64 duration = 3;
   string dprBudget = 4;
   uint64 maxClientCount = 5;
+  string name = 6;
 }
 
 message MsgGenDprResponse {}
@@ -38,7 +39,7 @@ message MsgUpdateDprResponse {}
 message MsgEnterDpr {
   string sender = 1;
   string dprId = 2;
-  string supportedPIDs = 3;
+  SupportedPIDs supportedPIDs = 3;
 //string signature = 4; TODO: add motus signature check 
 }
 

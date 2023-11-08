@@ -6,7 +6,6 @@ import (
 
 	didtypes "soarchain/x/did/types"
 	"soarchain/x/dpr/types"
-	utility "soarchain/x/dpr/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -18,6 +17,11 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 
 	log.Println("############## Entering to a DPR Transaction is Started ##############")
 
+	result := k.VerifyEnterDprInputs(msg)
+	if !result {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][VerifyDprInputs] failed. Make sure you are using valid inputs.")
+	}
+
 	dpr, found := k.GetDpr(ctx, msg.DprId)
 	if !found {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrNotFound, "[EnterDpr][GetDpr] failed. There is no DPR with this DPRid.")
@@ -25,11 +29,6 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 
 	if dpr.MaxClientCount <= dpr.ClientCounter {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][MaxClientCount] achieved.")
-	}
-
-	result := k.VerifyEnterDprInputs(msg)
-	if !result {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[EnterDpr][VerifyDprInputs] failed. Make sure you are using valid inputs.")
 	}
 
 	did, eligible := k.didKeeper.GetClientDid(ctx, msg.Sender)
@@ -62,13 +61,19 @@ func (k msgServer) EnterDpr(goCtx context.Context, msg *types.MsgEnterDpr) (*typ
 		logger.Info("Eligible client is found successfully", "transaction", "EnterDpr")
 	}
 
-	eligible, err := utility.ArePIDsSupported(msg.SupportedPIDs, dpr.SupportedPIDs)
-	if !eligible {
-		return nil, sdkerrors.Wrap(err, "[EnterDpr][ArePIDsSupported] failed. Client's PID's are not supporting the DPR.")
+	eligible, err := IsCarSupportsDpr(msg.GetSupportedPIDs(), dpr.GetSupportedPIDs())
+	if err != nil {
+		// Handle the error appropriately, possibly by logging it or returning it up the stack
+		return nil, sdkerrors.Wrap(err, "Failed to check if car supports DPR")
 	}
 
+	if !eligible {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Car does not support all required PIDs for the DPR")
+	}
+
+	// If we get here, it means the PIDs are eligible
 	if logger != nil {
-		logger.Info("Client's PID's are supporting the DPR", "transaction", "EnterDpr")
+		logger.Info("Client's PIDs are supporting the DPR", "transaction", "EnterDpr")
 	}
 
 	// Save dpr into storage
