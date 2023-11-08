@@ -46,11 +46,6 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 		logger.Info("Verifying runner certificate successfully done.", "transaction", "GenRunner")
 	}
 
-	isUnique := k.IsNotUniqueDid(ctx, msg.Document.Id)
-	if isUnique {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenRunner][IsNotUniqueDid] failed. Did is already registered.")
-	}
-
 	if logger != nil {
 		logger.Info("Verifying unique did successfully done.", "transaction", "GenRunner")
 	}
@@ -70,13 +65,9 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 	if logger != nil {
 		logger.Info("Checking for runner did address and pubKey successfully done.", "transaction", "GenRunnerDid")
 	}
-
-	if msg.Creator != msg.Document.Address {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner] failed. Runner did address [ %s ]  is not creator address.", msg.Document.Address)
-	}
 	didId, ok := utility.CreateDIDId(msg.Creator)
 	if ok != nil {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][CreateDIDId] failed. DID address couldn't created")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "[GenRunner][IsNotUniqueDid] failed. Did: [ %s ] is already registered.", didId)
 	}
 	time := ctx.BlockHeader().Time.String()
 	newRunner := types.RunnerDid{

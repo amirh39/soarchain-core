@@ -36,11 +36,6 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		logger.Info("Verifying client certificate successfully done.", "transaction", "GenClient")
 	}
 
-	isUnique := k.IsNotUniqueDid(ctx, msg.Document.Id)
-	if isUnique {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "[GenClient][IsNotUniqueDid] failed. Did: [ %s ] is already registered.", msg.Document.Id)
-	}
-
 	if logger != nil {
 		logger.Info("Verifying unique did successfully done.", "transaction", "GenClient")
 	}
@@ -61,15 +56,16 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		logger.Info("Checking for client did address and pubKey successfully done.", "transaction", "GenClientDid")
 	}
 
-	if msg.Creator != msg.Document.Address {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient] failed. Client did address [ %s ]  is not creator address.", msg.Document.Address)
-	}
-
 	clientType := k.ClientType(deviceCertificate)
 
 	didId, ok := utility.CreateDIDId(msg.Creator)
 	if ok != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][CreateDIDId] failed. DID address couldn't created")
+	}
+
+	isUnique := k.IsNotUniqueDid(ctx, didId)
+	if isUnique {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "[GenClient][IsNotUniqueDid] failed. Did: [ %s ] is already registered.", didId)
 	}
 	time := ctx.BlockHeader().Time.String()
 	newClient := types.ClientDid{

@@ -50,11 +50,6 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		logger.Info("Verifying challenger certificate successfully done.", "transaction", "GeChallenger")
 	}
 
-	isUnique := k.IsNotUniqueDid(ctx, msg.Document.Id)
-	if isUnique {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenChallenger][IsNotUniqueDid] failed. Did is already registered.")
-	}
-
 	if logger != nil {
 		logger.Info("Verifying unique did successfully done.", "transaction", "GenChallenger")
 	}
@@ -75,14 +70,16 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		logger.Info("Checking for challenger did address and pubKey successfully done.", "transaction", "GenChallengerDid")
 	}
 
-	if msg.Creator != msg.Document.Address {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger] failed. Challenger did address [ %s ]  is not creator address.", msg.Document.Address)
-	}
-
 	didId, ok := utility.CreateDIDId(msg.Creator)
 	if ok != nil {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][CreateDIDId] failed. DID address couldn't created")
 	}
+
+	isUnique := k.IsNotUniqueDid(ctx, didId)
+	if isUnique {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "[GenChallenger][IsNotUniqueDid] failed. Did: [ %s ] is already registered.", didId)
+	}
+
 	time := ctx.BlockHeader().Time.String()
 	newChallenger := types.ChallengerDid{
 		Id:      didId,
