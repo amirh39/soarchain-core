@@ -11,9 +11,14 @@ import (
 
 func Test_GetRunnerDidDocument(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
-	didDocument, privkey := NewRunnerDidDocumentWithSeq(Did)
-	require.NotNil(t, privkey)
-	keeper.SetRunnerDid(ctx, *didDocument.Document)
+
+	newDid := types.RunnerDid{
+		Id:      Did,
+		PubKey:  PUBKEY,
+		Address: ADDRESS,
+	}
+
+	keeper.SetRunnerDid(ctx, newDid)
 
 	for _, tc := range []struct {
 		desc     string
@@ -24,23 +29,23 @@ func Test_GetRunnerDidDocument(t *testing.T) {
 		{
 			desc: "Valid Did Id",
 			request: &types.QueryGetRunnerDidRequest{
-				Address: didDocument.Document.Id,
+				Address: newDid.Id,
 			},
-			response: &types.QueryGetRunnerDidResponse{RunnerDid: *didDocument.Document},
+			response: &types.QueryGetRunnerDidResponse{RunnerDid: newDid},
 		},
 		{
 			desc: "Not Valid Did Id",
 			request: &types.QueryGetRunnerDidRequest{
 				Address: "Not-Valid",
 			},
-			response: &types.QueryGetRunnerDidResponse{RunnerDid: *didDocument.Document},
+			response: &types.QueryGetRunnerDidResponse{RunnerDid: newDid},
 		},
 		{
 			desc: "Empty",
 			request: &types.QueryGetRunnerDidRequest{
 				Address: "",
 			},
-			response: &types.QueryGetRunnerDidResponse{RunnerDid: *didDocument.Document},
+			response: &types.QueryGetRunnerDidResponse{RunnerDid: newDid},
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {

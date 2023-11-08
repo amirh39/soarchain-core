@@ -9,9 +9,9 @@ const TypeMsgGenRunner = "gen_runner"
 
 var _ sdk.Msg = &MsgGenRunner{}
 
-func NewMsgGenRunner(document RunnerDid, signature string, certificate string, creator string) *MsgGenRunner {
+func NewMsgGenRunner(signature string, certificate string, creator string) *MsgGenRunner {
 	return &MsgGenRunner{
-		Document:    &document,
+
 		Signature:   signature,
 		Certificate: certificate,
 		Creator:     creator,

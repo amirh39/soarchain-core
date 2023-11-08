@@ -9,9 +9,8 @@ const TypeMsgGenClient = "gen_client"
 
 var _ sdk.Msg = &MsgGenClient{}
 
-func NewMsgGenClient(document ClientDid, signature string, certificate string, creator string) *MsgGenClient {
+func NewMsgGenClient(signature string, certificate string, creator string) *MsgGenClient {
 	return &MsgGenClient{
-		Document:    &document,
 		Signature:   signature,
 		Certificate: certificate,
 		Creator:     creator,

@@ -2,6 +2,7 @@ package keeper_test
 
 import (
 	keepertest "soarchain/testutil/keeper"
+	"soarchain/x/did/types"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -11,21 +12,25 @@ func Test_SetGetRunnerDidDocument(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
 
 	// Input two DidDocument
-	didDocument1, privkey := NewRunnerDidDocumentWithSeq(Did)
-	require.NotNil(t, privkey)
-	keeper.SetRunnerDid(ctx, *didDocument1.Document)
+	newDid := types.RunnerDid{
+		Id:      Did,
+		PubKey:  PUBKEY,
+		Address: ADDRESS,
+	}
+	keeper.SetRunnerDid(ctx, newDid)
 
 	got1, found1 := keeper.GetRunnerDid(ctx, ADDRESS)
 	require.Equal(t, true, found1)
 	require.NotNil(t, got1)
 
-	didDocument2, privkey := NewRunnerDidDocumentWithSeq(SecondDid)
-	didDocument2.Document.Address = SecondAddress
-	didDocument2.Document.PubKey = SecondPubKey
-	require.NotNil(t, privkey)
-	keeper.SetRunnerDid(ctx, *didDocument2.Document)
+	newDid2 := types.RunnerDid{
+		Id:      SecondDid,
+		PubKey:  PUBKEY,
+		Address: ADDRESS2,
+	}
+	keeper.SetRunnerDid(ctx, newDid2)
 
-	got2, found2 := keeper.GetRunnerDid(ctx, ADDRESS)
+	got2, found2 := keeper.GetRunnerDid(ctx, ADDRESS2)
 	require.Equal(t, true, found2)
 	require.NotNil(t, got2)
 
@@ -38,11 +43,14 @@ func Test_SetGetRunnerDidDocument(t *testing.T) {
 func Test_GetRunnerDidByPubkey(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
 
-	didDocument, privkey := NewRunnerDidDocumentWithSeq(Did)
-	require.NotNil(t, privkey)
-	keeper.SetRunnerDid(ctx, *didDocument.Document)
+	newDid := types.RunnerDid{
+		Id:      Did,
+		PubKey:  PUBKEY,
+		Address: ADDRESS,
+	}
+	keeper.SetRunnerDid(ctx, newDid)
 
-	got, found := keeper.GetRunnerDidUsingPubKey(ctx, didDocument.Document.PubKey)
+	got, found := keeper.GetRunnerDidUsingPubKey(ctx, newDid.PubKey)
 	t.Log("runner did -->", got, found)
 	require.Equal(t, true, found)
 	require.NotNil(t, got)

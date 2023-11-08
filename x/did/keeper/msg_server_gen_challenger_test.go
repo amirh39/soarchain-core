@@ -24,30 +24,23 @@ func (helper *KeeperTestHelper) Test_Gen_Challenger() {
 
 		updatedFactoryKeyList := poatypes.FactoryKeys{
 			Id:          uint64(1),
-			FactoryCert: Certificate,
+			FactoryCert: FactoryCert,
 		}
 		poakeeper.SetFactoryKeys(helper.Ctx, updatedFactoryKeyList)
 
-		deviceCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
-		helper.Require().NotEmpty(deviceCert)
-
-		documentWithSequence, _ := NewChallengerDidDocumentWithSeq(Did)
-		helper.Require().NotEmpty(documentWithSequence)
+		factoryCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
+		helper.Require().NotEmpty(factoryCert)
 
 		res, err := msgServer.GenChallenger(ctx, &types.MsgGenChallenger{
-			Document:        documentWithSequence.Document,
 			Signature:       Signature,
 			Certificate:     Certificate,
 			Creator:         ADDRESS,
 			ChallengerStake: Challenger_StakedAmount,
-			ChallengerIp:    Challenger_IPAddress,
 			ChallengerType:  Challenger_Type,
 		})
-		if err != nil {
-			helper.Require().NotNil(err)
-		} else {
-			helper.Require().Nil(err)
-			helper.Require().Nil(res)
-		}
+
+		helper.Require().Nil(err)
+		helper.Require().NotNil(res)
+
 	})
 }

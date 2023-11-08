@@ -5,24 +5,15 @@ option go_package = "soarchain/x/did/types";
 
 import "gogoproto/gogo.proto";
 
-message Strings {
-  repeated string values = 1;
-}
 
 message ClientDid {
   string id = 1;
-  string pubKey = 2;
-  string address = 3;
+  string address = 2;
+  string pubKey = 3;
   string type = 4;
-  Keys keys = 5 [json_name = "keys"];
-  repeated VerificationMethod verificationMethods = 6 [json_name = "verificationMethod"];
-  repeated VerificationRelationship authentications = 7 [json_name = "authentication", (gogoproto.customtype) = "VerificationRelationship"];
-  repeated Service services = 8 [json_name = "service"];
-  Vehicle vehicle = 9 [json_name = "vehicle"];
-  Owner owner = 10 [json_name = "owner"];
-  repeated DprInfo dprInfos = 11;
-  string created = 12;
-  string updated = 13;
+  string created = 5;
+  string updated = 6;
+  repeated DprInfo DprInfos = 7;
 }
 
 // Define the DprInfo message that holds id and claimed information
@@ -31,53 +22,4 @@ message DprInfo {
   string claimed = 2; 
 }
 
-message Keys {
-  string id = 1;
-  string pubkeyType = 2;
-  string controller = 3;
-  string publicKeyPem = 4;
-}
 
-message VerificationMethod {
-  string id = 1;
-  string type = 2;
-  string controller = 3;
-  string publicKeyBase58 = 4;
-}
-
-// VerificationRelationship defines a W3C verification relationship
-message VerificationRelationship {
-  // VerificationRelationship can be one of a single ID or a VerificationMethod.
-  oneof content {
-    string verificationMethodId = 1;
-    VerificationMethod verificationMethod = 2;
-  }
-}
-
-// Service defines a service in the W3C Did.
-message Service {
-  string id = 1;
-  string type = 2;
-  string serviceEndpoint = 3;
-}
-
-message Vehicle {
-  string vin = 1;
-}
-
-message Owner {
-  string id = 1;
-  string purchaseDate = 2;
-}
-
-// ClientDidWithSeq defines a message for Did with a sequence number for preventing replay attacks.
-message ClientDidWithSeq {
-  ClientDid document = 1;
-  uint64 sequence = 2;
-}
-
-// ClientDataWithSeq defines a message for data with a sequence number for preventing replay attacks.
-message ClientDataWithSeq {
-  bytes data = 1;
-  uint64 sequence = 2;
-}

@@ -41,9 +41,6 @@ service Query {
 		option (google.api.http).get = "/soarchain/did/challenger_did/{address}";
 	}
 
-	rpc GetRunnerDidByIp(QueryGetRunnerDidByIpRequest) returns (QueryGetRunnerDidByIpResponse) {
-		option (google.api.http).get = "/soarchain/did/get_runner_did_by_ip/{ipAddress}";
-	}
 
 	rpc GetChallengerDidByPubKey(QueryGetChallengerDidByPubKeyRequest) returns (QueryGetChallengerDidByPubKeyResponse) {
 		option (google.api.http).get = "/soarchain/did/query_challenger_did_by_pubKey/{pubkey}";
@@ -118,14 +115,6 @@ message QueryAllChallengerDidRequest {
 message QueryAllChallengerDidResponse {
 	repeated ChallengerDid challengerDid = 1  [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetRunnerDidByIpRequest {
-	string ipAddress = 1;
-}
-  
-message QueryGetRunnerDidByIpResponse {
-	RunnerDid runner = 1;
 }
 
 message QueryGetChallengerDidByPubKeyRequest{

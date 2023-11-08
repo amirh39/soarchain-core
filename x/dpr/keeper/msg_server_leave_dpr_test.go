@@ -22,10 +22,6 @@ func (helper *KeeperTestHelper) Test_Leave_DPR() {
 		dprKeeper.SetDpr(helper.Ctx, dpr[0])
 		helper.Require().NotEmpty(dpr)
 
-		vin := didtypes.Vehicle{
-			Vin: VIN,
-		}
-
 		dprinfo := &didtypes.DprInfo{ // Note: create a pointer
 			Id:      DprID,
 			Claimed: "0udmotus",
@@ -36,15 +32,9 @@ func (helper *KeeperTestHelper) Test_Leave_DPR() {
 			PubKey:   PUBKEY,
 			Address:  ADDRESS,
 			DprInfos: []*didtypes.DprInfo{dprinfo},
-			Vehicle:  &vin,
 		}
 
-		didDocument := didtypes.ClientDidWithSeq{
-			Document: &newDid,
-			Sequence: 0,
-		}
-
-		didKeeper.SetClientDid(helper.Ctx, *didDocument.Document)
+		didKeeper.SetClientDid(helper.Ctx, newDid)
 
 		res, err := helper.MsgServer.LeaveDpr(ctx, &types.MsgLeaveDpr{
 			Sender: ADDRESS,

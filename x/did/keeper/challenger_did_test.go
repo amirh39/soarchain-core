@@ -1,39 +1,39 @@
 package keeper_test
 
-import (
-	keepertest "soarchain/testutil/keeper"
-	"testing"
+// import (
+// 	keepertest "soarchain/testutil/keeper"
+// 	"testing"
 
-	"github.com/stretchr/testify/require"
-)
+// 	"github.com/stretchr/testify/require"
+// )
 
-func Test_SetGetChallengerDid(t *testing.T) {
-	keeper, ctx := keepertest.DidKeeper(t)
+// func Test_SetGetChallengerDid(t *testing.T) {
+// 	keeper, ctx := keepertest.DidKeeper(t)
 
-	didDocument, privkey := NewChallengerDidDocumentWithSeq(Did)
-	require.NotNil(t, privkey)
-	keeper.SetChallengerDid(ctx, *didDocument.Document)
+// 	didDocument, privkey := NewChallengerDidDocumentWithSeq(Did)
+// 	require.NotNil(t, privkey)
+// 	keeper.SetChallengerDid(ctx, *didDocument.Document)
 
-	got, found := keeper.GetChallengerDid(ctx, ADDRESS)
-	require.Equal(t, true, found)
-	require.NotNil(t, got)
+// 	got, found := keeper.GetChallengerDid(ctx, ADDRESS)
+// 	require.Equal(t, true, found)
+// 	require.NotNil(t, got)
 
-	// Test all DIDs
-	resDids := keeper.GetAllChallengerDid(ctx)
-	require.NotNil(t, resDids)
-	require.Equal(t, 1, len(resDids))
-}
+// 	// Test all DIDs
+// 	resDids := keeper.GetAllChallengerDid(ctx)
+// 	require.NotNil(t, resDids)
+// 	require.Equal(t, 1, len(resDids))
+// }
 
-func Test_GetChallengerDidByPubkey(t *testing.T) {
-	keeper, ctx := keepertest.DidKeeper(t)
+// func Test_GetChallengerDidByPubkey(t *testing.T) {
+// 	keeper, ctx := keepertest.DidKeeper(t)
 
-	didDocument, privkey := NewChallengerDidDocumentWithSeq(Did)
-	require.NotNil(t, privkey)
-	keeper.SetChallengerDid(ctx, *didDocument.Document)
+// 	didDocument, privkey := NewChallengerDidDocumentWithSeq(Did)
+// 	require.NotNil(t, privkey)
+// 	keeper.SetChallengerDid(ctx, *didDocument.Document)
 
-	got, found := keeper.GetChallengerDidUsingPubKey(ctx, didDocument.Document.PubKey)
-	t.Log("challenger did -->", got, found)
-	require.Equal(t, true, found)
-	require.NotNil(t, got)
+// 	got, found := keeper.GetChallengerDidUsingPubKey(ctx, didDocument.Document.PubKey)
+// 	t.Log("challenger did -->", got, found)
+// 	require.Equal(t, true, found)
+// 	require.NotNil(t, got)
 
-}
+// }

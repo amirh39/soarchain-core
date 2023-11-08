@@ -32,25 +32,17 @@ func (helper *KeeperTestHelper) Test_Gen_Client() {
 		deviceCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
 		helper.Require().NotNil(deviceCert)
 
-		documentWithSequence, _ := NewDIDDocumentWithSeq(Did)
-		documentWithSequence.Document.Address = ADDRESS
-		helper.Require().NotEmpty(documentWithSequence)
-
 		res, err := msgServer.GenClient(ctx, &types.MsgGenClient{
-			Document:    documentWithSequence.Document,
 			Signature:   Signature,
 			Certificate: Certificate,
 			Creator:     ADDRESS,
 		})
-		didDocument, found := keeper.GetClientDid(helper.Ctx, documentWithSequence.Document.Address)
+		didDocument, found := keeper.GetClientDid(helper.Ctx, ADDRESS)
 		fmt.Print("didDocument------------------->", didDocument)
-		if err != nil {
-			helper.Require().NotNil(err)
-			helper.Require().Equal(found, false)
-		} else {
-			helper.Require().NotNil(res)
-			helper.Require().NoError(err)
-			helper.Require().Equal(found, true)
-		}
+
+		helper.Require().NotNil(res)
+		helper.Require().NoError(err)
+		helper.Require().Equal(found, true)
+
 	})
 }

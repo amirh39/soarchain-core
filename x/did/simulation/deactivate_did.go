@@ -19,8 +19,7 @@ func SimulateMsgDeactivateDid(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 		msg := &types.MsgDeactivateDid{
-			Did:                  "",
-			FromAddress:          string(simAccount.Address),
+			Creator: string(simAccount.Address),
 		}
 
 		// TODO: Handling the GenClient simulation

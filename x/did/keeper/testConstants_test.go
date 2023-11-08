@@ -12,93 +12,7 @@ import (
 	"github.com/golang/mock/gomock"
 
 	keepertest "soarchain/testutil/keeper"
-
-	"soarchain/x/did/utility/crypto"
-
-	tendermintcrypto "github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
-
-func NewDIDDocumentWithSeq(did string) (types.ClientDidWithSeq, tendermintcrypto.PrivKey) {
-	privKey := secp256k1.GenPrivKey()
-	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
-	verificationMethodID := types.NewVerificationMethodID(did, "key1")
-	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
-	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
-	verificationMethods := []*types.VerificationMethod{
-		&es256VerificationMethod,
-		&blsVerificationMethod,
-	}
-	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
-	authentications := []types.VerificationRelationship{
-		verificationRelationship,
-	}
-	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
-	vehicle := types.NewVehicle(VIN)
-	owner := types.NewOwner(OWNERID, PURCHESDATE)
-	doc := types.NewClientDidDocument(did, INDEX, ADDRESS, TYPE, PIDS, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications), types.WithKeys(&soarchainPublicKey), types.WithVehicle(&vehicle), types.WithOwner(&owner))
-	docWithSeq := types.NewDidDocumentWithSeq(
-		&doc,
-		types.InitialSequence,
-	)
-	return docWithSeq, privKey
-}
-
-func NewRunnerDidDocumentWithSeq(did string) (types.RunnerDidWithSeq, tendermintcrypto.PrivKey) {
-	privKey := secp256k1.GenPrivKey()
-	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
-	verificationMethodID := types.NewVerificationMethodID(did, "key1")
-	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
-	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
-	verificationMethods := []*types.VerificationMethod{
-		&es256VerificationMethod,
-		&blsVerificationMethod,
-	}
-	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
-	authentications := []types.VerificationRelationship{
-		verificationRelationship,
-	}
-	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
-	doc := types.NewRunnerDidDocument(did, INDEX, ADDRESS, types.WithRunnerVerificationMethods(verificationMethods), types.WithRunnerAuthentications(authentications), types.WithRunnerKeys(&soarchainPublicKey))
-	docWithSeq := types.NewRunnerDidDocumentWithSeq(
-		&doc,
-		types.InitialSequence,
-	)
-	return docWithSeq, privKey
-}
-
-func NewChallengerDidDocumentWithSeq(did string) (types.ChallengerDidWithSeq, tendermintcrypto.PrivKey) {
-	privKey := secp256k1.GenPrivKey()
-	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
-	verificationMethodID := types.NewVerificationMethodID(did, "key1")
-	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
-	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
-	verificationMethods := []*types.VerificationMethod{
-		&es256VerificationMethod,
-		&blsVerificationMethod,
-	}
-	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
-	authentications := []types.VerificationRelationship{
-		verificationRelationship,
-	}
-	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
-	doc := types.NewChallengerDidDocument(did, INDEX, ADDRESS, types.WithChallengerVerificationMethods(verificationMethods), types.WithChallengerAuthentications(authentications), types.WithChallengerKeys(&soarchainPublicKey))
-	docWithSeq := types.NewChallengerDidDocumentWithSeq(
-		&doc,
-		types.InitialSequence,
-	)
-	return docWithSeq, privKey
-}
-
-func NewMsgDeactivateDID(doc types.ClientDid, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
-	sig, _ := types.Sign(&doc, seq, privKey)
-	return *types.NewMsgDeactivateDid(did, verificationMethodID, sig, sdk.AccAddress{}.String())
-}
-
-func MakeTestData() (string, types.ClientDidWithSeq, tendermintcrypto.PrivKey, string) {
-	doc, privKey := NewDIDDocumentWithSeq(Did)
-	return Did, doc, privKey, doc.Document.VerificationMethods[0].Id
-}
 
 func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context,
 	*gomock.Controller, *testutil.MockBankKeeper) {
@@ -116,7 +30,6 @@ func CreateNChallengerDid(keeper *keeper.Keeper, ctx sdk.Context, n int) []types
 	for i := range items {
 		items[i].PubKey = Challenger_PubKey
 		items[i].Address = Challenger_Address
-		items[i].IpAddress = Challenger_IPAddress
 
 		keeper.SetChallengerDid(ctx, items[i])
 	}
@@ -139,7 +52,7 @@ const (
 )
 
 const (
-	RunnerStake = "1000000udmotus"
+	RunnerStake = "10000000000000000udmotus"
 	RunnerIp    = "145.21.09.11"
 )
 
@@ -151,9 +64,10 @@ const (
 )
 
 const (
-	ADDRESS = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
-	PUBKEY  = "3059301306072a8648ce3d020106082a8648ce3d030107034200046c28e2efdf94600435dbba5ae7f195cb619e3dd128b7e0e2877f9a1da489027819001c3e0141cb579dc3d9e913a45644401bd2458313dc37d15dd58adcaff154"
-	VIN     = "1HGCM82636c678d14c93ad5bf14448da57f4f241b77e30a013d54f5d76c8126a7029aeb86"
+	ADDRESS  = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
+	ADDRESS2 = "soar1z68ga5gq0pks3zla7sg4c9svv8nmggr537m83c"
+	PUBKEY   = "3059301306072a8648ce3d020106082a8648ce3d030107034200046c28e2efdf94600435dbba5ae7f195cb619e3dd128b7e0e2877f9a1da489027819001c3e0141cb579dc3d9e913a45644401bd2458313dc37d15dd58adcaff154"
+	VIN      = "1HGCM82636c678d14c93ad5bf14448da57f4f241b77e30a013d54f5d76c8126a7029aeb86"
 )
 
 var PIDS = []bool{true, false, false}
@@ -169,11 +83,12 @@ const (
 )
 
 const (
-	Signature   = "3046022100b3895f069c24bcc403e5c34463b3fbd88c52088e3070265c84401388d87782f9022100ca497f09fad41001bc2958006872b67767d842a77bfd2347c614b2f6a8b11cd0"
-	Certificate = "-----BEGIN CERTIFICATE-----\nMIIB1DCCAXqgAwIBAgIQarjUOnCZTyR62V1ecTpJOzAKBggqhkjOPQQDAjBaMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMTowOAYDVQQDDDFTb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IEludC4gQ0EgMHgwMDAxMDJGRkZGMB4XDTIzMDQwNjE4MDAwMFoXDTMzMDQwNjE4MDAwMFowOzEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjEbMBkGA1UEAwwSU0FNUExFX0RFVklDRV8wMDEwMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbCji79+UYAQ127pa5/GVy2GePdEot+Dih3+aHaSJAngZABw+AUHLV53D2ekTpFZEQBvSRYMT3DfRXdWK3K/xVKNBMD8wDgYDVR0PAQH/BAQDAgXgMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUy+iWrLA3K07EV3R0n/R9UYPvN1cwCgYIKoZIzj0EAwIDSAAwRQIgLNRm2jurfwQt2mAYgzxMO6r282PTB3Bil0cbbkRWCFICIQC09z8NUdddEaT3+rPovZNtL/LukupZaBl4LseTv4c74w==\n-----END CERTIFICATE-----"
+	Signature   = "3046022100e0a523ca8842b301328d33cdc85320882bbaf313e237cec6384134376b141158022100e5d207d222bba0f945bdcabffe699ccefcb48f0f3818652fc967e3fbdfbe7c00"
+	Certificate = "-----BEGIN CERTIFICATE-----\nMIIB1DCCAXqgAwIBAgIQVvqQ4gomnlAJUmZdpaMswTAKBggqhkjOPQQDAjBaMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMTowOAYDVQQDDDFTb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IEludC4gQ0EgMHgwMDAxMDJGRkZGMB4XDTIzMDUxMTA4MDAwMFoXDTMzMDUxMTA4MDAwMFowOzEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjEbMBkGA1UEAwwSU0FNUExFX0RFVklDRV8wNTcxMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+YTMxJ8y2MXPWhxgQullWLKH0xqTTd7kkkHCrGCewhIe1Cqlv2xNmlXxA7d/TQEuwQEkjaYXCxu6OMEb49kuH6NBMD8wDgYDVR0PAQH/BAQDAgXgMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUy+iWrLA3K07EV3R0n/R9UYPvN1cwCgYIKoZIzj0EAwIDSAAwRQIhAM3vveuVEFj3vCQyY6jWUJ3yrKoDQRjTQznjJJeYzP/yAiANiWm6328yeFnKaKW1d+JfewuZiVjXD+mmT2KV7QDMvA==\n-----END CERTIFICATE-----"
+	FactoryCert = "-----BEGIN CERTIFICATE-----\nMIICBjCCAaygAwIBAgIQYuzJOUKNHYpHJFGtxphGmzAKBggqhkjOPQQDAjBIMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMSgwJgYDVQQDDB9Tb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IENBMB4XDTIzMDQwNDEzMDAwMFoXDTMzMDQwNDEzMDAwMFowWjEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjE6MDgGA1UEAwwxU29hciBSb2JvdGljcyBTZWN1cmUgRWxlbWVudCBJbnQuIENBIDB4MDAwMTAyRkZGRjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABIPvuGA6Q/Z1+lyExgKRM/v4bH77K3cGEKrfkQ/0ZQNhDbSfzKvrvDiKNPWYN1LhRgWcLzDguDkKisM8h1Jw2SGjZjBkMA4GA1UdDwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBTL6JassDcrTsRXdHSf9H1Rg+83VzAfBgNVHSMEGDAWgBRqxTRE6ZPuogp88TrNw1cwAYyPMjAKBggqhkjOPQQDAgNIADBFAiAtY1bj66UiOLJaj8EMHdeCiMtu/TAwhx1ackbwYj6sOQIhAOx2lNKLmXqt1U5StSM3jZpI8w5dNStYigv8CcABJn0k\n-----END CERTIFICATE-----"
 )
 
 const (
-	MASTER_CERTIFICATE = "-----BEGIN CERTIFICATE-----\nMIICBjCCAaygAwIBAgIQYuzJOUKNHYpHJFGtxphGmzAKBggqhkjOPQQDAjBIMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMSgwJgYDVQQDDB9Tb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IENBMB4XDTIzMDQwNDEzMDAwMFoXDTMzMDQwNDEzMDAwMFowWjEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjE6MDgGA1UEAwwxU29hciBSb2JvdGljcyBTZWN1cmUgRWxlbWVudCBJbnQuIENBIDB4MDAwMTAyRkZGRjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABIPvuGA6Q/Z1+lyExgKRM/v4bH77K3cGEKrfkQ/0ZQNhDbSfzKvrvDiKNPWYN1LhRgWcLzDguDkKisM8h1Jw2SGjZjBkMA4GA1UdDwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBTL6JassDcrTsRXdHSf9H1Rg+83VzAfBgNVHSMEGDAWgBRqxTRE6ZPuogp88TrNw1cwAYyPMjAKBggqhkjOPQQDAgNIADBFAiAtY1bj66UiOLJaj8EMHdeCiMtu/TAwhx1ackbwYj6sOQIhAOx2lNKLmXqt1U5StSM3jZpI8w5dNStYigv8CcABJn0k\n-----END CERTIFICATE-----"
+	MASTER_CERTIFICATE = "-----BEGIN CERTIFICATE-----\nMIIB4TCCAYegAwIBAgIQTylBUpEkZd8CaYHSaLbBHzAKBggqhkjOPQQDAjBIMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMSgwJgYDVQQDDB9Tb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IENBMB4XDTIzMDMzMDA2NTUxNVoXDTQ4MDMzMDA2NTUxNVowSDEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjEoMCYGA1UEAwwfU29hciBSb2JvdGljcyBTZWN1cmUgRWxlbWVudCBDQTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABLaCOXbFw/dRJXzXtvhSFWt92aUkdwRZPLmJWZFBFX55+XIDQsCGsQeMmU4pqsnXEB4/r842uYUinWsdzg4xUoqjUzBRMB0GA1UdDgQWBBRqxTRE6ZPuogp88TrNw1cwAYyPMjAfBgNVHSMEGDAWgBRqxTRE6ZPuogp88TrNw1cwAYyPMjAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49BAMCA0gAMEUCIAHpI8Y6zPLaitMOGNAzzDAKb0PJw2r49vjzkFl5TIGPAiEArPJTReSmEnUJWFTcEIuYoWcRIBDI+GpianTVfX4uxNI=\n-----END CERTIFICATE-----"
 	MASTER_ACCOUNT     = "soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8"
 )

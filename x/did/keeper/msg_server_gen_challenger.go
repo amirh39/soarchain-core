@@ -50,11 +50,6 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		logger.Info("Verifying challenger certificate successfully done.", "transaction", "GeChallenger")
 	}
 
-	isUnique := k.IsNotUniqueDid(ctx, msg.Document.Id)
-	if isUnique {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrConflict, "[GenChallenger][IsNotUniqueDid] failed. Did is already registered.")
-	}
-
 	if logger != nil {
 		logger.Info("Verifying unique did successfully done.", "transaction", "GenChallenger")
 	}
@@ -75,24 +70,35 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		logger.Info("Checking for challenger did address and pubKey successfully done.", "transaction", "GenChallengerDid")
 	}
 
-	if msg.Creator != msg.Document.Address {
-		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger] failed. Challenger did address [ %s ]  is not creator address.", msg.Document.Address)
+	didId, ok := utility.CreateDIDId(msg.Creator)
+	if ok != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][CreateDIDId] failed. DID address couldn't created")
 	}
 
-	seq := types.InitialSequence
-	msg.Document.Address = msg.Creator
-	msg.Document.PubKey = pubKeyHex
-	didDocument := types.NewChallengerDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetChallengerDid(ctx, *didDocument.Document)
+	isUnique := k.IsNotUniqueDid(ctx, didId)
+	if isUnique {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrConflict, "[GenChallenger][IsNotUniqueDid] failed. Did: [ %s ] is already registered.", didId)
+	}
+
+	time := ctx.BlockHeader().Time.String()
+	newChallenger := types.ChallengerDid{
+		Id:      didId,
+		PubKey:  pubKeyHex,
+		Address: msg.Creator,
+		Created: time,
+		Updated: time,
+	}
+
+	k.SetChallengerDid(ctx, newChallenger)
 
 	_, found := k.GetChallengerDid(ctx, msg.Creator)
 	if !found {
-		logger.Error("Generating challenger did failed.", "transaction", "GenChallenger", "document", didDocument)
+		logger.Error("Generating challenger did failed.", "transaction", "GenChallenger")
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][GetChallengerDid] failed. Couldn't store Challenger object successfully.")
 	}
 
 	if logger != nil {
-		logger.Info("Generating challenger did successfully done.", "transaction", "GenChallenger", "document", didDocument)
+		logger.Info("Generating challenger did successfully done.", "transaction", "GenChallenger")
 	}
 
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)
