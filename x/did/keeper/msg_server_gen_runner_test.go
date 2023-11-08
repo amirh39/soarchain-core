@@ -40,7 +40,6 @@ func (helper *KeeperTestHelper) Test_Gen_Runner() {
 			Certificate: Certificate,
 			Creator:     ADDRESS,
 			RunnerStake: RunnerStake,
-			RunnerIp:    RunnerIp,
 		})
 		if err != nil {
 			helper.Require().NotNil(err)

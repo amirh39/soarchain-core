@@ -79,20 +79,29 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger] failed. Challenger did address [ %s ]  is not creator address.", msg.Document.Address)
 	}
 
-	seq := types.InitialSequence
-	msg.Document.Address = msg.Creator
-	msg.Document.PubKey = pubKeyHex
-	didDocument := types.NewChallengerDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetChallengerDid(ctx, *didDocument.Document)
+	didId, ok := utility.CreateDIDId(msg.Creator)
+	if ok != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][CreateDIDId] failed. DID address couldn't created")
+	}
+	time := ctx.BlockHeader().Time.String()
+	newChallenger := types.ChallengerDid{
+		Id:      didId,
+		PubKey:  pubKeyHex,
+		Address: msg.Creator,
+		Created: time,
+		Updated: time,
+	}
+
+	k.SetChallengerDid(ctx, newChallenger)
 
 	_, found := k.GetChallengerDid(ctx, msg.Creator)
 	if !found {
-		logger.Error("Generating challenger did failed.", "transaction", "GenChallenger", "document", didDocument)
+		logger.Error("Generating challenger did failed.", "transaction", "GenChallenger")
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenChallenger][GetChallengerDid] failed. Couldn't store Challenger object successfully.")
 	}
 
 	if logger != nil {
-		logger.Info("Generating challenger did successfully done.", "transaction", "GenChallenger", "document", didDocument)
+		logger.Info("Generating challenger did successfully done.", "transaction", "GenChallenger")
 	}
 
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)

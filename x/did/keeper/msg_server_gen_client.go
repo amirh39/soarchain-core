@@ -67,21 +67,31 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	clientType := k.ClientType(deviceCertificate)
 
-	seq := types.InitialSequence
-	msg.Document.PubKey = pubKeyHex
-	msg.Document.Address = msg.Creator
-	msg.Document.Type = clientType
-	didDocument := types.NewDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetClientDid(ctx, *didDocument.Document)
+	didId, ok := utility.CreateDIDId(msg.Creator)
+	if ok != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][CreateDIDId] failed. DID address couldn't created")
+	}
+	time := ctx.BlockHeader().Time.String()
+	newClient := types.ClientDid{
+		Id:       didId,
+		Address:  msg.Creator,
+		PubKey:   pubKeyHex,
+		Type:     clientType,
+		Created:  time,
+		Updated:  time,
+		DprInfos: nil,
+	}
+
+	k.SetClientDid(ctx, newClient)
 
 	_, found := k.GetClientDid(ctx, msg.Creator)
 	if !found {
-		logger.Error("Generating client did failed.", "transaction", "GenClient", "document", didDocument)
+		logger.Error("Generating client did failed.", "transaction", "GenClient")
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenClient][GetClientDid] failed. Couldn't store client object successfully.")
 	}
 
 	if logger != nil {
-		logger.Info("Generating client did successfully done.", "transaction", "GenClient", "document", didDocument)
+		logger.Info("Generating client did successfully done.", "transaction", "GenClient")
 	}
 
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)

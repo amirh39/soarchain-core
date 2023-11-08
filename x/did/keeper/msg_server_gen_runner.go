@@ -74,21 +74,28 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 	if msg.Creator != msg.Document.Address {
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner] failed. Runner did address [ %s ]  is not creator address.", msg.Document.Address)
 	}
-
-	seq := types.InitialSequence
-	msg.Document.PubKey = pubKeyHex
-	msg.Document.Address = msg.Creator
-	didDocument := types.NewRunnerDidDocumentWithSeq(msg.Document, uint64(seq))
-	k.SetRunnerDid(ctx, *didDocument.Document)
+	didId, ok := utility.CreateDIDId(msg.Creator)
+	if ok != nil {
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][CreateDIDId] failed. DID address couldn't created")
+	}
+	time := ctx.BlockHeader().Time.String()
+	newRunner := types.RunnerDid{
+		Id:      didId,
+		PubKey:  pubKeyHex,
+		Address: msg.Creator,
+		Created: time,
+		Updated: time,
+	}
+	k.SetRunnerDid(ctx, newRunner)
 
 	_, found := k.GetRunnerDid(ctx, msg.Creator)
 	if !found {
-		logger.Error("Generating runner did failed.", "transaction", "GenRunner", "document", didDocument)
+		logger.Error("Generating runner did failed.", "transaction", "GenRunner")
 		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "[GenRunner][GetRunnerDid] failed. Couldn't store Runner object successfully.")
 	}
 
 	if logger != nil {
-		logger.Info("Generating runner did successfully done.", "transaction", "GenRunner", "document", didDocument)
+		logger.Info("Generating runner did successfully done.", "transaction", "GenRunner")
 	}
 
 	rewardMultiplier := utility.CalculateRewardMultiplier(constants.InitialScore)
