@@ -39,13 +39,10 @@ func (helper *KeeperTestHelper) Test_Gen_Client() {
 		})
 		didDocument, found := keeper.GetClientDid(helper.Ctx, ADDRESS)
 		fmt.Print("didDocument------------------->", didDocument)
-		if err != nil {
-			helper.Require().NotNil(err)
-			helper.Require().Equal(found, false)
-		} else {
-			helper.Require().NotNil(res)
-			helper.Require().NoError(err)
-			helper.Require().Equal(found, true)
-		}
+
+		helper.Require().NotNil(res)
+		helper.Require().NoError(err)
+		helper.Require().Equal(found, true)
+
 	})
 }
