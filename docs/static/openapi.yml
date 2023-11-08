@@ -5400,70 +5400,11 @@ paths:
                       type: string
                     pubKey:
                       type: string
-                    keys:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        pubkeyType:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyPem:
-                          type: string
-                    verificationMethods:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                          controller:
-                            type: string
-                          publicKeyBase58:
-                            type: string
-                    authentications:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          verificationMethodId:
-                            type: string
-                          verificationMethod:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              type:
-                                type: string
-                              controller:
-                                type: string
-                              publicKeyBase58:
-                                type: string
-                        title: >-
-                          VerificationRelationship defines a W3C verification
-                          relationship
-                    services:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                          serviceEndpoint:
-                            type: string
-                        description: Service defines a service in the W3C Did.
-                    ipAddress:
+                    address:
                       type: string
                     created:
                       type: string
                     updated:
-                      type: string
-                    address:
                       type: string
               pagination:
                 type: object
@@ -5585,70 +5526,11 @@ paths:
                     type: string
                   pubKey:
                     type: string
-                  keys:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      pubkeyType:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyPem:
-                        type: string
-                  verificationMethods:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyBase58:
-                          type: string
-                  authentications:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        verificationMethodId:
-                          type: string
-                        verificationMethod:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            type:
-                              type: string
-                            controller:
-                              type: string
-                            publicKeyBase58:
-                              type: string
-                      title: >-
-                        VerificationRelationship defines a W3C verification
-                        relationship
-                  services:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        serviceEndpoint:
-                          type: string
-                      description: Service defines a service in the W3C Did.
-                  ipAddress:
+                  address:
                     type: string
                   created:
                     type: string
                   updated:
-                    type: string
-                  address:
                     type: string
         default:
           description: An unexpected error response.
@@ -5691,82 +5573,17 @@ paths:
                   properties:
                     id:
                       type: string
-                    pubKey:
-                      type: string
                     address:
+                      type: string
+                    pubKey:
                       type: string
                     type:
                       type: string
-                    keys:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        pubkeyType:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyPem:
-                          type: string
-                    verificationMethods:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                          controller:
-                            type: string
-                          publicKeyBase58:
-                            type: string
-                    authentications:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          verificationMethodId:
-                            type: string
-                          verificationMethod:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              type:
-                                type: string
-                              controller:
-                                type: string
-                              publicKeyBase58:
-                                type: string
-                        title: >-
-                          VerificationRelationship defines a W3C verification
-                          relationship
-                    services:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                          serviceEndpoint:
-                            type: string
-                        description: Service defines a service in the W3C Did.
-                    vehicle:
-                      type: object
-                      properties:
-                        vin:
-                          type: string
-                    owner:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        purchaseDate:
-                          type: string
-                    dprInfos:
+                    created:
+                      type: string
+                    updated:
+                      type: string
+                    DprInfos:
                       type: array
                       items:
                         type: object
@@ -5778,10 +5595,6 @@ paths:
                         title: >-
                           Define the DprInfo message that holds id and claimed
                           information
-                    created:
-                      type: string
-                    updated:
-                      type: string
               pagination:
                 type: object
                 properties:
@@ -5900,82 +5713,17 @@ paths:
                 properties:
                   id:
                     type: string
-                  pubKey:
-                    type: string
                   address:
+                    type: string
+                  pubKey:
                     type: string
                   type:
                     type: string
-                  keys:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      pubkeyType:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyPem:
-                        type: string
-                  verificationMethods:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyBase58:
-                          type: string
-                  authentications:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        verificationMethodId:
-                          type: string
-                        verificationMethod:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            type:
-                              type: string
-                            controller:
-                              type: string
-                            publicKeyBase58:
-                              type: string
-                      title: >-
-                        VerificationRelationship defines a W3C verification
-                        relationship
-                  services:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        serviceEndpoint:
-                          type: string
-                      description: Service defines a service in the W3C Did.
-                  vehicle:
-                    type: object
-                    properties:
-                      vin:
-                        type: string
-                  owner:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      purchaseDate:
-                        type: string
-                  dprInfos:
+                  created:
+                    type: string
+                  updated:
+                    type: string
+                  DprInfos:
                     type: array
                     items:
                       type: object
@@ -5987,10 +5735,6 @@ paths:
                       title: >-
                         Define the DprInfo message that holds id and claimed
                         information
-                  created:
-                    type: string
-                  updated:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -6032,70 +5776,11 @@ paths:
                     type: string
                   pubKey:
                     type: string
-                  keys:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      pubkeyType:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyPem:
-                        type: string
-                  verificationMethods:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyBase58:
-                          type: string
-                  authentications:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        verificationMethodId:
-                          type: string
-                        verificationMethod:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            type:
-                              type: string
-                            controller:
-                              type: string
-                            publicKeyBase58:
-                              type: string
-                      title: >-
-                        VerificationRelationship defines a W3C verification
-                        relationship
-                  services:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        serviceEndpoint:
-                          type: string
-                      description: Service defines a service in the W3C Did.
-                  ipAddress:
+                  address:
                     type: string
                   created:
                     type: string
                   updated:
-                    type: string
-                  address:
                     type: string
         default:
           description: An unexpected error response.
@@ -6139,70 +5824,11 @@ paths:
                     type: string
                   pubKey:
                     type: string
-                  keys:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      pubkeyType:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyPem:
-                        type: string
-                  verificationMethods:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyBase58:
-                          type: string
-                  authentications:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        verificationMethodId:
-                          type: string
-                        verificationMethod:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            type:
-                              type: string
-                            controller:
-                              type: string
-                            publicKeyBase58:
-                              type: string
-                      title: >-
-                        VerificationRelationship defines a W3C verification
-                        relationship
-                  services:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        serviceEndpoint:
-                          type: string
-                      description: Service defines a service in the W3C Did.
-                  ipAddress:
+                  address:
                     type: string
                   created:
                     type: string
                   updated:
-                    type: string
-                  address:
                     type: string
         default:
           description: An unexpected error response.
@@ -6224,112 +5850,6 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: pubkey
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  '/soarchain/did/get_runner_did_by_ip/{ipAddress}':
-    get:
-      operationId: SoarchainDidGetRunnerDidByIp
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              runner:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  pubKey:
-                    type: string
-                  keys:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      pubkeyType:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyPem:
-                        type: string
-                  verificationMethods:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyBase58:
-                          type: string
-                  authentications:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        verificationMethodId:
-                          type: string
-                        verificationMethod:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            type:
-                              type: string
-                            controller:
-                              type: string
-                            publicKeyBase58:
-                              type: string
-                      title: >-
-                        VerificationRelationship defines a W3C verification
-                        relationship
-                  services:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        serviceEndpoint:
-                          type: string
-                      description: Service defines a service in the W3C Did.
-                  ipAddress:
-                    type: string
-                  created:
-                    type: string
-                  updated:
-                    type: string
-                  address:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: ipAddress
           in: path
           required: true
           type: string
@@ -6387,70 +5907,11 @@ paths:
                     type: string
                   pubKey:
                     type: string
-                  keys:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      pubkeyType:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyPem:
-                        type: string
-                  verificationMethods:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyBase58:
-                          type: string
-                  authentications:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        verificationMethodId:
-                          type: string
-                        verificationMethod:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            type:
-                              type: string
-                            controller:
-                              type: string
-                            publicKeyBase58:
-                              type: string
-                      title: >-
-                        VerificationRelationship defines a W3C verification
-                        relationship
-                  services:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        serviceEndpoint:
-                          type: string
-                      description: Service defines a service in the W3C Did.
-                  ipAddress:
+                  address:
                     type: string
                   created:
                     type: string
                   updated:
-                    type: string
-                  address:
                     type: string
         default:
           description: An unexpected error response.
@@ -6495,70 +5956,11 @@ paths:
                       type: string
                     pubKey:
                       type: string
-                    keys:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        pubkeyType:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyPem:
-                          type: string
-                    verificationMethods:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                          controller:
-                            type: string
-                          publicKeyBase58:
-                            type: string
-                    authentications:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          verificationMethodId:
-                            type: string
-                          verificationMethod:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              type:
-                                type: string
-                              controller:
-                                type: string
-                              publicKeyBase58:
-                                type: string
-                        title: >-
-                          VerificationRelationship defines a W3C verification
-                          relationship
-                    services:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                          serviceEndpoint:
-                            type: string
-                        description: Service defines a service in the W3C Did.
-                    ipAddress:
+                    address:
                       type: string
                     created:
                       type: string
                     updated:
-                      type: string
-                    address:
                       type: string
               pagination:
                 type: object
@@ -6680,70 +6082,11 @@ paths:
                     type: string
                   pubKey:
                     type: string
-                  keys:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      pubkeyType:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyPem:
-                        type: string
-                  verificationMethods:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        controller:
-                          type: string
-                        publicKeyBase58:
-                          type: string
-                  authentications:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        verificationMethodId:
-                          type: string
-                        verificationMethod:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            type:
-                              type: string
-                            controller:
-                              type: string
-                            publicKeyBase58:
-                              type: string
-                      title: >-
-                        VerificationRelationship defines a W3C verification
-                        relationship
-                  services:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        type:
-                          type: string
-                        serviceEndpoint:
-                          type: string
-                      description: Service defines a service in the W3C Did.
-                  ipAddress:
+                  address:
                     type: string
                   created:
                     type: string
                   updated:
-                    type: string
-                  address:
                     type: string
         default:
           description: An unexpected error response.
@@ -16632,148 +15975,28 @@ definitions:
         type: string
       pubKey:
         type: string
-      keys:
-        type: object
-        properties:
-          id:
-            type: string
-          pubkeyType:
-            type: string
-          controller:
-            type: string
-          publicKeyPem:
-            type: string
-      verificationMethods:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-            type:
-              type: string
-            controller:
-              type: string
-            publicKeyBase58:
-              type: string
-      authentications:
-        type: array
-        items:
-          type: object
-          properties:
-            verificationMethodId:
-              type: string
-            verificationMethod:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          title: VerificationRelationship defines a W3C verification relationship
-      services:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-            type:
-              type: string
-            serviceEndpoint:
-              type: string
-          description: Service defines a service in the W3C Did.
-      ipAddress:
+      address:
         type: string
       created:
         type: string
       updated:
-        type: string
-      address:
         type: string
   soarchain.did.ClientDid:
     type: object
     properties:
       id:
         type: string
-      pubKey:
-        type: string
       address:
+        type: string
+      pubKey:
         type: string
       type:
         type: string
-      keys:
-        type: object
-        properties:
-          id:
-            type: string
-          pubkeyType:
-            type: string
-          controller:
-            type: string
-          publicKeyPem:
-            type: string
-      verificationMethods:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-            type:
-              type: string
-            controller:
-              type: string
-            publicKeyBase58:
-              type: string
-      authentications:
-        type: array
-        items:
-          type: object
-          properties:
-            verificationMethodId:
-              type: string
-            verificationMethod:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          title: VerificationRelationship defines a W3C verification relationship
-      services:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-            type:
-              type: string
-            serviceEndpoint:
-              type: string
-          description: Service defines a service in the W3C Did.
-      vehicle:
-        type: object
-        properties:
-          vin:
-            type: string
-      owner:
-        type: object
-        properties:
-          id:
-            type: string
-          purchaseDate:
-            type: string
-      dprInfos:
+      created:
+        type: string
+      updated:
+        type: string
+      DprInfos:
         type: array
         items:
           type: object
@@ -16783,10 +16006,6 @@ definitions:
             claimed:
               type: string
           title: Define the DprInfo message that holds id and claimed information
-      created:
-        type: string
-      updated:
-        type: string
   soarchain.did.DprInfo:
     type: object
     properties:
@@ -16795,17 +16014,6 @@ definitions:
       claimed:
         type: string
     title: Define the DprInfo message that holds id and claimed information
-  soarchain.did.Keys:
-    type: object
-    properties:
-      id:
-        type: string
-      pubkeyType:
-        type: string
-      controller:
-        type: string
-      publicKeyPem:
-        type: string
   soarchain.did.MsgDeactivateDidResponse:
     type: object
     description: MsgDeactivateDIDResponse defines the Msg/DeactivateDID response type.
@@ -16815,13 +16023,6 @@ definitions:
     type: object
   soarchain.did.MsgGenRunnerResponse:
     type: object
-  soarchain.did.Owner:
-    type: object
-    properties:
-      id:
-        type: string
-      purchaseDate:
-        type: string
   soarchain.did.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -16837,70 +16038,11 @@ definitions:
               type: string
             pubKey:
               type: string
-            keys:
-              type: object
-              properties:
-                id:
-                  type: string
-                pubkeyType:
-                  type: string
-                controller:
-                  type: string
-                publicKeyPem:
-                  type: string
-            verificationMethods:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  type:
-                    type: string
-                  controller:
-                    type: string
-                  publicKeyBase58:
-                    type: string
-            authentications:
-              type: array
-              items:
-                type: object
-                properties:
-                  verificationMethodId:
-                    type: string
-                  verificationMethod:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      type:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyBase58:
-                        type: string
-                title: >-
-                  VerificationRelationship defines a W3C verification
-                  relationship
-            services:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  type:
-                    type: string
-                  serviceEndpoint:
-                    type: string
-                description: Service defines a service in the W3C Did.
-            ipAddress:
+            address:
               type: string
             created:
               type: string
             updated:
-              type: string
-            address:
               type: string
       pagination:
         type: object
@@ -16937,82 +16079,17 @@ definitions:
           properties:
             id:
               type: string
-            pubKey:
-              type: string
             address:
+              type: string
+            pubKey:
               type: string
             type:
               type: string
-            keys:
-              type: object
-              properties:
-                id:
-                  type: string
-                pubkeyType:
-                  type: string
-                controller:
-                  type: string
-                publicKeyPem:
-                  type: string
-            verificationMethods:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  type:
-                    type: string
-                  controller:
-                    type: string
-                  publicKeyBase58:
-                    type: string
-            authentications:
-              type: array
-              items:
-                type: object
-                properties:
-                  verificationMethodId:
-                    type: string
-                  verificationMethod:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      type:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyBase58:
-                        type: string
-                title: >-
-                  VerificationRelationship defines a W3C verification
-                  relationship
-            services:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  type:
-                    type: string
-                  serviceEndpoint:
-                    type: string
-                description: Service defines a service in the W3C Did.
-            vehicle:
-              type: object
-              properties:
-                vin:
-                  type: string
-            owner:
-              type: object
-              properties:
-                id:
-                  type: string
-                purchaseDate:
-                  type: string
-            dprInfos:
+            created:
+              type: string
+            updated:
+              type: string
+            DprInfos:
               type: array
               items:
                 type: object
@@ -17024,10 +16101,6 @@ definitions:
                 title: >-
                   Define the DprInfo message that holds id and claimed
                   information
-            created:
-              type: string
-            updated:
-              type: string
       pagination:
         type: object
         properties:
@@ -17065,70 +16138,11 @@ definitions:
               type: string
             pubKey:
               type: string
-            keys:
-              type: object
-              properties:
-                id:
-                  type: string
-                pubkeyType:
-                  type: string
-                controller:
-                  type: string
-                publicKeyPem:
-                  type: string
-            verificationMethods:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  type:
-                    type: string
-                  controller:
-                    type: string
-                  publicKeyBase58:
-                    type: string
-            authentications:
-              type: array
-              items:
-                type: object
-                properties:
-                  verificationMethodId:
-                    type: string
-                  verificationMethod:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      type:
-                        type: string
-                      controller:
-                        type: string
-                      publicKeyBase58:
-                        type: string
-                title: >-
-                  VerificationRelationship defines a W3C verification
-                  relationship
-            services:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  type:
-                    type: string
-                  serviceEndpoint:
-                    type: string
-                description: Service defines a service in the W3C Did.
-            ipAddress:
+            address:
               type: string
             created:
               type: string
             updated:
-              type: string
-            address:
               type: string
       pagination:
         type: object
@@ -17165,68 +16179,11 @@ definitions:
             type: string
           pubKey:
             type: string
-          keys:
-            type: object
-            properties:
-              id:
-                type: string
-              pubkeyType:
-                type: string
-              controller:
-                type: string
-              publicKeyPem:
-                type: string
-          verificationMethods:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          authentications:
-            type: array
-            items:
-              type: object
-              properties:
-                verificationMethodId:
-                  type: string
-                verificationMethod:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    type:
-                      type: string
-                    controller:
-                      type: string
-                    publicKeyBase58:
-                      type: string
-              title: VerificationRelationship defines a W3C verification relationship
-          services:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                serviceEndpoint:
-                  type: string
-              description: Service defines a service in the W3C Did.
-          ipAddress:
+          address:
             type: string
           created:
             type: string
           updated:
-            type: string
-          address:
             type: string
   soarchain.did.QueryGetChallengerDidByPubKeyResponse:
     type: object
@@ -17238,68 +16195,11 @@ definitions:
             type: string
           pubKey:
             type: string
-          keys:
-            type: object
-            properties:
-              id:
-                type: string
-              pubkeyType:
-                type: string
-              controller:
-                type: string
-              publicKeyPem:
-                type: string
-          verificationMethods:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          authentications:
-            type: array
-            items:
-              type: object
-              properties:
-                verificationMethodId:
-                  type: string
-                verificationMethod:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    type:
-                      type: string
-                    controller:
-                      type: string
-                    publicKeyBase58:
-                      type: string
-              title: VerificationRelationship defines a W3C verification relationship
-          services:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                serviceEndpoint:
-                  type: string
-              description: Service defines a service in the W3C Did.
-          ipAddress:
+          address:
             type: string
           created:
             type: string
           updated:
-            type: string
-          address:
             type: string
   soarchain.did.QueryGetChallengerDidResponse:
     type: object
@@ -17311,68 +16211,11 @@ definitions:
             type: string
           pubKey:
             type: string
-          keys:
-            type: object
-            properties:
-              id:
-                type: string
-              pubkeyType:
-                type: string
-              controller:
-                type: string
-              publicKeyPem:
-                type: string
-          verificationMethods:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          authentications:
-            type: array
-            items:
-              type: object
-              properties:
-                verificationMethodId:
-                  type: string
-                verificationMethod:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    type:
-                      type: string
-                    controller:
-                      type: string
-                    publicKeyBase58:
-                      type: string
-              title: VerificationRelationship defines a W3C verification relationship
-          services:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                serviceEndpoint:
-                  type: string
-              description: Service defines a service in the W3C Did.
-          ipAddress:
+          address:
             type: string
           created:
             type: string
           updated:
-            type: string
-          address:
             type: string
   soarchain.did.QueryGetClientDidResponse:
     type: object
@@ -17382,80 +16225,17 @@ definitions:
         properties:
           id:
             type: string
-          pubKey:
-            type: string
           address:
+            type: string
+          pubKey:
             type: string
           type:
             type: string
-          keys:
-            type: object
-            properties:
-              id:
-                type: string
-              pubkeyType:
-                type: string
-              controller:
-                type: string
-              publicKeyPem:
-                type: string
-          verificationMethods:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          authentications:
-            type: array
-            items:
-              type: object
-              properties:
-                verificationMethodId:
-                  type: string
-                verificationMethod:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    type:
-                      type: string
-                    controller:
-                      type: string
-                    publicKeyBase58:
-                      type: string
-              title: VerificationRelationship defines a W3C verification relationship
-          services:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                serviceEndpoint:
-                  type: string
-              description: Service defines a service in the W3C Did.
-          vehicle:
-            type: object
-            properties:
-              vin:
-                type: string
-          owner:
-            type: object
-            properties:
-              id:
-                type: string
-              purchaseDate:
-                type: string
-          dprInfos:
+          created:
+            type: string
+          updated:
+            type: string
+          DprInfos:
             type: array
             items:
               type: object
@@ -17465,83 +16245,6 @@ definitions:
                 claimed:
                   type: string
               title: Define the DprInfo message that holds id and claimed information
-          created:
-            type: string
-          updated:
-            type: string
-  soarchain.did.QueryGetRunnerDidByIpResponse:
-    type: object
-    properties:
-      runner:
-        type: object
-        properties:
-          id:
-            type: string
-          pubKey:
-            type: string
-          keys:
-            type: object
-            properties:
-              id:
-                type: string
-              pubkeyType:
-                type: string
-              controller:
-                type: string
-              publicKeyPem:
-                type: string
-          verificationMethods:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          authentications:
-            type: array
-            items:
-              type: object
-              properties:
-                verificationMethodId:
-                  type: string
-                verificationMethod:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    type:
-                      type: string
-                    controller:
-                      type: string
-                    publicKeyBase58:
-                      type: string
-              title: VerificationRelationship defines a W3C verification relationship
-          services:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                serviceEndpoint:
-                  type: string
-              description: Service defines a service in the W3C Did.
-          ipAddress:
-            type: string
-          created:
-            type: string
-          updated:
-            type: string
-          address:
-            type: string
   soarchain.did.QueryGetRunnerDidByPubKeyResponse:
     type: object
     properties:
@@ -17552,68 +16255,11 @@ definitions:
             type: string
           pubKey:
             type: string
-          keys:
-            type: object
-            properties:
-              id:
-                type: string
-              pubkeyType:
-                type: string
-              controller:
-                type: string
-              publicKeyPem:
-                type: string
-          verificationMethods:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          authentications:
-            type: array
-            items:
-              type: object
-              properties:
-                verificationMethodId:
-                  type: string
-                verificationMethod:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    type:
-                      type: string
-                    controller:
-                      type: string
-                    publicKeyBase58:
-                      type: string
-              title: VerificationRelationship defines a W3C verification relationship
-          services:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                serviceEndpoint:
-                  type: string
-              description: Service defines a service in the W3C Did.
-          ipAddress:
+          address:
             type: string
           created:
             type: string
           updated:
-            type: string
-          address:
             type: string
   soarchain.did.QueryGetRunnerDidResponse:
     type: object
@@ -17625,68 +16271,11 @@ definitions:
             type: string
           pubKey:
             type: string
-          keys:
-            type: object
-            properties:
-              id:
-                type: string
-              pubkeyType:
-                type: string
-              controller:
-                type: string
-              publicKeyPem:
-                type: string
-          verificationMethods:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          authentications:
-            type: array
-            items:
-              type: object
-              properties:
-                verificationMethodId:
-                  type: string
-                verificationMethod:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    type:
-                      type: string
-                    controller:
-                      type: string
-                    publicKeyBase58:
-                      type: string
-              title: VerificationRelationship defines a W3C verification relationship
-          services:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                serviceEndpoint:
-                  type: string
-              description: Service defines a service in the W3C Did.
-          ipAddress:
+          address:
             type: string
           created:
             type: string
           updated:
-            type: string
-          address:
             type: string
   soarchain.did.QueryParamsResponse:
     type: object
@@ -17702,112 +16291,12 @@ definitions:
         type: string
       pubKey:
         type: string
-      keys:
-        type: object
-        properties:
-          id:
-            type: string
-          pubkeyType:
-            type: string
-          controller:
-            type: string
-          publicKeyPem:
-            type: string
-      verificationMethods:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-            type:
-              type: string
-            controller:
-              type: string
-            publicKeyBase58:
-              type: string
-      authentications:
-        type: array
-        items:
-          type: object
-          properties:
-            verificationMethodId:
-              type: string
-            verificationMethod:
-              type: object
-              properties:
-                id:
-                  type: string
-                type:
-                  type: string
-                controller:
-                  type: string
-                publicKeyBase58:
-                  type: string
-          title: VerificationRelationship defines a W3C verification relationship
-      services:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-            type:
-              type: string
-            serviceEndpoint:
-              type: string
-          description: Service defines a service in the W3C Did.
-      ipAddress:
+      address:
         type: string
       created:
         type: string
       updated:
         type: string
-      address:
-        type: string
-  soarchain.did.Service:
-    type: object
-    properties:
-      id:
-        type: string
-      type:
-        type: string
-      serviceEndpoint:
-        type: string
-    description: Service defines a service in the W3C Did.
-  soarchain.did.Vehicle:
-    type: object
-    properties:
-      vin:
-        type: string
-  soarchain.did.VerificationMethod:
-    type: object
-    properties:
-      id:
-        type: string
-      type:
-        type: string
-      controller:
-        type: string
-      publicKeyBase58:
-        type: string
-  soarchain.did.VerificationRelationship:
-    type: object
-    properties:
-      verificationMethodId:
-        type: string
-      verificationMethod:
-        type: object
-        properties:
-          id:
-            type: string
-          type:
-            type: string
-          controller:
-            type: string
-          publicKeyBase58:
-            type: string
-    title: VerificationRelationship defines a W3C verification relationship
   soarchain.dpr.Dpr:
     type: object
     properties:
