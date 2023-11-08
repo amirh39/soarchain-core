@@ -13,91 +13,12 @@ import (
 
 	keepertest "soarchain/testutil/keeper"
 
-	"soarchain/x/did/utility/crypto"
-
 	tendermintcrypto "github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
-
-func NewDIDDocumentWithSeq(did string) (types.ClientDidWithSeq, tendermintcrypto.PrivKey) {
-	privKey := secp256k1.GenPrivKey()
-	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
-	verificationMethodID := types.NewVerificationMethodID(did, "key1")
-	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
-	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
-	verificationMethods := []*types.VerificationMethod{
-		&es256VerificationMethod,
-		&blsVerificationMethod,
-	}
-	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
-	authentications := []types.VerificationRelationship{
-		verificationRelationship,
-	}
-	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
-	vehicle := types.NewVehicle(VIN)
-	owner := types.NewOwner(OWNERID, PURCHESDATE)
-	doc := types.NewClientDidDocument(did, INDEX, ADDRESS, TYPE, PIDS, types.WithVerificationMethods(verificationMethods), types.WithAuthentications(authentications), types.WithKeys(&soarchainPublicKey), types.WithVehicle(&vehicle), types.WithOwner(&owner))
-	docWithSeq := types.NewDidDocumentWithSeq(
-		&doc,
-		types.InitialSequence,
-	)
-	return docWithSeq, privKey
-}
-
-func NewRunnerDidDocumentWithSeq(did string) (types.RunnerDidWithSeq, tendermintcrypto.PrivKey) {
-	privKey := secp256k1.GenPrivKey()
-	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
-	verificationMethodID := types.NewVerificationMethodID(did, "key1")
-	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
-	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
-	verificationMethods := []*types.VerificationMethod{
-		&es256VerificationMethod,
-		&blsVerificationMethod,
-	}
-	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
-	authentications := []types.VerificationRelationship{
-		verificationRelationship,
-	}
-	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
-	doc := types.NewRunnerDidDocument(did, INDEX, ADDRESS, types.WithRunnerVerificationMethods(verificationMethods), types.WithRunnerAuthentications(authentications), types.WithRunnerKeys(&soarchainPublicKey))
-	docWithSeq := types.NewRunnerDidDocumentWithSeq(
-		&doc,
-		types.InitialSequence,
-	)
-	return docWithSeq, privKey
-}
-
-func NewChallengerDidDocumentWithSeq(did string) (types.ChallengerDidWithSeq, tendermintcrypto.PrivKey) {
-	privKey := secp256k1.GenPrivKey()
-	pubKey := crypto.PubKeyBytes(crypto.DerivePubKey(privKey))
-	verificationMethodID := types.NewVerificationMethodID(did, "key1")
-	es256VerificationMethod := types.NewVerificationMethod(verificationMethodID, types.ES256K_2019, did, pubKey)
-	blsVerificationMethod := types.NewVerificationMethod(verificationMethodID, types.BLS1281G2_2020, did, []byte("dummy BBS+ pub key"))
-	verificationMethods := []*types.VerificationMethod{
-		&es256VerificationMethod,
-		&blsVerificationMethod,
-	}
-	verificationRelationship := types.NewVerificationRelationship(verificationMethods[0].Id)
-	authentications := []types.VerificationRelationship{
-		verificationRelationship,
-	}
-	soarchainPublicKey := types.NewKeys(did, PUBKEYTYPE, CONTROLLER, PUBLICKEYPEM)
-	doc := types.NewChallengerDidDocument(did, INDEX, ADDRESS, types.WithChallengerVerificationMethods(verificationMethods), types.WithChallengerAuthentications(authentications), types.WithChallengerKeys(&soarchainPublicKey))
-	docWithSeq := types.NewChallengerDidDocumentWithSeq(
-		&doc,
-		types.InitialSequence,
-	)
-	return docWithSeq, privKey
-}
 
 func NewMsgDeactivateDID(doc types.ClientDid, did string, verificationMethodID string, privKey tendermintcrypto.PrivKey, seq uint64) types.MsgDeactivateDid {
 	sig, _ := types.Sign(&doc, seq, privKey)
 	return *types.NewMsgDeactivateDid(did, verificationMethodID, sig, sdk.AccAddress{}.String())
-}
-
-func MakeTestData() (string, types.ClientDidWithSeq, tendermintcrypto.PrivKey, string) {
-	doc, privKey := NewDIDDocumentWithSeq(Did)
-	return Did, doc, privKey, doc.Document.VerificationMethods[0].Id
 }
 
 func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context,
@@ -116,7 +37,6 @@ func CreateNChallengerDid(keeper *keeper.Keeper, ctx sdk.Context, n int) []types
 	for i := range items {
 		items[i].PubKey = Challenger_PubKey
 		items[i].Address = Challenger_Address
-		items[i].IpAddress = Challenger_IPAddress
 
 		keeper.SetChallengerDid(ctx, items[i])
 	}
