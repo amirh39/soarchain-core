@@ -31,14 +31,14 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ValidateChallengerType] failed. Invalid challenger type. Must be 'v2n' or 'v2x'.")
 	}
 
-	deviceCert, error := CreateX509CertFromString(msg.Certificate)
+	certificate, error := CreateX509CertFromString(msg.Certificate)
 	if error != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][CreateX509CertFromString] failed. Invalid device certificate.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][CreateX509CertFromString] failed. Invalid certificate.")
 	}
 
-	isValide := ValidateX509CertByASN1(msg.Creator, msg.Signature, deviceCert)
-	if !isValide {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ValidateX509CertByASN1] failed. Invalid device certificate and signature.")
+	isValid := ValidateX509CertByASN1(msg.Creator, msg.Signature, certificate)
+	if !isValid {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "[GenChallenger][ValidateX509CertByASN1] failed. Invalid certificate and signature.")
 	}
 
 	pubKeyHex, error := ExtractPubkeyFromCertificate(msg.Certificate)
@@ -48,9 +48,6 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 
 	if logger != nil {
 		logger.Info("Verifying challenger certificate successfully done.", "transaction", "GeChallenger")
-	}
-
-	if logger != nil {
 		logger.Info("Verifying unique did successfully done.", "transaction", "GenChallenger")
 	}
 
@@ -116,7 +113,7 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 	}, msg.Certificate, msg.ChallengerStake, msg.Creator)
 	if err != nil {
 		k.RemoveChallengerDid(ctx, msg.Creator)
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenChallenger][InitializeReputation] failed. Invalid certificate validation.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenChallenger][InitializeReputation] failed. Creating reputation object failed")
 	}
 
 	log.Println("############## End of generating challenger did Transaction ##############")
