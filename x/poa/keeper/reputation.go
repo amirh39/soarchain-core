@@ -205,15 +205,15 @@ func (k Keeper) RemoveClientReputation(ctx sdk.Context, creator string) error {
 	return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[RemoveClientReputation] failed. Couldn't delete client reputation. Make sure using valid address.")
 }
 
-func (k Keeper) RemoveRunnerReputation(ctx sdk.Context, runnerAddress string, creator string) error {
+func (k Keeper) RemoveRunnerReputation(ctx sdk.Context, creator string) error {
 
-	reputation, found := k.GetReputationsByAddress(ctx, runnerAddress)
+	reputation, found := k.GetReputationsByAddress(ctx, creator)
 	if !found {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[RemoveRunnerReputation][GetReputationsByAddress] failed. Reputation not found. Make sure using valid address.")
 	}
 
 	if reputation.Type == "" {
-		if reputation.Address != runnerAddress {
+		if reputation.Address != creator {
 			return sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[RemoveRunnerReputation][Validate address] failed. Runner reputation address is not equal with the given address.")
 		}
 		receipientAddress, err := sdk.AccAddressFromBech32(creator)
@@ -238,16 +238,16 @@ func (k Keeper) RemoveRunnerReputation(ctx sdk.Context, runnerAddress string, cr
 	return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[RemoveRunnerReputation] failed. Couldn't delete runner reputation. Make sure using valid address.")
 }
 
-func (k Keeper) RemoveChallengerReputation(ctx sdk.Context, challengerAddress string, creator string) error {
+func (k Keeper) RemoveChallengerReputation(ctx sdk.Context, creator string) error {
 
-	reputation, found := k.GetReputationsByAddress(ctx, challengerAddress)
+	reputation, found := k.GetReputationsByAddress(ctx, creator)
 	if !found {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, "[RemoveChallengerReputation][GetReputationsByAddress] failed. Challenger reputation not found. Make sure using valid address.")
 	}
 
 	if reputation.Type == constants.V2XChallenger || reputation.Type == constants.V2NChallenger {
 
-		if reputation.Address != challengerAddress {
+		if reputation.Address != creator {
 			return sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "[RemoveChallengerReputation][Validate address] failed. Challenger reputation address is not equal with the given address.")
 		}
 

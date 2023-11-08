@@ -30,8 +30,8 @@ type PoaKeeper interface {
 	InitializeClientReputation(ctx sdk.Context, reputation poatypes.Reputation, certificate string) error
 	GetReputation(ctx sdk.Context, pubkey string) (val poatypes.Reputation, found bool)
 	RemoveClientReputation(ctx sdk.Context, address string) error
-	RemoveRunnerReputation(ctx sdk.Context, fromAddress string, creator string) error
-	RemoveChallengerReputation(ctx sdk.Context, fromAddress string, creator string) error
+	RemoveRunnerReputation(ctx sdk.Context, creator string) error
+	RemoveChallengerReputation(ctx sdk.Context, creator string) error
 	GetReputationsByAddress(ctx sdk.Context, address string) (val poatypes.Reputation, found bool)
 	// Methods imported from account should be defined here
 }
