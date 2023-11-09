@@ -15,17 +15,24 @@ import (
 )
 
 func (k Keeper) ChallengerDidAll(c context.Context, req *types.QueryAllChallengerDidRequest) (*types.QueryAllChallengerDidResponse, error) {
-	if req == nil || req.Pagination == nil {
+	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "[ChallengerDidAll] failed. Invalid request.")
 	}
 
 	var challengerDids []types.ChallengerDid
 	ctx := sdk.UnwrapSDKContext(c)
 
-	store := ctx.KVStore(k.storeKey)
-	clientStore := prefix.NewStore(store, types.KeyPrefix(types.ChallengerDidKeyPrefix))
+	pagination := req.Pagination
+	if pagination == nil {
+		pagination = &query.PageRequest{Limit: 100}
+	} else if pagination.Limit == 0 || pagination.Limit > 1000 {
+		pagination.Limit = 1000
+	}
 
-	pageRes, err := query.Paginate(clientStore, req.Pagination, func(key []byte, value []byte) error {
+	store := ctx.KVStore(k.storeKey)
+	challengerStore := prefix.NewStore(store, types.KeyPrefix(types.ChallengerDidKeyPrefix))
+
+	pageRes, err := query.Paginate(challengerStore, req.Pagination, func(key []byte, value []byte) error {
 		var challengerDid types.ChallengerDid
 		if err := k.cdc.Unmarshal(value, &challengerDid); err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ChallengerDidAll][Unmarshal] failed. Couldn't parse the challenger did data encoded.")
