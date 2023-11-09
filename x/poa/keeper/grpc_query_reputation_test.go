@@ -120,4 +120,33 @@ func Test_ClientQueryPaginated(t *testing.T) {
 		_, err := keeper.ReputationAll(wctx, nil)
 		require.Error(t, err)
 	})
+
+	t.Run("DefaultPagination", func(t *testing.T) {
+		CreateNRandomReputation(keeper, ctx, 150)
+
+		resp, err := keeper.ReputationAll(wctx, &types.QueryAllReputationRequest{})
+
+		require.NoError(t, err)
+		require.Equal(t, 100, len(resp.Reputation))
+		require.NotNil(t, resp.Pagination.NextKey)
+	})
+
+	t.Run("ProvidedPagination", func(t *testing.T) {
+
+		createdItems := 150
+		step := 10
+
+		CreateNRandomReputation(keeper, ctx, 150)
+
+		resp, err := keeper.ReputationAll(wctx, &types.QueryAllReputationRequest{
+			Pagination: &query.PageRequest{Limit: uint64(step)},
+		})
+
+		require.NoError(t, err)
+		require.Equal(t, step, len(resp.Reputation))
+		if createdItems > step {
+			require.NotNil(t, resp.Pagination.NextKey)
+		}
+	})
+
 }
