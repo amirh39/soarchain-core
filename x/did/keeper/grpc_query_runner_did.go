@@ -15,12 +15,19 @@ import (
 )
 
 func (k Keeper) RunnerDidAll(c context.Context, req *types.QueryAllRunnerDidRequest) (*types.QueryAllRunnerDidResponse, error) {
-	if req == nil || req.Pagination == nil {
+	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "[RunnerDidAll] failed. Invalid request.")
 	}
 
 	var runnerDids []types.RunnerDid
 	ctx := sdk.UnwrapSDKContext(c)
+
+	pagination := req.Pagination
+	if pagination == nil {
+		pagination = &query.PageRequest{Limit: 100}
+	} else if pagination.Limit == 0 || pagination.Limit > 1000 {
+		pagination.Limit = 1000
+	}
 
 	store := ctx.KVStore(k.storeKey)
 	clientStore := prefix.NewStore(store, types.KeyPrefix(types.RunnerDidKeyPrefix))
