@@ -29,9 +29,9 @@ func (k Keeper) ReputationAll(c context.Context, req *types.QueryAllReputationRe
 	}
 
 	store := ctx.KVStore(k.storeKey)
-	clientStore := prefix.NewStore(store, types.KeyPrefix(types.ReputationKeyPrefix))
+	reputationStore := prefix.NewStore(store, types.KeyPrefix(types.ReputationKeyPrefix))
 
-	pageRes, err := query.Paginate(clientStore, req.Pagination, func(key []byte, value []byte) error {
+	pageRes, err := query.Paginate(reputationStore, req.Pagination, func(key []byte, value []byte) error {
 		var reputation types.Reputation
 		if err := k.cdc.Unmarshal(value, &reputation); err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ReputationAll][Unmarshal] failed. Couldn't parse the reputation data encoded.")
