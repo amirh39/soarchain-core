@@ -15,22 +15,24 @@ import (
 )
 
 func (k Keeper) ClientDidAll(c context.Context, req *types.QueryAllClientDidRequest) (*types.QueryAllClientDidResponse, error) {
-	if req == nil || req.Pagination == nil {
+	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "[ClientDidAll] failed. Invalid request.")
 	}
 
 	var clientDids []types.ClientDid
 	ctx := sdk.UnwrapSDKContext(c)
 
-	limit := req.Pagination.GetLimit()
-	if limit == 0 || limit > 100 {
-		limit = 100
+	pagination := req.Pagination
+	if pagination == nil {
+		pagination = &query.PageRequest{Limit: 100}
+	} else if pagination.Limit == 0 || pagination.Limit > 1000 {
+		pagination.Limit = 1000
 	}
 
 	store := ctx.KVStore(k.storeKey)
 	clientStore := prefix.NewStore(store, types.KeyPrefix(types.DidKeyPrefix))
 
-	pageRes, err := query.Paginate(clientStore, req.Pagination, func(key []byte, value []byte) error {
+	pageRes, err := query.Paginate(clientStore, pagination, func(key []byte, value []byte) error {
 		var clientDid types.ClientDid
 		if err := k.cdc.Unmarshal(value, &clientDid); err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ClientDidAll][Unmarshal] failed. Couldn't parse the reputation data encoded.")

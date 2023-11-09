@@ -14,7 +14,7 @@ import (
 )
 
 func (k Keeper) FactoryKeysAll(c context.Context, req *types.QueryAllFactoryKeysRequest) (*types.QueryAllFactoryKeysResponse, error) {
-	if req == nil || req.Pagination == nil {
+	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "[FactoryKeysAll] failed. Invalid request.")
 	}
 

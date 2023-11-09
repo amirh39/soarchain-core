@@ -14,17 +14,24 @@ import (
 )
 
 func (k Keeper) VrfDataAll(c context.Context, req *types.QueryAllVrfDataRequest) (*types.QueryAllVrfDataResponse, error) {
-	if req == nil || req.Pagination == nil {
+	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "[VrfDataAll] failed. Invalid request.")
 	}
 
 	var vrfDatas []types.VrfData
 	ctx := sdk.UnwrapSDKContext(c)
 
+	pagination := req.Pagination
+	if pagination == nil {
+		pagination = &query.PageRequest{Limit: 100}
+	} else if pagination.Limit == 0 || pagination.Limit > 1000 {
+		pagination.Limit = 1000
+	}
+
 	store := ctx.KVStore(k.storeKey)
 	vrfDataStore := prefix.NewStore(store, types.KeyPrefix(types.VrfDataKeyPrefix))
 
-	pageRes, err := query.Paginate(vrfDataStore, req.Pagination, func(key []byte, value []byte) error {
+	pageRes, err := query.Paginate(vrfDataStore, pagination, func(key []byte, value []byte) error {
 		var vrfData types.VrfData
 		if err := k.cdc.Unmarshal(value, &vrfData); err != nil {
 			return err
