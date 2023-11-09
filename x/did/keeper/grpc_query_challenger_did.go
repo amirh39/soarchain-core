@@ -32,7 +32,7 @@ func (k Keeper) ChallengerDidAll(c context.Context, req *types.QueryAllChallenge
 	store := ctx.KVStore(k.storeKey)
 	challengerStore := prefix.NewStore(store, types.KeyPrefix(types.ChallengerDidKeyPrefix))
 
-	pageRes, err := query.Paginate(challengerStore, req.Pagination, func(key []byte, value []byte) error {
+	pageRes, err := query.Paginate(challengerStore, pagination, func(key []byte, value []byte) error {
 		var challengerDid types.ChallengerDid
 		if err := k.cdc.Unmarshal(value, &challengerDid); err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, "[ChallengerDidAll][Unmarshal] failed. Couldn't parse the challenger did data encoded.")
