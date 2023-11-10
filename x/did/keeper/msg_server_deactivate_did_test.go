@@ -1,15 +1,23 @@
 package keeper_test
 
 import (
+	"log"
+	"soarchain/app/params"
+	k "soarchain/x/did/keeper"
 	"soarchain/x/did/types"
+	poaTypes "soarchain/x/poa/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (helper *KeeperTestHelper) Test_DeactivateDid() {
-	helper.Run("TestGenChallenger", func() {
+	helper.Run("Test_DeactivateDid", func() {
 		helper.Setup()
+		bankKeeper := helper.App.BankKeeper
 		keeper := helper.App.DidKeeper
-		poakeeper := helper.App.PoaKeeper
-
+		poaKeeper := helper.App.PoaKeeper
+		msgServer := k.NewMsgServerImpl(keeper)
+		ctx := sdk.WrapSDKContext(helper.Ctx)
 		newDid := types.ClientDid{
 			Id:      Did,
 			PubKey:  PUBKEY,
@@ -19,20 +27,31 @@ func (helper *KeeperTestHelper) Test_DeactivateDid() {
 		helper.Require().NotNil(newDid)
 
 		didDocument, found := keeper.GetClientDid(helper.Ctx, ADDRESS)
+		rep := poaTypes.Reputation{
+			PubKey:      PUBKEY,
+			Address:     ADDRESS,
+			NetEarnings: "10udmotus",
+			Type:        "mini",
+		}
+		poaKeeper.SetReputation(helper.Ctx, rep)
+		repx, _ := poaKeeper.GetReputationsByAddress(helper.Ctx, ADDRESS)
+		log.Println(repx)
+		log.Println(didDocument)
 		helper.Require().NotNil(didDocument)
 		helper.Require().Equal(found, true)
+
+		amount := sdk.NewCoins(sdk.NewCoin(params.BondDenom, sdk.NewInt(1000000000000000)))
+		bankKeeper.MintCoins(helper.Ctx, "poa", amount)
 
 		deactivateMsg := types.MsgDeactivateDid{
 
 			Creator: ADDRESS,
 		}
-		helper.Require().NotNil(deactivateMsg)
-		keeper.RemoveClientDid(helper.Ctx, ADDRESS)
-		error := poakeeper.RemoveClientReputation(helper.Ctx, ADDRESS)
-		if error != nil {
-			helper.Require().NotNil(error)
-		} else {
-			helper.Require().Nil(error)
-		}
+		res, err := msgServer.DeactivateDid(ctx, &deactivateMsg)
+		_, isFound := keeper.GetClientDid(helper.Ctx, ADDRESS)
+		helper.Require().Equal(isFound, false)
+		helper.Require().NotNil(res)
+		helper.Require().Nil(err)
+
 	})
 }
