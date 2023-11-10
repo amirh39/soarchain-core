@@ -101,6 +101,7 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 		Type:               "",
 		StakedAmount:       msg.RunnerStake,
+		DprEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 	}, msg.Certificate, msg.RunnerStake, msg.Creator)
 	if initializeError != nil {
 		k.RemoveRunnerDid(ctx, msg.Creator)

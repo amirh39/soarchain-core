@@ -102,6 +102,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 		Type:               clientType,
 		StakedAmount:       "",
+		DprEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 	}, msg.Certificate)
 
 	if err != nil {
