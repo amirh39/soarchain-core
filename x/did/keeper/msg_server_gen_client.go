@@ -106,7 +106,7 @@ func (k msgServer) GenClient(goCtx context.Context, msg *types.MsgGenClient) (*t
 
 	if err != nil {
 		k.RemoveClientDid(ctx, msg.Creator)
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenClient][InitializeReputation] failed. Invalid certificate validation.")
+		return nil, err
 	}
 
 	log.Println("############## End of Generating client did Transaction ##############")

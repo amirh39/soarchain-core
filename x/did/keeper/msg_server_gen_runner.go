@@ -104,7 +104,7 @@ func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*t
 	}, msg.Certificate, msg.RunnerStake, msg.Creator)
 	if initializeError != nil {
 		k.RemoveRunnerDid(ctx, msg.Creator)
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenRunner][InitializeReputation] failed. Invalid certificate validation.")
+		return nil, initializeError
 	}
 
 	log.Println("############## End of Generating Runner did Transaction ##############")
