@@ -47,10 +47,10 @@ func (k msgServer) GenDpr(goCtx context.Context, msg *types.MsgGenDpr) (*types.M
 	// TODO: find an efficient way to distribute rewards to runners
 
 	dprOwner, _ := sdk.AccAddressFromBech32(msg.Creator)
-
+	//log.Println(k.bankKeeper.GetBalance(ctx, dprOwner, params.BondDenom))
 	errTransfer := k.bankKeeper.SendCoinsFromAccountToModule(ctx, dprOwner, types.ModuleName, budget)
 	if errTransfer != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "[GenDpr][SendCoinsFromAccountToModule] failed. Couldn't send coins.")
+		return nil, errTransfer
 	}
 
 	timestampStr := ctx.BlockTime().String()
