@@ -113,7 +113,7 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 	}, msg.Certificate, msg.ChallengerStake, msg.Creator)
 	if err != nil {
 		k.RemoveChallengerDid(ctx, msg.Creator)
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidType, "[GenChallenger][InitializeReputation] failed. Creating reputation object failed")
+		return nil, err
 	}
 
 	log.Println("############## End of generating challenger did Transaction ##############")

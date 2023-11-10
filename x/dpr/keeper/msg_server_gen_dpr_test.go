@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"log"
 	"soarchain/app/params"
 	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/types"
@@ -19,7 +20,7 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		//actor := RandomAccountAddress()
 		didKeeper := helper.App.DidKeeper
 		epochKeeper := helper.App.EpochKeeper
-		//accountKeeper := helper.App.AccountKeeper
+		accountKeeper := helper.App.AccountKeeper
 		bankKeeper := helper.App.BankKeeper
 
 		helper.MsgServer = keeper.NewMsgServerImpl(helper.App.DprKeeper)
@@ -34,25 +35,20 @@ func (helper *KeeperTestHelper) Test_Gen_DPR() {
 		}
 
 		didKeeper.SetClientDid(helper.Ctx, newDid)
-		addr, err := sdk.AccAddressFromBech32(CREATOR)
-
-		//testAcc := helper.TestAccs[0]
+		addr := sdk.MustAccAddressFromBech32(CREATOR)
 
 		actorAmount := sdk.NewCoins(sdk.NewCoin(params.BondDenom, sdk.NewInt(1000000000000000)))
-		// testAccountPubkey := secp256k1.GenPrivKeyFromSecret([]byte("acc")).PubKey()
-		// testAccountAddress := sdk.AccAddress(testAccountPubkey.Address())
-		// modAcc := authtypes.NewModuleAccount(authtypes.NewBaseAccount(testAccountAddress, testAccountPubkey, 1, 0),
-		// 	"mint",
-		// 	"permission",
-		// )
-		// accountKeeper.SetModuleAccount(helper.Ctx, modAcc)
 
-		helper.App.AccountKeeper.SetAccount(helper.Ctx, authtypes.NewBaseAccount(addr, nil, 0, 0))
+		accountKeeper.SetAccount(helper.Ctx, authtypes.NewBaseAccountWithAddress(addr))
+		log.Println(accountKeeper.GetAccount(helper.Ctx, addr))
+
 		bankKeeper.MintCoins(helper.Ctx, types.ModuleName, actorAmount)
-		bankKeeper.SendCoinsFromModuleToAccount(helper.Ctx, types.ModuleName, sdk.AccAddress(CREATOR), actorAmount)
+		bankKeeper.SendCoinsFromModuleToAccount(helper.Ctx, types.ModuleName, addr, actorAmount)
+
+		log.Println(bankKeeper.GetBalance(helper.Ctx, addr, params.BondDenom))
 
 		res, err := helper.MsgServer.GenDpr(ctx, &types.MsgGenDpr{
-			Creator: CREATOR,
+			Creator: addr.String(),
 			SupportedPIDs: &types.SupportedPIDs{
 				Pid_1To_20:  "",
 				Pid_21To_40: "8005B815",
