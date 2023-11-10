@@ -110,6 +110,7 @@ func (k msgServer) GenChallenger(goCtx context.Context, msg *types.MsgGenChallen
 		CoolDownTolerance:  strconv.FormatUint(1, 10),
 		Type:               msg.ChallengerType,
 		StakedAmount:       msg.ChallengerStake,
+		DprEarnings:        sdk.NewCoin(param.BondDenom, sdk.ZeroInt()).String(),
 	}, msg.Certificate, msg.ChallengerStake, msg.Creator)
 	if err != nil {
 		k.RemoveChallengerDid(ctx, msg.Creator)
