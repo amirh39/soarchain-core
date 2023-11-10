@@ -1,11 +1,13 @@
 package keeper_test
 
 import (
+	"soarchain/app/params"
 	k "soarchain/x/did/keeper"
 	"soarchain/x/did/types"
 	poaTypes "soarchain/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 func (helper *KeeperTestHelper) Test_Gen_Challenger() {
@@ -13,6 +15,8 @@ func (helper *KeeperTestHelper) Test_Gen_Challenger() {
 		helper.Setup()
 		keeper := helper.App.DidKeeper
 		poaKeeper := helper.App.PoaKeeper
+		bankKeeper := helper.App.BankKeeper
+		accountKeeper := helper.App.AccountKeeper
 
 		ctx := sdk.WrapSDKContext(helper.Ctx)
 		msgServer := k.NewMsgServerImpl(keeper)
@@ -35,6 +39,13 @@ func (helper *KeeperTestHelper) Test_Gen_Challenger() {
 
 		factoryCerts := poaKeeper.GetAllFactoryKeys(helper.Ctx)
 		helper.Require().NotEmpty(factoryCerts)
+
+		amount := sdk.NewCoins(sdk.NewCoin(params.BondDenom, sdk.NewInt(1000000000000000000)))
+		bankKeeper.MintCoins(helper.Ctx, types.ModuleName, amount)
+
+		addr := sdk.MustAccAddressFromBech32(ADDRESS2)
+		accountKeeper.SetAccount(helper.Ctx, authtypes.NewBaseAccountWithAddress(addr))
+		bankKeeper.SendCoinsFromModuleToAccount(helper.Ctx, types.ModuleName, addr, amount)
 
 		res, err := msgServer.GenChallenger(ctx, &types.MsgGenChallenger{
 			Signature:       Signature,
