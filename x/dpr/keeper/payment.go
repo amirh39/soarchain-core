@@ -23,9 +23,15 @@ func (k Keeper) DistributeRewards(ctx sdk.Context, clientDid types.ClientDid) (s
 	currentEpoch, _ := k.epochKeeper.GetEpochData(ctx)
 
 	// Iterate over the DPRs the client is in
-	for i, dprInfo := range clientDid.DprInfos {
+	i := 0
+	for i < len(clientDid.DprInfos) {
+		dprInfo := clientDid.DprInfos[i]
 		// Retrieve DPR using dprInfo.Id
 		dpr, _ := k.GetDpr(ctx, dprInfo.Id)
+		if dpr.Status == 0 {
+			i++
+			continue
+		}
 
 		// Calculate total reward possible until the current epoch
 		elapsedEpochs := currentEpoch.TotalEpochs - dpr.DprStartEpoch
@@ -88,6 +94,14 @@ func (k Keeper) DistributeRewards(ctx sdk.Context, clientDid types.ClientDid) (s
 		k.didKeeper.SetClientDid(ctx, clientDid)
 		// Add the calculated reward to the total rewards
 		totalRewards = totalRewards.Add(rewardToDistribute)
+
+		if dpr.Status == 3 {
+			clientDid.DprInfos = append(clientDid.DprInfos[:i], clientDid.DprInfos[i+1:]...)
+			log.Println("DPR is not active, removing from DprInfos")
+			continue
+		}
+
+		i++
 
 	}
 

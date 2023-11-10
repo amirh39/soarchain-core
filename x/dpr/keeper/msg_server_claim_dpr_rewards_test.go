@@ -5,6 +5,7 @@ import (
 	didtypes "soarchain/x/did/types"
 	"soarchain/x/dpr/keeper"
 	"soarchain/x/dpr/types"
+	epochtypes "soarchain/x/epoch/types"
 
 	poaTypes "soarchain/x/poa/types"
 
@@ -22,6 +23,7 @@ func (helper *KeeperTestHelper) Test_Claim_DPR() {
 		dprKeeper := helper.App.DprKeeper
 		didKeeper := helper.App.DidKeeper
 		poaKeeper := helper.App.PoaKeeper
+		epochKeeper := helper.App.EpochKeeper
 
 		targetDpr := SetupSecondDpr(1)
 		dprKeeper.SetDpr(helper.Ctx, targetDpr[0])
@@ -29,6 +31,10 @@ func (helper *KeeperTestHelper) Test_Claim_DPR() {
 
 		mintAmount, _ := sdk.ParseCoinNormalized(targetDpr[0].DprBudget)
 		bankKeeper.MintCoins(helper.Ctx, types.ModuleName, sdk.NewCoins(sdk.NewCoin(params.BondDenom, sdk.Int(mintAmount.Amount))))
+		mockedEpochData := epochtypes.EpochData{
+			TotalEpochs: 10,
+		}
+		epochKeeper.SetEpochData(helper.Ctx, mockedEpochData)
 
 		clientDid := didtypes.ClientDid{
 			Id:      Did,
