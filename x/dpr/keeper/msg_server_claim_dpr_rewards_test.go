@@ -14,9 +14,9 @@ import (
 func (helper *KeeperTestHelper) Test_Claim_DPR() {
 
 	helper.Run("TestClaimDpr", func() {
-		ctx := sdk.WrapSDKContext(helper.Ctx)
 		helper.Setup()
 		helper.MsgServer = keeper.NewMsgServerImpl(helper.App.DprKeeper)
+		ctx := sdk.WrapSDKContext(helper.Ctx)
 
 		bankKeeper := helper.App.BankKeeper
 		dprKeeper := helper.App.DprKeeper
