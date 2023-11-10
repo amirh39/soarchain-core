@@ -40,7 +40,7 @@ const (
 	Challenger_PubKey        = "3056301006072a8648ce3d020106052b8104000a0342000421ac05e92e7906b648ee7029e1dc9599bde61372be4bf2b41806de08c362052d4ebcc9f6c24dbd5f33df3a1d0419ab017991df2671db0dd4aa2661fe4bbf8251"
 	Challenger_Address       = "soar19r5gmm7nqxy2v0pzm3c8ldkzax7ugqy5jwrv2y"
 	Challenger_Score         = "189"
-	Challenger_StakedAmount  = "2000000000utmotus"
+	Challenger_StakedAmount  = "10000000000000udmotus"
 	Challenger_NetEarnings   = "0utmotus"
 	Challenger_StakedAmount2 = "2000000000udmotus"
 	Challenger_NetEarnings2  = "0udmotus"
