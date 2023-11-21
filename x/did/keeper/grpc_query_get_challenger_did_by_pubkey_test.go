@@ -3,17 +3,19 @@ package keeper_test
 import (
 	"testing"
 
-	"soarchain/testutil/nullify"
-	"soarchain/x/did/types"
+	"github.com/soar-robotics/soarchain-core/testutil/nullify"
+	"github.com/soar-robotics/soarchain-core/x/did/types"
 
-	keepertest "soarchain/testutil/keeper"
+	keepertest "github.com/soar-robotics/soarchain-core/testutil/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
-/** The public key which is received by the request is a valid Pubkey. Response should return a valid challenger
-which is related to that public key.*/
+/*
+* The public key which is received by the request is a valid Pubkey. Response should return a valid challenger
+which is related to that public key.
+*/
 func Test_GetChallengerByPubKey(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)

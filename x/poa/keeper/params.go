@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 )
 
 // GetParams get all parameters as types.Params

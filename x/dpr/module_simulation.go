@@ -3,9 +3,9 @@ package dpr
 import (
 	"math/rand"
 
-	"soarchain/testutil/sample"
-	dprsimulation "soarchain/x/dpr/simulation"
-	"soarchain/x/dpr/types"
+	"github.com/soar-robotics/soarchain-core/testutil/sample"
+	dprsimulation "github.com/soar-robotics/soarchain-core/x/dpr/simulation"
+	"github.com/soar-robotics/soarchain-core/x/dpr/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"

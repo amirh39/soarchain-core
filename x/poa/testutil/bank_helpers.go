@@ -3,7 +3,7 @@ package testutil
 import (
 	"context"
 
-	"soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

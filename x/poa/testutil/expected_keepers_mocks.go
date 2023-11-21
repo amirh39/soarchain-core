@@ -6,7 +6,7 @@ package testutil
 
 import (
 	reflect "reflect"
-	types1 "soarchain/x/epoch/types"
+	types1 "github.com/soar-robotics/soarchain-core/x/epoch/types"
 
 	types "github.com/cosmos/cosmos-sdk/types"
 	types0 "github.com/cosmos/cosmos-sdk/x/auth/types"

@@ -3,7 +3,8 @@ package utility
 import (
 	"bytes"
 	"encoding/binary"
-	"soarchain/x/poa/utility/utilConstants"
+
+	"github.com/soar-robotics/soarchain-core/x/poa/utility/utilConstants"
 
 	"github.com/coniks-sys/coniks-go/crypto/vrf"
 	sdk "github.com/cosmos/cosmos-sdk/types"

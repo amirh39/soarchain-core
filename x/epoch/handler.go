@@ -3,8 +3,8 @@ package epoch
 import (
 	"fmt"
 
-	"soarchain/x/epoch/keeper"
-	"soarchain/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/x/epoch/keeper"
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

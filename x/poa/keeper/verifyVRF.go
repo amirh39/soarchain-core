@@ -5,7 +5,7 @@ import (
 
 	"github.com/coniks-sys/coniks-go/crypto/vrf"
 
-	"soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 

@@ -3,7 +3,7 @@ package soarchain.epoch;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "soarchain/x/epoch/types";
+option go_package = "github.com/soar-robotics/soarchain-core/x/epoch/types";
 
 // Params defines the parameters for the module.
 message Params {

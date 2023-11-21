@@ -1,7 +1,7 @@
 package types
 
 import (
-	"soarchain/x/poa/errors"
+	"github.com/soar-robotics/soarchain-core/x/poa/errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

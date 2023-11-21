@@ -9,7 +9,7 @@ import "poa/master_key.proto";
 import "poa/factory_keys.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "soarchain/x/poa/types";
+option go_package = "github.com/soar-robotics/soarchain-core/x/poa/types";
 
 // GenesisState defines the poa module's genesis state.
 message GenesisState {

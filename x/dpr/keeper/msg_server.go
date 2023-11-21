@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"soarchain/x/dpr/types"
+	"github.com/soar-robotics/soarchain-core/x/dpr/types"
 )
 
 type msgServer struct {

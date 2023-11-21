@@ -3,8 +3,8 @@ package dpr
 import (
 	"fmt"
 
-	"soarchain/x/dpr/keeper"
-	"soarchain/x/dpr/types"
+	"github.com/soar-robotics/soarchain-core/x/dpr/keeper"
+	"github.com/soar-robotics/soarchain-core/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

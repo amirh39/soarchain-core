@@ -5,8 +5,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"soarchain/testutil/nullify"
-	"soarchain/x/soarmint/types"
+	"github.com/soar-robotics/soarchain-core/testutil/nullify"
+	"github.com/soar-robotics/soarchain-core/x/soarmint/types"
 )
 
 func (helper *KeeperTestHelper) TestMinterQuery() {

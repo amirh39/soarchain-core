@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"log"
-	"soarchain/x/epoch/types"
-	"soarchain/x/poa/constants"
+
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/constants"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

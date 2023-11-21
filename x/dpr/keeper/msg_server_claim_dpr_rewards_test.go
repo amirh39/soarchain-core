@@ -1,13 +1,13 @@
 package keeper_test
 
 import (
-	"soarchain/app/params"
-	didtypes "soarchain/x/did/types"
-	"soarchain/x/dpr/keeper"
-	"soarchain/x/dpr/types"
-	epochtypes "soarchain/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/app/params"
+	didtypes "github.com/soar-robotics/soarchain-core/x/did/types"
+	"github.com/soar-robotics/soarchain-core/x/dpr/keeper"
+	"github.com/soar-robotics/soarchain-core/x/dpr/types"
+	epochtypes "github.com/soar-robotics/soarchain-core/x/epoch/types"
 
-	poaTypes "soarchain/x/poa/types"
+	poaTypes "github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

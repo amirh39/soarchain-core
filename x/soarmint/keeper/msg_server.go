@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"soarchain/x/soarmint/types"
+	"github.com/soar-robotics/soarchain-core/x/soarmint/types"
 )
 
 type msgServer struct {

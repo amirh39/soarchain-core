@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	"github.com/stretchr/testify/require"
 )

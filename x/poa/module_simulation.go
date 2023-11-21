@@ -3,9 +3,9 @@ package poa
 import (
 	"math/rand"
 
-	"soarchain/testutil/sample"
-	poasimulation "soarchain/x/poa/simulation"
-	"soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/testutil/sample"
+	poasimulation "github.com/soar-robotics/soarchain-core/x/poa/simulation"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"

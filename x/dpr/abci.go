@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/keeper"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )

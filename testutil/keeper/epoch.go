@@ -3,8 +3,8 @@ package keeper
 import (
 	"testing"
 
-	"soarchain/x/epoch/keeper"
-	"soarchain/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/x/epoch/keeper"
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"

@@ -3,7 +3,7 @@ package types
 import (
 	"testing"
 
-	"soarchain/testutil/sample"
+	"github.com/soar-robotics/soarchain-core/testutil/sample"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"

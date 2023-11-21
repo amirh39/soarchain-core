@@ -1,8 +1,8 @@
 package keeper_test
 
 import (
-	"soarchain/x/epoch/keeper"
-	"soarchain/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/x/epoch/keeper"
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

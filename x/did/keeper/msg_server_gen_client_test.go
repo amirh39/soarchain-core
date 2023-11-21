@@ -2,12 +2,13 @@ package keeper_test
 
 import (
 	"fmt"
-	k "soarchain/x/did/keeper"
-	"soarchain/x/did/types"
+
+	k "github.com/soar-robotics/soarchain-core/x/did/keeper"
+	"github.com/soar-robotics/soarchain-core/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	poatypes "soarchain/x/poa/types"
+	poatypes "github.com/soar-robotics/soarchain-core/x/poa/types"
 )
 
 func (helper *KeeperTestHelper) Test_Gen_Client() {

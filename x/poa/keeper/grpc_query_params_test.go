@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	testkeeper "github.com/soar-robotics/soarchain-core/testutil/keeper"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 	"github.com/stretchr/testify/require"
-	testkeeper "soarchain/testutil/keeper"
-	"soarchain/x/poa/types"
 )
 
 func TestParamsQuery(t *testing.T) {

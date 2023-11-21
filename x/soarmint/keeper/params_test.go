@@ -1,7 +1,7 @@
 package keeper_test
 
 import (
-	"soarchain/x/soarmint/types"
+	"github.com/soar-robotics/soarchain-core/x/soarmint/types"
 )
 
 func (helper *KeeperTestHelper) TestGetParams() {

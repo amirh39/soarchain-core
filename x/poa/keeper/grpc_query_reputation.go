@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"

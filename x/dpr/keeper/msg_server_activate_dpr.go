@@ -3,9 +3,10 @@ package keeper
 import (
 	"context"
 	"log"
-	"soarchain/x/dpr/types"
-	"soarchain/x/dpr/utility"
 	"strconv"
+
+	"github.com/soar-robotics/soarchain-core/x/dpr/types"
+	"github.com/soar-robotics/soarchain-core/x/dpr/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

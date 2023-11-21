@@ -1,7 +1,7 @@
 package types
 
 import (
-	"soarchain/app/params"
+	"github.com/soar-robotics/soarchain-core/app/params"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

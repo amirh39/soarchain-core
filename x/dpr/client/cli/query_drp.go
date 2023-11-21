@@ -3,7 +3,7 @@ package cli
 import (
 	"context"
 
-	"soarchain/x/dpr/types"
+	"github.com/soar-robotics/soarchain-core/x/dpr/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

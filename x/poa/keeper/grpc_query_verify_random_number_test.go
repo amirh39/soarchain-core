@@ -3,10 +3,10 @@ package keeper_test
 import (
 	"testing"
 
-	"soarchain/testutil/nullify"
-	"soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/testutil/nullify"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
-	keepertest "soarchain/testutil/keeper"
+	keepertest "github.com/soar-robotics/soarchain-core/testutil/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"

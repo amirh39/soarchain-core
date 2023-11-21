@@ -2,9 +2,10 @@ package keeper
 
 import (
 	"log"
-	"soarchain/app/params"
-	"soarchain/x/did/types"
 	"strconv"
+
+	"github.com/soar-robotics/soarchain-core/app/params"
+	"github.com/soar-robotics/soarchain-core/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

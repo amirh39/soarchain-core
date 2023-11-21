@@ -3,9 +3,9 @@ package did
 import (
 	"math/rand"
 
-	"soarchain/testutil/sample"
-	didsimulation "soarchain/x/did/simulation"
-	"soarchain/x/did/types"
+	"github.com/soar-robotics/soarchain-core/testutil/sample"
+	didsimulation "github.com/soar-robotics/soarchain-core/x/did/simulation"
+	"github.com/soar-robotics/soarchain-core/x/did/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"

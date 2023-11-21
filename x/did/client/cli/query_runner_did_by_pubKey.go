@@ -1,8 +1,9 @@
 package cli
 
 import (
-	"soarchain/x/did/types"
 	"strconv"
+
+	"github.com/soar-robotics/soarchain-core/x/did/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

@@ -5,7 +5,7 @@ package app_test
 // 	"testing"
 // 	"time"
 
-// 	"soarchain/app"
+// 	"github.com/soar-robotics/soarchain-core/app"
 
 // 	"github.com/cosmos/cosmos-sdk/baseapp"
 // 	"github.com/cosmos/cosmos-sdk/codec"

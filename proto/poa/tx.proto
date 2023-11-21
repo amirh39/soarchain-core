@@ -2,7 +2,7 @@ syntax = "proto3";
 package soarchain.poa;
 
 import "poa/reputation.proto";
-option go_package = "soarchain/x/poa/types";
+option go_package = "github.com/soar-robotics/soarchain-core/x/poa/types";
 
 // Msg defines the Msg service.
 service Msg {

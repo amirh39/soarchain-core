@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	keepertest "soarchain/testutil/keeper"
+	keepertest "github.com/soar-robotics/soarchain-core/testutil/keeper"
 )
 
 func Test_GenerateRandomNumberGet(t *testing.T) {

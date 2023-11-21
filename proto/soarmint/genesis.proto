@@ -6,7 +6,7 @@ import "soarmint/params.proto";
 import "soarmint/minter.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "soarchain/x/soarmint/types";
+option go_package = "github.com/soar-robotics/soarchain-core/x/soarmint/types";
 
 // GenesisState defines the soarmint module's genesis state.
 message GenesisState {

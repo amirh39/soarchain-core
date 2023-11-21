@@ -7,7 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "dpr/params.proto";
 import "dpr/dpr.proto";
 
-option go_package = "soarchain/x/dpr/types";
+option go_package = "github.com/soar-robotics/soarchain-core/x/dpr/types";
 
 // Query defines the gRPC querier service.
 service Query {

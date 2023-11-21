@@ -3,7 +3,8 @@ package app
 import (
 	"encoding/json"
 	"os"
-	"soarchain/app/params"
+
+	"github.com/soar-robotics/soarchain-core/app/params"
 
 	"github.com/cosmos/cosmos-sdk/simapp"
 	abci "github.com/tendermint/tendermint/abci/types"

@@ -1,9 +1,9 @@
 package keeper
 
 import (
-	params "soarchain/app/params"
-	epoch "soarchain/x/epoch/types"
-	"soarchain/x/poa/types"
+	params "github.com/soar-robotics/soarchain-core/app/params"
+	epoch "github.com/soar-robotics/soarchain-core/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

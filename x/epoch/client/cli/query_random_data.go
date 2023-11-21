@@ -3,7 +3,7 @@ package cli
 import (
 	"context"
 
-	"soarchain/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

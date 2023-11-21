@@ -3,8 +3,8 @@ package cli
 import (
 	"strconv"
 
-	"soarchain/x/poa/constants"
-	"soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/constants"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	"strings"
 

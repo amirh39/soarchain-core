@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"strconv"
 
-	"soarchain/x/poa/types"
-	"soarchain/x/poa/utility"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

@@ -4,9 +4,9 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/poa/types"
 )
 
 func (k Keeper) MasterKey(c context.Context, req *types.QueryGetMasterKeyRequest) (*types.QueryGetMasterKeyResponse, error) {

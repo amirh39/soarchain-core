@@ -2,7 +2,8 @@ package types
 
 import (
 	"fmt"
-	"soarchain/x/poa/constants"
+
+	"github.com/soar-robotics/soarchain-core/x/poa/constants"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

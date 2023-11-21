@@ -2,8 +2,9 @@ package wasmbinding
 
 import (
 	"log"
-	wasmbindings "soarchain/wasmbinding/bindings"
-	keeper "soarchain/x/poa/keeper"
+
+	wasmbindings "github.com/soar-robotics/soarchain-core/wasmbinding/bindings"
+	keeper "github.com/soar-robotics/soarchain-core/x/poa/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

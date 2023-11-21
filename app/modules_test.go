@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	param "soarchain/app/params"
+	param "github.com/soar-robotics/soarchain-core/app/params"
 
 	"github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"

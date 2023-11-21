@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"soarchain/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
 
 	"github.com/stretchr/testify/require"
 )

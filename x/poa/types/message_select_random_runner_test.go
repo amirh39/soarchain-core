@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/soar-robotics/soarchain-core/testutil/sample"
 	"github.com/stretchr/testify/require"
-	"soarchain/testutil/sample"
 )
 
 func TestMsgSelectRandomRunner_ValidateBasic(t *testing.T) {

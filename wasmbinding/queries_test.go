@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"soarchain/wasmbinding"
+	"github.com/soar-robotics/soarchain-core/wasmbinding"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

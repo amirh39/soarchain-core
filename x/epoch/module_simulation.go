@@ -3,9 +3,9 @@ package epoch
 import (
 	"math/rand"
 
-	"soarchain/testutil/sample"
-	epochsimulation "soarchain/x/epoch/simulation"
-	"soarchain/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/testutil/sample"
+	epochsimulation "github.com/soar-robotics/soarchain-core/x/epoch/simulation"
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"

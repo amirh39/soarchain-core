@@ -3,10 +3,10 @@ package dpr_test
 import (
 	"testing"
 
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
-	dpr "soarchain/x/dpr"
-	"soarchain/x/dpr/types"
+	keepertest "github.com/soar-robotics/soarchain-core/testutil/keeper"
+	"github.com/soar-robotics/soarchain-core/testutil/nullify"
+	dpr "github.com/soar-robotics/soarchain-core/x/dpr"
+	"github.com/soar-robotics/soarchain-core/x/dpr/types"
 
 	"github.com/stretchr/testify/require"
 )

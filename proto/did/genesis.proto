@@ -7,7 +7,7 @@ import "did/runner_did.proto";
 import "did/challenger_did.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "soarchain/x/did/types";
+option go_package = "github.com/soar-robotics/soarchain-core/x/did/types";
 
 // GenesisState defines the did module's genesis state.
 message GenesisState {

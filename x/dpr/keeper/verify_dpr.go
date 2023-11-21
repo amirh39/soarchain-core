@@ -1,10 +1,11 @@
 package keeper
 
 import (
-	"soarchain/app/params"
-	"soarchain/x/dpr/types"
-	"soarchain/x/dpr/utility"
 	"strings"
+
+	"github.com/soar-robotics/soarchain-core/app/params"
+	"github.com/soar-robotics/soarchain-core/x/dpr/types"
+	"github.com/soar-robotics/soarchain-core/x/dpr/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

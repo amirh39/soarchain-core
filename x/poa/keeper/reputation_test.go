@@ -3,9 +3,9 @@ package keeper_test
 import (
 	"testing"
 
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
-	"soarchain/x/poa/types"
+	keepertest "github.com/soar-robotics/soarchain-core/testutil/keeper"
+	"github.com/soar-robotics/soarchain-core/testutil/nullify"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	"github.com/stretchr/testify/require"
 )

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"soarchain/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
 )
 
 var _ types.QueryServer = Keeper{}

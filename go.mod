@@ -1,4 +1,4 @@
-module soarchain
+module github.com/soar-robotics/soarchain-core
 
 go 1.18
 

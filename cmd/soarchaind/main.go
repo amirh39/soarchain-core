@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"soarchain/app"
-	"soarchain/cmd/soarchaind/cmd"
+	"github.com/soar-robotics/soarchain-core/app"
+	"github.com/soar-robotics/soarchain-core/cmd/soarchaind/cmd"
 
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 )

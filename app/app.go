@@ -5,11 +5,12 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	param "soarchain/app/params"
-	"soarchain/version"
 	"strings"
 
-	"soarchain/wasmbinding"
+	param "github.com/soar-robotics/soarchain-core/app/params"
+	"github.com/soar-robotics/soarchain-core/version"
+
+	"github.com/soar-robotics/soarchain-core/wasmbinding"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -63,9 +64,9 @@ import (
 	// "github.com/cosmos/cosmos-sdk/x/mint"
 	// mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
 	// minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-	mint "soarchain/x/soarmint"
-	mintkeeper "soarchain/x/soarmint/keeper"
-	minttypes "soarchain/x/soarmint/types"
+	mint "github.com/soar-robotics/soarchain-core/x/soarmint"
+	mintkeeper "github.com/soar-robotics/soarchain-core/x/soarmint/keeper"
+	minttypes "github.com/soar-robotics/soarchain-core/x/soarmint/types"
 
 	"github.com/cosmos/cosmos-sdk/x/params"
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
@@ -98,35 +99,35 @@ import (
 
 	"github.com/ignite/cli/ignite/pkg/openapiconsole"
 
-	"soarchain/docs"
-	poamodule "soarchain/x/poa"
-	poamodulekeeper "soarchain/x/poa/keeper"
-	poamoduletypes "soarchain/x/poa/types"
+	"github.com/soar-robotics/soarchain-core/docs"
+	poamodule "github.com/soar-robotics/soarchain-core/x/poa"
+	poamodulekeeper "github.com/soar-robotics/soarchain-core/x/poa/keeper"
+	poamoduletypes "github.com/soar-robotics/soarchain-core/x/poa/types"
 
-	didmodule "soarchain/x/did"
-	didmodulekeeper "soarchain/x/did/keeper"
-	didmoduletypes "soarchain/x/did/types"
+	didmodule "github.com/soar-robotics/soarchain-core/x/did"
+	didmodulekeeper "github.com/soar-robotics/soarchain-core/x/did/keeper"
+	didmoduletypes "github.com/soar-robotics/soarchain-core/x/did/types"
 
-	epochmodule "soarchain/x/epoch"
-	epochmodulekeeper "soarchain/x/epoch/keeper"
-	epochmoduletypes "soarchain/x/epoch/types"
+	epochmodule "github.com/soar-robotics/soarchain-core/x/epoch"
+	epochmodulekeeper "github.com/soar-robotics/soarchain-core/x/epoch/keeper"
+	epochmoduletypes "github.com/soar-robotics/soarchain-core/x/epoch/types"
 
-	dprmodule "soarchain/x/dpr"
-	dprmodulekeeper "soarchain/x/dpr/keeper"
-	dprmoduletypes "soarchain/x/dpr/types"
+	dprmodule "github.com/soar-robotics/soarchain-core/x/dpr"
+	dprmodulekeeper "github.com/soar-robotics/soarchain-core/x/dpr/keeper"
+	dprmoduletypes "github.com/soar-robotics/soarchain-core/x/dpr/types"
 
 	monitoringp "github.com/tendermint/spn/x/monitoringp"
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
 
-	// soarmintmodule "soarchain/x/soarmint"
-	// soarmintmodulekeeper "soarchain/x/soarmint/keeper"
-	// soarmintmoduletypes "soarchain/x/soarmint/types"
+	// soarmintmodule "github.com/soar-robotics/soarchain-core/x/soarmint"
+	// soarmintmodulekeeper "github.com/soar-robotics/soarchain-core/x/soarmint/keeper"
+	// soarmintmoduletypes "github.com/soar-robotics/soarchain-core/x/soarmint/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"github.com/CosmWasm/wasmd/x/wasm"
 
-	v1_0_0 "soarchain/app/upgrades/v1.0.0"
+	v1_0_0 "github.com/soar-robotics/soarchain-core/app/upgrades/v1.0.0"
 )
 
 // GetWasmEnabledProposals parses the WasmProposalsEnabled and

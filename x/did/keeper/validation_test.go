@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/x/did/types"
 	"testing"
+
+	keepertest "github.com/soar-robotics/soarchain-core/testutil/keeper"
+	"github.com/soar-robotics/soarchain-core/x/did/types"
 
 	"github.com/stretchr/testify/require"
 )

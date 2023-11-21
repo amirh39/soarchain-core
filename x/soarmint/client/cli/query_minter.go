@@ -5,8 +5,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/soar-robotics/soarchain-core/x/soarmint/types"
 	"github.com/spf13/cobra"
-	"soarchain/x/soarmint/types"
 )
 
 func CmdShowMinter() *cobra.Command {

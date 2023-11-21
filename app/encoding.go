@@ -1,7 +1,7 @@
 package app
 
 import (
-	"soarchain/app/params"
+	"github.com/soar-robotics/soarchain-core/app/params"
 
 	"github.com/cosmos/cosmos-sdk/std"
 )

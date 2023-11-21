@@ -3,8 +3,8 @@ package simulation
 import (
 	"math/rand"
 
-	"soarchain/x/did/keeper"
-	"soarchain/x/did/types"
+	"github.com/soar-robotics/soarchain-core/x/did/keeper"
+	"github.com/soar-robotics/soarchain-core/x/did/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"

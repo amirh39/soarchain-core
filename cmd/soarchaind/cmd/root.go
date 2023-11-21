@@ -5,9 +5,9 @@ import (
 	"os"
 	"path/filepath"
 
-	soar "soarchain/app"
+	soar "github.com/soar-robotics/soarchain-core/app"
 
-	"soarchain/app/params"
+	"github.com/soar-robotics/soarchain-core/app/params"
 
 	"github.com/cosmos/cosmos-sdk/snapshots"
 	"github.com/cosmos/cosmos-sdk/store"

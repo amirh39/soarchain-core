@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"soarchain/x/epoch/types"
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 )

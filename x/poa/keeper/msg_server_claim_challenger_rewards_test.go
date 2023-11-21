@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
-	k "soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
 	"testing"
+
+	k "github.com/soar-robotics/soarchain-core/x/poa/keeper"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"

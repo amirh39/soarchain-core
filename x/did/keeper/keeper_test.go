@@ -1,8 +1,9 @@
 package keeper_test
 
 import (
-	"soarchain/app/apptesting"
 	"testing"
+
+	"github.com/soar-robotics/soarchain-core/app/apptesting"
 
 	"github.com/stretchr/testify/suite"
 )

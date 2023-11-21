@@ -11,9 +11,9 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"soarchain/x/dpr/client/cli"
-	"soarchain/x/dpr/keeper"
-	"soarchain/x/dpr/types"
+	"github.com/soar-robotics/soarchain-core/x/dpr/client/cli"
+	"github.com/soar-robotics/soarchain-core/x/dpr/keeper"
+	"github.com/soar-robotics/soarchain-core/x/dpr/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"

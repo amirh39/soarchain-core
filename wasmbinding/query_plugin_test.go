@@ -1,8 +1,9 @@
 package wasmbinding_test
 
 import (
-	"soarchain/wasmbinding"
 	"testing"
+
+	"github.com/soar-robotics/soarchain-core/wasmbinding"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"

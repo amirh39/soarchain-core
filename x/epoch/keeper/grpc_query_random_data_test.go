@@ -8,9 +8,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
-	"soarchain/x/epoch/types"
+	keepertest "github.com/soar-robotics/soarchain-core/testutil/keeper"
+	"github.com/soar-robotics/soarchain-core/testutil/nullify"
+	"github.com/soar-robotics/soarchain-core/x/epoch/types"
 )
 
 func Test_RandomDataQuery(t *testing.T) {

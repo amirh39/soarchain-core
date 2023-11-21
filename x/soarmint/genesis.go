@@ -1,8 +1,8 @@
 package soarmint
 
 import (
-	"soarchain/x/soarmint/keeper"
-	"soarchain/x/soarmint/types"
+	"github.com/soar-robotics/soarchain-core/x/soarmint/keeper"
+	"github.com/soar-robotics/soarchain-core/x/soarmint/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

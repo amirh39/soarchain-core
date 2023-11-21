@@ -5,15 +5,15 @@ import (
 	"log"
 	"strconv"
 
-	"soarchain/x/did/constants"
-	"soarchain/x/did/types"
-	"soarchain/x/did/utility"
+	"github.com/soar-robotics/soarchain-core/x/did/constants"
+	"github.com/soar-robotics/soarchain-core/x/did/types"
+	"github.com/soar-robotics/soarchain-core/x/did/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	param "soarchain/app/params"
-	poatypes "soarchain/x/poa/types"
+	param "github.com/soar-robotics/soarchain-core/app/params"
+	poatypes "github.com/soar-robotics/soarchain-core/x/poa/types"
 )
 
 func (k msgServer) GenRunner(goCtx context.Context, msg *types.MsgGenRunner) (*types.MsgGenRunnerResponse, error) {

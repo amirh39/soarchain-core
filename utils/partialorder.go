@@ -1,8 +1,9 @@
 package partialorder
 
 import (
-	"soarchain/utils/dag"
 	"sort"
+
+	"github.com/soar-robotics/soarchain-core/utils/dag"
 )
 
 type PartialOrdering struct {

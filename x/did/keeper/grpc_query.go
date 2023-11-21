@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"soarchain/x/did/types"
+	"github.com/soar-robotics/soarchain-core/x/did/types"
 )
 
 var _ types.QueryServer = Keeper{}

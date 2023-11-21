@@ -9,9 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"soarchain/testutil/sample"
-	soarmintsimulation "soarchain/x/soarmint/simulation"
-	"soarchain/x/soarmint/types"
+	"github.com/soar-robotics/soarchain-core/testutil/sample"
+	soarmintsimulation "github.com/soar-robotics/soarchain-core/x/soarmint/simulation"
+	"github.com/soar-robotics/soarchain-core/x/soarmint/types"
 )
 
 // avoid unused import issue

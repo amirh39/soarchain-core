@@ -2,9 +2,10 @@ package keeper_test
 
 import (
 	"fmt"
-	"soarchain/x/poa/types"
 
-	k "soarchain/x/poa/keeper"
+	"github.com/soar-robotics/soarchain-core/x/poa/types"
+
+	k "github.com/soar-robotics/soarchain-core/x/poa/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

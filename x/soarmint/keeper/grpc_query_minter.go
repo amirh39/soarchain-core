@@ -4,9 +4,9 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/soar-robotics/soarchain-core/x/soarmint/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/soarmint/types"
 )
 
 func (k Keeper) Minter(c context.Context, req *types.QueryGetMinterRequest) (*types.QueryGetMinterResponse, error) {
