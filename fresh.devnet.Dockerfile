@@ -24,7 +24,8 @@ RUN	cat /root/.soarchain/config/genesis.json | jq '.app_state["gov"]["deposit_pa
 RUN	cat /root/.soarchain/config/genesis.json | jq '.app_state["mint"]["params"]["mint_denom"]="udmotus"' > /root/.soarchain/config/tmp_genesis.json && mv /root/.soarchain/config/tmp_genesis.json /root/.soarchain/config/genesis.json
 RUN	cat /root/.soarchain/config/genesis.json | jq '.app_state["poa"]["masterKey"]["masterCertificate"]="-----BEGIN CERTIFICATE-----\nMIIB4TCCAYegAwIBAgIQTylBUpEkZd8CaYHSaLbBHzAKBggqhkjOPQQDAjBIMRwwGgYDVQQKDBNTb2FyIFJvYm90aWNzLCBJbmMuMSgwJgYDVQQDDB9Tb2FyIFJvYm90aWNzIFNlY3VyZSBFbGVtZW50IENBMB4XDTIzMDMzMDA2NTUxNVoXDTQ4MDMzMDA2NTUxNVowSDEcMBoGA1UECgwTU29hciBSb2JvdGljcywgSW5jLjEoMCYGA1UEAwwfU29hciBSb2JvdGljcyBTZWN1cmUgRWxlbWVudCBDQTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABLaCOXbFw/dRJXzXtvhSFWt92aUkdwRZPLmJWZFBFX55+XIDQsCGsQeMmU4pqsnXEB4/r842uYUinWsdzg4xUoqjUzBRMB0GA1UdDgQWBBRqxTRE6ZPuogp88TrNw1cwAYyPMjAfBgNVHSMEGDAWgBRqxTRE6ZPuogp88TrNw1cwAYyPMjAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49BAMCA0gAMEUCIAHpI8Y6zPLaitMOGNAzzDAKb0PJw2r49vjzkFl5TIGPAiEArPJTReSmEnUJWFTcEIuYoWcRIBDI+GpianTVfX4uxNI=\n-----END CERTIFICATE-----"' > /root/.soarchain/config/tmp_genesis.json && mv /root/.soarchain/config/tmp_genesis.json /root/.soarchain/config/genesis.json
 RUN sed -i 's|^\(timeout_commit = \).*|\1"15s"|' /root/.soarchain/config/config.toml
-RUN	sed -i 's/\("masterAccount": "\)[^"]*\(".*\)/\1'"$$(soarchaind keys show soarMasterAccount -a)"'\2/' /root/.soarchain/config/genesis.json
+RUN sed -i 's|laddr = "tcp://127.0.0.1:26657"|laddr = "tcp://0.0.0.0:26657"|' /root/.soarchain/config/config.toml
+RUN sed -i 's|\("masterAccount": "\)[^"]*|\1soar1qt8myp9424ng6rv4fwf65u9a0ttfschw5j4sp8|' /root/.soarchain/config/genesis.json
 
 # Config keyring
 RUN soarchaind config keyring-backend test
