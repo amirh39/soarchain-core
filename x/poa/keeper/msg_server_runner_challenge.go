@@ -25,7 +25,7 @@ func (k Keeper) updateChallengerReputation(ctx sdk.Context, challengerReputation
 	newScore = append(newScore, score)
 
 	totalAmount := big.NewInt(int64(epoch.ChallengerPerChallengeValue))
-	earnedRewardsBigInt, err := utility.CalculateRewards(totalAmount, newScore)
+	earnedRewardsBigInt, err := utility.CalculateRewards(totalAmount, newScore, []int{1})
 	if err != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrLogic, errors.EarnedRewardsBigInt)
 	}
@@ -107,7 +107,7 @@ func (k Keeper) updateRunnerReputation(ctx sdk.Context, creator string, runnerPu
 	}
 	newScore = append(newScore, score)
 
-	earnedRewardsBigInt, err := utility.CalculateRewards(big.NewInt(int64(epoch.RunnerPerChallengeValue)), newScore)
+	earnedRewardsBigInt, err := utility.CalculateRewards(big.NewInt(int64(epoch.RunnerPerChallengeValue)), newScore, []int{1})
 	if err != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrLogic, errors.EarnedRewardsBigInt)
 	}
@@ -141,10 +141,12 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NoV2nBxAddressPubKeys)
 	}
 
-	// Create an array of scores to send to CalculateRewards
+	// Create arrays to store scores and message counts
 	scores := make([]float64, clientPubkeysCount)
+	messageCounts := make([]int, clientPubkeysCount)
+
 	for i := 0; i < clientPubkeysCount; i++ {
-		reputation, isFound := k.GetReputation(ctx, msg.ClientPubkeys[i])
+		reputation, isFound := k.GetReputation(ctx, msg.ClientPubkeys[i].P)
 		if !isFound {
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
@@ -153,17 +155,22 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 		if err != nil {
 			return sdkerrors.Wrap(sdkerrors.ErrInvalidType, "invalid score")
 		}
+
+		// Set score and message count in corresponding arrays
 		scores[i] = score
+		messageCounts[i] = int(msg.ClientPubkeys[i].N)
 	}
 
+	// Now, you have arrays of scores and message counts that correspond to each other
+
 	// Calculate rewards for all scores
-	earnedRewardsBigInt, err := utility.CalculateRewards(big.NewInt(int64(epoch.V2NBXPerChallengeValue)), scores)
+	earnedRewardsBigInt, err := utility.CalculateRewards(big.NewInt(int64(epoch.V2NBXPerChallengeValue)), scores, messageCounts)
 	if err != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrLogic, errors.EarnedRewardsBigInt)
 	}
 	var totalEarnings sdk.Coin
 	for i := 0; i < clientPubkeysCount; i++ {
-		reputation, isFound := k.GetReputation(ctx, msg.ClientPubkeys[i])
+		reputation, isFound := k.GetReputation(ctx, msg.ClientPubkeys[i].P)
 		if !isFound {
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
