@@ -1,0 +1,62 @@
+name: Deploy Node
+on: ["push"]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    permissions:
+        contents: read
+        packages: write
+    strategy:
+        matrix:
+          go: ["1.18.x"]
+          dir: ["x"]  
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Tests
+        run: "go test ./..."
+      
+      - name: Qualify Code
+        run: "go vet ./..."
+        
+      # - uses: dominikh/staticcheck-action@v1.3.0
+      #   with:
+      #     version: "2022.1.3"
+      #     install-go: false
+      #     cache-key: ${{ matrix.go }}
+      #     working-directory: ${{ matrix.dir }}
+
+      - name: Prepare Remote Server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+            host: 34.105.137.35
+            username: golnar
+            key: ${{ secrets.SSH_PRIVATEKEY }}
+            script: |
+                  docker stop $(docker ps -a -q)
+                  docker rm $(docker ps -a -q)
+                  docker rmi soarchain-core:0.1.0
+                  rm -r ~/soarchain-core
+      - name: Copy folder content recursively to remote
+        uses: appleboy/scp-action@master
+        with:
+            host: 34.105.137.35
+            username: golnar
+            key: ${{ secrets.SSH_PRIVATEKEY }}
+            source: "./*"
+            target: "/home/golnar/soarchain-core"
+            debug: true
+            
+      - name: Deploy Node
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+            host: 34.105.137.35
+            username: golnar
+            key: ${{ secrets.SSH_PRIVATEKEY }}
+            script: |
+                cd ~/soarchain-core
+                docker compose -f docker-compose.ci.yml up
+                echo "Nice Job!!!"
