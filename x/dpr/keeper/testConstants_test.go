@@ -116,6 +116,26 @@ func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Conte
 	return server, *k, context, ctrl, bankMock
 }
 
+func SetupActiveDpr(n int) []types.Dpr {
+	items := make([]types.Dpr, n)
+	for i := range items {
+		items[i] = types.Dpr{
+			Id:             DprID, // Should be unique for each DPR
+			Creator:        CREATOR,
+			SupportedPIDs:  &types.SupportedPIDs{},
+			Status:         0,
+			Duration:       DprDuration,
+			DprEndTime:     "",
+			DprStartEpoch:  0,
+			DprBudget:      "1000000udmotus",
+			MaxClientCount: MaxClientCount,
+			ClientCounter:  1,
+			Name:           "soarDpr",
+		}
+	}
+	return items
+}
+
 const (
 	CREATOR = "soar1dx4yutqz8kmdfwejexxvtljch6j8x8nqnvywqp"
 	ADDRESS = "soar1ghfnkjlc5gxpldat7hm50tgggwc6l5h7ydwy2a"
