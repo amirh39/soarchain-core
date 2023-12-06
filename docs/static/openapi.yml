@@ -16757,6 +16757,16 @@ definitions:
         type: string
       epochNumber:
         type: string
+  soarchain.poa.ClientPublicKey:
+    type: object
+    properties:
+      p:
+        type: string
+        title: The public key
+      'n':
+        type: integer
+        format: int32
+        title: The numeric value
   soarchain.poa.FactoryKeys:
     type: object
     properties:

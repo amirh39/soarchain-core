@@ -30,9 +30,14 @@ message MsgChallengeServiceResponse {
 
 message MsgRunnerChallenge {
   string creator = 1;
-  string runnerPubkey = 2;
-  repeated string clientPubkeys = 3;
-  string challengeResult = 4;
+  string runner = 2;
+  repeated ClientPublicKey clients = 3;
+  string result = 4;
+}
+
+message ClientPublicKey {
+  string p = 1; // The public key
+  int32 n = 2;  // The numeric value
 }
 
 message MsgRunnerChallengeResponse {

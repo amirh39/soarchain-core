@@ -13,12 +13,12 @@ const TypeMsgRunnerChallenge = "runner_challenge"
 
 var _ sdk.Msg = &MsgRunnerChallenge{}
 
-func NewMsgRunnerChallenge(creator string, runnerPubkey string, clientPubkeys []string, challengeResult string) *MsgRunnerChallenge {
+func NewMsgRunnerChallenge(creator string, runnerPubkey string, clientPubkeys []*ClientPublicKey, challengeResult string) *MsgRunnerChallenge {
 	return &MsgRunnerChallenge{
-		Creator:         creator,
-		RunnerPubkey:    runnerPubkey,
-		ClientPubkeys:   clientPubkeys,
-		ChallengeResult: challengeResult,
+		Creator: creator,
+		Runner:  runnerPubkey,
+		Clients: clientPubkeys,
+		Result:  challengeResult,
 	}
 }
 
@@ -49,18 +49,18 @@ func (msg *MsgRunnerChallenge) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid creator address [ %s ] ,", msg.Creator)
 	}
-	if msg.RunnerPubkey == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidPubKey, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid runner pubkey [ %s ] ", msg.RunnerPubkey)
+	if msg.Runner == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidPubKey, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid runner pubkey [ %s ] ", msg.Runner)
 	}
-	if len(msg.ClientPubkeys) < 1 || msg.ClientPubkeys == nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid client pubkey [ %s ] ", msg.ClientPubkeys)
+	if len(msg.Clients) < 1 || msg.Clients == nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid client pubkey [ %s ] ", msg.Clients)
 	}
 
-	reward := strings.Compare(msg.ChallengeResult, constants.Reward)
-	punish := strings.Compare(msg.ChallengeResult, constants.Punish)
+	reward := strings.Compare(msg.Result, constants.Reward)
+	punish := strings.Compare(msg.Result, constants.Punish)
 
 	if reward != 0 && punish != 0 {
-		return sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid challenge result [ %s ] ", msg.ChallengeResult)
+		return sdkerrors.Wrapf(sdkerrors.ErrNotFound, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid challenge result [ %s ] ", msg.Result)
 	}
 
 	return nil
