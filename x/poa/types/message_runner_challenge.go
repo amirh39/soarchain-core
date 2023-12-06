@@ -17,7 +17,7 @@ func NewMsgRunnerChallenge(creator string, runnerPubkey string, clientPubkeys []
 	return &MsgRunnerChallenge{
 		Creator: creator,
 		Runner:  runnerPubkey,
-		Client:  clientPubkeys,
+		Clients: clientPubkeys,
 		Result:  challengeResult,
 	}
 }
@@ -52,8 +52,8 @@ func (msg *MsgRunnerChallenge) ValidateBasic() error {
 	if msg.Runner == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidPubKey, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid runner pubkey [ %s ] ", msg.Runner)
 	}
-	if len(msg.Client) < 1 || msg.Client == nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid client pubkey [ %s ] ", msg.Client)
+	if len(msg.Clients) < 1 || msg.Clients == nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrKeyNotFound, "[NewMsgRunnerChallenge][ValidateBasic] failed. Invalid client pubkey [ %s ] ", msg.Clients)
 	}
 
 	reward := strings.Compare(msg.Result, constants.Reward)

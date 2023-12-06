@@ -32,7 +32,7 @@ func (helper *KeeperTestHelper) TestRunnerChallenge() {
 			reputationPubKeys[i] = repPointer
 		}
 
-		res, err := msgServer.RunnerChallenge(sdk.WrapSDKContext(helper.Ctx), &types.MsgRunnerChallenge{Creator: Challenger_Address, RunnerPubkey: RunnerPubKey, ClientPubkeys: reputationPubKeys, ChallengeResult: "reward"})
+		res, err := msgServer.RunnerChallenge(sdk.WrapSDKContext(helper.Ctx), &types.MsgRunnerChallenge{Creator: Challenger_Address, Runner: RunnerPubKey, Clients: reputationPubKeys, Result: "reward"})
 		helper.NoError(err)
 		helper.Empty(res)
 

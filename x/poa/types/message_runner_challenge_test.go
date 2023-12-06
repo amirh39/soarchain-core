@@ -18,25 +18,25 @@ func TestMsgRunnerChallenge_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgRunnerChallenge{
-				Creator:      "invalid_address",
-				RunnerPubkey: "runnerpubkey",
-				ClientPubkeys: []*ClientPublicKey{
+				Creator: "invalid_address",
+				Runner:  "runnerpubkey",
+				Clients: []*ClientPublicKey{
 					{P: "clientpubkey1", N: 22},
 					{P: "clientpubkey2", N: 33},
 				},
-				ChallengeResult: "reward",
+				Result: "reward",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			name: "valid address",
 			msg: MsgRunnerChallenge{
-				Creator:      sample.AccAddress(),
-				RunnerPubkey: "runnerpubkey",
-				ClientPubkeys: []*ClientPublicKey{
+				Creator: sample.AccAddress(),
+				Runner:  "runnerpubkey",
+				Clients: []*ClientPublicKey{
 					{P: "clientpubkey1", N: 22},
 				},
-				ChallengeResult: "reward",
+				Result: "reward",
 			},
 		},
 	}

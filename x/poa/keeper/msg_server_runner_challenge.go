@@ -136,7 +136,7 @@ func (k Keeper) updateRunnerReputation(ctx sdk.Context, creator string, runnerPu
 }
 
 func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge, epoch epoch.EpochData) error {
-	clientPubkeysCount := len(msg.Client)
+	clientPubkeysCount := len(msg.Clients)
 	if clientPubkeysCount < 1 {
 		return sdkerrors.Wrap(sdkerrors.ErrNotFound, errors.NoV2nBxAddressPubKeys)
 	}
@@ -146,7 +146,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 	messageCounts := make([]int, clientPubkeysCount)
 
 	for i := 0; i < clientPubkeysCount; i++ {
-		reputation, isFound := k.GetReputation(ctx, msg.Client[i].P)
+		reputation, isFound := k.GetReputation(ctx, msg.Clients[i].P)
 		if !isFound {
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
@@ -158,7 +158,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 
 		// Set score and message count in corresponding arrays
 		scores[i] = score
-		messageCounts[i] = int(msg.Client[i].N)
+		messageCounts[i] = int(msg.Clients[i].N)
 	}
 
 	// Now, you have arrays of scores and message counts that correspond to each other
@@ -170,7 +170,7 @@ func (k Keeper) updateReputation(ctx sdk.Context, msg *types.MsgRunnerChallenge,
 	}
 	var totalEarnings sdk.Coin
 	for i := 0; i < clientPubkeysCount; i++ {
-		reputation, isFound := k.GetReputation(ctx, msg.Client[i].P)
+		reputation, isFound := k.GetReputation(ctx, msg.Clients[i].P)
 		if !isFound {
 			return sdkerrors.Wrap(sdkerrors.ErrKeyNotFound, errors.NotFoundAClient)
 		}
