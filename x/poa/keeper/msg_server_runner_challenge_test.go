@@ -27,7 +27,7 @@ func (helper *KeeperTestHelper) TestRunnerChallenge() {
 			// Create a pointer to the current reputation
 			repPointer := &types.ClientPublicKey{
 				P: rep.PubKey,
-				N: 10, // Assuming rep.N is of type int32
+				N: 50,
 			}
 			reputationPubKeys[i] = repPointer
 		}
@@ -45,8 +45,8 @@ func (helper *KeeperTestHelper) TestRunnerChallenge() {
 		helper.Require().NotEmpty(isFound2)
 		helper.Require().NotEmpty(isFound3)
 		helper.Equal("88.259", reputationUpdated.Score)
-		helper.Equal(reputationUpdated.NetEarnings, "1767859udmotus")
-		helper.Equal(reputationUpdated2.NetEarnings, "1232140udmotus")
+		helper.Equal(reputationUpdated.NetEarnings, "1714287udmotus")
+		helper.Equal(reputationUpdated2.NetEarnings, "1285712udmotus")
 		helper.Equal(runnerUpdated.NetEarnings, "1000000udmotus")
 		helper.Equal(challengerUpdated.NetEarnings, "1000000udmotus")
 
