@@ -16,7 +16,7 @@ func (helper *KeeperTestHelper) Test_Activate_DPR() {
 		helper.MsgServer = keeper.NewMsgServerImpl(helper.App.DprKeeper)
 		ctx := sdk.WrapSDKContext(helper.Ctx)
 
-		dpr := SetupSecondDpr(1)
+		dpr := SetupActiveDpr(1)
 		dprKeeper.SetDpr(helper.Ctx, dpr[0])
 		helper.Require().NotEmpty(dpr)
 
@@ -27,7 +27,7 @@ func (helper *KeeperTestHelper) Test_Activate_DPR() {
 			DprId:  DprID,
 		})
 		dprSecond, _ := dprKeeper.GetDpr(helper.Ctx, dpr[0].Id)
-		log.Println(dprSecond)
+
 		helper.Require().Empty(res)
 		helper.Require().Nil(err)
 		helper.Require().Equal(dprSecond.Status, uint32(1))

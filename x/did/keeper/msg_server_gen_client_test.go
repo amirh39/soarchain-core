@@ -1,13 +1,12 @@
 package keeper_test
 
 import (
-	"fmt"
 	k "soarchain/x/did/keeper"
 	"soarchain/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	poatypes "soarchain/x/poa/types"
+	poaTypes "soarchain/x/poa/types"
 )
 
 func (helper *KeeperTestHelper) Test_Gen_Client() {
@@ -15,34 +14,40 @@ func (helper *KeeperTestHelper) Test_Gen_Client() {
 	helper.Run("TestGenClient", func() {
 		helper.Setup()
 		keeper := helper.App.DidKeeper
-		poakeeper := helper.App.PoaKeeper
+		poaKeeper := helper.App.PoaKeeper
 
 		ctx := sdk.WrapSDKContext(helper.Ctx)
 		msgServer := k.NewMsgServerImpl(keeper)
 
-		item := poatypes.MasterKey{MasterCertificate: MASTER_CERTIFICATE,
+		item := poaTypes.MasterKey{MasterCertificate: MASTER_CERTIFICATE,
 			MasterAccount: MASTER_ACCOUNT,
 		}
-		poakeeper.SetMasterKey(helper.Ctx, item)
-		updatedFactoryKeyList := poatypes.FactoryKeys{
-			Id:          uint64(1),
-			FactoryCert: Certificate,
+		poaKeeper.SetMasterKey(helper.Ctx, item)
+
+		factoryCert1 := poaTypes.FactoryKeys{
+			Id:          uint64(0),
+			FactoryCert: FactoryCert,
 		}
-		poakeeper.SetFactoryKeys(helper.Ctx, updatedFactoryKeyList)
-		deviceCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
-		helper.Require().NotNil(deviceCert)
+		factoryCert2 := poaTypes.FactoryKeys{
+			Id:          uint64(1),
+			FactoryCert: FactoryCert2,
+		}
+		poaKeeper.SetFactoryKeys(helper.Ctx, factoryCert1)
+		poaKeeper.SetFactoryKeys(helper.Ctx, factoryCert2)
+
+		factoryCerts := poaKeeper.GetAllFactoryKeys(helper.Ctx)
+		helper.Require().NotEmpty(factoryCerts)
 
 		res, err := msgServer.GenClient(ctx, &types.MsgGenClient{
 			Signature:   Signature,
 			Certificate: Certificate,
-			Creator:     ADDRESS,
+			Creator:     ADDRESS2,
 		})
-		didDocument, found := keeper.GetClientDid(helper.Ctx, ADDRESS)
-		fmt.Print("didDocument------------------->", didDocument)
-
 		helper.Require().NotNil(res)
 		helper.Require().NoError(err)
-		helper.Require().Equal(found, true)
 
+		didDocument, found := keeper.GetClientDid(helper.Ctx, ADDRESS2)
+		helper.Require().NotNil(didDocument)
+		helper.Require().Equal(found, true)
 	})
 }

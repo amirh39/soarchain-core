@@ -2,12 +2,15 @@ package keeper_test
 
 import (
 	"log"
+	"soarchain/app/params"
 	k "soarchain/x/did/keeper"
 	"soarchain/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	poatypes "soarchain/x/poa/types"
+	poaTypes "soarchain/x/poa/types"
+
+	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 func (helper *KeeperTestHelper) Test_Gen_Runner() {
@@ -15,32 +18,50 @@ func (helper *KeeperTestHelper) Test_Gen_Runner() {
 	helper.Run("TestGenRunner", func() {
 		helper.Setup()
 		keeper := helper.App.DidKeeper
-		poakeeper := helper.App.PoaKeeper
+		poaKeeper := helper.App.PoaKeeper
+		bankKeeper := helper.App.BankKeeper
+		accountKeeper := helper.App.AccountKeeper
+
+		addr := sdk.MustAccAddressFromBech32(ADDRESS2)
+		actorAmount := sdk.NewCoins(sdk.NewCoin(params.BondDenom, sdk.NewInt(MintAmount)))
+
+		accountKeeper.SetAccount(helper.Ctx, authTypes.NewBaseAccountWithAddress(addr))
+
+		bankKeeper.MintCoins(helper.Ctx, types.ModuleName, actorAmount)
+		bankKeeper.SendCoinsFromModuleToAccount(helper.Ctx, types.ModuleName, addr, actorAmount)
 
 		ctx := sdk.WrapSDKContext(helper.Ctx)
 		msgServer := k.NewMsgServerImpl(keeper)
 
-		item := poatypes.MasterKey{MasterCertificate: MASTER_CERTIFICATE,
+		item := poaTypes.MasterKey{MasterCertificate: MASTER_CERTIFICATE,
 			MasterAccount: MASTER_ACCOUNT,
 		}
-		poakeeper.SetMasterKey(helper.Ctx, item)
-		updatedFactoryKeyList := poatypes.FactoryKeys{
-			Id:          uint64(1),
+		poaKeeper.SetMasterKey(helper.Ctx, item)
+
+		factoryCert1 := poaTypes.FactoryKeys{
+			Id:          uint64(0),
 			FactoryCert: FactoryCert,
 		}
-		poakeeper.SetFactoryKeys(helper.Ctx, updatedFactoryKeyList)
-		deviceCert := poakeeper.GetAllFactoryKeys(helper.Ctx)
+		factoryCert2 := poaTypes.FactoryKeys{
+			Id:          uint64(1),
+			FactoryCert: FactoryCert2,
+		}
+		poaKeeper.SetFactoryKeys(helper.Ctx, factoryCert1)
+		poaKeeper.SetFactoryKeys(helper.Ctx, factoryCert2)
+
+		deviceCert := poaKeeper.GetAllFactoryKeys(helper.Ctx)
 		helper.Require().NotNil(deviceCert)
 
 		_, err := msgServer.GenRunner(ctx, &types.MsgGenRunner{
 			Signature:   Signature,
 			Certificate: Certificate,
-			Creator:     ADDRESS,
-			RunnerStake: RunnerStake})
+			Creator:     ADDRESS2,
+			RunnerStake: RunnerStake,
+		})
 
 		helper.Require().Nil(err)
 
-		didDocument, found := keeper.GetRunnerDid(helper.Ctx, ADDRESS)
+		didDocument, found := keeper.GetRunnerDid(helper.Ctx, ADDRESS2)
 		helper.Require().NotNil(didDocument)
 
 		helper.Require().NoError(err)
