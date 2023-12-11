@@ -1,6 +1,7 @@
 version: '3'
 services:
   validator:
+    container_name: soarchain-full-node
     image: soarchain-core:0.1.0
     build:
       dockerfile: ./Dockerfile
