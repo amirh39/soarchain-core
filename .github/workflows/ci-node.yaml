@@ -69,7 +69,7 @@ jobs:
             host: 34.105.137.35
             username: golnar
             key: ${{ secrets.SSH_PRIVATEKEY }}
-            # command_timeout: 200m
+            command_timeout: 4m
             script: |
                 cd ~/soarchain-core
                 docker compose -f docker-compose.ci.yml up
