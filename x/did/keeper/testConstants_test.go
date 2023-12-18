@@ -3,15 +3,16 @@ package keeper_test
 
 import (
 	"context"
-	"soarchain/x/did/keeper"
-	"soarchain/x/did/types"
-	"soarchain/x/dpr/testutil"
 	"testing"
+
+	"github.com/amirh39/soarchain-core/x/did/keeper"
+	"github.com/amirh39/soarchain-core/x/did/types"
+	"github.com/amirh39/soarchain-core/x/dpr/testutil"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/golang/mock/gomock"
 
-	keepertest "soarchain/testutil/keeper"
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
 )
 
 func SetupMsgServer(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context,

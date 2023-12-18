@@ -1,9 +1,10 @@
 package utility
 
 import (
-	"soarchain/x/poa/utility/utilConstants"
 	"strconv"
 	"time"
+
+	"github.com/amirh39/soarchain-core/x/poa/utility/utilConstants"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

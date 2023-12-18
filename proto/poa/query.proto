@@ -10,7 +10,7 @@ import "poa/master_key.proto";
 import "poa/factory_keys.proto";
 import "poa/reputation.proto";
 
-option go_package = "soarchain/x/poa/types";
+option go_package = "github.com/amirh39/soarchain-core/x/poa/types";
 
 // Query defines the gRPC querier service.
 service Query {

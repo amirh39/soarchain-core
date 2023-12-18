@@ -2,8 +2,9 @@ package utility
 
 import (
 	"math"
-	"soarchain/x/poa/utility/utilConstants"
 	"testing"
+
+	"github.com/amirh39/soarchain-core/x/poa/utility/utilConstants"
 
 	"github.com/stretchr/testify/require"
 )

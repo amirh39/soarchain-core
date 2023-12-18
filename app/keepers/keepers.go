@@ -13,7 +13,7 @@ import (
 	feegrantkeeper "github.com/cosmos/cosmos-sdk/x/feegrant/keeper"
 	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 
-	mintkeeper "soarchain/x/soarmint/keeper"
+	mintkeeper "github.com/amirh39/soarchain-core/x/soarmint/keeper"
 
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
@@ -24,10 +24,10 @@ import (
 
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 
-	didmodulekeeper "soarchain/x/did/keeper"
-	dprmodulekeeper "soarchain/x/dpr/keeper"
-	epochmodulekeeper "soarchain/x/epoch/keeper"
-	poamodulekeeper "soarchain/x/poa/keeper"
+	didmodulekeeper "github.com/amirh39/soarchain-core/x/did/keeper"
+	dprmodulekeeper "github.com/amirh39/soarchain-core/x/dpr/keeper"
+	epochmodulekeeper "github.com/amirh39/soarchain-core/x/epoch/keeper"
+	poamodulekeeper "github.com/amirh39/soarchain-core/x/poa/keeper"
 )
 
 type AppKeepers struct {

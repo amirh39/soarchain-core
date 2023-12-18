@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strconv"
 
-	"soarchain/x/poa/types"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
 	"strings"
 

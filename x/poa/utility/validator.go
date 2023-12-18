@@ -1,7 +1,7 @@
 package utility
 
 import (
-	"soarchain/x/poa/utility/utilConstants"
+	"github.com/amirh39/soarchain-core/x/poa/utility/utilConstants"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

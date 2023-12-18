@@ -2,7 +2,8 @@ package cli
 
 import (
 	"context"
-	"soarchain/x/did/types"
+
+	"github.com/amirh39/soarchain-core/x/did/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

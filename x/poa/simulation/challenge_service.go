@@ -3,8 +3,8 @@ package simulation
 import (
 	"math/rand"
 
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
+	"github.com/amirh39/soarchain-core/x/poa/keeper"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"

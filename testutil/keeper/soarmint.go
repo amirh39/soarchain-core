@@ -3,8 +3,8 @@ package keeper
 import (
 	"testing"
 
-	"soarchain/x/soarmint/keeper"
-	"soarchain/x/soarmint/types"
+	"github.com/amirh39/soarchain-core/x/soarmint/keeper"
+	"github.com/amirh39/soarchain-core/x/soarmint/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"

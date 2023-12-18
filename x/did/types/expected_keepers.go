@@ -4,7 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 
-	poatypes "soarchain/x/poa/types"
+	poatypes "github.com/amirh39/soarchain-core/x/poa/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)

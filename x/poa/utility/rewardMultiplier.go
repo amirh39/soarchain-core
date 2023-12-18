@@ -2,7 +2,8 @@ package utility
 
 import (
 	"math"
-	"soarchain/x/poa/utility/utilConstants"
+
+	"github.com/amirh39/soarchain-core/x/poa/utility/utilConstants"
 )
 
 func CalculateRewardMultiplier(score float64) float64 {

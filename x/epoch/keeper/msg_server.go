@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"soarchain/x/epoch/types"
+	"github.com/amirh39/soarchain-core/x/epoch/types"
 )
 
 type msgServer struct {

@@ -3,9 +3,9 @@ package keeper_test
 import (
 	"testing"
 
-	params "soarchain/app/params"
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/x/epoch/constants"
+	params "github.com/amirh39/soarchain-core/app/params"
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/x/epoch/constants"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/assert"

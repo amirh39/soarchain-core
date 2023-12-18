@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"fmt"
-	"soarchain/x/poa/errors"
-	"soarchain/x/poa/types"
+
+	"github.com/amirh39/soarchain-core/x/poa/errors"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/store/prefix"

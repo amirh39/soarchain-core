@@ -3,10 +3,10 @@ package poa_test
 import (
 	"testing"
 
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
-	"soarchain/x/poa"
-	"soarchain/x/poa/types"
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/testutil/nullify"
+	"github.com/amirh39/soarchain-core/x/poa"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
 	"github.com/stretchr/testify/require"
 )

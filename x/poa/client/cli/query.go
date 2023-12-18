@@ -10,7 +10,7 @@ import (
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"soarchain/x/poa/types"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

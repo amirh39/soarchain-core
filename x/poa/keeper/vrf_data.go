@@ -1,9 +1,9 @@
 package keeper
 
 import (
+	"github.com/amirh39/soarchain-core/x/poa/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"soarchain/x/poa/types"
 )
 
 // SetVrfData set a specific vrfData in the store from its index

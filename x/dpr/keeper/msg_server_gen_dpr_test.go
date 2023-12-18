@@ -2,13 +2,14 @@ package keeper_test
 
 import (
 	"log"
-	"soarchain/app/params"
-	"soarchain/x/dpr/keeper"
-	"soarchain/x/dpr/types"
+
+	"github.com/amirh39/soarchain-core/app/params"
+	"github.com/amirh39/soarchain-core/x/dpr/keeper"
+	"github.com/amirh39/soarchain-core/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	didtypes "soarchain/x/did/types"
+	didtypes "github.com/amirh39/soarchain-core/x/did/types"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )

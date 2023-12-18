@@ -8,7 +8,7 @@ import "soarmint/params.proto";
 import "soarmint/minter.proto";
 // this line is used by starport scaffolding # 1
 
-option go_package = "soarchain/x/soarmint/types";
+option go_package = "github.com/amirh39/soarchain-core/x/soarmint/types";
 
 // Query defines the gRPC querier service.
 service Query {

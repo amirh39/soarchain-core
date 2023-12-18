@@ -3,10 +3,10 @@ package epoch_test
 import (
 	"testing"
 
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
-	"soarchain/x/epoch"
-	"soarchain/x/epoch/types"
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/testutil/nullify"
+	"github.com/amirh39/soarchain-core/x/epoch"
+	"github.com/amirh39/soarchain-core/x/epoch/types"
 
 	"github.com/stretchr/testify/require"
 )

@@ -2,10 +2,11 @@ package keeper
 
 import (
 	"log"
-	"soarchain/x/poa/constants"
-	"soarchain/x/poa/utility"
 
-	epoch "soarchain/x/epoch/types"
+	"github.com/amirh39/soarchain-core/x/poa/constants"
+	"github.com/amirh39/soarchain-core/x/poa/utility"
+
+	epoch "github.com/amirh39/soarchain-core/x/epoch/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

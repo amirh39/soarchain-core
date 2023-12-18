@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"soarchain/x/did/types"
+	"github.com/amirh39/soarchain-core/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

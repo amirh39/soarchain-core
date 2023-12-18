@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	didtypes "soarchain/x/did/types"
-	"soarchain/x/dpr/types"
+	didtypes "github.com/amirh39/soarchain-core/x/did/types"
+	"github.com/amirh39/soarchain-core/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

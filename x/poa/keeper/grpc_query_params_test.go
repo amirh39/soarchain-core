@@ -3,10 +3,10 @@ package keeper_test
 import (
 	"testing"
 
+	testkeeper "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
-	testkeeper "soarchain/testutil/keeper"
-	"soarchain/x/poa/types"
 )
 
 func TestParamsQuery(t *testing.T) {

@@ -12,10 +12,10 @@ package cli_test
 // 	"google.golang.org/grpc/codes"
 // 	"google.golang.org/grpc/status"
 
-// 	"soarchain/testutil/network"
-// 	"soarchain/testutil/nullify"
-// 	"soarchain/x/poa/client/cli"
-// 	"soarchain/x/poa/types"
+// 	"github.com/amirh39/soarchain-core/testutil/network"
+// 	"github.com/amirh39/soarchain-core/testutil/nullify"
+// 	"github.com/amirh39/soarchain-core/x/poa/client/cli"
+// 	"github.com/amirh39/soarchain-core/x/poa/types"
 // )
 
 // // Prevent strconv unused error

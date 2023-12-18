@@ -7,7 +7,7 @@ import (
 
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 
-	keeper "soarchain/x/poa/keeper"
+	keeper "github.com/amirh39/soarchain-core/x/poa/keeper"
 )
 
 func RegisterCustomPlugins(

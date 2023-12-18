@@ -3,8 +3,8 @@ package poa
 import (
 	"fmt"
 
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
+	"github.com/amirh39/soarchain-core/x/poa/keeper"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

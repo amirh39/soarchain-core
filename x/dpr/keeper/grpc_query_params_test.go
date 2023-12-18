@@ -3,8 +3,8 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "soarchain/testutil/keeper"
-	"soarchain/x/dpr/types"
+	testkeeper "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"

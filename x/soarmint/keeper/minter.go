@@ -1,9 +1,9 @@
 package keeper
 
 import (
+	"github.com/amirh39/soarchain-core/x/soarmint/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"soarchain/x/soarmint/types"
 )
 
 // SetMinter set minter in the store

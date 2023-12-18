@@ -3,7 +3,7 @@ package soarchain.soarmint;
 
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "soarchain/x/soarmint/types";
+option go_package = "github.com/amirh39/soarchain-core/x/soarmint/types";
 
 // Msg defines the Msg service.
 service Msg {

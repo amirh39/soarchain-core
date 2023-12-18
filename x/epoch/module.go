@@ -12,9 +12,9 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"soarchain/x/epoch/client/cli"
-	"soarchain/x/epoch/keeper"
-	"soarchain/x/epoch/types"
+	"github.com/amirh39/soarchain-core/x/epoch/client/cli"
+	"github.com/amirh39/soarchain-core/x/epoch/keeper"
+	"github.com/amirh39/soarchain-core/x/epoch/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"

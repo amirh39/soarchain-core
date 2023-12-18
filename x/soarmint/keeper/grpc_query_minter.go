@@ -3,10 +3,10 @@ package keeper
 import (
 	"context"
 
+	"github.com/amirh39/soarchain-core/x/soarmint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/soarmint/types"
 )
 
 func (k Keeper) Minter(c context.Context, req *types.QueryGetMinterRequest) (*types.QueryGetMinterResponse, error) {

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"soarchain/x/poa/types"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 )
 
 type msgServer struct {

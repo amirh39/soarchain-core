@@ -3,20 +3,21 @@ package keeper_test
 
 import (
 	"context"
-	"soarchain/x/dpr"
-	"soarchain/x/dpr/keeper"
-	"soarchain/x/dpr/testutil"
-	"soarchain/x/dpr/types"
 	"strconv"
 	"testing"
 
-	keepertest "soarchain/testutil/keeper"
+	"github.com/amirh39/soarchain-core/x/dpr"
+	"github.com/amirh39/soarchain-core/x/dpr/keeper"
+	"github.com/amirh39/soarchain-core/x/dpr/testutil"
+	"github.com/amirh39/soarchain-core/x/dpr/types"
+
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/golang/mock/gomock"
 
-	epochKeeper "soarchain/x/epoch/keeper"
-	epochTypes "soarchain/x/epoch/types"
+	epochKeeper "github.com/amirh39/soarchain-core/x/epoch/keeper"
+	epochTypes "github.com/amirh39/soarchain-core/x/epoch/types"
 )
 
 func CreateDpr(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Dpr {

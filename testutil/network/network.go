@@ -18,7 +18,7 @@ package network
 // 	tmrand "github.com/tendermint/tendermint/libs/rand"
 // 	tmdb "github.com/tendermint/tm-db"
 
-// 	"soarchain/app"
+// 	"github.com/amirh39/soarchain-core/app"
 // )
 
 // type (

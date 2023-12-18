@@ -3,9 +3,9 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	didtypes "soarchain/x/did/types"
-	epochtypes "soarchain/x/epoch/types"
-	poatypes "soarchain/x/poa/types"
+	didtypes "github.com/amirh39/soarchain-core/x/did/types"
+	epochtypes "github.com/amirh39/soarchain-core/x/epoch/types"
+	poatypes "github.com/amirh39/soarchain-core/x/poa/types"
 
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )

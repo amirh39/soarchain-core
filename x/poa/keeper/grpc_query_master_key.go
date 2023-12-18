@@ -3,10 +3,10 @@ package keeper
 import (
 	"context"
 
+	"github.com/amirh39/soarchain-core/x/poa/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"soarchain/x/poa/types"
 )
 
 func (k Keeper) MasterKey(c context.Context, req *types.QueryGetMasterKeyRequest) (*types.QueryGetMasterKeyResponse, error) {

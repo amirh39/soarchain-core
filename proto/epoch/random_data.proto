@@ -1,7 +1,7 @@
 syntax = "proto3";
 package soarchain.epoch;
 
-option go_package = "soarchain/x/epoch/types";
+option go_package = "github.com/amirh39/soarchain-core/x/epoch/types";
 
 message RandomData {
   string id = 1; 

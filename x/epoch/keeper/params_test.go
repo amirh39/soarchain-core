@@ -3,8 +3,8 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "soarchain/testutil/keeper"
-	"soarchain/x/epoch/types"
+	testkeeper "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/x/epoch/types"
 
 	"github.com/stretchr/testify/require"
 )

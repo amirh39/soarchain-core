@@ -2,12 +2,13 @@ package wasmbinding_test
 
 import (
 	"context"
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/x/poa"
-	keeper "soarchain/x/poa/keeper"
-	"soarchain/x/poa/testutil"
-	"soarchain/x/poa/types"
 	"testing"
+
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/x/poa"
+	keeper "github.com/amirh39/soarchain-core/x/poa/keeper"
+	"github.com/amirh39/soarchain-core/x/poa/testutil"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/golang/mock/gomock"

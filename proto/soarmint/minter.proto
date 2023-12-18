@@ -3,7 +3,7 @@ package soarchain.soarmint;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "soarchain/x/soarmint/types";
+option go_package = "github.com/amirh39/soarchain-core/x/soarmint/types";
 
 message Minter {
   string inflation = 1 [

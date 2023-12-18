@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"soarchain/x/did/types"
+	"github.com/amirh39/soarchain-core/x/did/types"
 )
 
 type msgServer struct {

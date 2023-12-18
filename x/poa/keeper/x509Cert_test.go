@@ -3,8 +3,9 @@ package keeper_test
 import (
 	"crypto/x509"
 	"encoding/pem"
-	keepertest "soarchain/testutil/keeper"
 	"testing"
+
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
 )
 
 func Test_CreateX509CertFromString(t *testing.T) {

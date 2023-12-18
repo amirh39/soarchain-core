@@ -3,15 +3,15 @@ package soarmint
 import (
 	"math/rand"
 
+	"github.com/amirh39/soarchain-core/testutil/sample"
+	soarmintsimulation "github.com/amirh39/soarchain-core/x/soarmint/simulation"
+	"github.com/amirh39/soarchain-core/x/soarmint/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"soarchain/testutil/sample"
-	soarmintsimulation "soarchain/x/soarmint/simulation"
-	"soarchain/x/soarmint/types"
 )
 
 // avoid unused import issue

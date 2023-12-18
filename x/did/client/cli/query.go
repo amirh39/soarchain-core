@@ -7,7 +7,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 
-	"soarchain/x/did/types"
+	"github.com/amirh39/soarchain-core/x/did/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

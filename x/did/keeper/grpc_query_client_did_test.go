@@ -1,11 +1,11 @@
 package keeper_test
 
 // import (
-// 	"soarchain/x/did/types"
+// 	"github.com/amirh39/soarchain-core/x/did/types"
 // 	"strconv"
 // 	"testing"
 
-// 	keepertest "soarchain/testutil/keeper"
+// 	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
 
 // 	"github.com/stretchr/testify/require"
 // 	"google.golang.org/grpc/codes"

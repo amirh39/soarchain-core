@@ -1,11 +1,12 @@
 package keeper_test
 
 import (
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
-	"soarchain/x/poa/types"
 	"strconv"
 	"testing"
+
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/testutil/nullify"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"

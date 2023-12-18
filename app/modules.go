@@ -2,12 +2,13 @@ package app
 
 import (
 	"encoding/json"
-	param "soarchain/app/params"
-	dprmoduletypes "soarchain/x/dpr/types"
-	epochmoduletypes "soarchain/x/epoch/types"
-	poamoduletypes "soarchain/x/poa/types"
-	mint "soarchain/x/soarmint"
-	minttypes "soarchain/x/soarmint/types"
+
+	param "github.com/amirh39/soarchain-core/app/params"
+	dprmoduletypes "github.com/amirh39/soarchain-core/x/dpr/types"
+	epochmoduletypes "github.com/amirh39/soarchain-core/x/epoch/types"
+	poamoduletypes "github.com/amirh39/soarchain-core/x/poa/types"
+	mint "github.com/amirh39/soarchain-core/x/soarmint"
+	minttypes "github.com/amirh39/soarchain-core/x/soarmint/types"
 
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmclient "github.com/CosmWasm/wasmd/x/wasm/client"
@@ -33,7 +34,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
-	partialorder "soarchain/utils"
+	partialorder "github.com/amirh39/soarchain-core/utils"
 )
 
 type bankModule struct {

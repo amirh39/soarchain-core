@@ -5,9 +5,9 @@ import (
 	"log"
 	"strconv"
 
-	"soarchain/x/poa/constants"
-	"soarchain/x/poa/types"
-	"soarchain/x/poa/utility"
+	"github.com/amirh39/soarchain-core/x/poa/constants"
+	"github.com/amirh39/soarchain-core/x/poa/types"
+	"github.com/amirh39/soarchain-core/x/poa/utility"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

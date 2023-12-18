@@ -3,11 +3,11 @@ package cli
 import (
 	"strconv"
 
+	"github.com/amirh39/soarchain-core/x/poa/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
 var _ = strconv.Itoa(0)

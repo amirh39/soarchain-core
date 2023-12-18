@@ -3,9 +3,9 @@ package keeper
 import (
 	"encoding/binary"
 
+	"github.com/amirh39/soarchain-core/x/poa/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"soarchain/x/poa/types"
 )
 
 // GetFactoryKeysCount get the total number of factoryKeys

@@ -1,7 +1,7 @@
 package keeper_test
 
 import (
-	"soarchain/x/soarmint/types"
+	"github.com/amirh39/soarchain-core/x/soarmint/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

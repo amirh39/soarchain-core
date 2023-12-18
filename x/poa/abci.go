@@ -8,10 +8,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
+	"github.com/amirh39/soarchain-core/x/poa/keeper"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
-	epochtypes "soarchain/x/epoch/types"
+	epochtypes "github.com/amirh39/soarchain-core/x/epoch/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 )

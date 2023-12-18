@@ -3,9 +3,9 @@ package types
 import (
 	"testing"
 
+	"github.com/amirh39/soarchain-core/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
-	"soarchain/testutil/sample"
 )
 
 func TestMsgSelectRandomChallenger_ValidateBasic(t *testing.T) {

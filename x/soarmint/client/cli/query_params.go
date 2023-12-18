@@ -3,10 +3,10 @@ package cli
 import (
 	"context"
 
+	"github.com/amirh39/soarchain-core/x/soarmint/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"soarchain/x/soarmint/types"
 )
 
 func CmdQueryParams() *cobra.Command {

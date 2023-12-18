@@ -11,11 +11,11 @@ import (
 	"github.com/tendermint/tendermint/crypto/ed25519"
 	"github.com/tendermint/tendermint/libs/log"
 
-	"soarchain/app"
-	param "soarchain/app/params"
+	"github.com/amirh39/soarchain-core/app"
+	param "github.com/amirh39/soarchain-core/app/params"
 
-	dprtypes "soarchain/x/dpr/types"
-	poatypes "soarchain/x/poa/types"
+	dprtypes "github.com/amirh39/soarchain-core/x/dpr/types"
+	poatypes "github.com/amirh39/soarchain-core/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/simapp"

@@ -3,9 +3,10 @@ package keeper
 import (
 	"context"
 	"log"
-	params "soarchain/app/params"
-	"soarchain/x/did/constants"
-	"soarchain/x/poa/types"
+
+	params "github.com/amirh39/soarchain-core/app/params"
+	"github.com/amirh39/soarchain-core/x/did/constants"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

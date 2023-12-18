@@ -5,11 +5,11 @@ import (
 	"encoding/hex"
 	"testing"
 
-	keepertest "soarchain/testutil/keeper"
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
 
 	"github.com/stretchr/testify/assert"
 
-	"soarchain/x/poa/types"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 )
 
 func Test_CreateVRF(t *testing.T) {

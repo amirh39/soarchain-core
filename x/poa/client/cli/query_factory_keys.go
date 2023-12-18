@@ -4,10 +4,10 @@ import (
 	"context"
 	"strconv"
 
+	"github.com/amirh39/soarchain-core/x/poa/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"soarchain/x/poa/types"
 )
 
 func CmdListFactoryKeys() *cobra.Command {

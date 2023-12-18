@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	keepertest "soarchain/testutil/keeper"
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
 )
 
 func Test_RandomDataGet(t *testing.T) {

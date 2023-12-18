@@ -3,9 +3,9 @@ package keeper_test
 import (
 	"testing"
 
+	testkeeper "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 	"github.com/stretchr/testify/require"
-	testkeeper "soarchain/testutil/keeper"
-	"soarchain/x/poa/types"
 )
 
 func TestGetParams(t *testing.T) {

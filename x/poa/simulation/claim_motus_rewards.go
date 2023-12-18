@@ -3,11 +3,11 @@ package simulation
 import (
 	"math/rand"
 
+	"github.com/amirh39/soarchain-core/x/poa/keeper"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/types"
 )
 
 func SimulateMsgClaimMotusRewards(

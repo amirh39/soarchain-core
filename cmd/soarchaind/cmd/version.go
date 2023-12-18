@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"soarchain/version"
+	"github.com/amirh39/soarchain-core/version"
 
 	"github.com/spf13/cobra"
 )

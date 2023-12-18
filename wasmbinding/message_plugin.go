@@ -9,8 +9,8 @@ import (
 
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
 
-	"soarchain/wasmbinding/bindings"
-	poaKeepers "soarchain/x/poa/keeper"
+	"github.com/amirh39/soarchain-core/wasmbinding/bindings"
+	poaKeepers "github.com/amirh39/soarchain-core/x/poa/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

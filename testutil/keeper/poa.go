@@ -3,9 +3,9 @@ package keeper
 import (
 	"testing"
 
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/testutil"
-	"soarchain/x/poa/types"
+	"github.com/amirh39/soarchain-core/x/poa/keeper"
+	"github.com/amirh39/soarchain-core/x/poa/testutil"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"

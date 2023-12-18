@@ -1,12 +1,12 @@
 package keeper
 
 import (
-	"soarchain/x/dpr/types"
+	"github.com/amirh39/soarchain-core/x/dpr/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-//Deactivate Dpr object
+// Deactivate Dpr object
 func (k Keeper) DeactivateDpr(ctx sdk.Context, totalEpoch uint64) {
 	logger := k.Logger(ctx)
 	activeDprs := k.GetAllActiveDpr(ctx)

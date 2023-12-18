@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	keepertest "soarchain/testutil/keeper"
-	"soarchain/testutil/nullify"
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
+	"github.com/amirh39/soarchain-core/testutil/nullify"
 )
 
 func Test_MasterKeyGet(t *testing.T) {

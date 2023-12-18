@@ -3,11 +3,12 @@ package keeper_test
 import (
 	"testing"
 
-	"soarchain/testutil/nullify"
-	"soarchain/x/did/types"
 	"strconv"
 
-	keepertest "soarchain/testutil/keeper"
+	"github.com/amirh39/soarchain-core/testutil/nullify"
+	"github.com/amirh39/soarchain-core/x/did/types"
+
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -15,8 +16,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-/** The address which is received by the request is a valid address.
-Response should return a valid challenger which is related to that address.*/
+/*
+* The address which is received by the request is a valid address.
+Response should return a valid challenger which is related to that address.
+*/
 func Test_GetChallengerByAddress(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
@@ -58,8 +61,10 @@ func Test_GetChallengerByAddress(t *testing.T) {
 	}
 }
 
-/** The address which is received by the request is invalid.
-Response should return an error and error message which is created into the code will rise.*/
+/*
+* The address which is received by the request is invalid.
+Response should return an error and error message which is created into the code will rise.
+*/
 func Test_GetChallengerByNotValidAddress(t *testing.T) {
 	keeper, ctx := keepertest.DidKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)

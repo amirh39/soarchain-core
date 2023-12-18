@@ -1,7 +1,7 @@
 syntax = "proto3";
 package soarchain.poa;
 
-option go_package = "soarchain/x/poa/types";
+option go_package = "github.com/amirh39/soarchain-core/x/poa/types";
 
 message VrfData {
   string index = 1; 

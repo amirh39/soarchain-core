@@ -1,7 +1,7 @@
 syntax = "proto3";
 package soarchain.did;
 
-option go_package = "soarchain/x/did/types";
+option go_package = "github.com/amirh39/soarchain-core/x/did/types";
 
 import "gogoproto/gogo.proto";
 

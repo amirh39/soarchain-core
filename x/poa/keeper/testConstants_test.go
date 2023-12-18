@@ -3,22 +3,23 @@ package keeper_test
 
 import (
 	"context"
-	"soarchain/x/poa"
-	"soarchain/x/poa/keeper"
-	"soarchain/x/poa/testutil"
-	"soarchain/x/poa/types"
 	"strconv"
 	"testing"
 
-	keepertest "soarchain/testutil/keeper"
+	"github.com/amirh39/soarchain-core/x/poa"
+	"github.com/amirh39/soarchain-core/x/poa/keeper"
+	"github.com/amirh39/soarchain-core/x/poa/testutil"
+	"github.com/amirh39/soarchain-core/x/poa/types"
+
+	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/golang/mock/gomock"
 
-	epochTypes "soarchain/x/epoch/types"
-	"soarchain/x/poa/constants"
+	epochTypes "github.com/amirh39/soarchain-core/x/epoch/types"
+	"github.com/amirh39/soarchain-core/x/poa/constants"
 
-	epochKeeper "soarchain/x/epoch/keeper"
+	epochKeeper "github.com/amirh39/soarchain-core/x/epoch/keeper"
 )
 
 func CreateMasterKey(keeper *keeper.Keeper, ctx sdk.Context) types.MasterKey {

@@ -1,7 +1,7 @@
 package keeper_test
 
 // import (
-// 	keepertest "soarchain/testutil/keeper"
+// 	keepertest "github.com/amirh39/soarchain-core/testutil/keeper"
 // 	"testing"
 
 // 	"github.com/stretchr/testify/require"

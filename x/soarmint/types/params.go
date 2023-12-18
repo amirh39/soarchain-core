@@ -3,8 +3,9 @@ package types
 import (
 	"errors"
 	"fmt"
-	param "soarchain/app/params"
 	"strings"
+
+	param "github.com/amirh39/soarchain-core/app/params"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 

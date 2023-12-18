@@ -1,10 +1,10 @@
 package keeper_test
 
 import (
-	"soarchain/x/dpr/keeper"
-	"soarchain/x/dpr/types"
+	"github.com/amirh39/soarchain-core/x/dpr/keeper"
+	"github.com/amirh39/soarchain-core/x/dpr/types"
 
-	didtypes "soarchain/x/did/types"
+	didtypes "github.com/amirh39/soarchain-core/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

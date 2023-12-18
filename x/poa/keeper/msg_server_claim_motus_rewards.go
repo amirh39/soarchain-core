@@ -7,8 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	params "soarchain/app/params"
-	"soarchain/x/poa/types"
+	params "github.com/amirh39/soarchain-core/app/params"
+	"github.com/amirh39/soarchain-core/x/poa/types"
 )
 
 func (k msgServer) ClaimMotusRewards(goCtx context.Context, msg *types.MsgClaimMotusRewards) (*types.MsgClaimMotusRewardsResponse, error) {

@@ -6,12 +6,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"soarchain/x/soarmint/keeper"
-	"soarchain/x/soarmint/types"
+	"github.com/amirh39/soarchain-core/x/soarmint/keeper"
+	"github.com/amirh39/soarchain-core/x/soarmint/types"
 
 	abci "github.com/tendermint/tendermint/abci/types"
-
-
 )
 
 func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {

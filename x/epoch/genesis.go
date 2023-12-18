@@ -1,8 +1,8 @@
 package epoch
 
 import (
-	"soarchain/x/epoch/keeper"
-	"soarchain/x/epoch/types"
+	"github.com/amirh39/soarchain-core/x/epoch/keeper"
+	"github.com/amirh39/soarchain-core/x/epoch/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

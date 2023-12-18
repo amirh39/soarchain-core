@@ -1,8 +1,9 @@
 package keeper_test
 
 import (
-	"soarchain/app/apptesting"
 	"testing"
+
+	"github.com/amirh39/soarchain-core/app/apptesting"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"

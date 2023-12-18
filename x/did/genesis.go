@@ -1,8 +1,8 @@
 package did
 
 import (
-	"soarchain/x/did/keeper"
-	"soarchain/x/did/types"
+	"github.com/amirh39/soarchain-core/x/did/keeper"
+	"github.com/amirh39/soarchain-core/x/did/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
