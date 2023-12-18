@@ -1,4 +1,4 @@
-module soarchain
+module github.com/amirh39/soarchain-core
 
 go 1.18
 
